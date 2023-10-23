@@ -35,7 +35,8 @@ entity IIR is
   	B0		  : in	  std_logic_vector(C_IIR_DATA_W downto 0);
   	B1		  : in	  std_logic_vector(C_IIR_DATA_W downto 0);
     X         : in    signed(C_IIR_DATA_W - 1 downto 0);          -- Input sample (data_maker DOUT)
-    Y         : out   signed(C_IIR_DATA_W - 1 downto 0)           -- Output sample
+    Y         : out   signed(C_IIR_DATA_W - 1 downto 0);          -- Output sample
+	VOUT	  : out   std_logic
   );
 end entity IIR;
 
@@ -140,6 +141,15 @@ begin
     );
 
   sn_min_1 <= signed(sn_min_1_tmp);
+
+  valid_proc: process(CLK, RST_AN)
+  begin
+	  if RST_AN = '0' then
+		  VOUT <= '0';
+	  elsif CLK'event and CLK = '1' then
+		  VOUT <= VIN;
+	  end if;
+  end process;
 
   --------------------------------------------------
   -- FEEDBACK
