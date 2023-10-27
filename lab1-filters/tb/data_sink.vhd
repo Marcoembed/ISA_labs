@@ -9,7 +9,7 @@ use std.textio.all;
 
 entity data_sink is
   generic (
-    NBIT : integer := 16);
+    NBIT : integer := 10);
   port (
     CLK   : in std_logic;
     RST_n : in std_logic;

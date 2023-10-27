@@ -30,28 +30,36 @@ entity IIR is
   port (
     CLK       : in    std_logic;                                -- Clock Signal (rising-edge trigger)
     RST_AN    : in    std_logic;                                -- Reset Signal: Asyncronous Active Low (Negative)
-    X         : in    signed(C_IIR_DATA_W - 1 downto 0);          -- Input sample
-    Y         : out   signed(C_IIR_DATA_W - 1 downto 0)           -- Output sample
+  	VIN		  : in 	  std_logic; 
+  	A1		  : in	  std_logic_vector(C_IIR_DATA_W downto 0);
+  	B0		  : in	  std_logic_vector(C_IIR_DATA_W downto 0);
+  	B1		  : in	  std_logic_vector(C_IIR_DATA_W downto 0);
+    X         : in    signed(C_IIR_DATA_W - 1 downto 0);          -- Input sample (data_maker DOUT)
+    Y         : out   signed(C_IIR_DATA_W - 1 downto 0);          -- Output sample
+	VOUT	  : out   std_logic
   );
 end entity IIR;
 
 architecture BEHAVIOURAL of IIR is
 
-  signal sn             : signed(C_IIR_DATA_W downto 0);
-  signal sn_min_1       : signed(C_IIR_DATA_W downto 0);
-  signal sn_min_1_tmp   : std_logic_vector(C_IIR_DATA_W downto 0);
-  signal x_d1_tmp		: std_logic_vector(C_IIR_DATA_W - 1 downto 0);
-  signal x_d1           : signed(C_IIR_DATA_W - 1 downto 0);
+  signal sn             : signed(C_IIR_DATA_W downto 0);	---------------------- 11 bits
+  signal A1_in      	: signed(C_IIR_DATA_W downto 0);	---------------------- 11 bits
+  signal B0_in          : signed(C_IIR_DATA_W downto 0);	---------------------- 11 bits
+  signal B1_in          : signed(C_IIR_DATA_W downto 0);	---------------------- 11 bits
+  signal sn_min_1       : signed(C_IIR_DATA_W downto 0);	---------------------- 11 bits
+  signal sn_min_1_tmp   : std_logic_vector(C_IIR_DATA_W downto 0);	---------------------- 11 bits
+  signal x_d1_tmp		: std_logic_vector(C_IIR_DATA_W - 1 downto 0); ---------------------- 10 bits
+  signal x_d1           : signed(C_IIR_DATA_W - 1 downto 0); ---------------------- 10 bits
   signal x_ext          : signed(C_IIR_DATA_W downto 0);
-  signal y_drop         : signed(C_IIR_DATA_W - 1 downto 0);
-  signal y_drop_tmp     : std_logic_vector(C_IIR_DATA_W - 1 downto 0);
-  signal y_ext          : signed(C_IIR_DATA_W downto 0);
-  signal fb             : signed(2*(C_IIR_DATA_W + 1) - 1 downto 0);
-  signal ff             : signed(2*(C_IIR_DATA_W + 1) - 1 downto 0);
-  signal wb             : signed(2*(C_IIR_DATA_W + 1) - 1 downto 0);
-  signal fb_drop        : signed(C_IIR_DATA_W downto 0);
-  signal ff_drop        : signed(C_IIR_DATA_W downto 0);
-  signal wb_drop        : signed(C_IIR_DATA_W downto 0);
+  signal y_drop         : signed(C_IIR_DATA_W - 1 downto 0); ---------------------- 10 bits
+  signal y_drop_tmp     : std_logic_vector(C_IIR_DATA_W - 1 downto 0); ---------------------- 10 bits
+  signal y_ext          : signed(C_IIR_DATA_W downto 0); 	---------------------- 11 bits
+  signal fb             : signed(2*(C_IIR_DATA_W + 1) - 1 downto 0); ---------------------- 21 bits
+  signal ff             : signed(2*(C_IIR_DATA_W + 1) - 1 downto 0); ---------------------- 21 bits
+  signal wb             : signed(2*(C_IIR_DATA_W + 1) - 1 downto 0); ---------------------- 21 bits
+  signal fb_drop        : signed(C_IIR_DATA_W downto 0);	---------------------- 11 bits
+  signal ff_drop        : signed(C_IIR_DATA_W downto 0);	---------------------- 11 bits
+  signal wb_drop        : signed(C_IIR_DATA_W downto 0);	---------------------- 11 bits
 
 --
 -- +---+    +---+   fb    +---+   +----+
@@ -88,7 +96,7 @@ begin
       CLK   => CLK,
       RST_AN => RST_AN,
 
-      EN   => '1',
+      EN   => VIN,
       INIT => '0',
       DIN  => std_logic_vector(X),
       DOUT => x_d1_tmp
@@ -107,7 +115,7 @@ begin
       CLK   => CLK,
       RST_AN => RST_AN,
 
-      EN   => '1',
+      EN   => VIN,
       INIT => '0',
       DIN  => std_logic_vector(y_drop),
       DOUT => y_drop_tmp
@@ -126,7 +134,7 @@ begin
       CLK   => CLK,
       RST_AN => RST_AN,
 
-      EN   => '1',
+      EN   => VIN,
       INIT => '0',
       DIN  => std_logic_vector(sn),
       DOUT => sn_min_1_tmp
@@ -134,11 +142,24 @@ begin
 
   sn_min_1 <= signed(sn_min_1_tmp);
 
+  valid_proc: process(CLK, RST_AN)
+  begin
+	  if RST_AN = '0' then
+		  VOUT <= '0';
+	  elsif CLK'event and CLK = '1' then
+		  VOUT <= VIN;
+	  end if;
+  end process;
+
   --------------------------------------------------
   -- FEEDBACK
   --------------------------------------------------
 
-  fb <= resize(A(1), C_IIR_DATA_W + 1) * sn_min_1;
+  A1_in <= signed(A1);
+  B0_in <= signed(B0);
+  B1_in <= signed(B1);
+
+  fb <= resize(A1_in, C_IIR_DATA_W + 1) * sn_min_1;
   fb_drop <= fb(2*(C_IIR_DATA_W+1) - 1 downto C_IIR_DATA_W+1);
 
   x_ext <= resize(x_d1, C_IIR_DATA_W + 1);
@@ -148,10 +169,10 @@ begin
   -- FEEDFORWARD
   --------------------------------------------------
 
-  ff <= resize(B(1), C_IIR_DATA_W + 1) * sn_min_1;
+  ff <= resize(B1_in, C_IIR_DATA_W + 1) * sn_min_1;
   ff_drop <= ff(2*(C_IIR_DATA_W+1) - 1 downto C_IIR_DATA_W+1);
 
-  wb <= resize(B(0), C_IIR_DATA_W + 1) * sn;
+  wb <= resize(B0_in, C_IIR_DATA_W + 1) * sn;
   wb_drop <= wb(2*(C_IIR_DATA_W+1) - 1 downto C_IIR_DATA_W+1);
 
   y_ext  <= wb_drop + ff_drop;
