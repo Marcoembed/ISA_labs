@@ -14,37 +14,53 @@ module tb_iir ();
     wire END_SIM_i;
  
     clk_gen CG(
- 	   	  .END_SIM(END_SIM_i),
-   	      .CLK(CLK_i),
- 	      .RST_n(RST_n_i));
+        .END_SIM(END_SIM_i),
+        .CLK(CLK_i),
+        .RST_n(RST_n_i));
  
     data_maker SM(
- 	     .CLK(CLK_i),
- 	     .RST_n(RST_n_i),
- 		 .VOUT(VIN_i),
- 		 .DOUT(DIN_i),
- 		 .B0(B0_i),
- 		 .B1(B1_i),
- 		 .A1(A1_i),
- 		 .END_SIM(END_SIM_i));
+        .CLK(CLK_i),
+        .RST_n(RST_n_i),
+        .VOUT(VIN_i),
+        .DOUT(DIN_i),
+        .B0(B0_i),
+        .B1(B1_i),
+        .A1(A1_i),
+        .END_SIM(END_SIM_i));
  
     iir UUT(
- 	   	 .CLK(CLK_i),
- 	     .RST_n(RST_n_i),
- 	     .X(DIN_i),
-         .VIN(VIN_i),
- 		 .B0(B0_i),
- 		 .B1(B1_i),
- 		 .A1(A1_i),
-         .Y(DOUT_i),
-         .VOUT(VOUT_i));
- 
-    data_sink DS(
- 	    .CLK(CLK_i),
- 		.RST_n(RST_n_i),
- 		.VIN(VOUT_i),
- 		.DIN(DOUT_i));   
+        .CLK(CLK_i),
+        .RST_n(RST_n_i),
+        .X(DIN_i),
+        .VIN(VIN_i),
+        .B0(B0_i),
+        .B1(B1_i),
+        .A1(A1_i),
+        .Y(DOUT_i),
+        .VOUT(VOUT_i));
 
+    data_sink DS(
+        .CLK(CLK_i),
+        .RST_n(RST_n_i),
+        .VIN(VOUT_i),
+        .DIN(DOUT_i));   
+
+    // Logging
+    always @(posedge CLK_i, negedge RST_n_i) begin
+        if(!RST_n_i) begin
+           $display("Time=%0t Reset async",$time); 
+       end else begin
+           $display("Time=%0t VIN:%d, DIN: %d, VOUT: %d, DOUT: %d",$time,VIN_i,DIN_i,VOUT_i,DOUT_i); 
+        end
+    end
+
+    // End simulation
+    always @(END_SIM_i) begin
+        if(END_SIM_i) begin
+           $display("Ending simulation shortly",$time); 
+           //$finish 
+        end
+    end
 endmodule
 
-		   
+           

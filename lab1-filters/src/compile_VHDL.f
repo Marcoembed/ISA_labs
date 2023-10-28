@@ -1,3 +1,3 @@
-./hdl/IIR_PKG.vhd
-./hdl/REG_PIPO.vhd
-./hdl/IIR.vhd
+./src/iir_pkg.vhd
+./src/reg.vhd
+./src/iir.vhd

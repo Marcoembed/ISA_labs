@@ -1,4 +1,4 @@
 puts "\n########## SIMULATION STARTS ##########\n"
-run -all
+run 40 us;
 puts "\n##########  SIMULATION ENDS  ##########\n"
 exit
