@@ -38,7 +38,7 @@ end entity IIR;
 
 ------------------------------------------------------------- ARCHITECTURE
 
-architecture BEHAVIOURAL of IIR is
+architecture BEHAV of IIR is
 
   signal sn         : signed(NBIT downto 0);               --11 bits
   signal a1_in      : signed(NBIT - 1 downto 0);
@@ -101,7 +101,7 @@ begin
   end process VALID_IN;
 
   -------------------------------------------------- A1 INPUT REG
-  A1_IN_REG : entity work.reg(behav)
+  A1_IN_REG : reg
     port map (
       CLK   => CLK,
       RST_N => RST_N,
@@ -112,7 +112,7 @@ begin
     );
 
   -------------------------------------------------- B0 INPUT REG
-  B0_IN_REG : entity work.reg
+  B0_IN_REG : reg
     port map (
       CLK   => CLK,
       RST_N => RST_N,
@@ -123,7 +123,7 @@ begin
     );
 
   -------------------------------------------------- B1 INPUT REG
-  B1_IN_REG : entity work.reg
+  B1_IN_REG : reg
     port map (
       CLK   => CLK,
       RST_N => RST_N,
@@ -134,7 +134,7 @@ begin
     );
 
   -------------------------------------------------- SAMPLE INPUT REG
-  IN_REG : entity work.reg
+  IN_REG : reg
     port map (
       CLK   => CLK,
       RST_N => RST_N,
@@ -158,7 +158,7 @@ begin
   end process VALID_OUT;
 
   -------------------------------------------------- DATA OUTPUT REG
-  OUT_REG : entity work.reg
+  OUT_REG : reg
     port map (
       CLK   => CLK,
       RST_N => RST_N,
@@ -169,7 +169,7 @@ begin
     );
 
   -------------------------------------------------- SN REG
-  U_SN_REG : entity work.reg
+  U_SN_REG : reg
     generic map (
       DATA_WIDTH => NBIT + 1
     )
@@ -212,4 +212,12 @@ begin
   y_ext  <= wb_shift + ff_shift;
   y_drop <= y_ext(NBIT - 1 downto 0);
 
-end architecture BEHAVIOURAL;
+end architecture BEHAV;
+
+configuration CFG_IIR_BEHAV of IIR is
+  for BEHAV
+    for all: REG
+      use configuration work.CFG_REG_BEHAV;
+    end for;
+  end for;
+end CFG_IIR_BEHAV;

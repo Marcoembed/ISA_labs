@@ -28,7 +28,7 @@ module tb_iir ();
         .A1(A1_i),
         .END_SIM(END_SIM_i));
  
-    iir UUT(
+    CFG_IIR_BEHAV UUT(
         .CLK(CLK_i),
         .RST_n(RST_n_i),
         .X(DIN_i),

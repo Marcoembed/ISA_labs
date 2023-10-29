@@ -42,3 +42,8 @@ begin
 
 end architecture BEHAV;
 
+configuration CFG_REG_BEHAV of REG is
+ for BEHAV
+ end for;
+end CFG_REG_BEHAV;
+
