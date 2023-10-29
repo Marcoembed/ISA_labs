@@ -1,0 +1,11 @@
+# Define place where DC will save working files (map internal WORK variable to ./work path)
+define_design_lib WORK -path ./syn/work
+
+# Set the search paths to libraries
+#set search_path [list . ./syn/lib/synopsis/ ./syn/lib/nangate45/ /eda/synopsys/2021-22/RHELx86/SYN_2021.06-SP4/libraries/syn /eda/dk/nangate45/synopsys ]
+set search_path [list . ./syn/lib/synopsis/ ./syn/lib/nangate45/synopsis ]
+
+# Set the names of the libraries that will be used
+set link_library [list "*" "NangateOpenCellLibrary_typical_ecsm_nowlm.db" "dw_foundation.sldb" ]
+set target_library [list "NangateOpenCellLibrary_typical_ecsm_nowlm.db" ]
+set synthetic_library [list "dw_foundation.sldb" ]; # DesignWare Library used by synthesizer to detect basic blocks (multipliers, adders, ...)

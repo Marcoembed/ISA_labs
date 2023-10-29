@@ -1,0 +1,1489 @@
+library(lsi_9k) {
+cell(AND) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A B";
+    timing() {
+      intrinsic_rise : 1.94;
+      intrinsic_fall : 1.94;
+      rise_resistance : 0.26;
+      fall_resistance : 0.26;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.94;
+      intrinsic_fall : 1.94;
+      rise_resistance : 0.26;
+      fall_resistance : 0.26;
+      related_pin : "B";
+    }
+  }
+}
+cell(OR) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A+B";
+    timing() {
+      intrinsic_rise : 2.16;
+      intrinsic_fall : 2.16;
+      rise_resistance : 0.44;
+      fall_resistance : 0.44;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 2.16;
+      intrinsic_fall : 2.16;
+      rise_resistance : 0.44;
+      fall_resistance : 0.44;
+      related_pin : "B";
+    }
+  }
+}
+cell(IV) {
+  area : 1;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A'";
+    timing() {
+      intrinsic_rise : 0.84;
+      intrinsic_fall : 0.49;
+      rise_resistance : 0.26;
+      fall_resistance : 0.11;
+      related_pin : "A";
+    }
+  }
+}
+cell(IVP) {
+  area : 1;
+  pin(A) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A'";
+    timing() {
+      intrinsic_rise : 0.77;
+      intrinsic_fall : 0.34;
+      rise_resistance : 0.13;
+      fall_resistance : 0.06;
+      related_pin : "A";
+    }
+  }
+}
+cell(IVA) {
+  area : 1;
+  pin(A) {
+    direction : input;
+    capacitance : 1.5;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A'";
+    timing() {
+      intrinsic_rise : 0.66;
+      intrinsic_fall : 0.59;
+      rise_resistance : 0.14;
+      fall_resistance : 0.11;
+      related_pin : "A";
+    }
+  }
+}
+cell(B5I) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 3;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A'";
+    timing() {
+      intrinsic_rise : 0.75;
+      intrinsic_fall : 0.29;
+      rise_resistance : 0.09;
+      fall_resistance : 0.05;
+      related_pin : "A";
+    }
+  }
+}
+cell(B4I) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 4;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A'";
+    timing() {
+      intrinsic_rise : 0.74;
+      intrinsic_fall : 0.23;
+      rise_resistance : 0.07;
+      fall_resistance : 0.04;
+      related_pin : "A";
+    }
+  }
+}
+cell(B1A) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 3;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A'";
+    timing() {
+      intrinsic_rise : 0.64;
+      intrinsic_fall : 0.56;
+      rise_resistance : 0.07;
+      fall_resistance : 0.06;
+      related_pin : "A";
+    }
+  }
+}
+cell(B2A) {
+  area : 4;
+  pin(A) {
+    direction : input;
+    capacitance : 6;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A'";
+    timing() {
+      intrinsic_rise : 0.55;
+      intrinsic_fall : 0.35;
+      rise_resistance : 0.04;
+      fall_resistance : 0.04;
+      related_pin : "A";
+    }
+  }
+}
+cell(ND2) {
+  area : 1;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A B)'";
+    timing() {
+      intrinsic_rise : 0.94;
+      intrinsic_fall : 0.33;
+      rise_resistance : 0.26;
+      fall_resistance : 0.17;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 0.94;
+      intrinsic_fall : 0.33;
+      rise_resistance : 0.26;
+      fall_resistance : 0.17;
+      related_pin : "B";
+    }
+  }
+}
+cell(NR2) {
+  area : 1;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A+B)'";
+    timing() {
+      intrinsic_rise : 0.86;
+      intrinsic_fall : 0.49;
+      rise_resistance : 0.44;
+      fall_resistance : 0.11;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 0.86;
+      intrinsic_fall : 0.49;
+      rise_resistance : 0.44;
+      fall_resistance : 0.11;
+      related_pin : "B";
+    }
+  }
+}
+cell(EN) {
+  area : 3;
+  pin(A) {
+    direction : input;
+    capacitance : 5.9;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A B+A'B')";
+    timing() {
+      intrinsic_rise : 1.47;
+      intrinsic_fall : 1.83;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.47;
+      intrinsic_fall : 1.83;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "B";
+    }
+  }
+}
+cell(EO) {
+  area : 3;
+  pin(A) {
+    direction : input;
+    capacitance : 5.9;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A B'+A'B)";
+    timing() {
+      intrinsic_rise : 1.47;
+      intrinsic_fall : 1.83;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.47;
+      intrinsic_fall : 1.83;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "B";
+    }
+  }
+}
+cell(ND3) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A B C)'";
+    timing() {
+      intrinsic_rise : 1.04;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.26;
+      fall_resistance : 0.23;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.04;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.26;
+      fall_resistance : 0.23;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.04;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.26;
+      fall_resistance : 0.23;
+      related_pin : "C";
+    }
+  }
+}
+cell(NR3) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A+B+C)'";
+    timing() {
+      intrinsic_rise : 1.36;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.64;
+      fall_resistance : 0.13;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.36;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.64;
+      fall_resistance : 0.13;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.36;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.64;
+      fall_resistance : 0.13;
+      related_pin : "C";
+    }
+  }
+}
+cell(ND4) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A B C D)'";
+    timing() {
+      intrinsic_rise : 0.84;
+      intrinsic_fall : 0.73;
+      rise_resistance : 0.26;
+      fall_resistance : 0.27;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 0.84;
+      intrinsic_fall : 0.73;
+      rise_resistance : 0.26;
+      fall_resistance : 0.27;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 0.84;
+      intrinsic_fall : 0.73;
+      rise_resistance : 0.26;
+      fall_resistance : 0.27;
+      related_pin : "C";
+    }
+    timing() {
+      intrinsic_rise : 0.84;
+      intrinsic_fall : 0.73;
+      rise_resistance : 0.26;
+      fall_resistance : 0.27;
+      related_pin : "D";
+    }
+  }
+}
+cell(NR4) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A+B+C+D)'";
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.83;
+      fall_resistance : 0.13;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.83;
+      fall_resistance : 0.13;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.83;
+      fall_resistance : 0.13;
+      related_pin : "C";
+    }
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 0.47;
+      rise_resistance : 0.83;
+      fall_resistance : 0.13;
+      related_pin : "D";
+    }
+  }
+}
+cell(AO6) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((A B)+C)'";
+    timing() {
+      intrinsic_rise : 1.16;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.44;
+      fall_resistance : 0.16;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.16;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.44;
+      fall_resistance : 0.16;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.16;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.44;
+      fall_resistance : 0.16;
+      related_pin : "C";
+    }
+  }
+}
+cell(AO7) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((A+B)C)'";
+    timing() {
+      intrinsic_rise : 1.06;
+      intrinsic_fall : 0.63;
+      rise_resistance : 0.44;
+      fall_resistance : 0.17;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.06;
+      intrinsic_fall : 0.63;
+      rise_resistance : 0.44;
+      fall_resistance : 0.17;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.06;
+      intrinsic_fall : 0.63;
+      rise_resistance : 0.44;
+      fall_resistance : 0.17;
+      related_pin : "C";
+    }
+  }
+}
+cell(AO2) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A B+C D)'";
+    timing() {
+      intrinsic_rise : 1.36;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.44;
+      fall_resistance : 0.16;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.36;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.44;
+      fall_resistance : 0.16;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.36;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.44;
+      fall_resistance : 0.16;
+      related_pin : "C";
+    }
+    timing() {
+      intrinsic_rise : 1.36;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.44;
+      fall_resistance : 0.16;
+      related_pin : "D";
+    }
+  }
+}
+cell(AO4) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((A+B)(C+D))'";
+    timing() {
+      intrinsic_rise : 1.07;
+      intrinsic_fall : 0.44;
+      rise_resistance : 0.43;
+      fall_resistance : 0.16;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.07;
+      intrinsic_fall : 0.44;
+      rise_resistance : 0.43;
+      fall_resistance : 0.16;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.07;
+      intrinsic_fall : 0.44;
+      rise_resistance : 0.43;
+      fall_resistance : 0.16;
+      related_pin : "C";
+    }
+    timing() {
+      intrinsic_rise : 1.07;
+      intrinsic_fall : 0.44;
+      rise_resistance : 0.43;
+      fall_resistance : 0.16;
+      related_pin : "D";
+    }
+  }
+}
+cell(AO1) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((A B)+C+D)'";
+    timing() {
+      intrinsic_rise : 1.46;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.64;
+      fall_resistance : 0.16;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.46;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.64;
+      fall_resistance : 0.16;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.46;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.64;
+      fall_resistance : 0.16;
+      related_pin : "C";
+    }
+    timing() {
+      intrinsic_rise : 1.46;
+      intrinsic_fall : 0.54;
+      rise_resistance : 0.64;
+      fall_resistance : 0.16;
+      related_pin : "D";
+    }
+  }
+}
+cell(AO3) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((A+B)C D)'";
+    timing() {
+      intrinsic_rise : 1.06;
+      intrinsic_fall : 0.57;
+      rise_resistance : 0.44;
+      fall_resistance : 0.23;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.06;
+      intrinsic_fall : 0.57;
+      rise_resistance : 0.44;
+      fall_resistance : 0.23;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.06;
+      intrinsic_fall : 0.57;
+      rise_resistance : 0.44;
+      fall_resistance : 0.23;
+      related_pin : "C";
+    }
+    timing() {
+      intrinsic_rise : 1.06;
+      intrinsic_fall : 0.57;
+      rise_resistance : 0.44;
+      fall_resistance : 0.23;
+      related_pin : "D";
+    }
+  }
+}
+cell(B1I) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 3;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A";
+    timing() {
+      intrinsic_rise : 1.69;
+      intrinsic_fall : 1.61;
+      rise_resistance : 0.03;
+      fall_resistance : 0.02;
+      related_pin : "A";
+    }
+  }
+}
+cell(MUX41) {
+  area : 6;
+  pin(D0) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D1) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D2) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D3) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(A) {
+    direction : input;
+    capacitance : 3;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((D0 A'B')+(D1 A B')+(D2 A'B)+(D3 A B))";
+    timing() {
+      intrinsic_rise : 1.81;
+      intrinsic_fall : 1.64;
+      rise_resistance : 0.29;
+      fall_resistance : 0.16;
+      related_pin : "D0";
+    }
+    timing() {
+      intrinsic_rise : 1.81;
+      intrinsic_fall : 1.64;
+      rise_resistance : 0.29;
+      fall_resistance : 0.16;
+      related_pin : "D1";
+    }
+    timing() {
+      intrinsic_rise : 1.81;
+      intrinsic_fall : 1.64;
+      rise_resistance : 0.29;
+      fall_resistance : 0.16;
+      related_pin : "D2";
+    }
+    timing() {
+      intrinsic_rise : 1.81;
+      intrinsic_fall : 1.64;
+      rise_resistance : 0.29;
+      fall_resistance : 0.16;
+      related_pin : "D3";
+    }
+    timing() {
+      intrinsic_rise : 1.81;
+      intrinsic_fall : 1.64;
+      rise_resistance : 0.29;
+      fall_resistance : 0.16;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.81;
+      intrinsic_fall : 1.64;
+      rise_resistance : 0.29;
+      fall_resistance : 0.16;
+      related_pin : "B";
+    }
+  }
+}
+cell(ND6) {
+  area : 5;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(E) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(F) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A B C D E F)'";
+    timing() {
+      intrinsic_rise : 2.07;
+      intrinsic_fall : 2.13;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 2.07;
+      intrinsic_fall : 2.13;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 2.07;
+      intrinsic_fall : 2.13;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "C";
+    }
+    timing() {
+      intrinsic_rise : 2.07;
+      intrinsic_fall : 2.13;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "D";
+    }
+    timing() {
+      intrinsic_rise : 2.07;
+      intrinsic_fall : 2.13;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "E";
+    }
+    timing() {
+      intrinsic_rise : 2.07;
+      intrinsic_fall : 2.13;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      related_pin : "F";
+    }
+  }
+}
+cell(NR6) {
+  area : 5;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(E) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(F) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A+B+C+D+E+F)'";
+    timing() {
+      intrinsic_rise : 2.77;
+      intrinsic_fall : 1.54;
+      rise_resistance : 0.13;
+      fall_resistance : 0.06;
+      related_pin : "A B C D E F";
+    }
+  }
+}
+cell(ND8) {
+  area : 6;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(E) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(F) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(G) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(H) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A B C D E F G H)'";
+    timing() {
+      intrinsic_rise : 2.17;
+      intrinsic_fall : 2.43;
+      rise_resistance : 0.13;
+      fall_resistance : 0.07;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A B C D E F G H";
+    }
+  }
+}
+cell(NR8) {
+  area : 6;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(E) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(F) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(G) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(H) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A+B+C+D+E+F+G+H)'";
+    timing() {
+      intrinsic_rise : 3.47;
+      intrinsic_fall : 1.64;
+      rise_resistance : 0.13;
+      fall_resistance : 0.06;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A B C D E F G H";
+    }
+  }
+}
+cell(EON1) {
+  area : 3;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((A+B)((C D)'))'";
+    timing() {
+      intrinsic_rise : 1.06;
+      intrinsic_fall : 1.54;
+      rise_resistance : 0.44;
+      fall_resistance : 0.16;
+      related_pin : "A B C D";
+    }
+  }
+}
+cell(EO1) {
+  area : 3;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((A B)+((C+D)'))'";
+    timing() {
+      intrinsic_rise : 1.86;
+      intrinsic_fall : 2.19;
+      rise_resistance : 0.44;
+      fall_resistance : 0.11;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.86;
+      intrinsic_fall : 2.19;
+      rise_resistance : 0.44;
+      fall_resistance : 0.11;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.86;
+      intrinsic_fall : 2.19;
+      rise_resistance : 0.44;
+      fall_resistance : 0.11;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "C";
+    }
+    timing() {
+      intrinsic_rise : 1.86;
+      intrinsic_fall : 2.19;
+      rise_resistance : 0.44;
+      fall_resistance : 0.11;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "D";
+    }
+  }
+}
+cell(MUX21L) {
+  area : 3;
+  pin(A) {
+    direction : input;
+    capacitance : 4.7;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 4.7;
+  }
+  pin(S) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(S'A'+S B')";
+    timing() {
+      intrinsic_rise : 1.51;
+      intrinsic_fall : 1.13;
+      rise_resistance : 0.09;
+      fall_resistance : 0.07;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.51;
+      intrinsic_fall : 1.13;
+      rise_resistance : 0.09;
+      fall_resistance : 0.07;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.51;
+      intrinsic_fall : 1.13;
+      rise_resistance : 0.09;
+      fall_resistance : 0.07;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "S";
+    }
+  }
+}
+cell(MUX81) {
+  area : 12;
+  pin(D0) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D1) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D2) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D3) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D4) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D5) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D6) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(D7) {
+    direction : input;
+    capacitance : 3.4;
+  }
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 3;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((D0 A'B'C')+(D1 A B'C')+(D2 A'B C')+(D3 A B C')+(D4 A'B'C)+(D5 A B'C)+(D6 A'B C)+(D7 A B C))";
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "D0";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "D1";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "D2";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "D3";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "D4";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "D5";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "D6";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "D7";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 3.77;
+      intrinsic_fall : 3.61;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "C";
+    }
+  }
+}
+cell(AO5) {
+  area : 3;
+  pin(A) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(Z) {
+    direction : output;
+    function : "((A B)+(A C)+(B C))'";
+    timing() {
+      intrinsic_rise : 1.66;
+      intrinsic_fall : 0.83;
+      rise_resistance : 0.44;
+      fall_resistance : 0.17;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.66;
+      intrinsic_fall : 0.83;
+      rise_resistance : 0.44;
+      fall_resistance : 0.17;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.66;
+      intrinsic_fall : 0.83;
+      rise_resistance : 0.44;
+      fall_resistance : 0.17;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "C";
+    }
+  }
+}
+cell(EN3) {
+  area : 6;
+  pin(A) {
+    direction : input;
+    capacitance : 8.3;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 3;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A'B'C'+A'B C+A B'C+A B C')";
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 1.91;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 1.91;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 1.91;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "C";
+    }
+  }
+}
+cell(EO3) {
+  area : 6;
+  pin(A) {
+    direction : input;
+    capacitance : 8.3;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 3;
+  }
+  pin(C) {
+    direction : input;
+    capacitance : 2;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A'B'C+A'B C'+A B'C'+A B C)";
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 1.91;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 1.91;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "B";
+    }
+    timing() {
+      intrinsic_rise : 1.97;
+      intrinsic_fall : 1.91;
+      rise_resistance : 0.13;
+      fall_resistance : 0.09;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "C";
+    }
+  }
+}
+}

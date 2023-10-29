@@ -39,5 +39,6 @@ command! -nargs=1 -complete=command -range Redir silent call Redir(<q-args>, <ra
 :nnoremap <F4> :!./do.sh push <enter>
 :nnoremap <F5> :!./do.sh push && ./do.sh remote ela <enter>
 :nnoremap <F6> :!./do.sh push && ./do.sh remote sim <enter>
+:nnoremap <F7> :!./do.sh push && ./do.sh remote syn <enter>
 :nnoremap <M-C-F> :!./opt/vsg/vhdl_linter.sh ./opt/vsg/vsg-cnfg.json % fix <enter>
 

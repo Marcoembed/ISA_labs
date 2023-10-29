@@ -1,0 +1,789 @@
+/******************************************************************************
+ ******************************************************************************
+ **
+ **	FILE NAME: test.library
+ **
+ **	MODULE:
+ **
+ **	ABSTRACT:
+ **
+ **	CONVENTIONS:
+ **
+ **	COPYRIGHT (C) 1988, SYNOPSYS INC., ALL RIGHTS RESERVED.
+ **
+ ******************************************************************************
+ *****************************************************************************/
+
+
+TRUE = 1;
+FALSE = 0;
+
+
+library("lsi_10k.sdb") {
+  set_route_grid(1024);
+
+  /* note: One ROUTE_GRID is equivalent to 13 / 2 "units" of the IEEE / ANSI symbol
+     standard (Std 91 - 1984).  One ROUTE_GRID is equivalent to .2 MIL standard
+     units (inches) (MIL - STD - 8086)
+
+     Dimensions were derrived from these standards.
+  */
+
+
+/*
+
+
+
+
+        -          ***************************
+        |          *                          ****
+       	|          ***            -               **
+       	|          *  ****        |                 *
+        |    *******     ***     DYNAMIC HEIGHT      *  **** --------
+                   *  ****        |                  * *    *       |
+    AND_HEIGHT     ***            -                   **    * BUBBLE_DIAMETER
+                   *                                  **    *       |
+        |          <------->                         *. **** --------
+        |          *    DYNAMIC WIDTH                *.
+        |    *******                                * .
+        |          *                              **  .
+        |          *                           ***    .
+        -          ***************************        .
+                   .                                  .
+                   .                                  .
+                   .                                  .
+                   <-------------- AND_WIDTH --------->
+
+
+
+       	     XOR_GAP
+       	   <------->
+    	   .       .
+           .       .
+           .       .
+           .       .
+           *       ***********************                            -
+            *       *                  	  ********                    |
+             *       *                            ****                |
+              *       *                               **              |
+               *       *                               	**            |
+               *       *                               	  *
+  -.............*.......*..........+                	   *       OR_HEIGHT
+  |             *       *                           	   *
+  |            *       *.          .                      *.          |
+ OR_Y_ORIGIN   *       *.      	   .                	** .          |
+  |           *       * .          .                  **   .          |
+  |          *       *  .          .              ****     .          |
+  |         *       *   .          .      ********         .          |
+  -........*.......***********************     		   .          -
+		        .          .
+                   <- OR_X_ORIGIN ->                       .
+                        .                                  .
+                        .                                  .
+                        <---------- OR_WIDTH -------------->
+
+
+
+NOTE:
+
+Both OR_HEIGHT and AND_HEIGHT are defined to be four.
+The rest of the parameters are under "user" control.
+
+The radius of the arcs in an OR gate are defined to be equal to the
+height of the OR gate (this seems to be an industry standard).  Thus,
+The radius of all three arcs are defined to be four.
+
+Both the MIL standard and the ANSI / IEEE standard have slightly different
+ideas on these dimensions, so choose the dimensions you like best:
+
+*/
+
+/* REQUIRED SIZES: */
+
+AND_HEIGHT = 4;
+OR_HEIGHT = 4;
+
+grid_pins : TRUE ;
+
+/* ANSI Dimensions: */
+/* The ANSI dimensions have been commented out in favor of the MIL dimensions:
+ *
+ *   ANSI_AND_HEIGHT = 26.0;
+ *   SCALE = AND_HEIGHT / ANSI_AND_HEIGHT;
+ *
+ *   AND_WIDTH = 32 * SCALE;
+ *   OR_WIDTH = 32 * SCALE;
+ *   INVERTER_HEIGHT = 22.5 * SCALE;
+ *   XOR_GAP = 5 * SCALE;
+ *   BUBBLE_DIAMETER = 4 * SCALE;
+ *   DYNAMIC_HEIGHT = 4 * SCALE;
+ *   DYNAMIC_WIDTH = 6 * SCALE;
+ *   OFF_SHEET_HEIGHT = 8 * SCALE;   Not specified by ANSI,
+ *			           this value from MIL
+ *
+ */
+
+
+/* MIL Dimensions: */
+
+MIL_AND_HEIGHT = .8;
+SCALE = AND_HEIGHT / MIL_AND_HEIGHT;
+
+AND_WIDTH = 1.00 * SCALE;
+OR_WIDTH = 1.00 * SCALE;
+INVERTER_HEIGHT = .70 * SCALE;
+XOR_GAP = (2.0 / 13.0) * SCALE;   /* Not specifed by MIL, this value from ANSI */
+BUBBLE_DIAMETER = .16 * SCALE;
+DYNAMIC_HEIGHT = .15 * SCALE;
+DYNAMIC_WIDTH = .30 * SCALE;
+OFF_SHEET_HEIGHT = .25 * SCALE;
+
+
+/* The following values are not specified by MIL or ANSI: */
+
+/* Origins are defined as offset from the lower left corner */
+OR_X_ORIGIN = 3;
+OR_Y_ORIGIN = 2;
+AND_X_ORIGIN = 3;
+AND_Y_ORIGIN = 2;
+INVERTER_X_ORIGIN = 1;
+INVERTER_Y_ORIGIN = INVERTER_HEIGHT / 2.0;
+
+EXTRA_WING_SPAN = .5; /* ON 3 + GATES, CONTROLS WING SIZE */
+GATE_GAP = 0;	       /* CONTROLS VERTICAL GAP ON STACKED GATES */
+
+/* The following values are deduced from the above values: */
+
+BUBBLE_RADIUS = BUBBLE_DIAMETER / 2.0;
+DYNAMIC_RADIUS = DYNAMIC_HEIGHT / 2.0;
+
+
+  symbol(and_outline) {
+    AND_LEFT_X = - AND_X_ORIGIN;
+    AND_BOTTOM_Y = - AND_Y_ORIGIN;
+
+    AND_TOP_Y = AND_BOTTOM_Y + AND_HEIGHT;
+    X_START_OF_ARC = AND_LEFT_X + AND_WIDTH - AND_HEIGHT / 2.0;
+    AND_MIDDLE_Y = AND_BOTTOM_Y + AND_HEIGHT / 2.0;
+    AND_RIGHT_X = AND_LEFT_X + AND_WIDTH;
+
+    line(AND_LEFT_X, AND_TOP_Y, X_START_OF_ARC, AND_TOP_Y);
+    line(AND_LEFT_X, AND_BOTTOM_Y, X_START_OF_ARC, AND_BOTTOM_Y);
+    arc(X_START_OF_ARC, AND_TOP_Y, X_START_OF_ARC, AND_BOTTOM_Y,       	      \
+	X_START_OF_ARC, AND_MIDDLE_Y);
+  }
+
+
+  symbol(inverter_triangle) {
+
+    /* The origins are defined to be the offset from the lower left corner */
+    INVERTER_LEFT_X = - INVERTER_X_ORIGIN;
+    INVERTER_BOTTOM_Y = - INVERTER_Y_ORIGIN;
+
+    INVERTER_RIGHT_X = INVERTER_LEFT_X + INVERTER_HEIGHT * SQRT(3) / 2.0;
+    INVERTER_TOP_Y = INVERTER_BOTTOM_Y + INVERTER_HEIGHT;
+    INVERTER_MIDDLE_Y = INVERTER_BOTTOM_Y + INVERTER_HEIGHT / 2.0;
+
+    line(INVERTER_LEFT_X, INVERTER_TOP_Y, INVERTER_RIGHT_X, INVERTER_MIDDLE_Y);
+    line(INVERTER_RIGHT_X, INVERTER_MIDDLE_Y,  	       	       	       	      \
+	 INVERTER_LEFT_X, INVERTER_BOTTOM_Y);
+    line(INVERTER_LEFT_X, INVERTER_BOTTOM_Y, INVERTER_LEFT_X, INVERTER_TOP_Y);
+  }
+
+  symbol(tstate) {
+    TSTATE_ENABLE_PIN_Y = INVERTER_MIDDLE_Y + 3;
+    TSTATE_ENABLE_TRIANGLE_X = (INVERTER_RIGHT_X + INVERTER_LEFT_X) / 2;
+    TSTATE_ENABLE_TRIANGLE_Y = (INVERTER_TOP_Y + INVERTER_MIDDLE_Y) / 2;
+    sub_symbol(inverter_triangle, 0, 0, 0);
+    line(INVERTER_LEFT_X, TSTATE_ENABLE_PIN_Y, 				\
+         TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_PIN_Y);
+    line(TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_PIN_Y,			\
+         TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_TRIANGLE_Y);
+  }
+
+  symbol(solder_dot) {
+    line( -.25,-.25,.25,-.25);
+    line(.25,.25,.25,-.25);
+    line(.25,.25,-.25,.25);
+    line( -.25,.25,-.25,-.25);
+    line( -.25,-.25,.25,.25);
+    line(.25,-.25,-.25,.25);
+  }
+
+  symbol(tstate_pins) {
+    sub_symbol(tstate,0,0,0);
+    pin(A,INVERTER_LEFT_X, INVERTER_MIDDLE_Y, LEFT);
+    pin(E, INVERTER_LEFT_X, TSTATE_ENABLE_PIN_Y, LEFT);
+    pin(Z,INVERTER_RIGHT_X, INVERTER_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(BTS4) {
+    sub_symbol(tstate_pins,-3,0,0);
+  }
+
+  symbol(BTS4P) {
+    sub_symbol(tstate_pins,-3,0,0);
+  }
+
+  symbol(tstate_inv_pins) {
+    sub_symbol(tstate,0,0,0);
+    circle(INVERTER_RIGHT_X + BUBBLE_RADIUS, INVERTER_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(A,INVERTER_LEFT_X, INVERTER_MIDDLE_Y, LEFT);
+    pin(E, INVERTER_LEFT_X, TSTATE_ENABLE_PIN_Y, LEFT);
+    pin(Z,INVERTER_RIGHT_X + BUBBLE_DIAMETER, INVERTER_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(BTS5) {
+    sub_symbol(tstate_inv_pins,-3,0,0);
+  }
+
+  symbol(BTS5P) {
+    sub_symbol(tstate_inv_pins,-3,0,0);
+  }
+
+  symbol(B2I) {
+    LEFT_INVERTER_ORIGIN_X = - INVERTER_X_ORIGIN - 2;
+    sub_symbol(inverter_triangle, LEFT_INVERTER_ORIGIN_X,0,0);
+    circle(LEFT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_RADIUS,  	      \
+             INVERTER_MIDDLE_Y, BUBBLE_RADIUS);
+
+    RIGHT_INVERTER_ORIGIN_X = INVERTER_X_ORIGIN + 2;
+    sub_symbol(inverter_triangle, RIGHT_INVERTER_ORIGIN_X,0,0);
+    circle(RIGHT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_RADIUS, 	      \
+             INVERTER_MIDDLE_Y, BUBBLE_RADIUS);
+
+    line(LEFT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_DIAMETER,  	      \
+         INVERTER_MIDDLE_Y,    	       	       	       	       	       	      \
+         RIGHT_INVERTER_ORIGIN_X + INVERTER_LEFT_X, INVERTER_MIDDLE_Y);
+    sub_symbol(solder_dot, INVERTER_X_ORIGIN,0,0);
+    line(INVERTER_X_ORIGIN, INVERTER_MIDDLE_Y, 	       	       	       	      \
+             INVERTER_X_ORIGIN, ceil(INVERTER_TOP_Y) + 1);
+    line(INVERTER_X_ORIGIN, ceil(INVERTER_TOP_Y) + 1,  	       	       	      \
+             RIGHT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_DIAMETER,    \
+             ceil(INVERTER_TOP_Y) + 1);
+    pin(Z1, RIGHT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_DIAMETER,     \
+             ceil(INVERTER_TOP_Y) + 1, RIGHT);
+    pin(Z2, RIGHT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_DIAMETER,     \
+             INVERTER_MIDDLE_Y, RIGHT);
+    pin(A, LEFT_INVERTER_ORIGIN_X + INVERTER_LEFT_X, INVERTER_MIDDLE_Y, LEFT);
+  }
+  symbol(B2IP) {
+    sub_symbol(B2I, 0,0,0);
+  }
+  symbol(B3I) {
+    sub_symbol(B2I, 0,0,0);
+  }
+  symbol(B3IP) {
+    sub_symbol(B2I, 0,0,0);
+  }
+  symbol(mux2) {
+    MUX_WIDTH = 2.0;
+    MUX_X_ORIGIN = MUX_WIDTH / 2.0;
+    MUX_HEIGHT = 4.0;
+    MUX_Y_ORIGIN = MUX_HEIGHT / 2.0;
+
+    MUX_LEFT =   MUX_X_ORIGIN - (MUX_WIDTH / 2.0);
+    MUX_RIGHT =  MUX_X_ORIGIN + (MUX_WIDTH / 2.0);
+    MUX_TOP =    MUX_Y_ORIGIN + (MUX_HEIGHT / 2.0);
+    MUX_BOTTOM = MUX_Y_ORIGIN - (MUX_HEIGHT / 2.0);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_LEFT, MUX_TOP);
+    line(MUX_RIGHT, MUX_TOP, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_RIGHT, MUX_TOP, MUX_LEFT, MUX_TOP);
+    pin(A,   MUX_LEFT,  MUX_Y_ORIGIN + 1, LEFT);
+    pin(B,   MUX_LEFT,  MUX_Y_ORIGIN - 1, LEFT);
+    pin(S,   MUX_X_ORIGIN, MUX_BOTTOM , DOWN);
+  }
+  symbol(MUX21H) {
+    sub_symbol(mux2, 0,0,0);
+    pin(Z,   MUX_RIGHT, MUX_Y_ORIGIN, RIGHT);
+  }
+  symbol(MUX21HP) {
+    sub_symbol(MUX21H, 0,0,0);
+  }
+  symbol(MUX21L) {
+    sub_symbol(mux2, 0,0,0);
+    pin(Z,   MUX_RIGHT + BUBBLE_DIAMETER, MUX_Y_ORIGIN, RIGHT);
+    circle(MUX_RIGHT + BUBBLE_RADIUS, MUX_Y_ORIGIN, BUBBLE_RADIUS);
+  }
+  symbol(MUX21LP) {
+    sub_symbol(MUX21L, 0,0,0);
+  }
+  symbol(mux2sel) {
+    MUX_WIDTH = 3.0;
+    MUX_X_ORIGIN = MUX_WIDTH / 2.0;
+    MUX_HEIGHT = 4.0;
+    MUX_Y_ORIGIN = MUX_HEIGHT / 2.0;
+
+    MUX_LEFT =   MUX_X_ORIGIN - (MUX_WIDTH / 2.0);
+    MUX_RIGHT =  MUX_X_ORIGIN + (MUX_WIDTH / 2.0);
+    MUX_TOP =    MUX_Y_ORIGIN + (MUX_HEIGHT / 2.0);
+    MUX_BOTTOM = MUX_Y_ORIGIN - (MUX_HEIGHT / 2.0);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_LEFT, MUX_TOP);
+    line(MUX_RIGHT, MUX_TOP, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_RIGHT, MUX_TOP, MUX_LEFT, MUX_TOP);
+  }
+  symbol(MUX21LA) {
+    sub_symbol(mux2sel, 0,0,0);
+    pin(A,   MUX_LEFT,  MUX_Y_ORIGIN + 1, LEFT);
+    pin(B,   MUX_LEFT,  MUX_Y_ORIGIN - 1, LEFT);
+    pin(SN,  MUX_X_ORIGIN - 0.5, MUX_BOTTOM - BUBBLE_DIAMETER , DOWN);
+    circle(MUX_X_ORIGIN - 0.5, MUX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+    pin(S,   MUX_X_ORIGIN + 0.5, MUX_BOTTOM , DOWN);
+    circle(MUX_RIGHT + BUBBLE_RADIUS, MUX_Y_ORIGIN, BUBBLE_RADIUS);
+    pin(Z,   MUX_RIGHT + BUBBLE_DIAMETER, MUX_Y_ORIGIN, RIGHT);
+  }
+  symbol(MUX21LAP) {
+    sub_symbol(MUX21LA, 0,0,0);
+  }
+  symbol(MUX31L) {
+    sub_symbol(mux2sel, 0,0,0);
+    pin(D0,   MUX_LEFT,  MUX_Y_ORIGIN + 1, LEFT);
+    pin(D1,   MUX_LEFT,  MUX_Y_ORIGIN , LEFT);
+    pin(D2,   MUX_LEFT,  MUX_Y_ORIGIN - 1, LEFT);
+    pin(A,  MUX_X_ORIGIN - 0.5, MUX_BOTTOM , DOWN);
+    pin(B,   MUX_X_ORIGIN + 0.5, MUX_BOTTOM , DOWN);
+    circle(MUX_RIGHT + BUBBLE_RADIUS, MUX_Y_ORIGIN, BUBBLE_RADIUS);
+    pin(Z,   MUX_RIGHT + BUBBLE_DIAMETER, MUX_Y_ORIGIN, RIGHT);
+  }
+  symbol(MUX31LP) {
+    sub_symbol(MUX31L, 0,0,0);
+  }
+  symbol(MUX41) {
+    MUX_WIDTH = 3.0;
+    MUX_X_ORIGIN = MUX_WIDTH / 2.0;
+    MUX_HEIGHT = 5.0;
+    MUX_Y_ORIGIN = MUX_HEIGHT / 2.0;
+
+    MUX_LEFT =   MUX_X_ORIGIN - (MUX_WIDTH / 2.0);
+    MUX_RIGHT =  MUX_X_ORIGIN + (MUX_WIDTH / 2.0);
+    MUX_TOP =    MUX_Y_ORIGIN + (MUX_HEIGHT / 2.0);
+    MUX_BOTTOM = MUX_Y_ORIGIN - (MUX_HEIGHT / 2.0);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_LEFT, MUX_TOP);
+    line(MUX_RIGHT, MUX_TOP, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_RIGHT, MUX_TOP, MUX_LEFT, MUX_TOP);
+    pin(D0,   MUX_LEFT,  MUX_Y_ORIGIN + 1.5, LEFT);
+    pin(D1,   MUX_LEFT,  MUX_Y_ORIGIN + 0.5, LEFT);
+    pin(D2,   MUX_LEFT,  MUX_Y_ORIGIN - 0.5, LEFT);
+    pin(D3,   MUX_LEFT,  MUX_Y_ORIGIN - 1.5, LEFT);
+    pin(A,  MUX_X_ORIGIN - 0.5, MUX_BOTTOM , DOWN);
+    pin(B,   MUX_X_ORIGIN + 0.5, MUX_BOTTOM , DOWN);
+    pin(Z,   MUX_RIGHT, MUX_Y_ORIGIN + 0.5, RIGHT);
+  }
+  symbol(MUX41P) {
+    sub_symbol(MUX41, 0,0,0);
+  }
+  symbol(MUX51H) {
+    MUX_WIDTH = 4.0;
+    MUX_X_ORIGIN = MUX_WIDTH / 2.0;
+    MUX_HEIGHT = 6.0;
+    MUX_Y_ORIGIN = MUX_HEIGHT / 2.0;
+
+    MUX_LEFT =   MUX_X_ORIGIN - (MUX_WIDTH / 2.0);
+    MUX_RIGHT =  MUX_X_ORIGIN + (MUX_WIDTH / 2.0);
+    MUX_TOP =    MUX_Y_ORIGIN + (MUX_HEIGHT / 2.0);
+    MUX_BOTTOM = MUX_Y_ORIGIN - (MUX_HEIGHT / 2.0);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_LEFT, MUX_TOP);
+    line(MUX_RIGHT, MUX_TOP, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_RIGHT, MUX_TOP, MUX_LEFT, MUX_TOP);
+    pin(D0,   MUX_LEFT,  MUX_Y_ORIGIN + 2, LEFT);
+    pin(D1,   MUX_LEFT,  MUX_Y_ORIGIN + 1, LEFT);
+    pin(D2,   MUX_LEFT,  MUX_Y_ORIGIN, LEFT);
+    pin(D3,   MUX_LEFT,  MUX_Y_ORIGIN - 1, LEFT);
+    pin(D4,   MUX_LEFT,  MUX_Y_ORIGIN - 2, LEFT);
+    pin(A,  MUX_X_ORIGIN - 1, MUX_BOTTOM , DOWN);
+    pin(B,   MUX_X_ORIGIN, MUX_BOTTOM , DOWN);
+    pin(C,   MUX_X_ORIGIN + 1, MUX_BOTTOM , DOWN);
+    pin(Z,   MUX_RIGHT, MUX_Y_ORIGIN, RIGHT);
+  }
+  symbol(MUX51HP) {
+    sub_symbol(MUX51H, 0,0,0);
+  }
+  symbol(MUX81) {
+    MUX_WIDTH = 4.0;
+    MUX_X_ORIGIN = MUX_WIDTH / 2.0;
+    MUX_HEIGHT = 10.0;
+    MUX_Y_ORIGIN = MUX_HEIGHT / 2.0;
+
+    MUX_LEFT =   MUX_X_ORIGIN - (MUX_WIDTH / 2.0);
+    MUX_RIGHT =  MUX_X_ORIGIN + (MUX_WIDTH / 2.0);
+    MUX_TOP =    MUX_Y_ORIGIN + (MUX_HEIGHT / 2.0);
+    MUX_BOTTOM = MUX_Y_ORIGIN - (MUX_HEIGHT / 2.0);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_LEFT, MUX_TOP);
+    line(MUX_RIGHT, MUX_TOP, MUX_RIGHT, MUX_BOTTOM);
+    line(MUX_RIGHT, MUX_TOP, MUX_LEFT, MUX_TOP);
+    pin(D0,   MUX_LEFT,  MUX_Y_ORIGIN + 4, LEFT);
+    pin(D1,   MUX_LEFT,  MUX_Y_ORIGIN + 3, LEFT);
+    pin(D2,   MUX_LEFT,  MUX_Y_ORIGIN + 2, LEFT);
+    pin(D3,   MUX_LEFT,  MUX_Y_ORIGIN + 1, LEFT);
+    pin(D4,   MUX_LEFT,  MUX_Y_ORIGIN , LEFT);
+    pin(D5,   MUX_LEFT,  MUX_Y_ORIGIN - 1, LEFT);
+    pin(D6,   MUX_LEFT,  MUX_Y_ORIGIN - 2, LEFT);
+    pin(D7,   MUX_LEFT,  MUX_Y_ORIGIN - 3, LEFT);
+    pin(A,  MUX_X_ORIGIN - 1, MUX_BOTTOM , DOWN);
+    pin(B,   MUX_X_ORIGIN, MUX_BOTTOM , DOWN);
+    pin(C,   MUX_X_ORIGIN + 1, MUX_BOTTOM , DOWN);
+    pin(Z,   MUX_RIGHT, MUX_Y_ORIGIN, RIGHT);
+  }
+  symbol(MUX81P) {
+    sub_symbol(MUX81, 0,0,0);
+  }
+
+FFBOX_WIDTH = 6.0;
+FFBOX_X_ORIGIN = FFBOX_WIDTH / 2.0;
+FFBOX_HEIGHT = 10.0;
+FFBOX_Y_ORIGIN = FFBOX_HEIGHT / 2.0;
+
+FFBOX_LEFT =   FFBOX_X_ORIGIN - (FFBOX_WIDTH / 2.0);
+FFBOX_RIGHT =  FFBOX_X_ORIGIN + (FFBOX_WIDTH / 2.0);
+
+  symbol(ff_box) {
+    FFBOX_TOP =    FFBOX_Y_ORIGIN + (FFBOX_HEIGHT / 2.0);
+    FFBOX_BOTTOM = FFBOX_Y_ORIGIN - (FFBOX_HEIGHT / 2.0);
+    line(FFBOX_LEFT, FFBOX_BOTTOM, FFBOX_RIGHT, FFBOX_BOTTOM);
+    line(FFBOX_LEFT, FFBOX_BOTTOM, FFBOX_LEFT, FFBOX_TOP);
+    line(FFBOX_RIGHT, FFBOX_TOP, FFBOX_RIGHT, FFBOX_BOTTOM);
+    line(FFBOX_RIGHT, FFBOX_TOP, FFBOX_LEFT, FFBOX_TOP);
+    pin(Q,   FFBOX_RIGHT, FFBOX_Y_ORIGIN + 4 , RIGHT);
+    pin(QN,  FFBOX_RIGHT + BUBBLE_DIAMETER, FFBOX_Y_ORIGIN - 4 , RIGHT);
+    circle(FFBOX_RIGHT + BUBBLE_RADIUS, FFBOX_Y_ORIGIN - 4, BUBBLE_RADIUS);
+  }
+
+  symbol(LD1) {
+    sub_symbol(ff_box, 0,0,0);
+    pin(D,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+    pin(G,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 4,  LEFT);
+  }
+
+  symbol(LD1P) {
+    sub_symbol(LD1, 0,0,0);
+  }
+
+  symbol(LD2) {
+    sub_symbol(ff_box, 0,0,0);
+    pin(D,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+    pin(GN,   FFBOX_LEFT - BUBBLE_DIAMETER,  FFBOX_Y_ORIGIN - 4,  LEFT);
+    circle(FFBOX_LEFT - BUBBLE_RADIUS, FFBOX_Y_ORIGIN - 4, BUBBLE_RADIUS);
+  }
+
+  symbol(LD2P) {
+    sub_symbol(LD2, 0,0,0);
+  }
+  symbol(LD3) {
+    sub_symbol(LD1, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(LD3P) {
+    sub_symbol(LD3, 0,0,0);
+  }
+  symbol(LD4) {
+    sub_symbol(LD2, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(LD4P) {
+    sub_symbol(LD4, 0,0,0);
+  }
+  symbol(LS1) {
+    sub_symbol(ff_box, 0,0,0);
+    pin(D1,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+    pin(C1,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 2,  LEFT);
+    pin(D2,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 2,  LEFT);
+    pin(C2,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 4,  LEFT);
+  }
+  symbol(LS1P) {
+    sub_symbol(LS1, 0,0,0);
+  }
+
+  symbol(FD1) {
+    sub_symbol(ff_box, 0,0,0);
+    pin(D,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN - 4;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+  }
+
+  symbol(FD1P) {
+    sub_symbol(FD1, 0,0,0);
+  }
+
+  symbol(FD1S) {
+    sub_symbol(ff_box, 0,0,0);
+    pin(D,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN + 2;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+
+    pin(TI,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 2,  LEFT);
+    pin(TE,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 4,  LEFT);
+  }
+
+  symbol(FD1SP) {
+    sub_symbol(FD1S, 0,0,0);
+  }
+  symbol(FD2) {
+    sub_symbol(FD1, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FD2P) {
+    sub_symbol(FD2, 0,0,0);
+  }
+
+  symbol(FD2S) {
+    sub_symbol(FD1S, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FD2SP) {
+    sub_symbol(FD2S, 0,0,0);
+  }
+  symbol(FD3) {
+    sub_symbol(FD2, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FD3P) {
+    sub_symbol(FD3, 0,0,0);
+  }
+  symbol(FD3S) {
+    sub_symbol(FD2S, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FD3SP) {
+    sub_symbol(FD3S, 0,0,0);
+  }
+  symbol(FD4) {
+    sub_symbol(FD1, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FD4P) {
+    sub_symbol(FD4, 0,0,0);
+  }
+   symbol(FD4S) {
+    sub_symbol(FD1S, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FD4SP) {
+    sub_symbol(FD4S, 0,0,0);
+  }
+
+  symbol(FJK1) {
+    sub_symbol(ff_box, 0,0,0);
+    pin(J,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+    pin(K,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 4,  LEFT);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+  }
+  symbol(FJK1P) {
+    sub_symbol(FJK1, 0,0,0);
+  }
+  symbol(FJK1S) {
+    sub_symbol(ff_box, 0,0,0);
+    pin(J,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+    pin(K,   FFBOX_LEFT,  FFBOX_Y_ORIGIN,  LEFT);
+
+    pin(TI,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 2,  LEFT);
+    pin(TE,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 4,  LEFT);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN + 2;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+  }
+  symbol(FJK1SP) {
+    sub_symbol(FJK1S, 0,0,0);
+  }
+  symbol(FJK2) {
+    sub_symbol(FJK1, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FJK2P) {
+    sub_symbol(FJK2, 0,0,0);
+  }
+  symbol(FJK2S) {
+    sub_symbol(FJK1S, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FJK2SP) {
+    sub_symbol(FJK2S, 0,0,0);
+  }
+  symbol(FJK3) {
+    sub_symbol(FJK2, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FJK3P) {
+    sub_symbol(FJK3, 0,0,0);
+  }
+  symbol(FJK3S) {
+    sub_symbol(FJK2S, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(FJK3SP) {
+    sub_symbol(FJK3S, 0,0,0);
+  }
+  symbol(FT2) {
+    sub_symbol(ff_box, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+  }
+  symbol(FT2P) {
+    sub_symbol(FT2, 0,0,0);
+  }
+  symbol(FT4) {
+    sub_symbol(ff_box, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+  }
+  symbol(FT4P) {
+    sub_symbol(FT4, 0,0,0);
+  }
+  symbol(LSR0) {
+    sub_symbol(ff_box, 0,0,0);
+
+    pin(S,   FFBOX_LEFT - BUBBLE_DIAMETER,  FFBOX_Y_ORIGIN + 4,  LEFT);
+    pin(R,   FFBOX_LEFT - BUBBLE_DIAMETER,  FFBOX_Y_ORIGIN - 4,  LEFT);
+    circle(FFBOX_LEFT - BUBBLE_RADIUS, FFBOX_Y_ORIGIN + 4, BUBBLE_RADIUS);
+    circle(FFBOX_LEFT - BUBBLE_RADIUS, FFBOX_Y_ORIGIN - 4, BUBBLE_RADIUS);
+  }
+  symbol(LSR0P) {
+    sub_symbol(LSR0, 0,0,0);
+  }
+  symbol(LSR2) {
+    sub_symbol(ff_box, 0,0,0);
+
+    pin(S,   FFBOX_LEFT - BUBBLE_DIAMETER,  FFBOX_Y_ORIGIN + 2,  LEFT);
+    pin(G,   FFBOX_LEFT - BUBBLE_DIAMETER,  FFBOX_Y_ORIGIN,  LEFT);
+    pin(R,   FFBOX_LEFT - BUBBLE_DIAMETER,  FFBOX_Y_ORIGIN - 2,  LEFT);
+    circle(FFBOX_LEFT - BUBBLE_RADIUS, FFBOX_Y_ORIGIN + 2, BUBBLE_RADIUS);
+    circle(FFBOX_LEFT - BUBBLE_RADIUS, FFBOX_Y_ORIGIN, BUBBLE_RADIUS);
+    circle(FFBOX_LEFT - BUBBLE_RADIUS, FFBOX_Y_ORIGIN - 2, BUBBLE_RADIUS);
+
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    pin(RD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  symbol(LSR1) {
+    sub_symbol(ff_box, 0,0,0);
+
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    pin(RD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+
+    AND_LEFT_X = - AND_X_ORIGIN;
+    AND_BOTTOM_Y = - AND_Y_ORIGIN;
+    AND_TOP_Y = AND_BOTTOM_Y + AND_HEIGHT;
+
+    Y_OFFS = FFBOX_Y_ORIGIN + 2;
+    X_OFFS = FFBOX_LEFT - AND_WIDTH + AND_X_ORIGIN;
+    sub_symbol(and_outline, X_OFFS,Y_OFFS,0);
+    line(AND_LEFT_X + X_OFFS, AND_BOTTOM_Y + Y_OFFS,   	       	       	      \
+         AND_LEFT_X + X_OFFS, AND_TOP_Y + Y_OFFS);
+    pin(S1, AND_LEFT_X + X_OFFS - BUBBLE_DIAMETER, AND_BOTTOM_Y + 3 + Y_OFFS, LEFT);
+    circle(AND_LEFT_X + X_OFFS - BUBBLE_RADIUS,AND_BOTTOM_Y + 3 + Y_OFFS, BUBBLE_RADIUS);
+    pin(S2, AND_LEFT_X + X_OFFS - BUBBLE_DIAMETER, AND_BOTTOM_Y + 1 + Y_OFFS, LEFT);
+    circle(AND_LEFT_X + X_OFFS - BUBBLE_RADIUS,AND_BOTTOM_Y + 1 + Y_OFFS, BUBBLE_RADIUS);
+
+    Y_OFFS = FFBOX_Y_ORIGIN - 2;
+    sub_symbol(and_outline, X_OFFS,Y_OFFS,0);
+    line(AND_LEFT_X + X_OFFS, AND_BOTTOM_Y + Y_OFFS,   	       	       	      \
+         AND_LEFT_X + X_OFFS, AND_TOP_Y + Y_OFFS);
+    pin(R1, AND_LEFT_X + X_OFFS - BUBBLE_DIAMETER, AND_BOTTOM_Y + 3 + Y_OFFS, LEFT);
+    circle(AND_LEFT_X + X_OFFS - BUBBLE_RADIUS,AND_BOTTOM_Y + 3 + Y_OFFS, BUBBLE_RADIUS);
+    pin(R2, AND_LEFT_X + X_OFFS - BUBBLE_DIAMETER, AND_BOTTOM_Y + 1 + Y_OFFS, LEFT);
+    circle(AND_LEFT_X + X_OFFS - BUBBLE_RADIUS,AND_BOTTOM_Y + 1 + Y_OFFS, BUBBLE_RADIUS);
+  }
+  symbol(box_3x6) {
+    BOX_3X6_WIDTH = 3.0;
+    BOX_3X6_X_ORIGIN = BOX_3X6_WIDTH / 2.0;
+    BOX_3X6_HEIGHT = 6.0;
+    BOX_3X6_Y_ORIGIN = BOX_3X6_HEIGHT / 2.0;
+
+    BOX_3X6_LEFT =   BOX_3X6_X_ORIGIN - (BOX_3X6_WIDTH / 2.0);
+    BOX_3X6_RIGHT =  BOX_3X6_X_ORIGIN + (BOX_3X6_WIDTH / 2.0);
+    BOX_3X6_TOP =    BOX_3X6_Y_ORIGIN + (BOX_3X6_HEIGHT / 2.0);
+    BOX_3X6_BOTTOM = BOX_3X6_Y_ORIGIN - (BOX_3X6_HEIGHT / 2.0);
+    line(BOX_3X6_LEFT, BOX_3X6_BOTTOM, BOX_3X6_RIGHT, BOX_3X6_BOTTOM);
+    line(BOX_3X6_LEFT, BOX_3X6_BOTTOM, BOX_3X6_LEFT, BOX_3X6_TOP);
+    line(BOX_3X6_RIGHT, BOX_3X6_TOP, BOX_3X6_RIGHT, BOX_3X6_BOTTOM);
+    line(BOX_3X6_RIGHT, BOX_3X6_TOP, BOX_3X6_LEFT, BOX_3X6_TOP);
+  }
+  symbol(D24L) {
+    sub_symbol(box_3x6, 0,0,0);
+    pin(Z0,   BOX_3X6_RIGHT + BUBBLE_DIAMETER,  BOX_3X6_Y_ORIGIN + 2, RIGHT);
+    circle(BOX_3X6_RIGHT + BUBBLE_RADIUS, BOX_3X6_Y_ORIGIN + 2, BUBBLE_RADIUS);
+    pin(Z1,   BOX_3X6_RIGHT + BUBBLE_DIAMETER,  BOX_3X6_Y_ORIGIN + 1, RIGHT);
+    circle(BOX_3X6_RIGHT + BUBBLE_RADIUS, BOX_3X6_Y_ORIGIN + 1, BUBBLE_RADIUS);
+    pin(Z2,   BOX_3X6_RIGHT + BUBBLE_DIAMETER,  BOX_3X6_Y_ORIGIN - 1, RIGHT);
+    circle(BOX_3X6_RIGHT + BUBBLE_RADIUS, BOX_3X6_Y_ORIGIN - 1, BUBBLE_RADIUS);
+    pin(Z3,   BOX_3X6_RIGHT + BUBBLE_DIAMETER,  BOX_3X6_Y_ORIGIN - 2, RIGHT);
+    circle(BOX_3X6_RIGHT + BUBBLE_RADIUS, BOX_3X6_Y_ORIGIN - 2, BUBBLE_RADIUS);
+    pin(A,  BOX_3X6_LEFT, BOX_3X6_Y_ORIGIN + 1, LEFT);
+    pin(B,  BOX_3X6_LEFT, BOX_3X6_Y_ORIGIN - 1, LEFT);
+  }
+  symbol(D24LP) {
+    sub_symbol(D24L, 0,0,0);
+  }
+  symbol(FA1) {
+    sub_symbol(box_3x6, 0,0,0);
+    pin(S,   BOX_3X6_RIGHT,  BOX_3X6_Y_ORIGIN + 2, RIGHT);
+    pin(CO,  BOX_3X6_RIGHT,  BOX_3X6_Y_ORIGIN - 2, RIGHT);
+    pin(CI,  BOX_3X6_LEFT, BOX_3X6_Y_ORIGIN + 2, LEFT);
+    pin(A,   BOX_3X6_LEFT, BOX_3X6_Y_ORIGIN,   LEFT);
+    pin(B,   BOX_3X6_LEFT, BOX_3X6_Y_ORIGIN - 2, LEFT);
+  }
+  symbol(FA1A) {
+    sub_symbol(FA1, 0,0,0);
+  }
+  symbol(FA1AP) {
+    sub_symbol(FA1, 0,0,0);
+  }
+  symbol(FA1P) {
+    sub_symbol(FA1, 0,0,0);
+  }
+  symbol(HA1) {
+    sub_symbol(box_3x6, 0,0,0);
+    pin(S,   BOX_3X6_RIGHT,  BOX_3X6_Y_ORIGIN + 2, RIGHT);
+    pin(CO,  BOX_3X6_RIGHT,  BOX_3X6_Y_ORIGIN - 2, RIGHT);
+    pin(A,   BOX_3X6_LEFT, BOX_3X6_Y_ORIGIN + 2, LEFT);
+    pin(B,   BOX_3X6_LEFT, BOX_3X6_Y_ORIGIN - 2, LEFT);
+  }
+  symbol(HA1P) {
+    sub_symbol(HA1, 0,0,0);
+  }
+}
+
+
+
+/*****************************************************************************/

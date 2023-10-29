@@ -1,0 +1,260 @@
+-- This file is needed for the Test-IDDQSim product.
+
+$IDDQ_MODEL
+INV 1
+$IDDQ_DETECT
+1 out0
+0 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+BUF 1
+$IDDQ_DETECT
+0 out0
+1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+DEL 1
+$IDDQ_DETECT
+0 out0
+1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+TSB 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+TSI 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NMOS 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+PMOS 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+RNMOS 2
+$IDDQ_DETECT
+10 out0
+11 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+RPMOS 2
+$IDDQ_DETECT
+00 out0
+01 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+XOR 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+XNOR 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+XOR 3 1
+$IDDQ_DETECT
++++0 out0
++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+XNOR 3 1
+$IDDQ_DETECT
++++0 out0
++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+XOR 4 1
+$IDDQ_DETECT
+++++0 out0
+++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+XNOR 4 1
+$IDDQ_DETECT
+++++0 out0
+++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+DFF1 4 1
+$IDDQ_DETECT
+++++0 out0
+++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+DLATCH 4 1
+$IDDQ_DETECT
+++++0 out0
+++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NAND 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NAND 3 1
+$IDDQ_DETECT
++++0 out0
++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NAND 4 1
+$IDDQ_DETECT
+++++0 out0
+++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NAND 5 1
+$IDDQ_DETECT
++++++0 out0
++++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NAND 6 1
+$IDDQ_DETECT
+++++++0 out0
+++++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NAND 8 1
+$IDDQ_DETECT
+++++++++0 out0
+++++++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NOR 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NOR 3 1
+$IDDQ_DETECT
++++0 out0
++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NOR 4 1
+$IDDQ_DETECT
+++++0 out0
+++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NOR 5 1
+$IDDQ_DETECT
++++++0 out0
++++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NOR 6 1
+$IDDQ_DETECT
+++++++0 out0
+++++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+NOR 8 1
+$IDDQ_DETECT
+++++++++0 out0
+++++++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+AND 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+AND 3 1
+$IDDQ_DETECT
++++0 out0
++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+AND 4 1
+$IDDQ_DETECT
+++++0 out0
+++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+AND 5 1
+$IDDQ_DETECT
++++++0 out0
++++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+OR 2 1
+$IDDQ_DETECT
+++0 out0
+++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+OR 3 1
+$IDDQ_DETECT
++++0 out0
++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+OR 4 1
+$IDDQ_DETECT
+++++0 out0
+++++1 out1
+$IDDQ_END
+
+$IDDQ_MODEL
+OR 5 1
+$IDDQ_DETECT
++++++0 out0
++++++1 out1
+$IDDQ_END

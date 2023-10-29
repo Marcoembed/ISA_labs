@@ -33,6 +33,8 @@ SIM_WORK_DIR="./$SIM_DIR/work"
 SIM_SCRIPT_FILE="./$SIM_DIR/sim.do"
 # SYNTHESIS TOP level entity name
 SYN_TOP_LVL_ENTITY="IIR"
+# SYNTHESIS work directory
+SYN_WORK_DIR="./$SYN_DIR/work"
 # SYNTHESIS tcl script file path
 SYN_SCRIPT_FILE="./$SYN_DIR/syn.tcl"
 ##########################################
@@ -245,6 +247,10 @@ remote_cmd_syn() {
         echo "Error: Cannot find file $SYN_SCRIPT_FILE" 
         return 1 
     fi
+
+    # Make work directory for synthesis
+    mkdir -p "$SYN_WORK_DIR"
+
     echo "#########################################"
     echo "####                                 ####"
     echo "##              SYNTHESIS              ##"
@@ -252,7 +258,7 @@ remote_cmd_syn() {
     echo "#########################################"
 
     #dc_shell-xg-t -F "$SYN_SCRIPT_FILE" | tee syn_dlx.log
-    dc_shell-xg-t -F "$SYN_SCRIPT_FILE"
+    dc_shell-xg-t -F "$SYN_SCRIPT_FILE" -output_log_file "$SYN_DIR/syn.log"
     #rm command.log
     #rm default.svf
 

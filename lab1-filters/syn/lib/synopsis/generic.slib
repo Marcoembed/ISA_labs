@@ -1,0 +1,5143 @@
+/******************************************************************************
+ ******************************************************************************
+ **
+ **	FILE NAME: generic.slib
+ **
+ **	MODULE:
+ **
+ **	ABSTRACT:
+ **
+ **	CONVENTIONS:
+ **
+ **	COPYRIGHT (C) 1988,1989,1990 SYNOPSYS INC., ALL RIGHTS RESERVED.
+ **
+ ******************************************************************************
+ ** Updates: Fixed MUX symbol - wlee
+ *****************************************************************************/
+
+
+TRUE = 1;
+FALSE = 0;
+
+
+library("generic.sdb") {
+
+  ROUTE_GRID = 1024;
+
+  INCHES_PER_GRID = .1;
+  DB_PER_GRID = ROUTE_GRID;
+
+  CENTEMETERS_PER_GRID = INCHES_PER_GRID * 2.54;
+  METERS_PER_GRID = CENTEMETERS_PER_GRID / 100;
+  METERS_PER_DB = METERS_PER_GRID / DB_PER_GRID;
+
+  set_route_grid(ROUTE_GRID);
+  set_external_scale(METERS_PER_DB);
+  set_meter_scale(METERS_PER_DB);
+
+  grid_pins : TRUE ;
+  logic_1_symbol : "logic_1";
+  logic_0_symbol : "logic_0";
+  in_port_symbol : "in_port";
+  out_port_symbol : "out_port";
+  inout_port_symbol : "io_port";
+  top_in_port_symbol : "down_in_port" ;
+  top_out_port_symbol : "up_out_port" ;
+  top_inout_port_symbol : "up_out_port" ;
+  bottom_in_port_symbol : "up_in_port" ;
+  bottom_out_port_symbol : "down_out_port" ;
+  bottom_inout_port_symbol : "down_out_port" ;
+  in_osc_symbol : "in_osc";
+  out_osc_symbol : "out_osc";
+  inout_osc_symbol : "out_osc";
+  bit_mapper_symbol : "bit_mapper";
+  type_mapper_symbol : "type_mapper";
+  unconnected_pin_symbol : "unconnected_pin" ;
+
+
+  /* constraint symbols */
+
+  clock_symbol : "clock_symbol" ;
+  max_area_constraint_symbol : "area_constraint" ;
+  single_delay_constraint_symbol : "constraint_flag" ;
+  multiple_delay_constraint_symbol : "delay_constraint" ;
+  dont_touch_constraint_symbol : "constraint_flag" ;
+  clocks_at_constraint_symbol : "constraint_flag" ;
+  max_capacitance_constraint_symbol : "constraint_flag" ;
+  no_double_drivers_constraint_symbol : "constraint_flag" ;
+  setup_check_constraint_symbol : "constraint_flag" ;
+  hold_check_constraint_symbol : "constraint_flag" ;
+  set_opposite_constraint_symbol : "constraint_flag" ;
+  set_equal_constraint_symbol : "constraint_flag" ;
+  load_constraint_symbol : "constraint_flag" ;
+  drive_constraint_symbol : "constraint_flag" ;
+  arrival_constraint_symbol : "constraint_flag" ;
+  max_transition_constraint_symbol : "max_transition_constraint" ;
+  probe_point_constraint_symbol : "constraint_flag" ;
+  max_fan_out_constraint_symbol : "max_fanout_constraint" ;
+  max_power_constraint_symbol : "power_constraint" ;
+
+
+  /* note: One ROUTE_GRID is equivalent to 13 / 2 "units" of the IEEE / ANSI symbol
+     standard (Std 91 - 1984).  One ROUTE_GRID is equivalent to .2 MIL standard
+     units (inches) (MIL - STD - 8086)
+
+     Dimensions were derrived from these standards.
+  */
+
+
+/*
+
+
+
+
+        -          ***************************
+        |          *                          ****
+       	|          ***            -               **
+       	|          *  ****        |                 *
+        |    *******     ***     DYNAMIC HEIGHT      *  **** --------
+                   *  ****        |                  * *    *       |
+    AND_HEIGHT     ***            -                   **    * BUBBLE_DIAMETER
+                   *                                  **    *       |
+        |          <------->                         *. **** --------
+        |          *    DYNAMIC WIDTH                *.
+        |    *******                                * .
+        |          *                              **  .
+        |          *                           ***    .
+        -          ***************************        .
+                   .                                  .
+                   .                                  .
+                   .                                  .
+                   <-------------- AND_WIDTH --------->
+
+
+
+       	     XOR_GAP
+       	   <------->
+    	   .       .
+           .       .
+           .       .
+           .       .
+           *       ***********************                            -
+            *       *                  	  ********                    |
+             *       *                            ****                |
+              *       *                               **              |
+               *       *                               	**            |
+               *       *                               	  *
+  -.............*.......*..........+                	   *       OR_HEIGHT
+  |             *       *                           	   *
+  |            *       *.          .                      *.          |
+ OR_Y_ORIGIN   *       *.      	   .                	** .          |
+  |           *       * .          .                  **   .          |
+  |          *       *  .          .              ****     .          |
+  |         *       *   .          .      ********         .          |
+  -........*.......***********************     		   .          -
+		   .    .          .
+                   <- OR_X_ORIGIN ->                       .
+                   .    .                                  .
+                   .    .                                  .
+                   <---------------- OR_WIDTH ------------->
+			.
+                        <----------- OR_INTERNAL_WIDTH ---->
+
+NOTE:
+
+Both OR_HEIGHT and AND_HEIGHT are defined to be four.
+The rest of the parameters are under "user" control.
+
+The radius of the arcs in an OR gate are defined to be equal to the
+height of the OR gate (this seems to be an industry standard).  Thus,
+The radius of all three arcs are defined to be four.
+
+Both the MIL standard and the ANSI / IEEE standard have slightly different
+ideas on these dimensions, so choose the dimensions you like best:
+
+*/
+
+/* REQUIRED SIZES: */
+
+AND_HEIGHT = 4;
+OR_HEIGHT = 4;
+
+/* ANSI Dimensions: */
+/* The ANSI dimensions have been commented out in favor of the MIL dimensions:
+ *
+ *   ANSI_AND_HEIGHT = 26.0;
+ *   SCALE = AND_HEIGHT / ANSI_AND_HEIGHT;
+ *
+ *   AND_WIDTH = 32 * SCALE;
+ *   OR_INTERNAL_WIDTH= 32 * SCALE;
+ *   INVERTER_HEIGHT = 22.5 * SCALE;
+ *   XOR_GAP = 5 * SCALE;
+ *   BUBBLE_DIAMETER = 4 * SCALE;
+ *   DYNAMIC_HEIGHT = 4 * SCALE;
+ *   DYNAMIC_WIDTH = 6 * SCALE;
+ *   OFF_SHEET_HEIGHT = 8 * SCALE;   Not specified by ANSI,
+ *			           this value from MIL
+ *
+ */
+
+
+/* MIL Dimensions: */
+
+GRIDS_PER_INCH = 1 / INCHES_PER_GRID;
+
+AND_WIDTH = 0.50 * GRIDS_PER_INCH;
+OR_INTERNAL_WIDTH = 0.50 * GRIDS_PER_INCH;
+INVERTER_HEIGHT = .35 * GRIDS_PER_INCH;
+XOR_GAP = (1.0 / 13.0) * GRIDS_PER_INCH;   /* Not specifed by MIL, this value from ANSI */
+BUBBLE_DIAMETER = .08 * GRIDS_PER_INCH;
+DYNAMIC_HEIGHT = .075 * GRIDS_PER_INCH;
+DYNAMIC_WIDTH = .15 * GRIDS_PER_INCH;
+OFF_SHEET_HEIGHT = .125 * GRIDS_PER_INCH;
+
+A_SHEET_WIDTH  = 11 * GRIDS_PER_INCH;
+A_SHEET_HEIGHT = 8.5 * GRIDS_PER_INCH;
+B_SHEET_WIDTH  = 2 * A_SHEET_HEIGHT;
+B_SHEET_HEIGHT = A_SHEET_WIDTH;
+C_SHEET_WIDTH  = 2 * B_SHEET_HEIGHT;
+C_SHEET_HEIGHT = B_SHEET_WIDTH;
+D_SHEET_WIDTH  = 2 * C_SHEET_HEIGHT;
+D_SHEET_HEIGHT = C_SHEET_WIDTH;
+E_SHEET_WIDTH  = 2 * D_SHEET_HEIGHT;
+E_SHEET_HEIGHT = D_SHEET_WIDTH;
+MENTOR_MAXIMUM_SHEET_WIDTH  = 109 * GRIDS_PER_INCH;
+MENTOR_MAXIMUM_SHEET_HEIGHT = 109 * GRIDS_PER_INCH;
+SGE_MAXIMUM_SHEET_WIDTH  = 409 * GRIDS_PER_INCH;
+SGE_MAXIMUM_SHEET_HEIGHT = 409 * GRIDS_PER_INCH;
+
+A_p_SHEET_WIDTH  = A_SHEET_HEIGHT;
+A_p_SHEET_HEIGHT = A_SHEET_WIDTH;
+B_p_SHEET_WIDTH  = B_SHEET_HEIGHT;
+B_p_SHEET_HEIGHT = B_SHEET_WIDTH;
+C_p_SHEET_WIDTH  = C_SHEET_HEIGHT;
+C_p_SHEET_HEIGHT = C_SHEET_WIDTH;
+D_p_SHEET_WIDTH  = D_SHEET_HEIGHT;
+D_p_SHEET_HEIGHT = D_SHEET_WIDTH;
+E_p_SHEET_WIDTH  = E_SHEET_HEIGHT;
+E_p_SHEET_HEIGHT = E_SHEET_WIDTH;
+MENTOR_MAXIMUM_p_SHEET_WIDTH  = MENTOR_MAXIMUM_SHEET_HEIGHT;
+MENTOR_MAXIMUM_p_SHEET_HEIGHT = MENTOR_MAXIMUM_SHEET_WIDTH;
+SGE_MAXIMUM_p_SHEET_WIDTH  = SGE_MAXIMUM_SHEET_WIDTH;
+SGE_MAXIMUM_p_SHEET_HEIGHT = SGE_MAXIMUM_SHEET_HEIGHT;
+
+A4_SHEET_WIDTH  = 11.69 * GRIDS_PER_INCH;
+A4_SHEET_HEIGHT = 8.27 * GRIDS_PER_INCH;
+A3_SHEET_WIDTH  = 2 * A4_SHEET_HEIGHT;
+A3_SHEET_HEIGHT = A4_SHEET_WIDTH;
+A2_SHEET_WIDTH  = 23.39 * GRIDS_PER_INCH;
+A2_SHEET_HEIGHT = A3_SHEET_WIDTH;
+A1_SHEET_WIDTH  = 33.11 * GRIDS_PER_INCH;
+A1_SHEET_HEIGHT = A2_SHEET_WIDTH;
+A0_SHEET_WIDTH  = 46.87 * GRIDS_PER_INCH;
+A0_SHEET_HEIGHT = A1_SHEET_WIDTH;
+
+A4_p_SHEET_WIDTH  = A4_SHEET_HEIGHT;
+A4_p_SHEET_HEIGHT = A4_SHEET_WIDTH;
+A3_p_SHEET_WIDTH  = A3_SHEET_HEIGHT;
+A3_p_SHEET_HEIGHT = A3_SHEET_WIDTH;
+A2_p_SHEET_WIDTH  = A2_SHEET_HEIGHT;
+A2_p_SHEET_HEIGHT = A2_SHEET_WIDTH;
+A1_p_SHEET_WIDTH  = A1_SHEET_HEIGHT;
+A1_p_SHEET_HEIGHT = A1_SHEET_WIDTH;
+A0_p_SHEET_WIDTH  = A0_SHEET_HEIGHT;
+A0_p_SHEET_HEIGHT = A0_SHEET_WIDTH;
+
+/* The following values are not specified by MIL or ANSI: */
+
+/* Origins are defined as offset from the lower left corner */
+OR_X_ORIGIN = 3;
+OR_Y_ORIGIN = 2;
+AND_X_ORIGIN = 3;
+AND_Y_ORIGIN = 2;
+INVERTER_X_ORIGIN = 1;
+INVERTER_Y_ORIGIN = INVERTER_HEIGHT / 2.0;
+
+EXTRA_WING_SPAN = .5; /* ON 3 + GATES, CONTROLS WING SIZE */
+GATE_GAP = 0;	       /* CONTROLS VERTICAL GAP ON STACKED GATES */
+
+/* The following values are deduced from the above values: */
+
+BUBBLE_RADIUS = BUBBLE_DIAMETER / 2.0;
+DYNAMIC_RADIUS = DYNAMIC_HEIGHT / 2.0;
+
+/* layers */
+
+  layer(text_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1 ;
+    red : 65000 ;
+    green : 33000 ;
+    blue : 0 ;
+  }
+
+  layer(template_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 512;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 33000;
+    blue : 33000;
+  }
+
+  layer(template_text_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 1;
+    red : 65000 ;
+    green : 33000 ;
+    blue : 33000 ;
+  }
+
+  layer(variable_layer) {
+    set_font ("1_25.font");
+    visible : FALSE;
+    line_width : 1 ;
+    red : 65000 ;
+    green : 33000 ;
+    blue : 0 ;
+  }
+
+  layer(fat_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 0 ;
+    blue : 0 ;
+  }
+
+  layer(port_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+
+  layer(port_name_layer) {
+    set_font ("1_25.font");
+    line_width : 1;
+    visible : TRUE ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  layer(cell_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+
+  layer(cell_name_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+
+  layer(bus_cell_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+
+  layer(bus_cell_name_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+ 
+  layer(designware_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+ 
+  layer(designware_name_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+
+  layer(cell_ref_name_layer) {
+    set_font ("1_25.font");
+    visible : FALSE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  layer(pin_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1 ;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+
+  layer(pin_name_layer) {
+    set_font ("1_25.font");
+    visible : FALSE ;
+    line_width : 1 ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  layer(bus_pin_name_layer) {
+    set_font ("1_25.font");
+    visible : FALSE ;
+    line_width : 1 ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  layer(net_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1 ;
+    red : 0;
+    green : 65000;
+    blue : 65000;
+  }
+
+  layer(net_name_layer) {
+    set_font ("1_25.font");
+    visible : FALSE ;
+    line_width : 1 ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  layer(osc_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 100;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+
+  layer(osc_name_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1 ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+  layer(bus_osc_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+
+  layer(bus_osc_name_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1 ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  layer(constraint_layer) {
+    set_font ("0_75.font");
+    visible : TRUE ;
+    scalable_lines : TRUE ;
+    line_width : 100 ;
+    red : 65535 ;
+    green : 0 ;
+    blue : 0 ;
+  }
+
+  layer(clock_layer) {
+    set_font ("0_75.font");
+    visible : TRUE ;
+    scalable_lines : TRUE ;
+    line_width : 100 ;
+    red : 65535 ;
+    green : 0 ;
+    blue : 0 ;
+  }
+
+  layer(symbol_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+
+  layer(symbol_name_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+
+  layer(hierarchy_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+
+  layer(hierarchy_name_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+
+  layer(bus_port_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+  
+  layer(bus_port_name_layer) {
+    set_font ("1_25.font");
+    line_width : 256;
+    visible : TRUE ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  layer(bus_port_width_layer) {
+    set_font ("1_25.font");
+    line_width : 1;
+    visible : TRUE ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  layer(bus_ripper_layer) {
+    set_font ("1_25.font");
+    visible : TRUE;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 65000;
+    green : 65000;
+    blue : 0;
+  }
+
+  layer(bus_ripper_name_layer) {
+    set_font ("0_75.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+
+  layer(bus_ripper_type_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+
+  layer(bit_mapper_name_layer) {
+    set_font ("0_75.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+
+  layer(type_mapper_name_layer) {
+    set_font ("0_75.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+
+  layer(bus_compound_name_layer) {
+    set_font ("0_75.font");
+    visible : TRUE ;
+    line_width : 1;
+    red : 65000;
+    green : 33000;
+    blue : 0 ;
+  }
+
+  layer(bus_net_layer) {
+    set_font ("1_25.font");
+    visible : TRUE ;
+    line_width : 256;
+    scalable_lines : TRUE;
+    red : 0;
+    green : 65000;
+    blue : 65000;
+  }
+
+  layer(bus_net_name_layer) {
+    set_font ("1_25.font");
+    visible : FALSE ;
+    line_width : 256 ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  layer(bus_net_type_layer) {
+    set_font ("1_25.font");
+    visible : FALSE ;
+    line_width : 1 ;
+    red : 65000;
+    green : 33000;
+    blue : 0;
+  }
+
+  FONT_SIZE = 1.25;
+
+
+  KEY_BOX_WIDTH = A_SHEET_HEIGHT - FONT_SIZE;
+  KEY_BOX_HEIGHT = 4 * FONT_SIZE;
+
+  symbol(key_box) {
+    /* box around all */
+    line(0, 0, KEY_BOX_WIDTH, 0);
+    line(KEY_BOX_WIDTH, 0, KEY_BOX_WIDTH, KEY_BOX_HEIGHT);
+    line(KEY_BOX_WIDTH, KEY_BOX_HEIGHT, 0, KEY_BOX_HEIGHT);
+    line(0, KEY_BOX_HEIGHT, 0,0);
+
+    /* inner lines */
+    line(0,KEY_BOX_HEIGHT / 2, KEY_BOX_WIDTH, KEY_BOX_HEIGHT / 2);
+    line((1.0 / 3.0) * KEY_BOX_WIDTH, 0, (1.0 / 3.0) * KEY_BOX_WIDTH, KEY_BOX_HEIGHT);
+    line((2.0 / 3.0) * KEY_BOX_WIDTH, 0, (2.0 / 3.0) * KEY_BOX_WIDTH, KEY_BOX_HEIGHT);
+
+    /* variables */
+
+    LOW_Y = FONT_SIZE / 2;
+    HIGH_Y = LOW_Y + KEY_BOX_HEIGHT / 2;
+
+    LEFT_X = FONT_SIZE / 2;
+    MIDDLE_X = FONT_SIZE / 2 + (1.0 / 3.0) * KEY_BOX_WIDTH;
+    RIGHT_X = FONT_SIZE / 2 + (2.0 / 3.0) * KEY_BOX_WIDTH;
+
+    LEFT_X = LEFT_X * ROUTE_GRID ;
+    MIDDLE_X = MIDDLE_X * ROUTE_GRID ;
+    RIGHT_X = RIGHT_X * ROUTE_GRID ;
+    LOW_Y = LOW_Y * ROUTE_GRID ;
+    HIGH_Y = HIGH_Y * ROUTE_GRID ;
+
+    annotate_symbol() {
+      value( "@name") ;
+      format : "design:  %s" ;
+      x : LEFT_X ;
+      y : HIGH_Y ;
+      layer_name : "template_text_layer" ;
+    }
+    annotate_symbol() {
+      value( "ANN_TECHNOLOGY") ;
+      format : "technology:  %s" ;
+      x : LEFT_X ;
+      y : LOW_Y ;
+      layer_name : "template_text_layer" ;
+    }
+    annotate_symbol() {
+      value( "designer") ;
+      format : "designer:  %s" ;
+      x : MIDDLE_X ;
+      y : HIGH_Y ;
+      layer_name : "template_text_layer" ;
+    }
+    annotate_symbol() {
+      value( "company") ;
+      format : "company:  %s" ;
+      x : MIDDLE_X ;
+      y : LOW_Y ;
+      layer_name : "template_text_layer" ;
+    }
+    annotate_symbol() {
+      value( "ANN_DATE") ;
+      format : "date:  %s" ;
+      x : RIGHT_X ;
+      y : HIGH_Y ;
+      layer_name : "template_text_layer" ;
+    }
+    annotate_symbol() {
+      value( "ANN_PAGE_NUM", "ANN_NUM_PAGES") ;
+      format : "sheet:  %s of %s" ;
+      x : RIGHT_X ;
+      y : LOW_Y ;
+      layer_name : "template_text_layer" ;
+    }
+  }
+
+
+  symbol(template_infinite) {
+    template : "infinite";
+    landscape : TRUE;
+    sub_symbol(key_box, - KEY_BOX_WIDTH, - KEY_BOX_HEIGHT - FONT_SIZE * 2, 0);
+    set_infinite_template_location(1,0); /* Signals infinite usable area
+					   origined at the lower right
+					   corner of the actual sheet */
+  }
+
+
+  symbol(template_A) {
+    template : "A";
+    landscape : TRUE;
+    sub_symbol(key_box, A_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2, 	      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A_SHEET_WIDTH - FONT_SIZE / 2,                           \
+		     A_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A_SHEET_WIDTH, 0);
+    line(A_SHEET_WIDTH, 0, A_SHEET_WIDTH, A_SHEET_HEIGHT);
+    line(A_SHEET_WIDTH, A_SHEET_HEIGHT, 0, A_SHEET_HEIGHT);
+    line(0, A_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_B) {
+    template : "B";
+    landscape : TRUE;
+    sub_symbol(key_box, B_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,        \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     B_SHEET_WIDTH - FONT_SIZE / 2,                           \
+		     B_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, B_SHEET_WIDTH, 0);
+    line(B_SHEET_WIDTH, 0, B_SHEET_WIDTH, B_SHEET_HEIGHT);
+    line(B_SHEET_WIDTH, B_SHEET_HEIGHT, 0, B_SHEET_HEIGHT);
+    line(0, B_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_C) {
+    template : "C";
+    landscape : TRUE;
+    sub_symbol(key_box, C_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,        \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     C_SHEET_WIDTH - FONT_SIZE / 2,                           \
+		     C_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, C_SHEET_WIDTH, 0);
+    line(C_SHEET_WIDTH, 0, C_SHEET_WIDTH, C_SHEET_HEIGHT);
+    line(C_SHEET_WIDTH, C_SHEET_HEIGHT, 0, C_SHEET_HEIGHT);
+    line(0, C_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_D) {
+    template : "D";
+    landscape : TRUE;
+    sub_symbol(key_box, D_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,        \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     D_SHEET_WIDTH - FONT_SIZE / 2,                           \
+		     D_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, D_SHEET_WIDTH, 0);
+    line(D_SHEET_WIDTH, 0, D_SHEET_WIDTH, D_SHEET_HEIGHT);
+    line(D_SHEET_WIDTH, D_SHEET_HEIGHT, 0, D_SHEET_HEIGHT);
+    line(0, D_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_E) {
+    template : "E";
+    landscape : TRUE;
+    sub_symbol(key_box, E_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,        \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     E_SHEET_WIDTH - FONT_SIZE / 2,                           \
+		     E_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, E_SHEET_WIDTH, 0);
+    line(E_SHEET_WIDTH, 0, E_SHEET_WIDTH, E_SHEET_HEIGHT);
+    line(E_SHEET_WIDTH, E_SHEET_HEIGHT, 0, E_SHEET_HEIGHT);
+    line(0, E_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_mentor_maximum) {
+    template : "mentor_maximum";
+    landscape : TRUE;
+    sub_symbol(key_box,                                                       \
+               MENTOR_MAXIMUM_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,    \
+	       FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     MENTOR_MAXIMUM_SHEET_WIDTH - FONT_SIZE / 2,              \
+		     MENTOR_MAXIMUM_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, MENTOR_MAXIMUM_SHEET_WIDTH, 0);
+    line(MENTOR_MAXIMUM_SHEET_WIDTH, 0, MENTOR_MAXIMUM_SHEET_WIDTH,           \
+         MENTOR_MAXIMUM_SHEET_HEIGHT);
+    line(MENTOR_MAXIMUM_SHEET_WIDTH, MENTOR_MAXIMUM_SHEET_HEIGHT, 0,          \
+         MENTOR_MAXIMUM_SHEET_HEIGHT);
+    line(0, MENTOR_MAXIMUM_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_sge_maximum) {
+    template : "sge_maximum";
+    landscape : TRUE;
+    sub_symbol(key_box,                                                       \
+               SGE_MAXIMUM_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,       \
+	       FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     SGE_MAXIMUM_SHEET_WIDTH - FONT_SIZE / 2,                 \
+		     SGE_MAXIMUM_SHEET_HEIGHT - FONT_SIZE / 2);
+  }
+
+
+  symbol(template_A_p) {
+    template : "A" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, A_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A_p_SHEET_WIDTH - FONT_SIZE / 2,                         \
+		     A_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A_p_SHEET_WIDTH, 0);
+    line(A_p_SHEET_WIDTH, 0, A_p_SHEET_WIDTH, A_p_SHEET_HEIGHT);
+    line(A_p_SHEET_WIDTH, A_p_SHEET_HEIGHT, 0, A_p_SHEET_HEIGHT);
+    line(0, A_p_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_B_p) {
+    template : "B" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, B_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     B_p_SHEET_WIDTH - FONT_SIZE / 2,                         \
+		     B_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, B_p_SHEET_WIDTH, 0);
+    line(B_p_SHEET_WIDTH, 0, B_p_SHEET_WIDTH, B_p_SHEET_HEIGHT);
+    line(B_p_SHEET_WIDTH, B_p_SHEET_HEIGHT, 0, B_p_SHEET_HEIGHT);
+    line(0, B_p_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_C_p) {
+    template : "C" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, C_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     C_p_SHEET_WIDTH - FONT_SIZE / 2,                         \
+		     C_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, C_p_SHEET_WIDTH, 0);
+    line(C_p_SHEET_WIDTH, 0, C_p_SHEET_WIDTH, C_p_SHEET_HEIGHT);
+    line(C_p_SHEET_WIDTH, C_p_SHEET_HEIGHT, 0, C_p_SHEET_HEIGHT);
+    line(0, C_p_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_D_p) {
+    template : "D" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, D_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     D_p_SHEET_WIDTH - FONT_SIZE / 2,                         \
+		     D_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, D_p_SHEET_WIDTH, 0);
+    line(D_p_SHEET_WIDTH, 0, D_p_SHEET_WIDTH, D_p_SHEET_HEIGHT);
+    line(D_p_SHEET_WIDTH, D_p_SHEET_HEIGHT, 0, D_p_SHEET_HEIGHT);
+    line(0, D_p_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_E_p) {
+    template : "E" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, E_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     E_p_SHEET_WIDTH - FONT_SIZE / 2,                         \
+		     E_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, E_p_SHEET_WIDTH, 0);
+    line(E_p_SHEET_WIDTH, 0, E_p_SHEET_WIDTH, E_p_SHEET_HEIGHT);
+    line(E_p_SHEET_WIDTH, E_p_SHEET_HEIGHT, 0, E_p_SHEET_HEIGHT);
+    line(0, E_p_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_mentor_maximum_p) {
+    template : "mentor_maximum" ;
+    landscape : FALSE ;
+    sub_symbol(key_box,                                                       \
+               MENTOR_MAXIMUM_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,  \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     MENTOR_MAXIMUM_p_SHEET_WIDTH - FONT_SIZE / 2,            \
+		     MENTOR_MAXIMUM_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, MENTOR_MAXIMUM_p_SHEET_WIDTH, 0);
+    line(MENTOR_MAXIMUM_p_SHEET_WIDTH, 0, MENTOR_MAXIMUM_p_SHEET_WIDTH,       \
+         MENTOR_MAXIMUM_p_SHEET_HEIGHT);
+    line(MENTOR_MAXIMUM_p_SHEET_WIDTH, MENTOR_MAXIMUM_p_SHEET_HEIGHT, 0,      \
+         MENTOR_MAXIMUM_p_SHEET_HEIGHT);
+    line(0, MENTOR_MAXIMUM_p_SHEET_HEIGHT, 0,0);
+  }
+
+
+  symbol(template_sge_maximum_p) {
+    template : "sge_maximum" ;
+    landscape : FALSE ;
+    sub_symbol(key_box,                                                       \
+               SGE_MAXIMUM_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,     \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     SGE_MAXIMUM_p_SHEET_WIDTH - FONT_SIZE / 2,               \
+		     SGE_MAXIMUM_p_SHEET_HEIGHT - FONT_SIZE / 2);
+  }
+
+
+  symbol(template_A4) {
+    template : "A4" ;
+    landscape : TRUE ;
+    sub_symbol(key_box, A4_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,	      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A4_SHEET_WIDTH - FONT_SIZE / 2,                          \
+		     A4_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A4_SHEET_WIDTH, 0);
+    line(A4_SHEET_WIDTH, 0, A4_SHEET_WIDTH, A4_SHEET_HEIGHT);
+    line(A4_SHEET_WIDTH, A4_SHEET_HEIGHT, 0, A4_SHEET_HEIGHT);
+    line(0, A4_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(template_A3) {
+    template : "A3" ;
+    landscape : TRUE ;
+    sub_symbol(key_box, A3_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,	      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A3_SHEET_WIDTH - FONT_SIZE / 2,                          \
+		     A3_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A3_SHEET_WIDTH, 0);
+    line(A3_SHEET_WIDTH, 0, A3_SHEET_WIDTH, A3_SHEET_HEIGHT);
+    line(A3_SHEET_WIDTH, A3_SHEET_HEIGHT, 0, A3_SHEET_HEIGHT);
+    line(0, A3_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(template_A2) {
+    template : "A2" ;
+    landscape : TRUE ;
+    sub_symbol(key_box, A2_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,	      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A2_SHEET_WIDTH - FONT_SIZE / 2,                          \
+		     A2_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A2_SHEET_WIDTH, 0);
+    line(A2_SHEET_WIDTH, 0, A2_SHEET_WIDTH, A2_SHEET_HEIGHT);
+    line(A2_SHEET_WIDTH, A2_SHEET_HEIGHT, 0, A2_SHEET_HEIGHT);
+    line(0, A2_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(template_A1) {
+    template : "A1" ;
+    landscape : TRUE ;
+    sub_symbol(key_box, A1_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,	      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A1_SHEET_WIDTH - FONT_SIZE / 2,                          \
+		     A1_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A1_SHEET_WIDTH, 0);
+    line(A1_SHEET_WIDTH, 0, A1_SHEET_WIDTH, A1_SHEET_HEIGHT);
+    line(A1_SHEET_WIDTH, A1_SHEET_HEIGHT, 0, A1_SHEET_HEIGHT);
+    line(0, A1_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(template_A0) {
+    template : "A0" ;
+    landscape : TRUE ;
+    sub_symbol(key_box, A0_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,	      \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A0_SHEET_WIDTH - FONT_SIZE / 2,                          \
+		     A0_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A0_SHEET_WIDTH, 0);
+    line(A0_SHEET_WIDTH, 0, A0_SHEET_WIDTH, A0_SHEET_HEIGHT);
+    line(A0_SHEET_WIDTH, A0_SHEET_HEIGHT, 0, A0_SHEET_HEIGHT);
+    line(0, A0_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(template_A4_p) {
+    template : "A4" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, A4_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,     \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A4_p_SHEET_WIDTH - FONT_SIZE / 2,                        \
+		     A4_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A4_p_SHEET_WIDTH, 0);
+    line(A4_p_SHEET_WIDTH, 0, A4_p_SHEET_WIDTH, A4_p_SHEET_HEIGHT);
+    line(A4_p_SHEET_WIDTH, A4_p_SHEET_HEIGHT, 0, A4_p_SHEET_HEIGHT);
+    line(0, A4_p_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(template_A3_p) {
+    template : "A3" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, A3_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,     \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A3_p_SHEET_WIDTH - FONT_SIZE / 2,                        \
+		     A3_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A3_p_SHEET_WIDTH, 0);
+    line(A3_p_SHEET_WIDTH, 0, A3_p_SHEET_WIDTH, A3_p_SHEET_HEIGHT);
+    line(A3_p_SHEET_WIDTH, A3_p_SHEET_HEIGHT, 0, A3_p_SHEET_HEIGHT);
+    line(0, A3_p_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(template_A2_p) {
+    template : "A2" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, A2_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,     \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A2_p_SHEET_WIDTH - FONT_SIZE / 2,                        \
+		     A2_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A2_p_SHEET_WIDTH, 0);
+    line(A2_p_SHEET_WIDTH, 0, A2_p_SHEET_WIDTH, A2_p_SHEET_HEIGHT);
+    line(A2_p_SHEET_WIDTH, A2_p_SHEET_HEIGHT, 0, A2_p_SHEET_HEIGHT);
+    line(0, A2_p_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(template_A1_p) {
+    template : "A1" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, A1_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,     \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A1_p_SHEET_WIDTH - FONT_SIZE / 2,                        \
+		     A1_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A1_p_SHEET_WIDTH, 0);
+    line(A1_p_SHEET_WIDTH, 0, A1_p_SHEET_WIDTH, A1_p_SHEET_HEIGHT);
+    line(A1_p_SHEET_WIDTH, A1_p_SHEET_HEIGHT, 0, A1_p_SHEET_HEIGHT);
+    line(0, A1_p_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(template_A0_p) {
+    template : "A0" ;
+    landscape : FALSE ;
+    sub_symbol(key_box, A0_p_SHEET_WIDTH - KEY_BOX_WIDTH - FONT_SIZE / 2,     \
+		FONT_SIZE / 2,0);
+    set_usable_area(FONT_SIZE / 2, KEY_BOX_HEIGHT + FONT_SIZE,	              \
+                     A0_p_SHEET_WIDTH - FONT_SIZE / 2,                        \
+		     A0_p_SHEET_HEIGHT - FONT_SIZE / 2);
+
+    /* box around all */
+    line(0, 0, A0_p_SHEET_WIDTH, 0);
+    line(A0_p_SHEET_WIDTH, 0, A0_p_SHEET_WIDTH, A0_p_SHEET_HEIGHT);
+    line(A0_p_SHEET_WIDTH, A0_p_SHEET_HEIGHT, 0, A0_p_SHEET_HEIGHT);
+    line(0, A0_p_SHEET_HEIGHT, 0,0);
+  }
+
+  symbol(port) {
+    line( - OFF_SHEET_HEIGHT, -.5 * OFF_SHEET_HEIGHT,  	       	       	      \
+	 - OFF_SHEET_HEIGHT,  .5 * OFF_SHEET_HEIGHT);
+    line( - OFF_SHEET_HEIGHT, .5 * OFF_SHEET_HEIGHT,   	       	       	      \
+	 0,  .5 * OFF_SHEET_HEIGHT);
+    line( - OFF_SHEET_HEIGHT, -.5 * OFF_SHEET_HEIGHT,  	       	       	      \
+	 0,  -.5 * OFF_SHEET_HEIGHT);
+    line(0,-.5 * OFF_SHEET_HEIGHT,OFF_SHEET_HEIGHT,0);
+    line(0, .5 * OFF_SHEET_HEIGHT,OFF_SHEET_HEIGHT,0);
+  }
+
+  symbol(upward_port) {
+    line( - .5 * OFF_SHEET_HEIGHT, 0,				\
+	 0, OFF_SHEET_HEIGHT) ;
+    line( 0, OFF_SHEET_HEIGHT,					\
+	 .5 * OFF_SHEET_HEIGHT, 0) ;
+    line( .5 * OFF_SHEET_HEIGHT, 0,				\
+	 .5 * OFF_SHEET_HEIGHT, - OFF_SHEET_HEIGHT) ;
+    line( .5 * OFF_SHEET_HEIGHT, - OFF_SHEET_HEIGHT,		\
+	 - .5 * OFF_SHEET_HEIGHT, - OFF_SHEET_HEIGHT) ;
+    line( - .5 * OFF_SHEET_HEIGHT, - OFF_SHEET_HEIGHT,		\
+	 - .5 * OFF_SHEET_HEIGHT, 0) ;
+  }
+
+  symbol(downward_port) {
+    line( - .5 * OFF_SHEET_HEIGHT, 0, 				\
+	 - .5 * OFF_SHEET_HEIGHT, OFF_SHEET_HEIGHT) ;
+    line( - .5 * OFF_SHEET_HEIGHT, OFF_SHEET_HEIGHT, 		\
+	 .5 * OFF_SHEET_HEIGHT, OFF_SHEET_HEIGHT) ;
+    line( .5 * OFF_SHEET_HEIGHT, OFF_SHEET_HEIGHT,		\
+	 .5 * OFF_SHEET_HEIGHT, 0) ;
+    line( .5 * OFF_SHEET_HEIGHT, 0,				\
+	 0, - OFF_SHEET_HEIGHT) ;
+    line( 0, - OFF_SHEET_HEIGHT, 				\
+	 - .5 * OFF_SHEET_HEIGHT, 0) ;
+  }
+
+  symbol(osc) {
+    line( -.5 * OFF_SHEET_HEIGHT, -.5 * OFF_SHEET_HEIGHT, 0,0);
+    line( -.5 * OFF_SHEET_HEIGHT,  .5 * OFF_SHEET_HEIGHT, 0,0);
+    line(0, -.5 * OFF_SHEET_HEIGHT, .5 * OFF_SHEET_HEIGHT,0);
+    line(0,  .5 * OFF_SHEET_HEIGHT, .5 * OFF_SHEET_HEIGHT,0);
+  }
+
+  symbol(extractor) {
+
+    line(.4 * OFF_SHEET_HEIGHT, .2 * OFF_SHEET_HEIGHT, \
+	 .6 * OFF_SHEET_HEIGHT, 0) ;
+    line(.6 * OFF_SHEET_HEIGHT, 0, \
+	 .4 * OFF_SHEET_HEIGHT,-.2 * OFF_SHEET_HEIGHT) ;
+    line(0, 0, .8 * OFF_SHEET_HEIGHT, 0) ;
+  }
+
+  symbol(bit_mapper) {
+    line(-.5 * OFF_SHEET_HEIGHT, .25 * OFF_SHEET_HEIGHT, \
+		-.5 * OFF_SHEET_HEIGHT, -.25 * OFF_SHEET_HEIGHT);
+    line(.5 * OFF_SHEET_HEIGHT, .25 * OFF_SHEET_HEIGHT, \
+		.5 * OFF_SHEET_HEIGHT, -.25 * OFF_SHEET_HEIGHT);
+    line(-.5 * OFF_SHEET_HEIGHT, .25 * OFF_SHEET_HEIGHT, \
+		.5 * OFF_SHEET_HEIGHT, -.25 * OFF_SHEET_HEIGHT);
+    line(.5 * OFF_SHEET_HEIGHT, .25 * OFF_SHEET_HEIGHT, \
+		-.5 * OFF_SHEET_HEIGHT, -.25 * OFF_SHEET_HEIGHT);
+    pin(left_bus, -.5 * OFF_SHEET_HEIGHT, 0, LEFT);
+    pin(right_bus, .5 * OFF_SHEET_HEIGHT, 0, RIGHT);
+  }
+
+  symbol(type_mapper) {
+    line(0, 0, .4 * OFF_SHEET_HEIGHT, .4 * OFF_SHEET_HEIGHT);
+    line(.4 * OFF_SHEET_HEIGHT, .4 * OFF_SHEET_HEIGHT, \
+		.8 * OFF_SHEET_HEIGHT, 0);
+    line(.8 * OFF_SHEET_HEIGHT, 0 \
+		.4 * OFF_SHEET_HEIGHT, -.4 * OFF_SHEET_HEIGHT);
+    line(.4 * OFF_SHEET_HEIGHT, -.4 * OFF_SHEET_HEIGHT, 0, 0);
+    pin(left, 0, 0, LEFT);
+    pin(right, .8 * OFF_SHEET_HEIGHT, 0, RIGHT);
+  }
+
+  symbol(ripper) {
+    ripped_pin : "bus_end" ;
+    sub_symbol(extractor, 0,0,0);
+    pin(bus_end, 0, 0,  LEFT);
+    pin(w, .8 * OFF_SHEET_HEIGHT,  0, RIGHT);
+  }
+
+  symbol( unconnected_pin) {
+    line(-.256,-.256,-.256, .256);
+    line(-.256, .256, .256, .256);
+    line( .256, .256, .256,-.256);
+    line( .256,-.256,-.256,-.256);
+  }
+
+  symbol(solder_dot) {
+    line( -.25,-.25,.25,-.25);
+    line(.25,.25,.25,-.25);
+    line(.25,.25,-.25,.25);
+    line( -.25,.25,-.25,-.25);
+    line( -.25,-.25,.25,.25);
+    line(.25,-.25,-.25,.25);
+  }
+
+  symbol(logic_1) {
+    line(0,0,0,1.5);
+    line(0,1.5,.5,2);
+    line(0,1.5,-.5,2);
+    pin(a,0,0,RIGHT);
+  }
+
+  symbol(logic_0) {
+    line(0,0,0,- 1.25);
+    line( -.75,- 1.25,.75,- 1.25);
+    line( -.75,- 1.27,0,- 2);
+    line(.75,- 1.27,0,- 2);
+    pin(a,0,0,RIGHT);
+  }
+
+  symbol(in_osc) {
+    sub_symbol(osc, -.5 * OFF_SHEET_HEIGHT, 0, 0);
+    pin(a, 0, 0, RIGHT);
+  }
+
+  symbol(out_osc) {
+    sub_symbol(osc, 0, 0, 0);
+    pin(a, 0, 0, LEFT);
+  }
+
+  symbol(in_port) {
+    sub_symbol(port, - OFF_SHEET_HEIGHT, 0, 0);
+    pin(a, 0, 0, RIGHT);
+  }
+
+  symbol(out_port) {
+    sub_symbol(port, OFF_SHEET_HEIGHT, 0, 0);
+    pin(a, 0,0, LEFT);
+  }
+
+  symbol(io_port) {
+    line(0, 0, .5 * OFF_SHEET_HEIGHT,  .5 * OFF_SHEET_HEIGHT);
+    line(0, 0, .5 * OFF_SHEET_HEIGHT, -.5 * OFF_SHEET_HEIGHT);
+    line(.5 * OFF_SHEET_HEIGHT, .5 * OFF_SHEET_HEIGHT,            \
+        1.5 * OFF_SHEET_HEIGHT, .5 * OFF_SHEET_HEIGHT);
+    line(.5 * OFF_SHEET_HEIGHT, -.5 * OFF_SHEET_HEIGHT,           \
+        1.5 * OFF_SHEET_HEIGHT, -.5 * OFF_SHEET_HEIGHT);
+    line(1.5 * OFF_SHEET_HEIGHT, .5 * OFF_SHEET_HEIGHT,           \
+        2 * OFF_SHEET_HEIGHT, 0);
+    line(1.5 * OFF_SHEET_HEIGHT, -.5 * OFF_SHEET_HEIGHT,          \
+        2 * OFF_SHEET_HEIGHT, 0);
+    pin(a, 0, 0, LEFT);
+  }
+
+  symbol( down_in_port) {
+    sub_symbol(downward_port, 0, OFF_SHEET_HEIGHT, 0);
+    pin( a, 0, 0, DOWN) ;
+  }
+
+  symbol( down_out_port) {
+    sub_symbol(downward_port, 0, - OFF_SHEET_HEIGHT, 0);
+    pin( a, 0, 0, UP) ;
+  }
+
+  symbol( up_in_port) {
+    sub_symbol(upward_port, 0, - OFF_SHEET_HEIGHT, 0);
+    pin( a, 0, 0, UP) ;
+  }
+
+  symbol( up_out_port) {
+    sub_symbol(upward_port, 0, OFF_SHEET_HEIGHT, 0);
+    pin( a, 0, 0, DOWN) ;
+  }
+
+  symbol(inverter_triangle) {
+
+    /* The origins are defined to be the offset from the lower left corner */
+    INVERTER_LEFT_X = - INVERTER_X_ORIGIN;
+    INVERTER_BOTTOM_Y = - INVERTER_Y_ORIGIN;
+
+    INVERTER_RIGHT_X = INVERTER_LEFT_X + INVERTER_HEIGHT * SQRT(3) / 2.0;
+    INVERTER_TOP_Y = INVERTER_BOTTOM_Y + INVERTER_HEIGHT;
+    INVERTER_MIDDLE_Y = INVERTER_BOTTOM_Y + INVERTER_HEIGHT / 2.0;
+
+    line(INVERTER_LEFT_X, INVERTER_TOP_Y, INVERTER_RIGHT_X, INVERTER_MIDDLE_Y);
+    line(INVERTER_RIGHT_X, INVERTER_MIDDLE_Y,  	       	       	       	      \
+	 INVERTER_LEFT_X, INVERTER_BOTTOM_Y);
+    line(INVERTER_LEFT_X, INVERTER_BOTTOM_Y, INVERTER_LEFT_X, INVERTER_TOP_Y);
+  }
+
+  symbol(i1x) {
+    canonical_name : "Ia1.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(z, 1);
+
+    sub_symbol(inverter_triangle, 0,0,0);
+
+    circle(INVERTER_RIGHT_X + BUBBLE_RADIUS, INVERTER_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, INVERTER_RIGHT_X + BUBBLE_DIAMETER, INVERTER_MIDDLE_Y, RIGHT);
+    pin(a, INVERTER_LEFT_X, INVERTER_MIDDLE_Y, LEFT);
+  }
+
+  /* Left edge is missing so others may define it. */
+
+  symbol(and_outline) {
+    AND_LEFT_X = - AND_X_ORIGIN;
+    AND_BOTTOM_Y = - AND_Y_ORIGIN;
+
+    AND_TOP_Y = AND_BOTTOM_Y + AND_HEIGHT;
+    X_START_OF_ARC = AND_LEFT_X + AND_WIDTH - AND_HEIGHT / 2.0;
+    AND_MIDDLE_Y = AND_BOTTOM_Y + AND_HEIGHT / 2.0;
+    AND_RIGHT_X = AND_LEFT_X + AND_WIDTH;
+
+    line(AND_LEFT_X, AND_TOP_Y, X_START_OF_ARC, AND_TOP_Y);
+    line(AND_LEFT_X, AND_BOTTOM_Y, X_START_OF_ARC, AND_BOTTOM_Y);
+    arc(X_START_OF_ARC, AND_TOP_Y, X_START_OF_ARC, AND_BOTTOM_Y,       	      \
+	X_START_OF_ARC, AND_MIDDLE_Y);
+  }
+
+  symbol(and) {
+    sub_symbol(and_outline, 0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y, AND_LEFT_X, AND_TOP_Y);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 3, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 1, LEFT);
+    pin(z, AND_RIGHT_X, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(and1) {
+    canonical_name : "anr";
+    sub_symbol(and_outline, 0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y, AND_LEFT_X, AND_TOP_Y);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 2, LEFT);
+    pin(z, AND_RIGHT_X, AND_MIDDLE_Y, RIGHT);
+    canonical_pin_number(a, 0);
+    canonical_pin_number(z, 1);
+  }
+
+  symbol(and2b) {
+    canonical_name : "a2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+    sub_symbol(and,0,0,0);
+  }
+
+  symbol(andnot) {
+    canonical_name : "andnot";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+    sub_symbol(and_outline, 0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y, AND_LEFT_X, AND_TOP_Y);
+    circle(AND_LEFT_X - BUBBLE_RADIUS, AND_BOTTOM_Y + 1, BUBBLE_RADIUS);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 3, LEFT);
+    pin(b, (AND_LEFT_X - BUBBLE_DIAMETER), AND_BOTTOM_Y + 1, LEFT);
+    pin(z, AND_RIGHT_X, AND_MIDDLE_Y, RIGHT);
+  }
+
+
+  OR_LEFT_X = - OR_X_ORIGIN;
+  OR_BOTTOM_Y = - OR_Y_ORIGIN;
+
+  OR_TOP_Y = OR_BOTTOM_Y + OR_HEIGHT;
+  OR_LEFT_ARC_CENTER_X = OR_LEFT_X - sqrt(.75 * OR_HEIGHT * OR_HEIGHT);
+  OR_MIDDLE_Y = OR_BOTTOM_Y + OR_HEIGHT / 2.0;
+  OR_RIGHT_X = OR_LEFT_ARC_CENTER_X + OR_HEIGHT + OR_INTERNAL_WIDTH;
+
+  OR_WIDTH = OR_RIGHT_X - OR_LEFT_X;
+
+  symbol(left_side_of_or) {
+    arc(OR_LEFT_X,OR_TOP_Y,OR_LEFT_X, OR_BOTTOM_Y,     	       	       	      \
+	OR_LEFT_ARC_CENTER_X, OR_MIDDLE_Y);
+  }
+
+
+  symbol(or_outline) {
+    sub_symbol(left_side_of_or, 0,0,0);
+
+    OR_RIGHT_ARCS_X_START = OR_RIGHT_X - sqrt(.75 * OR_HEIGHT * OR_HEIGHT);
+
+    arc(OR_RIGHT_ARCS_X_START, OR_TOP_Y, OR_RIGHT_X, OR_MIDDLE_Y,      	      \
+	OR_RIGHT_ARCS_X_START, OR_BOTTOM_Y);
+    arc(OR_RIGHT_X, OR_MIDDLE_Y, OR_RIGHT_ARCS_X_START, OR_BOTTOM_Y,   	      \
+	OR_RIGHT_ARCS_X_START, OR_TOP_Y);
+
+    line(OR_LEFT_X, OR_TOP_Y, OR_RIGHT_ARCS_X_START, OR_TOP_Y);
+    line(OR_LEFT_X, OR_BOTTOM_Y, OR_RIGHT_ARCS_X_START, OR_BOTTOM_Y);
+  }
+
+  OR_EVEN_LEFT_PIN_X = OR_LEFT_ARC_CENTER_X + sqrt((15.0 / 16.0) *     	      \
+						   OR_HEIGHT * OR_HEIGHT);
+  OR_ODD_LEFT_PIN_X = OR_LEFT_ARC_CENTER_X + OR_HEIGHT;
+
+  symbol(or) {
+    sub_symbol(or_outline,0,0,0);
+
+    pin(a, OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 3, LEFT);
+    pin(b, OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 1, LEFT);
+    pin(z, OR_RIGHT_X, 0, RIGHT);
+  }
+
+  symbol(or1) {
+    canonical_name : "orr";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(z, 1);
+
+    sub_symbol(or_outline,0,0,0);
+
+    pin(a, OR_ODD_LEFT_PIN_X, OR_BOTTOM_Y + 2, LEFT);
+    pin(z, OR_RIGHT_X, 0, RIGHT);
+  }
+
+  symbol(or2b) {
+    canonical_name : "Ia2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+    sub_symbol(or,0,0,0);
+  }
+
+  /* height assumed to be radius of or arc */
+  OR_NOT_CIRCLE_X = OR_LEFT_ARC_CENTER_X + sqrt(((OR_HEIGHT - BUBBLE_RADIUS) * \
+					      (OR_HEIGHT - BUBBLE_RADIUS)) - 1);
+  symbol(ornot) {
+    canonical_name : "ornot";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+    sub_symbol(or_outline, 0,0,0);
+
+    circle(OR_NOT_CIRCLE_X, OR_BOTTOM_Y + 1, BUBBLE_RADIUS);
+
+    pin(a, OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 3, LEFT);
+    pin(b, OR_NOT_CIRCLE_X - BUBBLE_RADIUS, OR_BOTTOM_Y + 1, LEFT);
+    pin(z, OR_RIGHT_X, 0, RIGHT);
+  }
+
+
+  symbol(nd1) {
+    canonical_name : "ndr";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(z, 1);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y, AND_LEFT_X, AND_TOP_Y);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 2, LEFT);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nd2) {
+    canonical_name : "Ia2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y, AND_LEFT_X, AND_TOP_Y);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 3, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 1, LEFT);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(dynamic_input) {
+    line(0, DYNAMIC_RADIUS, DYNAMIC_WIDTH, 0);
+    line(DYNAMIC_WIDTH, 0, 0, - DYNAMIC_RADIUS);
+  }
+
+  symbol(nd2i1) {
+    canonical_name : "Ia2.1";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+    sub_symbol(and_outline,0,0,0);
+    line(AND_LEFT_X, AND_BOTTOM_Y, AND_LEFT_X, AND_TOP_Y);
+
+    circle(AND_LEFT_X - BUBBLE_RADIUS, AND_BOTTOM_Y + 3, BUBBLE_RADIUS);
+    pin(a, AND_LEFT_X - BUBBLE_DIAMETER, AND_BOTTOM_Y + 3, LEFT);
+
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 1, LEFT);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr1) {
+    canonical_name : "nrr";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(z, 1);
+
+    sub_symbol(or_outline,0,0,0);
+    pin(a, OR_ODD_LEFT_PIN_X, OR_BOTTOM_Y + 2, LEFT);
+
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr2) {
+    canonical_name : "a2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+    sub_symbol(or_outline,0,0,0);
+    pin(a, OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 3, LEFT);
+    pin(b, OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 1, LEFT);
+
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr2i1) {
+    canonical_name : "a2.1";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+
+    sub_symbol(or_outline,0,0,0);
+    pin(b, OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 1, LEFT);
+
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+
+    /* The bubble should be pushed left a bit more, but this amount
+       is lost in the noise (quantization error), so it is not computed */
+
+
+    circle(OR_EVEN_LEFT_PIN_X - BUBBLE_RADIUS, OR_BOTTOM_Y + 3, BUBBLE_RADIUS);
+    pin(a, OR_EVEN_LEFT_PIN_X - BUBBLE_DIAMETER, OR_BOTTOM_Y + 3, LEFT);
+  }
+
+  symbol(and3) {
+    canonical_name : "a3.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN,   	       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 4, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 2, LEFT);
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 0, LEFT);
+    pin(z, AND_RIGHT_X, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(or3_outline) {
+    sub_symbol(or_outline,0,0,0);
+
+    line(OR_LEFT_X, OR_TOP_Y, OR_LEFT_X, OR_TOP_Y + EXTRA_WING_SPAN);
+    line(OR_LEFT_X, OR_BOTTOM_Y, OR_LEFT_X, OR_BOTTOM_Y - EXTRA_WING_SPAN);
+
+    pin(a, OR_LEFT_X, OR_BOTTOM_Y + 4, LEFT);
+    pin(b, OR_ODD_LEFT_PIN_X, OR_BOTTOM_Y + 2, LEFT);
+    pin(c, OR_LEFT_X, OR_BOTTOM_Y, LEFT);
+  }
+
+  symbol(or3) {
+    canonical_name : "Ia3.3";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(or3_outline,0,0,0);
+    pin(z, OR_RIGHT_X, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nd3) {
+    canonical_name : "Ia3.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN,   	       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 4, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 2, LEFT);
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 0, LEFT);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nd3i1) {
+    canonical_name : "Ia3.1";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN,   	       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN);
+
+    circle(AND_LEFT_X - BUBBLE_RADIUS, AND_BOTTOM_Y + 4, BUBBLE_RADIUS);
+    pin(a, AND_LEFT_X - BUBBLE_DIAMETER, AND_BOTTOM_Y + 4, LEFT);
+
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 2, LEFT);
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 0, LEFT);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nd3i2) {
+    canonical_name : "Ia3.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN,   	       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN);
+
+    circle(AND_LEFT_X - BUBBLE_RADIUS, AND_BOTTOM_Y + 4, BUBBLE_RADIUS);
+    pin(a, AND_LEFT_X - BUBBLE_DIAMETER, AND_BOTTOM_Y + 4, LEFT);
+
+    circle(AND_LEFT_X - BUBBLE_RADIUS, AND_BOTTOM_Y + 2, BUBBLE_RADIUS);
+    pin(b, AND_LEFT_X - BUBBLE_DIAMETER, AND_BOTTOM_Y + 2, LEFT);
+
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 0, LEFT);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr3) {
+    canonical_name : "a3.3";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(or3_outline,0,0,0);
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr3_no_ab) {
+    sub_symbol(or_outline,0,0,0);
+
+    line(OR_LEFT_X, OR_TOP_Y, OR_LEFT_X, OR_TOP_Y + EXTRA_WING_SPAN);
+    line(OR_LEFT_X, OR_BOTTOM_Y, OR_LEFT_X, OR_BOTTOM_Y - EXTRA_WING_SPAN);
+
+    pin(c, OR_LEFT_X, OR_BOTTOM_Y, LEFT);
+
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr3i1) {
+    canonical_name : "a3.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(nr3_no_ab,0,0,0);
+
+    circle(OR_LEFT_X - BUBBLE_RADIUS, OR_BOTTOM_Y + 4, BUBBLE_RADIUS);
+    pin(a, OR_LEFT_X - BUBBLE_DIAMETER, OR_BOTTOM_Y + 4, LEFT);
+    pin(b, OR_ODD_LEFT_PIN_X, OR_BOTTOM_Y + 2, LEFT);
+  }
+
+  symbol(nr3i2) {
+    canonical_name : "a3.1";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(nr3_no_ab,0,0,0);
+
+    circle(OR_LEFT_X - BUBBLE_RADIUS, OR_BOTTOM_Y + 4, BUBBLE_RADIUS);
+    pin(a, OR_LEFT_X - BUBBLE_DIAMETER, OR_BOTTOM_Y + 4, LEFT);
+
+    circle(OR_ODD_LEFT_PIN_X - BUBBLE_RADIUS, OR_BOTTOM_Y + 2, BUBBLE_RADIUS);
+    pin(b, OR_ODD_LEFT_PIN_X - BUBBLE_DIAMETER, OR_BOTTOM_Y + 2, LEFT);
+  }
+
+  symbol(and4) {
+    canonical_name : "a4.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN - 1,       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN + 1);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 5, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 3, LEFT);
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 1, LEFT);
+    pin(d, AND_LEFT_X, AND_BOTTOM_Y - 1, LEFT);
+    pin(z, AND_RIGHT_X, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(or4_outline) {
+    sub_symbol(or_outline,0,0,0);
+
+    line(OR_LEFT_X, OR_TOP_Y, OR_LEFT_X, OR_TOP_Y + EXTRA_WING_SPAN + 1);
+    line(OR_LEFT_X, OR_BOTTOM_Y, OR_LEFT_X, OR_BOTTOM_Y - EXTRA_WING_SPAN - 1 );
+
+    pin(a, OR_LEFT_X, OR_BOTTOM_Y + 5, LEFT);
+    pin(b, OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 3, LEFT);
+    pin(c, OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 1, LEFT);
+    pin(d, OR_LEFT_X, OR_BOTTOM_Y - 1, LEFT);
+  }
+
+  symbol(or4) {
+    canonical_name : "Ia4.4";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(or4_outline,0,0,0);
+    pin(z, OR_RIGHT_X,OR_MIDDLE_Y,RIGHT);
+  }
+
+  symbol(nd4) {
+    canonical_name : "Ia4.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN - 1,       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN + 1);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 5, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 3, LEFT);
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 1, LEFT);
+    pin(d, AND_LEFT_X, AND_BOTTOM_Y - 1, LEFT);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr4) {
+    canonical_name : "a4.4";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(or4_outline,0,0,0);
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(and5) {
+    canonical_name : "a5.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN - 2,       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN + 2);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 6, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 4, LEFT);
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 2, LEFT);
+    pin(d, AND_LEFT_X, AND_BOTTOM_Y - 0, LEFT);
+    pin(e, AND_LEFT_X, AND_BOTTOM_Y - 2, LEFT);
+    pin(z, AND_RIGHT_X, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(or5_outline) {
+    sub_symbol(or_outline,0,0,0);
+    sub_symbol(left_side_of_or, 0, 4,0);
+    sub_symbol(left_side_of_or, 0, - 4,0);
+
+    pin(a,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y + 6,LEFT);
+    pin(b,OR_LEFT_X,OR_BOTTOM_Y + 4,LEFT);
+    pin(c,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y + 2,LEFT);
+    pin(d,OR_LEFT_X,OR_BOTTOM_Y,LEFT);
+    pin(e,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y - 2,LEFT);
+  }
+
+  symbol(or5) {
+    canonical_name : "Ia5.5";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(or5_outline,0,0,0);
+    pin(z, OR_RIGHT_X,OR_MIDDLE_Y,RIGHT);
+  }
+
+  symbol(nd5) {
+    canonical_name : "Ia5.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN - 2,       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN + 2);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 6, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 4, LEFT);
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 2, LEFT);
+    pin(d, AND_LEFT_X, AND_BOTTOM_Y - 0, LEFT);
+    pin(e, AND_LEFT_X, AND_BOTTOM_Y - 2, LEFT);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr5) {
+    canonical_name : "a5.5";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(or5_outline,0,0,0);
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(or6_outline) {
+    sub_symbol(or_outline,0,0,0);
+    sub_symbol(left_side_of_or, 0, 4,0);
+    sub_symbol(left_side_of_or, 0, - 4,0);
+
+    pin(a,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 7, LEFT);
+    pin(b,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 5, LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 3, LEFT);
+    pin(d,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 1, LEFT);
+    pin(e,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 1, LEFT);
+    pin(f,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 3, LEFT);
+  }
+
+  symbol(or6) {
+    canonical_name : "Ia6.6";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(z, 6);
+
+    sub_symbol(or6_outline,0,0,0);
+    pin(z, OR_RIGHT_X,OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(and6) {
+    canonical_name : "a6.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(z, 6);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN - 3,       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN + 3);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 7, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 5, LEFT);
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 3, LEFT);
+    pin(d, AND_LEFT_X, AND_BOTTOM_Y + 1, LEFT);
+    pin(e, AND_LEFT_X, AND_BOTTOM_Y - 1, LEFT);
+    pin(f, AND_LEFT_X, AND_BOTTOM_Y - 3, LEFT);
+    pin(z, AND_RIGHT_X, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nd6) {
+    canonical_name : "Ia6.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(z, 6);
+
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN - 3,       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN + 3);
+
+    pin(a, AND_LEFT_X, AND_BOTTOM_Y + 7, LEFT);
+    pin(b, AND_LEFT_X, AND_BOTTOM_Y + 5, LEFT);
+    pin(c, AND_LEFT_X, AND_BOTTOM_Y + 3, LEFT);
+    pin(d, AND_LEFT_X, AND_BOTTOM_Y + 1, LEFT);
+    pin(e, AND_LEFT_X, AND_BOTTOM_Y - 1, LEFT);
+    pin(f, AND_LEFT_X, AND_BOTTOM_Y - 3, LEFT);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr6) {
+    canonical_name : "a6.6";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(z, 6);
+
+    sub_symbol(or6_outline,0,0,0);
+
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr7) {
+    canonical_name : "a7.7";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(g, 6);
+    canonical_pin_number(z, 7);
+
+    sub_symbol(or_outline,0,0,0);
+    sub_symbol(left_side_of_or, 0, 4, 0);
+    sub_symbol(left_side_of_or, 0, - 4, 0);
+
+    line(OR_LEFT_X, OR_TOP_Y + 4, OR_LEFT_X, OR_TOP_Y + 4 + EXTRA_WING_SPAN);
+    line(OR_LEFT_X, OR_BOTTOM_Y - 4, OR_LEFT_X, OR_BOTTOM_Y - 4 - EXTRA_WING_SPAN);
+
+    pin(a,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y + 8,LEFT);
+    pin(b,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y + 6,LEFT);
+    pin(c,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y + 4,LEFT);
+    pin(d,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y + 2,LEFT);
+    pin(e,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y,LEFT);
+    pin(f,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y - 2,LEFT);
+    pin(g,OR_ODD_LEFT_PIN_X,OR_BOTTOM_Y - 4,LEFT);
+
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(and8_outline) {
+    sub_symbol(and_outline,0,0,0);
+
+    line(AND_LEFT_X, AND_BOTTOM_Y - EXTRA_WING_SPAN - 5,       	       	      \
+	 AND_LEFT_X, AND_TOP_Y + EXTRA_WING_SPAN + 5);
+
+    pin(a,AND_LEFT_X,AND_BOTTOM_Y + 9,LEFT);
+    pin(b,AND_LEFT_X,AND_BOTTOM_Y + 7,LEFT);
+    pin(c,AND_LEFT_X,AND_BOTTOM_Y + 5,LEFT);
+    pin(d,AND_LEFT_X,AND_BOTTOM_Y + 3,LEFT);
+    pin(e,AND_LEFT_X,AND_BOTTOM_Y + 1,LEFT);
+    pin(f,AND_LEFT_X,AND_BOTTOM_Y - 1,LEFT);
+    pin(g,AND_LEFT_X,AND_BOTTOM_Y - 3,LEFT);
+    pin(h,AND_LEFT_X,AND_BOTTOM_Y - 5,LEFT);
+  }
+
+  symbol(and8) {
+    canonical_name : "a8.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(g, 6);
+    canonical_pin_number(h, 7);
+    canonical_pin_number(z, 8);
+
+    sub_symbol(and8_outline,0,0,0);
+    pin(z, AND_RIGHT_X, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(or8_outline) {
+    sub_symbol(or_outline,0,0,0);
+    sub_symbol(left_side_of_or, 0, 4,0);
+    sub_symbol(left_side_of_or, 0, - 4,0);
+
+    line(OR_LEFT_X, OR_TOP_Y + 4, OR_LEFT_X, OR_TOP_Y + 5 + EXTRA_WING_SPAN);
+    line(OR_LEFT_X, OR_BOTTOM_Y - 4, OR_LEFT_X, OR_BOTTOM_Y - 5 - EXTRA_WING_SPAN);
+
+    pin(a,OR_LEFT_X, OR_BOTTOM_Y + 9, LEFT);
+    pin(b,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 7, LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 5, LEFT);
+    pin(d,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 3, LEFT);
+    pin(e,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 1, LEFT);
+    pin(f,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 1, LEFT);
+    pin(g,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 3, LEFT);
+    pin(h,OR_LEFT_X, OR_BOTTOM_Y - 5, LEFT);
+  }
+
+  symbol(or8) {
+    canonical_name : "Ia8.8";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(g, 6);
+    canonical_pin_number(h, 7);
+    canonical_pin_number(z, 8);
+
+    sub_symbol(or8_outline,0,0,0);
+    pin(z, OR_RIGHT_X, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nd8) {
+    canonical_name : "Ia8.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(g, 6);
+    canonical_pin_number(h, 7);
+    canonical_pin_number(z, 8);
+
+    sub_symbol(and8_outline,0,0,0);
+
+    circle(AND_RIGHT_X + BUBBLE_RADIUS, AND_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, AND_RIGHT_X + BUBBLE_DIAMETER, AND_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr8) {
+    canonical_name : "a8.8";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(g, 6);
+    canonical_pin_number(h, 7);
+    canonical_pin_number(z, 8);
+
+    sub_symbol(or8_outline,0,0,0);
+
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(nr16) {
+    canonical_name : "a16.16";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(g, 6);
+    canonical_pin_number(h, 7);
+    canonical_pin_number(i, 8);
+    canonical_pin_number(j, 9);
+    canonical_pin_number(k, 10);
+    canonical_pin_number(l, 11);
+    canonical_pin_number(m, 12);
+    canonical_pin_number(n, 13);
+    canonical_pin_number(o, 14);
+    canonical_pin_number(p, 15);
+    canonical_pin_number(z, 16);
+
+    sub_symbol(or_outline,0,0,0);
+    sub_symbol(left_side_of_or, 0, 4,0);
+    sub_symbol(left_side_of_or, 0, - 4,0);
+    sub_symbol(left_side_of_or, 0, 8,0);
+    sub_symbol(left_side_of_or, 0, - 8,0);
+    sub_symbol(left_side_of_or, 0, 12,0);
+    sub_symbol(left_side_of_or, 0, - 12,0);
+    sub_symbol(left_side_of_or, 0, 16,0);
+    sub_symbol(left_side_of_or, 0, - 16,0);
+
+
+    pin(a,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 17, LEFT);
+    pin(b,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 15, LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 13, LEFT);
+    pin(d,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 11, LEFT);
+    pin(e,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 9, LEFT);
+    pin(f,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 7, LEFT);
+    pin(g,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 5, LEFT);
+    pin(h,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 3, LEFT);
+    pin(i,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y + 1, LEFT);
+    pin(j,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 1, LEFT);
+    pin(k,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 3, LEFT);
+    pin(l,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 5, LEFT);
+    pin(m,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 7, LEFT);
+    pin(n,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 9, LEFT);
+    pin(o,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 11, LEFT);
+    pin(p,OR_EVEN_LEFT_PIN_X, OR_BOTTOM_Y - 13, LEFT);
+
+    circle(OR_RIGHT_X + BUBBLE_RADIUS, OR_MIDDLE_Y, BUBBLE_RADIUS);
+    pin(z, OR_RIGHT_X + BUBBLE_DIAMETER, OR_MIDDLE_Y, RIGHT);
+  }
+
+  XOR_ARC_CENTER_X = OR_LEFT_ARC_CENTER_X - XOR_GAP;
+  XOR_ARC_START_X = OR_LEFT_X - XOR_GAP;
+
+  symbol(xn) {
+    canonical_name : "Ixor2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+    sub_symbol(nr2,0,0,0);
+    arc(XOR_ARC_START_X, OR_TOP_Y ,XOR_ARC_START_X, OR_BOTTOM_Y,       	      \
+	XOR_ARC_CENTER_X, OR_MIDDLE_Y);
+  }
+  symbol(xn1) {
+    canonical_name : "Ixorr";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(z, 1);
+
+    sub_symbol(nr1,0,0,0);
+    arc(XOR_ARC_START_X, OR_TOP_Y ,XOR_ARC_START_X, OR_BOTTOM_Y,       	      \
+	XOR_ARC_CENTER_X, OR_MIDDLE_Y);
+  }
+
+  symbol(xr) {
+    canonical_name : "xor2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(z, 2);
+
+    sub_symbol(or,0,0,0);
+    arc(XOR_ARC_START_X, OR_TOP_Y ,XOR_ARC_START_X, OR_BOTTOM_Y,       	      \
+	XOR_ARC_CENTER_X, OR_MIDDLE_Y);
+  }
+
+  symbol(xr1) {
+    canonical_name : "xorr";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(z, 1);
+
+    sub_symbol(or1,0,0,0);
+    arc(XOR_ARC_START_X, OR_TOP_Y ,XOR_ARC_START_X, OR_BOTTOM_Y,       	      \
+	XOR_ARC_CENTER_X, OR_MIDDLE_Y);
+  }
+
+  symbol(xn3) {
+    canonical_name : "Ixor3";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(nr3,0,0,0);
+    arc(XOR_ARC_START_X, OR_TOP_Y ,XOR_ARC_START_X, OR_BOTTOM_Y,       	      \
+	XOR_ARC_CENTER_X, OR_MIDDLE_Y);
+  }
+
+  symbol(xr3) {
+    canonical_name : "xor3";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(or3,0,0,0);
+    arc(XOR_ARC_START_X, OR_TOP_Y ,XOR_ARC_START_X, OR_BOTTOM_Y,       	      \
+	XOR_ARC_CENTER_X, OR_MIDDLE_Y);
+  }
+
+  /* The following gates are defined which have their origin at
+     their lower left corner */
+
+  symbol(and_gate) {
+    sub_symbol(and_outline,AND_X_ORIGIN, AND_Y_ORIGIN,0);
+    line(0,0,0,AND_HEIGHT);
+  }
+
+  symbol(nand_gate) {
+    sub_symbol(and_gate,0,0,0);
+    circle(AND_WIDTH + BUBBLE_RADIUS, AND_HEIGHT / 2.0, BUBBLE_RADIUS);
+  }
+
+  symbol(or_gate) {
+    sub_symbol(or_outline,OR_X_ORIGIN,OR_Y_ORIGIN,0);
+  }
+
+  symbol(nor_gate) {
+    sub_symbol(or_outline,OR_X_ORIGIN,OR_Y_ORIGIN,0);
+    circle(OR_WIDTH + BUBBLE_RADIUS, OR_HEIGHT / 2.0, BUBBLE_RADIUS);
+  }
+
+  /* adjust constants for gates with lower left origins */
+
+  OR_EVEN_LEFT_PIN_X = OR_EVEN_LEFT_PIN_X + OR_X_ORIGIN;
+  OR_ODD_LEFT_PIN_X = OR_ODD_LEFT_PIN_X + OR_X_ORIGIN;
+
+  NOR_WIDTH = OR_WIDTH + BUBBLE_DIAMETER;
+  NAND_WIDTH = AND_WIDTH + BUBBLE_DIAMETER;
+
+
+  symbol(aoi21) {
+    canonical_name : "a2.1b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(and_gate,- AND_WIDTH, 0,0);
+    sub_symbol(nor_gate,0,- 2,0);
+    pin(a,- AND_WIDTH,3,LEFT);
+    pin(b,- AND_WIDTH,1,LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(oai21) {
+    canonical_name : "Ia2.0b2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(or_gate,- OR_WIDTH,0,0);
+    sub_symbol(nand_gate,0,- 2,0);
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1,LEFT);
+    pin(c,0,- 1,LEFT);
+    pin(z,NAND_WIDTH,0,RIGHT);
+  }
+
+  symbol(ao21) {
+    canonical_name : "Ia2.1b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(and_gate,- AND_WIDTH, 0,0);
+    sub_symbol(or_gate,0,- 2,0);
+    pin(a,- AND_WIDTH,3,LEFT);
+    pin(b,- AND_WIDTH,1,LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(z,OR_WIDTH,0,RIGHT);
+  }
+
+  symbol(oa21) {
+    canonical_name : "a2.0b2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(or_gate,- OR_WIDTH,0,0);
+    sub_symbol(and_gate,0,- 2,0);
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1,LEFT);
+    pin(c,0,- 1,LEFT);
+    pin(z,AND_WIDTH,0,RIGHT);
+  }
+
+  symbol(aoi22) {
+    canonical_name : "a2.0b2.2b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(nor_gate,0,- 2,0);
+    sub_symbol(and_gate,- AND_WIDTH, GATE_GAP,0);
+    sub_symbol(and_gate,- AND_WIDTH, - 4 - GATE_GAP,0);
+
+    line(0,2 + GATE_GAP,0,2);
+    line(0,- 2 - GATE_GAP,0,- 2);
+
+    pin(a,- AND_WIDTH,3 + GATE_GAP,LEFT);
+    pin(b,- AND_WIDTH,1 + GATE_GAP,LEFT);
+    pin(c,- AND_WIDTH,- 1 - GATE_GAP,LEFT);
+    pin(d,- AND_WIDTH,- 3 - GATE_GAP,LEFT);
+    pin(z,NOR_WIDTH, 0,RIGHT);
+  }
+
+  symbol(oai22) {
+    canonical_name : "Ia2.0b2.0b2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(nand_gate,0,- 2,0);
+    sub_symbol(or_gate,- OR_WIDTH, GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH, - 4 - GATE_GAP,0);
+
+    line(0,2 + GATE_GAP,0,2);
+    line(0,- 2 - GATE_GAP,0,- 2);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3 + GATE_GAP,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1 + GATE_GAP,LEFT);
+    pin(c,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 1 - GATE_GAP,LEFT);
+    pin(d,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 3 - GATE_GAP,LEFT);
+    pin(z,NAND_WIDTH, 0,RIGHT);
+  }
+
+  symbol(ao22) {
+    canonical_name : "Ia2.0b2.2b2.2";
+    canonical_pin_number(a, 2);
+    canonical_pin_number(b, 3);
+    canonical_pin_number(c, 0);
+    canonical_pin_number(d, 1);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(or_gate,0,- 2,0);
+    sub_symbol(and_gate,- AND_WIDTH, GATE_GAP,0);
+    sub_symbol(and_gate,- AND_WIDTH, - 4 - GATE_GAP,0);
+
+    line(0,2 + GATE_GAP,0,2);
+    line(0,- 2 - GATE_GAP,0,- 2);
+
+    pin(a,- AND_WIDTH,3 + GATE_GAP,LEFT);
+    pin(b,- AND_WIDTH,1 + GATE_GAP,LEFT);
+    pin(c,- AND_WIDTH,- 1 - GATE_GAP,LEFT);
+    pin(d,- AND_WIDTH,- 3 - GATE_GAP,LEFT);
+    pin(z,OR_WIDTH, 0,RIGHT);
+  }
+
+  symbol(oa22) {
+    canonical_name : "a2.0b2.0b2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(and_gate,0,- 2,0);
+    sub_symbol(or_gate,- OR_WIDTH, GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH, - 4 - GATE_GAP,0);
+
+    line(0,2 + GATE_GAP,0,2);
+    line(0,- 2 - GATE_GAP,0,- 2);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3 + GATE_GAP,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1 + GATE_GAP,LEFT);
+    pin(c,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 1 - GATE_GAP,LEFT);
+    pin(d,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 3 - GATE_GAP,LEFT);
+    pin(z,AND_WIDTH, 0,RIGHT);
+  }
+
+  symbol(aoi221) {
+    sub_symbol(and_gate,- AND_WIDTH, 0,0);
+    sub_symbol(and_gate,- AND_WIDTH, 4 + GATE_GAP,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,2,0,6 + GATE_GAP);
+
+    pin(a,- AND_WIDTH,7 + GATE_GAP,LEFT);
+    pin(b,- AND_WIDTH,5 + GATE_GAP,LEFT);
+    pin(c,- AND_WIDTH,3,LEFT);
+    pin(d,- AND_WIDTH,1,LEFT);
+    pin(e,OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(aoi211) {
+    canonical_name : "a3.2b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(and_gate,- AND_WIDTH, 1,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,2,0,3);
+    line(0,- 2,0,- 2 - EXTRA_WING_SPAN);
+
+    pin(a,- AND_WIDTH,4,LEFT);
+    pin(b,- AND_WIDTH,2,LEFT);
+    pin(c,OR_ODD_LEFT_PIN_X,0,LEFT);
+    pin(d,0,- 2,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(ao211) {
+    canonical_name : "Ia3.2b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(and_gate,- AND_WIDTH, 1,0);
+    sub_symbol(or_gate,0,- 2,0);
+
+    line(0,2,0,3);
+    line(0,- 2,0,- 2 - EXTRA_WING_SPAN);
+
+    pin(a,- AND_WIDTH,4,LEFT);
+    pin(b,- AND_WIDTH,2,LEFT);
+    pin(c,OR_ODD_LEFT_PIN_X,0,LEFT);
+    pin(d,0,- 2,LEFT);
+    pin(z,OR_WIDTH,0,RIGHT);
+  }
+
+  symbol(oai211) {
+    canonical_name : "Ia3.0b2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(or_gate,- OR_WIDTH, 1,0);
+    sub_symbol(nand_gate,0,- 2,0);
+
+    line(0,2,0,3);
+    line(0,- 2,0,- 2 - EXTRA_WING_SPAN);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,4,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,2,LEFT);
+    pin(c,0,0,LEFT);
+    pin(d,0,- 2,LEFT);
+    pin(z,NAND_WIDTH,0,RIGHT);
+  }
+
+  symbol(oa211) {
+    canonical_name : "a3.0b2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(or_gate,- OR_WIDTH, 1,0);
+    sub_symbol(and_gate,0,- 2,0);
+
+    line(0,2,0,3);
+    line(0,- 2,0,- 2 - EXTRA_WING_SPAN);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,4,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,2,LEFT);
+    pin(c,0,0,LEFT);
+    pin(d,0,- 2,LEFT);
+    pin(z,AND_WIDTH,0,RIGHT);
+  }
+
+  symbol(and3_gate) {
+    sub_symbol(and_outline,AND_X_ORIGIN, AND_Y_ORIGIN,0);
+    line(0,- EXTRA_WING_SPAN,0,AND_HEIGHT + EXTRA_WING_SPAN);
+  }
+
+  symbol(nand3_gate) {
+    sub_symbol(and3_gate,0,0,0);
+    circle(AND_WIDTH + BUBBLE_RADIUS, AND_HEIGHT / 2.0, BUBBLE_RADIUS);
+  }
+
+  symbol(or3_gate) {
+    sub_symbol(or_outline,OR_X_ORIGIN,OR_Y_ORIGIN,0);
+
+    line(0,- EXTRA_WING_SPAN,0,0);
+    line(0,OR_HEIGHT,0,OR_HEIGHT + EXTRA_WING_SPAN);
+  }
+
+  symbol(nor3_gate) {
+    sub_symbol(or_outline,OR_X_ORIGIN,OR_Y_ORIGIN,0);
+    circle(OR_WIDTH + BUBBLE_RADIUS, OR_HEIGHT / 2.0, BUBBLE_RADIUS);
+
+    line(0,- EXTRA_WING_SPAN,0,0);
+    line(0,OR_HEIGHT,0,OR_HEIGHT + EXTRA_WING_SPAN);
+  }
+
+  symbol(aoi31) {
+    canonical_name : "a2.1b3.3";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(and3_gate,- AND_WIDTH,1,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,2,0,2 + 1);
+
+    pin(a,- AND_WIDTH,5,LEFT);
+    pin(b,- AND_WIDTH,3,LEFT);
+    pin(c,- AND_WIDTH,1,LEFT);
+    pin(d,OR_EVEN_LEFT_PIN_X, - 1,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(aoi222) {
+    canonical_name : "a3.0b2.2b2.2b2.2";
+    canonical_pin_number(a, 2);
+    canonical_pin_number(b, 3);
+    canonical_pin_number(c, 4);
+    canonical_pin_number(d, 5);
+    canonical_pin_number(e, 0);
+    canonical_pin_number(f, 1);
+    canonical_pin_number(z, 6);
+
+    sub_symbol(and_gate,- AND_WIDTH, 2 + GATE_GAP,0);
+    sub_symbol(and_gate,- AND_WIDTH, - 2,0);
+    sub_symbol(and_gate,- AND_WIDTH, - 6 - GATE_GAP,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,0,OR_ODD_LEFT_PIN_X,0);
+    line(0,4 + GATE_GAP,0,2);
+    line(0,- 4 - GATE_GAP,0,- 2);
+
+    pin(a,- AND_WIDTH, 5 + GATE_GAP,LEFT);
+    pin(b,- AND_WIDTH, 3 + GATE_GAP,LEFT);
+    pin(c,- AND_WIDTH, 1,LEFT);
+    pin(d,- AND_WIDTH, - 1,LEFT);
+    pin(e,- AND_WIDTH, - 3 - GATE_GAP,LEFT);
+    pin(f,- AND_WIDTH, - 5 - GATE_GAP,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(aoi32) {
+    canonical_name : "a2.0b3.3b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(and3_gate,- AND_WIDTH, 1, 0);
+    sub_symbol(and_gate,- AND_WIDTH, - 5, 0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,3,0,2);
+    line(0,- 3,0,- 2);
+
+    pin(a,- AND_WIDTH, 5,LEFT);
+    pin(b,- AND_WIDTH, 3,LEFT);
+    pin(c,- AND_WIDTH, 1,LEFT);
+    pin(d,- AND_WIDTH, - 2,LEFT);
+    pin(e,- AND_WIDTH, - 4,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(aoi33) {
+    canonical_name : "a2.0b3.3b3.3";
+    canonical_pin_number(a, 3);
+    canonical_pin_number(b, 4);
+    canonical_pin_number(c, 5);
+    canonical_pin_number(d, 0);
+    canonical_pin_number(e, 1);
+    canonical_pin_number(f, 2);
+    canonical_pin_number(z, 6);
+
+    sub_symbol(and3_gate,- AND_WIDTH, 1, 0);
+    sub_symbol(and3_gate,- AND_WIDTH, - 5, 0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,3,0,2);
+    line(0,- 3,0,- 2);
+
+    pin(a,- AND_WIDTH, 5,LEFT);
+    pin(b,- AND_WIDTH, 3,LEFT);
+    pin(c,- AND_WIDTH, 1,LEFT);
+    pin(d,- AND_WIDTH, - 1,LEFT);
+    pin(e,- AND_WIDTH, - 3,LEFT);
+    pin(f,- AND_WIDTH, - 5,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(ao33) {
+    canonical_name : "Ia2.0b3.3b3.3";
+    canonical_pin_number(a, 3);
+    canonical_pin_number(b, 4);
+    canonical_pin_number(c, 5);
+    canonical_pin_number(d, 0);
+    canonical_pin_number(e, 1);
+    canonical_pin_number(f, 2);
+    canonical_pin_number(z, 6);
+
+    sub_symbol(and3_gate,- AND_WIDTH, 1, 0);
+    sub_symbol(and3_gate,- AND_WIDTH, - 5, 0);
+    sub_symbol(or_gate,0,- 2,0);
+
+    line(0,3,0,2);
+    line(0,- 3,0,- 2);
+
+    pin(a,- AND_WIDTH, 5,LEFT);
+    pin(b,- AND_WIDTH, 3,LEFT);
+    pin(c,- AND_WIDTH, 1,LEFT);
+    pin(d,- AND_WIDTH, - 1,LEFT);
+    pin(e,- AND_WIDTH, - 3,LEFT);
+    pin(f,- AND_WIDTH, - 5,LEFT);
+    pin(z,OR_WIDTH,0,RIGHT);
+  }
+
+  symbol(aoi333) {
+    canonical_name : "a3.0b3.3b3.3b3.3";
+    canonical_pin_number(a, 6);
+    canonical_pin_number(b, 7);
+    canonical_pin_number(c, 8);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(g, 0);
+    canonical_pin_number(h, 1);
+    canonical_pin_number(i, 2);
+    canonical_pin_number(z, 9);
+
+    sub_symbol(and3_gate,- AND_WIDTH, 4,0);
+    sub_symbol(and3_gate,- AND_WIDTH, - 2,0);
+    sub_symbol(and3_gate,- AND_WIDTH, - 8,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,6,0,2);
+    line(0,- 6,0,- 2);
+    line(0,0,OR_ODD_LEFT_PIN_X,0);
+
+    pin(a,- AND_WIDTH, 8,LEFT);
+    pin(b,- AND_WIDTH, 6,LEFT);
+    pin(c,- AND_WIDTH, 4,LEFT);
+    pin(d,- AND_WIDTH, 2,LEFT);
+    pin(e,- AND_WIDTH, 0,LEFT);
+    pin(f,- AND_WIDTH, - 2,LEFT);
+    pin(g,- AND_WIDTH, - 4,LEFT);
+    pin(h,- AND_WIDTH, - 6,LEFT);
+    pin(i,- AND_WIDTH, - 8,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(and4_gate) {
+    sub_symbol(and_outline,AND_X_ORIGIN, AND_Y_ORIGIN,0);
+    line(0,- 1 - EXTRA_WING_SPAN,0,1 + AND_HEIGHT + EXTRA_WING_SPAN);
+  }
+
+  symbol(aoi444) {
+    canonical_name : "a3.0b4.4b4.4b4.4";
+    canonical_pin_number(a, 8);
+    canonical_pin_number(b, 9);
+    canonical_pin_number(c, 10);
+    canonical_pin_number(d, 11);
+    canonical_pin_number(e, 0);
+    canonical_pin_number(f, 1);
+    canonical_pin_number(g, 2);
+    canonical_pin_number(h, 3);
+    canonical_pin_number(i, 4);
+    canonical_pin_number(j, 5);
+    canonical_pin_number(k, 6);
+    canonical_pin_number(l, 7);
+    canonical_pin_number(z, 12);
+
+    sub_symbol(and4_gate,- AND_WIDTH, 6,0);
+    sub_symbol(and4_gate,- AND_WIDTH, - 2,0);
+    sub_symbol(and4_gate,- AND_WIDTH, - 10,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,8,0,2);
+    line(0,- 8,0,- 2);
+    line(0,0,OR_ODD_LEFT_PIN_X,0);
+
+    pin(a,- AND_WIDTH, 11,LEFT);
+    pin(b,- AND_WIDTH, 9,LEFT);
+    pin(c,- AND_WIDTH, 7,LEFT);
+    pin(d,- AND_WIDTH, 5,LEFT);
+    pin(e,- AND_WIDTH, 3,LEFT);
+    pin(f,- AND_WIDTH, 1,LEFT);
+    pin(g,- AND_WIDTH, - 1,LEFT);
+    pin(h,- AND_WIDTH, - 3,LEFT);
+    pin(i,- AND_WIDTH, - 5,LEFT);
+    pin(j,- AND_WIDTH, - 7,LEFT);
+    pin(k,- AND_WIDTH, - 9,LEFT);
+    pin(l,- AND_WIDTH, - 11,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+
+  symbol(or4_gate) {
+    sub_symbol(or_outline,OR_X_ORIGIN,OR_Y_ORIGIN,0);
+
+    line(0,- 1 - EXTRA_WING_SPAN,0,0);
+    line(0,OR_HEIGHT,0,OR_HEIGHT + EXTRA_WING_SPAN + 1);
+  }
+
+  symbol(oai444) {
+    canonical_name : "Ia3.0b4.0b4.0b4.0";
+    canonical_pin_number(a, 4);
+    canonical_pin_number(b, 5);
+    canonical_pin_number(c, 6);
+    canonical_pin_number(d, 7);
+    canonical_pin_number(e, 8);
+    canonical_pin_number(f, 9);
+    canonical_pin_number(g, 10);
+    canonical_pin_number(h, 11);
+    canonical_pin_number(i, 0);
+    canonical_pin_number(j, 1);
+    canonical_pin_number(k, 2);
+    canonical_pin_number(l, 3);
+    canonical_pin_number(z, 12);
+
+    sub_symbol(or4_gate,- OR_WIDTH, 6,0);
+    sub_symbol(or4_gate,- OR_WIDTH, - 2,0);
+    sub_symbol(or4_gate,- OR_WIDTH, - 10,0);
+    sub_symbol(nand_gate,0,- 2,0);
+
+    line(0,8,0,2);
+    line(0,- 8,0,- 2);
+
+    pin(a,- OR_WIDTH, 11,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X, 9,LEFT);
+    pin(c,- OR_WIDTH + OR_EVEN_LEFT_PIN_X, 7,LEFT);
+    pin(d,- OR_WIDTH, 5,LEFT);
+    pin(e,- OR_WIDTH, 3,LEFT);
+    pin(f,- OR_WIDTH + OR_EVEN_LEFT_PIN_X, 1,LEFT);
+    pin(g,- OR_WIDTH + OR_EVEN_LEFT_PIN_X, - 1,LEFT);
+    pin(h,- OR_WIDTH, - 3,LEFT);
+    pin(i,- OR_WIDTH, - 5,LEFT);
+    pin(j,- OR_WIDTH + OR_EVEN_LEFT_PIN_X, - 7,LEFT);
+    pin(k,- OR_WIDTH + OR_EVEN_LEFT_PIN_X, - 9,LEFT);
+    pin(l,- OR_WIDTH, - 11,LEFT);
+    pin(z,NAND_WIDTH,0,RIGHT);
+  }
+
+  symbol(aoi42) {
+    canonical_name : "a2.0b4.4b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(z, 6);
+
+    sub_symbol(and4_gate,- AND_WIDTH,1,0);
+    sub_symbol(and_gate,- AND_WIDTH,- 5 - ceil(EXTRA_WING_SPAN),0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,3,0,2);
+    line(0,- 2,0,- 3 - ceil(EXTRA_WING_SPAN));
+
+    pin(a,- AND_WIDTH, 6, LEFT);
+    pin(b,- AND_WIDTH, 4, LEFT);
+    pin(c,- AND_WIDTH, 2, LEFT);
+    pin(d,- AND_WIDTH, 0, LEFT);
+    pin(e,- AND_WIDTH, - 2 - ceil(EXTRA_WING_SPAN), LEFT);
+    pin(f,- AND_WIDTH, - 4 - ceil(EXTRA_WING_SPAN), LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(oai31) {
+    canonical_name : "Ia2.0b3.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(or3_gate,- OR_WIDTH,1,0);
+    sub_symbol(nand_gate,0,- 2,0);
+
+    line(0,3,0,2);
+
+    pin(a,- OR_WIDTH,5,LEFT);
+    pin(b,- OR_WIDTH + OR_ODD_LEFT_PIN_X,3,LEFT);
+    pin(c,- OR_WIDTH,1,LEFT);
+    pin(d,0,- 1,LEFT);
+    pin(z,NAND_WIDTH,0,RIGHT);
+  }
+
+  symbol(aoai211) {
+    canonical_name : "Ia2.0b2.0c2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(and_gate,- AND_WIDTH,0,0);
+    sub_symbol(or_gate,0,- 2,0);
+    sub_symbol(nand_gate,OR_WIDTH,- 4,0);
+
+    pin(a,- AND_WIDTH,3,LEFT);
+    pin(b,- AND_WIDTH,1,LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(d,OR_WIDTH,- 3,LEFT);
+    pin(z,OR_WIDTH + NAND_WIDTH,- 2,RIGHT);
+  }
+
+  symbol (aoa211) {
+    sub_symbol(and_gate,- AND_WIDTH,0,0);
+    sub_symbol(or_gate,0,- 2,0);
+    sub_symbol(and_gate,OR_WIDTH,- 4,0);
+
+    pin(a,- AND_WIDTH,3,LEFT);
+    pin(b,- AND_WIDTH,1,LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(d,OR_WIDTH,- 3,LEFT);
+    pin(z,OR_WIDTH + AND_WIDTH,- 2,RIGHT);
+  }
+
+  symbol(oao211) {
+    canonical_name : "Ia2.1b2.1c2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(or_gate,- OR_WIDTH,0,0);
+    sub_symbol(and_gate,0,- 2,0);
+    sub_symbol(or_gate,AND_WIDTH,- 4,0);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1,LEFT);
+    pin(c,0,- 1,LEFT);
+    pin(d,AND_WIDTH + OR_EVEN_LEFT_PIN_X,- 3,LEFT);
+    pin(z,AND_WIDTH + OR_WIDTH,- 2,RIGHT);
+  }
+
+  symbol(oai2111) {
+    canonical_name : "Ia4.0b2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(or_gate,- OR_WIDTH,0,0);
+    sub_symbol(nand_gate,0,- 2,0);
+
+    line(0,- 2,0,- 5 - EXTRA_WING_SPAN);
+
+    pin(a,- OR_WiDTH + OR_EVEN_LEFT_PIN_X,3,LEFT);
+    pin(b,- OR_WiDTH + OR_EVEN_LEFT_PIN_X,1,LEFT);
+    pin(c,0,- 1,LEFT);
+    pin(d,0,- 3,LEFT);
+    pin(e,0,- 5,LEFT);
+    pin(z,NAND_WIDTH,0,RIGHT);
+  }
+
+  symbol(oaoi211) {
+    canonical_name : "a2.1b2.1c2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    sub_symbol(or_gate,- OR_WIDTH,0,0);
+    sub_symbol(and_gate,0,- 2,0);
+    sub_symbol(nor_gate,AND_WIDTH,- 4,0);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1,LEFT);
+    pin(c,0,- 1,LEFT);
+    pin(d,AND_WIDTH + OR_EVEN_LEFT_PIN_X,- 3,LEFT);
+    pin(z,AND_WIDTH + NOR_WIDTH,- 2,RIGHT);
+  }
+
+  symbol(aoi311) {
+    canonical_name : "a3.2b3.3";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(and3_gate,- AND_WIDTH,0,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,- 2,0,- 4 - EXTRA_WING_SPAN);
+
+    pin(a,- AND_WIDTH,4,LEFT);
+    pin(b,- AND_WIDTH,2,LEFT);
+    pin(c,- AND_WIDTH,0,LEFT);
+    pin(d,0,- 2,LEFT);
+    pin(e,0,- 4,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(qen) {
+    canonical_name : "Ia2.0b2.0b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    MAX_WIDTH = maximum(NAND_WIDTH, OR_WIDTH);
+
+    sub_symbol(or_gate,- MAX_WIDTH, GATE_GAP, 0);
+    sub_symbol(nand_gate,- MAX_WIDTH, - 4 - GATE_GAP,0);
+    sub_symbol(nand_gate,2,- 2,0);
+
+    line( - MAX_WIDTH + OR_WIDTH,2 + GATE_GAP,1,2 + GATE_GAP);
+    line( - MAX_WIDTH + NAND_WIDTH,- 2 - GATE_GAP,1,- 2 - GATE_GAP);
+    line(1,2 + GATE_GAP, 1,1);
+    line(1,- 2 - GATE_GAP, 1,- 1);
+    line(1,1,2,1);
+    line(1,- 1,2,- 1);
+
+    pin(a,- MAX_WIDTH + OR_EVEN_LEFT_PIN_X,3 + GATE_GAP,LEFT);
+    pin(b,- MAX_WIDTH + OR_EVEN_LEFT_PIN_X,1 + GATE_GAP,LEFT);
+    pin(c,- MAX_WIDTH,- 1 - GATE_GAP,LEFT);
+    pin(d,- MAX_WIDTH,- 3 - GATE_GAP,LEFT);
+    pin(z,NAND_WIDTH + 2, 0, RIGHT);
+  }
+
+  symbol(qeo) {
+    canonical_name : "a2.0b2.2b2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(z, 4);
+
+    MAX_WIDTH = maximum(NOR_WIDTH, AND_WIDTH);
+
+    sub_symbol(and_gate,- MAX_WIDTH, GATE_GAP, 0);
+    sub_symbol(nor_gate,- MAX_WIDTH, - 4 - GATE_GAP,0);
+    sub_symbol(nor_gate,2,- 2,0);
+
+    line( - MAX_WIDTH + AND_WIDTH,2 + GATE_GAP,1,2 + GATE_GAP);
+    line( - MAX_WIDTH + NOR_WIDTH,- 2 - GATE_GAP,1,- 2 - GATE_GAP);
+    line(1,2 + GATE_GAP, 1,1);
+    line(1,- 2 - GATE_GAP, 1,- 1);
+    line(1,1,2 + OR_EVEN_LEFT_PIN_X,1);
+    line(1,- 1,2 + OR_EVEN_LEFT_PIN_X,- 1);
+
+    pin(a,- MAX_WIDTH,3 + GATE_GAP,LEFT);
+    pin(b,- MAX_WIDTH,1 + GATE_GAP,LEFT);
+    pin(c,- MAX_WIDTH + OR_EVEN_LEFT_PIN_X,- 1 - GATE_GAP,LEFT);
+    pin(d,- MAX_WIDTH + OR_EVEN_LEFT_PIN_X,- 3 - GATE_GAP,LEFT);
+    pin(z,NOR_WIDTH + 2, 0, RIGHT);
+  }
+
+  symbol(buf1x) {
+    canonical_name : "a1.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(z, 1);
+
+    sub_symbol(inverter_triangle,0,0,0);
+
+    pin(a,INVERTER_LEFT_X, INVERTER_MIDDLE_Y, LEFT);
+    pin(z,INVERTER_RIGHT_X, INVERTER_MIDDLE_Y, RIGHT);
+  }
+
+  symbol(aoai311) {
+    canonical_name : "Ia2.0b2.0c3.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(and3_gate,- AND_WIDTH,1,0);
+    sub_symbol(or_gate,0,- 2,0);
+    sub_symbol(nand_gate,OR_WIDTH,- 4,0);
+
+    line(0,3,0,2);
+
+    pin(a,- AND_WIDTH,5,LEFT);
+    pin(b,- AND_WIDTH,3,LEFT);
+    pin(c,- AND_WIDTH,1,LEFT);
+    pin(d,OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(e,OR_WIDTH,- 3,LEFT);
+    pin(z,OR_WIDTH + NAND_WIDTH,- 2,RIGHT);
+  }
+
+  symbol(aoai221) {
+    canonical_name : "Ia2.0b3.0c2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(and_gate,- AND_WIDTH,0,0);
+    sub_symbol(or_gate,0,- 2,0);
+    sub_symbol(nand_gate,OR_WIDTH,- 6,0);
+
+    line(OR_WIDTH,0,OR_WIDTH,- 2);
+    line(0,- 2,0,- 3 - EXTRA_WING_SPAN);
+
+    pin(a,- AND_WIDTH,3,LEFT);
+    pin(b,- AND_WIDTH,1,LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(d,0,- 3,LEFT);
+    pin(e,OR_WIDTH,- 5,LEFT);
+    pin(z,OR_WIDTH + NAND_WIDTH,- 4,RIGHT);
+  }
+
+  symbol(aoai212) {
+    canonical_name : "Ia3.0b2.0c2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(and_gate,- AND_WIDTH,0,0);
+    sub_symbol(or_gate,0,- 2,0);
+    sub_symbol(nand_gate,OR_WIDTH,- 4,0);
+
+    line(OR_WIDTH,- 4,OR_WIDTH,- 5 - EXTRA_WING_SPAN);
+
+    pin(a,- AND_WIDTH,3,LEFT);
+    pin(b,- AND_WIDTH,1,LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(d,OR_WIDTH,- 3,LEFT);
+    pin(e,OR_WIDTH,- 5,LEFT);
+    pin(z,OR_WIDTH + NAND_WIDTH,- 2,RIGHT);
+  }
+
+  symbol(oaoi311) {
+    canonical_name : "a2.1b2.1c3.3";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(or3_gate,- OR_WIDTH,1,0);
+    sub_symbol(and_gate,0,- 2,0);
+    sub_symbol(nor_gate,AND_WIDTH,- 4,0);
+
+    line(0,3,0,2);
+
+    pin(a,- OR_WIDTH,5,LEFT);
+    pin(b,- OR_WIDTH + OR_ODD_LEFT_PIN_X,3,LEFT);
+    pin(c,- OR_WIDTH,1,LEFT);
+    pin(d,0,- 1,LEFT);
+    pin(e,AND_WIDTH + OR_EVEN_LEFT_PIN_X,- 3,LEFT);
+    pin(z,AND_WIDTH + NOR_WIDTH,- 2,RIGHT);
+  }
+
+  symbol(oaoi221) {
+    canonical_name : "a2.1b3.2c2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(or_gate,- OR_WIDTH,0,0);
+    sub_symbol(and_gate,0,- 2,0);
+    sub_symbol(nor_gate,AND_WIDTH,- 6,0);
+
+    line(AND_WIDTH,0,AND_WIDTH,- 2);
+    line(0,- 2,0,- 3 - EXTRA_WING_SPAN);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1,LEFT);
+    pin(c,0,- 1,LEFT);
+    pin(d,0,- 3,LEFT);
+    pin(e,AND_WIDTH + OR_EVEN_LEFT_PIN_X,- 5,LEFT);
+    pin(z,AND_WIDTH + NOR_WIDTH,- 4,RIGHT);
+  }
+
+  symbol(oaoi212) {
+    canonical_name : "a3.2b2.1c2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(or_gate,- OR_WIDTH,0,0);
+    sub_symbol(and_gate,0,- 2,0);
+    sub_symbol(nor_gate,AND_WIDTH,- 4,0);
+
+    line(AND_WIDTH,- 4,AND_WIDTH,- 5 - EXTRA_WING_SPAN);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1,LEFT);
+    pin(c,0,- 1,LEFT);
+    pin(d,AND_WIDTH + OR_EVEN_LEFT_PIN_X,- 3,LEFT);
+    pin(e,AND_WIDTH,- 5,LEFT);
+    pin(z,AND_WIDTH + NOR_WIDTH,- 2,RIGHT);
+  }
+
+  symbol(maji_2of3) {
+    canonical_name : "maj23";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(z, 3);
+
+    sub_symbol(and_gate,- AND_WIDTH, 2 + GATE_GAP,0);
+    sub_symbol(and_gate,- AND_WIDTH, - 2,0);
+    sub_symbol(and_gate,- AND_WIDTH, - 6 - GATE_GAP,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,0,OR_ODD_LEFT_PIN_X,0);
+    line(0,4 + GATE_GAP,0,2);
+    line(0,- 4 - GATE_GAP,0,- 2);
+
+    line( - AND_WIDTH,5 + GATE_GAP,- AND_WIDTH - 1,5 + GATE_GAP);
+    line( - AND_WIDTH - 1,5 + GATE_GAP,- AND_WIDTH - 1,1);
+    line( - AND_WIDTH - 1,1,- AND_WIDTH,1);
+
+    line( - AND_WIDTH,- 5 - GATE_GAP,- AND_WIDTH - 1,- 5 - GATE_GAP);
+    line( - AND_WIDTH - 1,- 5 - GATE_GAP,- AND_WIDTH - 1,- 1);
+    line( - AND_WIDTH - 1,- 1,- AND_WIDTH,- 1);
+
+    line( - AND_WIDTH,3 + GATE_GAP,- AND_WIDTH - 2,3 + GATE_GAP);
+    line( - AND_WIDTH - 2,3 + GATE_GAP,- AND_WIDTH - 2,- 3 - GATE_GAP);
+    line( - AND_WIDTH,- 3 - GATE_GAP,- AND_WIDTH - 2,- 3 - GATE_GAP);
+
+    pin(a,- AND_WIDTH - 1, 5 + GATE_GAP,LEFT);
+    pin(b,- AND_WIDTH - 2, 0,LEFT);
+    pin(c,- AND_WIDTH - 1, - 5 - GATE_GAP,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(aoi2222) {
+    canonical_name : "a4.0b2.2b2.2b2.2b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 6);
+    canonical_pin_number(d, 7);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(f, 5);
+    canonical_pin_number(g, 2);
+    canonical_pin_number(h, 3);
+    canonical_pin_number(z, 8);
+
+    sub_symbol(and_gate,- AND_WIDTH,4 + 3 * GATE_GAP,0);
+    sub_symbol(and_gate,- AND_WIDTH,GATE_GAP,0);
+    sub_symbol(and_gate,- AND_WIDTH,- 4 - GATE_GAP,0);
+    sub_symbol(and_gate,- AND_WIDTH,- 8 - 3 * GATE_GAP,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,- 6 - 3 * GATE_GAP,0,- 2);
+    line(0,6 + 3 * GATE_GAP,0,2);
+
+    pin(a,- AND_WIDTH,7 + 3 * GATE_GAP,LEFT);
+    pin(b,- AND_WIDTH,5 + 3 * GATE_GAP,LEFT);
+    pin(c,- AND_WIDTH,3 + GATE_GAP,LEFT);
+    pin(d,- AND_WIDTH,1 + GATE_GAP,LEFT);
+    pin(e,- AND_WIDTH,- 1 - GATE_GAP,LEFT);
+    pin(f,- AND_WIDTH,- 3 - GATE_GAP,LEFT);
+    pin(g,- AND_WIDTH,- 5 - 3 * GATE_GAP,LEFT);
+    pin(h,- AND_WIDTH,- 7 - 3 * GATE_GAP,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  symbol(oa2222) {
+    canonical_name : "a4.0b2.0b2.0b2.0b2.0";
+    canonical_pin_number(a, 6);
+    canonical_pin_number(b, 7);
+    canonical_pin_number(c, 0);
+    canonical_pin_number(d, 1);
+    canonical_pin_number(e, 2);
+    canonical_pin_number(f, 3);
+    canonical_pin_number(g, 4);
+    canonical_pin_number(h, 5);
+    canonical_pin_number(z, 8);
+
+    sub_symbol(or_gate,- OR_WIDTH,4 + 3 * GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH,GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH,- 4 - GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH,- 8 - 3 * GATE_GAP,0);
+    sub_symbol(and_gate,0,- 2,0);
+
+    line(0,- 6 - 3 * GATE_GAP,0,- 2);
+    line(0,6 + 3 * GATE_GAP,0,2);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,7 + 3 * GATE_GAP,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,5 + 3 * GATE_GAP,LEFT);
+    pin(c,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3 + GATE_GAP,LEFT);
+    pin(d,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1 + GATE_GAP,LEFT);
+    pin(e,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 1 - GATE_GAP,LEFT);
+    pin(f,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 3 - GATE_GAP,LEFT);
+    pin(g,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 5 - 3 * GATE_GAP,LEFT);
+    pin(h,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 7 - 3 * GATE_GAP,LEFT);
+    pin(z,AND_WIDTH,0,RIGHT);
+  }
+
+  symbol(oai2222) {
+    canonical_name : "Ia4.0b2.0b2.0b2.0b2.0";
+    canonical_pin_number(a, 4);
+    canonical_pin_number(b, 5);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 0);
+    canonical_pin_number(f, 1);
+    canonical_pin_number(g, 6);
+    canonical_pin_number(h, 7);
+    canonical_pin_number(z, 8);
+
+    sub_symbol(or_gate,- OR_WIDTH,4 + 3 * GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH,GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH,- 4 - GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH,- 8 - 3 * GATE_GAP,0);
+    sub_symbol(nand_gate,0,- 2,0);
+
+    line(0,- 6 - 3 * GATE_GAP,0,- 2);
+    line(0,6 + 3 * GATE_GAP,0,2);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,7 + 3 * GATE_GAP,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,5 + 3 * GATE_GAP,LEFT);
+    pin(c,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3 + GATE_GAP,LEFT);
+    pin(d,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1 + GATE_GAP,LEFT);
+    pin(e,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 1 - GATE_GAP,LEFT);
+    pin(f,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 3 - GATE_GAP,LEFT);
+    pin(g,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 5 - 3 * GATE_GAP,LEFT);
+    pin(h,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 7 - 3 * GATE_GAP,LEFT);
+    pin(z,NAND_WIDTH,0,RIGHT);
+  }
+
+  symbol(oai222) {
+    canonical_name : "Ia3.0b2.0b2.0b2.0";
+    canonical_pin_number(a, 2);
+    canonical_pin_number(b, 3);
+    canonical_pin_number(c, 4);
+    canonical_pin_number(d, 5);
+    canonical_pin_number(e, 0);
+    canonical_pin_number(f, 1);
+    canonical_pin_number(z, 6);
+
+    sub_symbol(or_gate,- OR_WIDTH,2 + GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH,- 2,0);
+    sub_symbol(or_gate,- OR_WIDTH,- 6 - GATE_GAP,0);
+    sub_symbol(nand_gate,0,- 2,0);
+
+    line(0,- 4 - GATE_GAP,0,- 2);
+    line(0,4 + GATE_GAP,0,2);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,5 + GATE_GAP,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3 + GATE_GAP,LEFT);
+    pin(c,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1,LEFT);
+    pin(d,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(e,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 3 - GATE_GAP,LEFT);
+    pin(f,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 5 - GATE_GAP,LEFT);
+    pin(z,NAND_WIDTH,0,RIGHT);
+  }
+
+  symbol(oai223) {
+    canonical_name : "Ia3.0b3.0b2.0b2.0";
+    canonical_pin_number(a, 5);
+    canonical_pin_number(b, 6);
+    canonical_pin_number(c, 3);
+    canonical_pin_number(d, 4);
+    canonical_pin_number(e, 0);
+    canonical_pin_number(f, 1);
+    canonical_pin_number(g, 2);
+    canonical_pin_number(z, 7);
+
+    sub_symbol(or_gate,- OR_WIDTH,2 + GATE_GAP,0);
+    sub_symbol(or_gate,- OR_WIDTH,- 2,0);
+    sub_symbol(or3_gate,- OR_WIDTH,- 7 - GATE_GAP,0);
+    sub_symbol(nand_gate,0,- 2,0);
+
+    line(0,- 5 - GATE_GAP,0,- 2);
+    line(0,4 + GATE_GAP,0,2);
+
+    pin(a,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,5 + GATE_GAP,LEFT);
+    pin(b,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,3 + GATE_GAP,LEFT);
+    pin(c,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,1,LEFT);
+    pin(d,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(e,- OR_WIDTH,- 3 - GATE_GAP,LEFT);
+    pin(f,- OR_WIDTH + OR_ODD_LEFT_PIN_X,- 5 - GATE_GAP,LEFT);
+    pin(g,- OR_WIDTH,- 7 - GATE_GAP,LEFT);
+    pin(z,NAND_WIDTH,0,RIGHT);
+  }
+
+  symbol(oai311) {
+    canonical_name : "Ia3.0b3.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(or3_gate,- OR_WIDTH,0,0);
+    sub_symbol(nand_gate,0,- 2,0);
+
+    line(0,- 2,0,- 4 - EXTRA_WING_SPAN);
+
+    pin(a,- OR_WIDTH,4,LEFT);
+    pin(b,- OR_WIDTH + OR_ODD_LEFT_PIN_X,2,LEFT);
+    pin(c,- OR_WIDTH,0,LEFT);
+    pin(d,0,- 2,LEFT);
+    pin(e,0,- 4,LEFT);
+    pin(z,NAND_WIDTH,0,RIGHT);
+  }
+
+  symbol(oai32) {
+    canonical_name : "Ia2.0b3.0b2.0";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(or3_gate,- OR_WIDTH,1,0);
+    sub_symbol(or_gate,- OR_WIDTH,- 5,0);
+    sub_symbol(nand_gate,0,- 2,0);
+
+    line(0,3,0,2);
+    line(0,- 3,0,- 2);
+
+    pin(a,- OR_WIDTH,5,LEFT);
+    pin(b,- OR_WIDTH + OR_ODD_LEFT_PIN_X,3,LEFT);
+    pin(c,- OR_WIDTH,1,LEFT);
+    pin(d,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 2,LEFT);
+    pin(e,- OR_WIDTH + OR_EVEN_LEFT_PIN_X,- 4,LEFT);
+    pin(z,NAND_WIDTH, 0, RIGHT);
+  }
+
+  symbol(aoi2111) {
+    canonical_name : "a4.3b2.2";
+    canonical_pin_number(a, 0);
+    canonical_pin_number(b, 1);
+    canonical_pin_number(c, 2);
+    canonical_pin_number(d, 3);
+    canonical_pin_number(e, 4);
+    canonical_pin_number(z, 5);
+
+    sub_symbol(and_gate,- AND_WIDTH, 0,0);
+    sub_symbol(nor_gate,0,- 2,0);
+
+    line(0,- 2,0,- 5 - EXTRA_WING_SPAN);
+
+    pin(a,- AND_WIDTH,3,LEFT);
+    pin(b,- AND_WIDTH,1,LEFT);
+    pin(c,OR_EVEN_LEFT_PIN_X,- 1,LEFT);
+    pin(d,0,- 3,LEFT);
+    pin(e,0,- 5,LEFT);
+    pin(z,NOR_WIDTH,0,RIGHT);
+  }
+
+  flag_height = 0.5 ;
+
+  symbol( constraint_flag) {
+    line( - flag_height / 2, 0, flag_height / 2, 0) ;
+    line( 0, 0, 0, flag_height) ;
+    line( 0, flag_height, flag_height / 2, 3 * flag_height / 4) ;
+    line( 0, flag_height / 2, flag_height / 2, 3 * flag_height / 4) ;
+    circle( flag_height / 2 + flag_height / 20, 3 * flag_height / 4, \
+	   flag_height / 20) ;
+  }
+
+  flag_height = 0.4 ;
+  symbol( clock_symbol) {
+    line( - flag_height, 0, - flag_height, flag_height) ;
+    line( - flag_height, flag_height, 0, flag_height) ;
+    line( 0, flag_height, 0, 0) ;
+    line( 0, 0, flag_height, 0) ;
+    line( flag_height, 0, flag_height, flag_height) ;
+    set_minimum_boundary( 0, - (0.5 - flag_height), 0, 0) ;
+  }
+
+  /* this formula taken from font library */
+  char_width = ( 0.75 ) * 4 / 7 ;
+  string_length = char_width * 5 ;
+  flag_height = 1.5 ;
+  flag_width = string_length + 1 ;
+  symbol( delay_constraint) {
+    line( - flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, flag_height / 2) ;
+    line( - flag_width / 2, flag_height / 2, \
+	 flag_width / 2, flag_height / 2) ;
+    line( flag_width / 2, flag_height / 2, \
+	 flag_width / 2, - flag_height / 2) ;
+    line( flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, - flag_height / 2) ;
+    text( "Delay", - string_length / 2 - char_width / 3, \
+	 - 0.75 / 2, "constraint_layer") ;
+  }
+
+  string_length = char_width * 4 ;
+  flag_width = string_length + 1 ;
+  symbol( area_constraint) {
+    line( - flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, flag_height / 2) ;
+    line( - flag_width / 2, flag_height / 2, \
+	 flag_width / 2, flag_height / 2) ;
+    line( flag_width / 2, flag_height / 2, \
+	 flag_width / 2, - flag_height / 2) ;
+    line( flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, - flag_height / 2) ;
+    text( "Area", - string_length / 2 - char_width / 3, \
+	 - 0.75 / 2, "constraint_layer") ;
+  }
+
+  string_length = char_width * 5 ;
+  flag_width = string_length + 1 ;
+  symbol( power_constraint) {
+    line( - flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, flag_height / 2) ;
+    line( - flag_width / 2, flag_height / 2, \
+	 flag_width / 2, flag_height / 2) ;
+    line( flag_width / 2, flag_height / 2, \
+	 flag_width / 2, - flag_height / 2) ;
+    line( flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, - flag_height / 2) ;
+    text( "Power", - string_length / 2 - char_width / 3, \
+	 - 0.75 / 2, "constraint_layer") ;
+  }
+
+  string_length = char_width * 6 ;
+  flag_width = string_length + 1 ;
+  symbol( max_fanout_constraint) {
+    line( - flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, flag_height / 2) ;
+    line( - flag_width / 2, flag_height / 2, \
+	 flag_width / 2, flag_height / 2) ;
+    line( flag_width / 2, flag_height / 2, \
+	 flag_width / 2, - flag_height / 2) ;
+    line( flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, - flag_height / 2) ;
+    text( "Fanout", - string_length / 2 - char_width / 3, \
+	 - 0.75 / 2, "constraint_layer") ;
+  }
+
+  string_length = char_width * 5 ;
+  flag_width = string_length + 1 ;
+  symbol( max_transition_constraint) {
+    line( - flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, flag_height / 2) ;
+    line( - flag_width / 2, flag_height / 2, \
+	 flag_width / 2, flag_height / 2) ;
+    line( flag_width / 2, flag_height / 2, \
+	 flag_width / 2, - flag_height / 2) ;
+    line( flag_width / 2, - flag_height / 2, \
+	 - flag_width / 2, - flag_height / 2) ;
+    text( "Trans", - string_length / 2 - char_width / 3, \
+	 - 0.75 / 2, "constraint_layer") ;
+  }
+
+/* New Canonical Symbols for Single Clock Flip-flops and Muxes */
+/* These symbols were created by John Ott, added to generic    */
+/* library by Kevin Chung */
+
+FFBOX_WIDTH = 6.0;
+FFBOX_X_ORIGIN = FFBOX_WIDTH / 2.0;
+FFBOX_HEIGHT = 10.0;
+FFBOX_Y_ORIGIN = FFBOX_HEIGHT / 2.0;
+
+FFBOX_LEFT =   FFBOX_X_ORIGIN - (FFBOX_WIDTH / 2.0);
+FFBOX_RIGHT =  FFBOX_X_ORIGIN + (FFBOX_WIDTH / 2.0);
+
+  symbol(ff_box) {
+    FFBOX_TOP =    FFBOX_Y_ORIGIN + (FFBOX_HEIGHT / 2.0);
+    FFBOX_BOTTOM = FFBOX_Y_ORIGIN - (FFBOX_HEIGHT / 2.0);
+    line(FFBOX_LEFT, FFBOX_BOTTOM, FFBOX_RIGHT, FFBOX_BOTTOM);
+    line(FFBOX_LEFT, FFBOX_BOTTOM, FFBOX_LEFT, FFBOX_TOP);
+    line(FFBOX_RIGHT, FFBOX_TOP, FFBOX_RIGHT, FFBOX_BOTTOM);
+    line(FFBOX_RIGHT, FFBOX_TOP, FFBOX_LEFT, FFBOX_TOP);
+    pin(Q,   FFBOX_RIGHT, FFBOX_Y_ORIGIN + 4 , RIGHT);
+    pin(QN,  FFBOX_RIGHT + BUBBLE_DIAMETER, FFBOX_Y_ORIGIN - 4 , RIGHT);
+    circle(FFBOX_RIGHT + BUBBLE_RADIUS, FFBOX_Y_ORIGIN - 4, BUBBLE_RADIUS);
+  }
+
+ symbol(DF) {
+    canonical_name : "a1.0(0)_a1.0(1)____:1_:2_";
+    canonical_pin_number(D, 0);
+    canonical_pin_number(CP, 1);
+    canonical_pin_number(Q, 2);
+    canonical_pin_number(QN, 3);
+    sub_symbol(ff_box, 0,0,0);
+    pin(D,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN - 4;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+  }
+
+ symbol(DF_SN) {
+    canonical_name : "mux21(0,1,2)_a1.0(3)____:1_:2_";
+    canonical_pin_number(D, 0);
+    canonical_pin_number(CP, 3);
+    canonical_pin_number(TI, 1);
+    canonical_pin_number(TE, 2);
+    canonical_pin_number(Q, 4);
+    canonical_pin_number(QN, 5);
+    sub_symbol(ff_box, 0,0,0);
+    pin(D,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN + 2;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+
+    pin(TI,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 2,  LEFT);
+    pin(TE,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 4,  LEFT);
+  }
+ 
+symbol(DF_C) {
+
+    canonical_name : "a1.0(0)_a1.0(1)__Ia1.0(2)__:1_:2_";
+    canonical_pin_number(D, 0);
+    canonical_pin_number(CP, 1);
+    canonical_pin_number(CD, 2);
+    canonical_pin_number(Q, 3);
+    canonical_pin_number(QN, 4);
+    sub_symbol(DF, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+symbol(DF_SN_C) {
+    canonical_name : "mux21(0,1,2)_a1.0(3)__Ia1.0(4)__:1_:2_";
+    canonical_pin_number(D, 0);
+    canonical_pin_number(CP, 3);
+    canonical_pin_number(CD, 4);
+    canonical_pin_number(TI, 1);
+    canonical_pin_number(TE, 2);
+    canonical_pin_number(Q, 5);
+    canonical_pin_number(QN, 6);
+    sub_symbol(DF_SN, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+symbol(DFS_C) {
+    canonical_name : "a2.0(0,1)_a1.0(2)____:1_:2_";
+    canonical_pin_number(D, 1);
+    canonical_pin_number(CP, 2);
+    canonical_pin_number(CR, 0);
+    canonical_pin_number(Q, 3);
+    canonical_pin_number(QN, 4);
+    sub_symbol(ff_box, 0,0,0);
+    sub_symbol(and_outline, FFBOX_LEFT - (AND_WIDTH / 2) +   \
+               (0.666 * BUBBLE_DIAMETER),FFBOX_Y_ORIGIN + 4,0); 
+    line(FFBOX_LEFT - AND_WIDTH, FFBOX_Y_ORIGIN + 2, FFBOX_LEFT - AND_WIDTH, \
+         FFBOX_Y_ORIGIN + 6);
+    pin(D,   FFBOX_LEFT - AND_WIDTH,  FFBOX_Y_ORIGIN + 5,  LEFT);
+    pin(CR,   FFBOX_LEFT - AND_WIDTH,  FFBOX_Y_ORIGIN + 3,  LEFT);
+    CLOCK_Y = FFBOX_Y_ORIGIN - 4;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+}
+
+symbol(DF_CS) {
+    canonical_name : "a1.0(0)_a1.0(1)_a2.2(2,3)_a2.1(2,3)_a2.1(3,2)_:1_:2_";
+    canonical_pin_number(D, 0);
+    canonical_pin_number(CP, 1);
+    canonical_pin_number(CD, 3);
+    canonical_pin_number(SD, 2);
+    canonical_pin_number(Q, 4);
+    canonical_pin_number(QN, 5);
+    sub_symbol(DF_C, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  
+symbol(DF_SN_CS) {
+    canonical_name : "mux21(0,1,2)_a1.0(3)_a2.2(4,5)_a2.1(4,5)_a2.1(5,4)_:1_:2_";
+    canonical_pin_number(D, 0);
+    canonical_pin_number(CP, 3);
+    canonical_pin_number(CD, 5);
+    canonical_pin_number(SD, 4);
+    canonical_pin_number(TI, 1);
+    canonical_pin_number(TE, 2);
+    canonical_pin_number(Q, 6);
+    canonical_pin_number(QN, 7);
+    sub_symbol(DF_SN_C, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+ symbol(DF_S) {
+    canonical_name : "a1.0(0)_a1.0(1)___Ia1.0(2)_:1_:2_";
+    canonical_pin_number(D, 0);
+    canonical_pin_number(CP, 1);
+    canonical_pin_number(SD, 2);
+    canonical_pin_number(Q, 3);
+    canonical_pin_number(QN, 4);
+    sub_symbol(DF, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  
+symbol(DF_SN_S) {
+    canonical_name : "mux21(0,1,2)_a1.0(3)___Ia1.0(4)_:1_:2_";
+    canonical_pin_number(D, 0);
+    canonical_pin_number(CP, 3);
+    canonical_pin_number(SD, 4);
+    canonical_pin_number(TI, 1);
+    canonical_pin_number(TE, 2);
+    canonical_pin_number(Q, 5);
+    canonical_pin_number(QN, 6);
+    sub_symbol(DF_SN, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  } 
+
+symbol(JKF) {
+    canonical_name : "mux2101(0,1,Q)_a1.0(2)____:1_:2_";
+    canonical_pin_number(J, 0);
+    canonical_pin_number(K, 1);
+    canonical_pin_number(CP, 2);
+    canonical_pin_number(Q, 3);
+    canonical_pin_number(QN, 4);
+    sub_symbol(ff_box, 0,0,0);
+    pin(J,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+    pin(K,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 4,  LEFT);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+  }
+
+ symbol(JKF_C) {
+    canonical_name : "mux2101(0,1,Q)_a1.0(2)__Ia1.0(3)__:1_:2_";
+    canonical_pin_number(J, 0);
+    canonical_pin_number(K, 1);
+    canonical_pin_number(CP, 2); 
+    canonical_pin_number(CD, 3);
+    canonical_pin_number(Q, 4);
+    canonical_pin_number(QN, 5);
+    sub_symbol(JKF, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+ symbol(JKF_S) {
+    canonical_name : "mux2101(0,1,Q)_a1.0(2)___Ia1.0(3)_:1_:2_";
+    canonical_pin_number(J, 0);
+    canonical_pin_number(K, 1);
+    canonical_pin_number(CP, 2);
+    canonical_pin_number(SD, 3);
+    canonical_pin_number(Q, 4);
+    canonical_pin_number(QN, 5);
+    sub_symbol(JKF, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+ symbol(JKF_SN) {
+    canonical_name : "mux31011(0,1,2,Q,3)_a1.0(4)____:1_:2_";
+    canonical_pin_number(J, 0);
+    canonical_pin_number(K, 1);
+    canonical_pin_number(CP, 4);
+    canonical_pin_number(TI, 2);
+    canonical_pin_number(TE, 3);
+    canonical_pin_number(Q, 5);
+    canonical_pin_number(QN, 6);
+
+    sub_symbol(ff_box, 0,0,0);
+    pin(J,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+    pin(K,   FFBOX_LEFT,  FFBOX_Y_ORIGIN,  LEFT);
+
+    pin(TI,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 2,  LEFT);
+    pin(TE,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 4,  LEFT);
+
+    CLOCK_Y = FFBOX_Y_ORIGIN + 2;
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT);
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y);
+  }
+
+ symbol(JKF_SN_C) {
+    canonical_name : "mux31011(0,1,2,Q,3)_a1.0(4)__Ia1.0(5)__:1_:2_";
+    canonical_pin_number(J, 0);
+    canonical_pin_number(K, 1);
+    canonical_pin_number(CP, 4);
+    canonical_pin_number(CD, 5);
+    canonical_pin_number(TI, 2);
+    canonical_pin_number(TE, 3);
+    canonical_pin_number(Q, 6);
+    canonical_pin_number(QN, 7);
+    sub_symbol(JKF_SN, 0,0,0); pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+  /* FJK3 */
+  symbol(JKF_CS) {
+    canonical_name : "mux2101(0,1,Q)_a1.0(2)_a2.2(3,4)_a2.1(3,4)_a2.1(4,3)_:1_:2_";
+    canonical_pin_number(J, 0);
+    canonical_pin_number(K, 1);
+    canonical_pin_number(CP, 2);
+    canonical_pin_number(CD, 4);
+    canonical_pin_number(SD, 3);
+    canonical_pin_number(Q, 5);
+    canonical_pin_number(QN, 6);
+    sub_symbol(JKF_C, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+ 
+symbol(FJK_SN_CS) { 
+    canonical_name : "mux31011(0,1,2,Q,3)_a1.0(4)_a2.2(5,6)_a2.1(5,6)_a2.1(6,5)_:1_:2_"; 
+    canonical_pin_number(J, 0); 
+    canonical_pin_number(K, 1); 
+    canonical_pin_number(CP, 4);
+    canonical_pin_number(CD, 6);
+    canonical_pin_number(SD, 5);
+    canonical_pin_number(TI, 2); 
+    canonical_pin_number(TE, 3); 
+    canonical_pin_number(Q, 7); 
+    canonical_pin_number(QN, 8); 
+    sub_symbol(JKF_SN_C, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+ symbol(JKF_SN_S) {
+    canonical_name : "mux31011(0,1,2,Q,3)_a1.0(4)___Ia1.0(5)_:1_:2_";
+    canonical_pin_number(J, 0);
+    canonical_pin_number(K, 1);
+    canonical_pin_number(CP, 4);
+    canonical_pin_number(SD, 5);
+    canonical_pin_number(TI, 2);
+    canonical_pin_number(TE, 3);
+    canonical_pin_number(Q, 6);
+    canonical_pin_number(QN, 7);
+    sub_symbol(JKF_SN, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+symbol(TF) { 
+    canonical_name : "Ia1.0(Q)_a1.0(0)____:1_:2_";
+    canonical_pin_number(CP, 0); 
+    canonical_pin_number(Q, 1); 
+    canonical_pin_number(QN, 2); 
+    sub_symbol(ff_box, 0,0,0); 
+    CLOCK_Y = FFBOX_Y_ORIGIN; 
+    pin(CP, FFBOX_LEFT,  CLOCK_Y , LEFT); 
+    line(FFBOX_LEFT, CLOCK_Y - 0.5, FFBOX_LEFT + 1, CLOCK_Y); 
+    line(FFBOX_LEFT, CLOCK_Y + 0.5, FFBOX_LEFT + 1, CLOCK_Y); 
+  } 
+
+symbol(TF_C) {
+    canonical_name : "Ia1.0(Q)_a1.0(0)__Ia1.0(1)__:1_:2_";
+    canonical_pin_number(CP, 0);
+    canonical_pin_number(CD, 1);
+    canonical_pin_number(Q, 2);
+    canonical_pin_number(QN, 3);
+    sub_symbol(TF, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+  symbol(TF_S) {
+    canonical_name : "Ia1.0(Q)_a1.0(0)___Ia1.0(1)_:1_:2_";
+    canonical_pin_number(CP, 0); 
+    canonical_pin_number(SD, 1); 
+    canonical_pin_number(Q, 2); 
+    canonical_pin_number(QN, 3); 
+    sub_symbol(TF, 0,0,0);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+ symbol(TF_CS) { 
+    canonical_name : "Ia1.0(Q)_a1.0(0)__a2.1(1,2)_a2.1(2,1)_:1_:1_";
+    canonical_pin_number(CP, 0); 
+    canonical_pin_number(CD, 2);
+    canonical_pin_number(SD, 1);
+    canonical_pin_number(Q, 4); 
+    canonical_pin_number(QN, 3);
+    sub_symbol(TF_C, 0,0,0);  
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP + BUBBLE_DIAMETER,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_TOP + BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+  symbol(DL) {
+    canonical_name : "___a2.1(0,1)_a2.0(0,1)_:1_:2_";  
+    canonical_pin_number(D, 1); 
+    canonical_pin_number(G, 0); 
+    canonical_pin_number(Q, 2);
+    canonical_pin_number(QN, 3);
+    sub_symbol(ff_box, 0,0,0);
+    pin(D,   FFBOX_LEFT,  FFBOX_Y_ORIGIN + 4,  LEFT);
+    pin(G,   FFBOX_LEFT,  FFBOX_Y_ORIGIN - 4,  LEFT);
+  }
+  
+  symbol(DL_C) {
+    canonical_name : "___Ia2.0b2.1(1,0,2)_a3.0(0,1,2)_:1_:2_";  
+    canonical_pin_number(D, 1); 
+    canonical_pin_number(G, 0); 
+    canonical_pin_number(CD, 2);
+    canonical_pin_number(Q, 3);
+    canonical_pin_number(QN, 4);
+    sub_symbol(DL, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+symbol(LDX) {
+    canonical_name : "___a2.0b2.1c2.1(0,1,2,3)_a2.0b2.1c2.0(0,1,3,2)_:1_:2_";
+    canonical_pin_number(D, 1); 
+    canonical_pin_number(G, 0); 
+    canonical_pin_number(CD, 2);
+    canonical_pin_number(SD, 3);
+    canonical_pin_number(Q, 4);
+    canonical_pin_number(QN, 5);
+    sub_symbol(DL, 0,0,0);
+    pin(CD,   FFBOX_X_ORIGIN,  FFBOX_BOTTOM - BUBBLE_DIAMETER,  DOWN);
+    pin(SD,   FFBOX_X_ORIGIN,  FFBOX_TOP,  UP);
+    circle(FFBOX_X_ORIGIN,FFBOX_BOTTOM - BUBBLE_RADIUS, BUBBLE_RADIUS);
+  }
+
+
+ symbol(mux2) {
+    MUX_WIDTH = 2.0;
+    MUX_X_ORIGIN = MUX_WIDTH / 2.0;
+    MUX_HEIGHT = 4.0;
+    MUX_Y_ORIGIN = MUX_HEIGHT / 2.0;
+
+    MUX_LEFT =   MUX_X_ORIGIN - (MUX_WIDTH / 2.0);
+    MUX_RIGHT =  MUX_X_ORIGIN + (MUX_WIDTH / 2.0);
+    MUX_TOP =    MUX_Y_ORIGIN + (MUX_HEIGHT / 2.0);
+    MUX_BOTTOM = MUX_Y_ORIGIN - (MUX_HEIGHT / 2.0);
+	
+	MUX_BOTTOM_RIGHT = MUX_Y_ORIGIN - (MUX_Y_ORIGIN - MUX_BOTTOM ) / 2.0;
+	MUX_TOP_RIGHT = MUX_Y_ORIGIN + (MUX_TOP - MUX_Y_ORIGIN) / 2.0;
+	MUX_S_Y_LOC   = (MUX_BOTTOM_RIGHT - MUX_BOTTOM) / 2.0;
+
+	/* start from lower left corner then upper right corner */
+	line(MUX_LEFT, MUX_BOTTOM, MUX_RIGHT, MUX_BOTTOM_RIGHT);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_LEFT, MUX_TOP);
+	line(MUX_RIGHT, MUX_TOP_RIGHT, MUX_RIGHT, MUX_BOTTOM_RIGHT);
+	line(MUX_RIGHT, MUX_TOP_RIGHT, MUX_LEFT, MUX_TOP);
+
+    pin(A,   MUX_LEFT,  MUX_Y_ORIGIN + 1, LEFT);
+    pin(B,   MUX_LEFT,  MUX_Y_ORIGIN - 1, LEFT);
+    pin(S,   MUX_X_ORIGIN, MUX_S_Y_LOC , DOWN);
+  }
+  
+ symbol(csa_sym) {
+    CSA_WIDTH = 16.0
+    CSA_X_ORIGIN = CSA_WIDTH / 2.0;
+    CSA_HEIGHT = 28.0;
+    CSA_Y_ORIGIN = CSA_HEIGHT / 2.0;
+ 
+    CSA_LEFT =   CSA_X_ORIGIN - (CSA_WIDTH / 2.0);
+    CSA_RIGHT =  CSA_X_ORIGIN + (CSA_WIDTH / 2.0);
+    CSA_TOP =    CSA_Y_ORIGIN + (CSA_HEIGHT / 2.0);
+    CSA_BOTTOM = CSA_Y_ORIGIN - (CSA_HEIGHT / 2.0);
+    line(CSA_LEFT, CSA_BOTTOM, CSA_RIGHT, CSA_BOTTOM);
+    line(CSA_LEFT, CSA_BOTTOM, CSA_LEFT, CSA_TOP);
+    line(CSA_RIGHT, CSA_TOP, CSA_RIGHT, CSA_BOTTOM);
+    line(CSA_RIGHT, CSA_TOP, CSA_LEFT, CSA_TOP);
+    pin(a,   CSA_LEFT,  CSA_Y_ORIGIN + 7, LEFT);
+    pin(b,   CSA_LEFT,  CSA_Y_ORIGIN + 0, LEFT);
+    pin(c,   CSA_LEFT,  CSA_Y_ORIGIN - 7, LEFT);
+    pin(ci,  CSA_X_ORIGIN,  CSA_TOP, UP);
+    pin(carry,  CSA_RIGHT,  CSA_Y_ORIGIN + 7, RIGHT);
+    pin(sum,  CSA_RIGHT,  CSA_Y_ORIGIN - 7, RIGHT);
+    pin(co,   CSA_X_ORIGIN, CSA_BOTTOM , DOWN);
+        line(CSA_X_ORIGIN - 2.5, CSA_Y_ORIGIN + 2.5, CSA_X_ORIGIN + 2.5, CSA_Y_ORIGIN + 2.5);
+        line(CSA_X_ORIGIN - 2.5, CSA_Y_ORIGIN - 2.5, CSA_X_ORIGIN + 2.5, CSA_Y_ORIGIN - 2.5);
+        line(CSA_X_ORIGIN - 2.5, CSA_Y_ORIGIN + 2.5, CSA_X_ORIGIN + 0.0, CSA_Y_ORIGIN + 0.0);
+        line(CSA_X_ORIGIN - 2.5, CSA_Y_ORIGIN - 2.5, CSA_X_ORIGIN + 0.0, CSA_Y_ORIGIN + 0.0);
+  }
+
+symbol(MUX21) {
+    canonical_name : "mux21"; 
+    canonical_pin_number(A, 0);   
+    canonical_pin_number(B, 1);   
+    canonical_pin_number(S, 2);   
+    canonical_pin_number(Z, 3);
+    sub_symbol(mux2, 0,0,0);
+    pin(Z,   MUX_RIGHT, MUX_Y_ORIGIN, RIGHT);
+  }
+
+ symbol(mux2sel) {
+    MUX_WIDTH = 3.0;
+    MUX_X_ORIGIN = MUX_WIDTH / 2.0;
+    MUX_HEIGHT = 4.0;
+    MUX_Y_ORIGIN = MUX_HEIGHT / 2.0;
+ 
+    MUX_LEFT =   MUX_X_ORIGIN - (MUX_WIDTH / 2.0);
+    MUX_RIGHT =  MUX_X_ORIGIN + (MUX_WIDTH / 2.0);
+    MUX_TOP =    MUX_Y_ORIGIN + (MUX_HEIGHT / 2.0);
+    MUX_BOTTOM = MUX_Y_ORIGIN - (MUX_HEIGHT / 2.0);
+	/***** slant bottom *****/
+	MUX_BOTTOM_RIGHT = MUX_Y_ORIGIN - (MUX_Y_ORIGIN - MUX_BOTTOM ) / 2.0;
+	MUX_TOP_RIGHT = MUX_Y_ORIGIN + (MUX_TOP - MUX_Y_ORIGIN) / 2.0;
+	MUX_S_Y_LOC   = (MUX_BOTTOM_RIGHT - MUX_BOTTOM) / 2.0;
+	MUX_S_1_LOC   = MUX_S_Y_LOC - ((MUX_S_Y_LOC - MUX_BOTTOM) / 2.0);
+	MUX_S_2_LOC   = MUX_S_Y_LOC + ((MUX_S_Y_LOC - MUX_BOTTOM) / 2.0);
+
+	/* start from lower left corner then upper right corner */
+	line(MUX_LEFT, MUX_BOTTOM, MUX_RIGHT, MUX_BOTTOM_RIGHT);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_LEFT, MUX_TOP);
+	line(MUX_RIGHT, MUX_TOP_RIGHT, MUX_RIGHT, MUX_BOTTOM_RIGHT);
+	line(MUX_RIGHT, MUX_TOP_RIGHT, MUX_LEFT, MUX_TOP);
+  }
+  
+symbol(MUX31) {
+    canonical_name : "Imux31";
+    canonical_pin_number(D0, 0); 
+    canonical_pin_number(D1, 1);
+    canonical_pin_number(D2, 2); 
+    canonical_pin_number(S0, 3);  
+    canonical_pin_number(S1, 4);
+    canonical_pin_number(Z, 5);  
+    sub_symbol(mux2sel, 0,0,0);
+    pin(D0,   MUX_LEFT,  MUX_Y_ORIGIN + 1, LEFT);
+    pin(D1,   MUX_LEFT,  MUX_Y_ORIGIN , LEFT);
+    pin(D2,   MUX_LEFT,  MUX_Y_ORIGIN - 1, LEFT);
+
+	pin(S0,  MUX_X_ORIGIN - 0.5, MUX_S_1_LOC , DOWN);
+    pin(S1,  MUX_X_ORIGIN + 0.5, MUX_S_2_LOC , DOWN);
+
+    circle(MUX_RIGHT + BUBBLE_RADIUS, MUX_Y_ORIGIN, BUBBLE_RADIUS);
+    pin(Z,   MUX_RIGHT + BUBBLE_DIAMETER, MUX_Y_ORIGIN, RIGHT);
+  }
+  
+symbol(MUX41) {
+    canonical_name : "mux41"; 
+    canonical_pin_number(D0, 0);
+    canonical_pin_number(D1, 1);
+    canonical_pin_number(D2, 2);
+    canonical_pin_number(D3, 3);
+    canonical_pin_number(S0, 4);
+    canonical_pin_number(S1, 5);
+    canonical_pin_number(Z, 6);
+    MUX_WIDTH = 3.0;
+    MUX_X_ORIGIN = MUX_WIDTH / 2.0;
+    MUX_HEIGHT = 5.0;
+    MUX_Y_ORIGIN = MUX_HEIGHT / 2.0;
+ 
+    MUX_LEFT =   MUX_X_ORIGIN - (MUX_WIDTH / 2.0);
+    MUX_RIGHT =  MUX_X_ORIGIN + (MUX_WIDTH / 2.0);
+    MUX_TOP =    MUX_Y_ORIGIN + (MUX_HEIGHT / 2.0);
+    MUX_BOTTOM = MUX_Y_ORIGIN - (MUX_HEIGHT / 2.0);
+	/***** slant bottom *****/
+	MUX_BOTTOM_RIGHT = MUX_Y_ORIGIN - (MUX_Y_ORIGIN - MUX_BOTTOM ) / 2.0;
+	MUX_TOP_RIGHT = MUX_Y_ORIGIN + (MUX_TOP - MUX_Y_ORIGIN) / 2.0;
+	MUX_S_Y_LOC   = (MUX_BOTTOM_RIGHT - MUX_BOTTOM) / 2.0;
+	MUX_S_1_LOC   = MUX_S_Y_LOC - ((MUX_S_Y_LOC - MUX_BOTTOM) / 2.0);
+	MUX_S_2_LOC   = MUX_S_Y_LOC + ((MUX_S_Y_LOC - MUX_BOTTOM) / 2.0);
+
+	/* start from lower left corner then upper right corner */
+	line(MUX_LEFT, MUX_BOTTOM, MUX_RIGHT, MUX_BOTTOM_RIGHT);
+    line(MUX_LEFT, MUX_BOTTOM, MUX_LEFT, MUX_TOP);
+	line(MUX_RIGHT, MUX_TOP_RIGHT, MUX_RIGHT, MUX_BOTTOM_RIGHT);
+	line(MUX_RIGHT, MUX_TOP_RIGHT, MUX_LEFT, MUX_TOP);
+
+    pin(D0,   MUX_LEFT,  MUX_Y_ORIGIN + 1.5, LEFT);
+    pin(D1,   MUX_LEFT,  MUX_Y_ORIGIN + 0.5, LEFT);
+    pin(D2,   MUX_LEFT,  MUX_Y_ORIGIN - 0.5, LEFT);
+    pin(D3,   MUX_LEFT,  MUX_Y_ORIGIN - 1.5, LEFT);
+	pin(S0,   MUX_X_ORIGIN - 0.5, MUX_S_1_LOC , DOWN);
+    pin(S1,   MUX_X_ORIGIN + 0.5, MUX_S_2_LOC , DOWN);
+
+    pin(Z,    MUX_RIGHT, MUX_Y_ORIGIN + 0.5, RIGHT);
+  }
+
+  symbol(tstate) {
+    canonical_name : "a1.0(0),TS:Ia1.0(1)";
+    canonical_pin_number(A, 0);
+    canonical_pin_number(E, 1);
+    canonical_pin_number(Z, 2);
+    TSTATE_ENABLE_PIN_Y = INVERTER_MIDDLE_Y + 3;
+    TSTATE_ENABLE_TRIANGLE_X = (INVERTER_RIGHT_X + INVERTER_LEFT_X) / 2;
+    TSTATE_ENABLE_TRIANGLE_Y = (INVERTER_TOP_Y + INVERTER_MIDDLE_Y) / 2;
+    sub_symbol(inverter_triangle, 0, 0, 0);
+    line(INVERTER_LEFT_X, TSTATE_ENABLE_PIN_Y,                          \
+         TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_PIN_Y);
+    line(TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_PIN_Y,                 \
+         TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_TRIANGLE_Y);
+    pin(A,INVERTER_LEFT_X, INVERTER_MIDDLE_Y, LEFT);
+    pin(E, INVERTER_LEFT_X, TSTATE_ENABLE_PIN_Y, LEFT);
+    pin(Z,INVERTER_RIGHT_X, INVERTER_MIDDLE_Y, RIGHT);
+
+  }
+  symbol(tstateI) {
+    canonical_name : "ts_inv_en";
+    canonical_pin_number(A, 0);
+    canonical_pin_number(E, 1);
+    canonical_pin_number(Z, 2);
+    TSTATE_ENABLE_PIN_Y = INVERTER_MIDDLE_Y + 3;
+    TSTATE_ENABLE_TRIANGLE_X = (INVERTER_RIGHT_X + INVERTER_LEFT_X) / 2;
+    TSTATE_ENABLE_TRIANGLE_Y = (INVERTER_TOP_Y + INVERTER_MIDDLE_Y) / 2;
+    TSTATE_ENABLE_BUBBLE_CENTER_Y = TSTATE_ENABLE_TRIANGLE_Y + (BUBBLE_RADIUS * 1.414);
+    TSTATE_ENABLE_BUBBLE_TOP = TSTATE_ENABLE_BUBBLE_CENTER_Y + BUBBLE_RADIUS;
+    sub_symbol(inverter_triangle, 0, 0, 0);
+    line(INVERTER_LEFT_X, TSTATE_ENABLE_PIN_Y,                          \
+         TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_PIN_Y);
+    line(TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_PIN_Y,                 \
+         TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_BUBBLE_TOP);
+    circle(TSTATE_ENABLE_TRIANGLE_X, TSTATE_ENABLE_BUBBLE_CENTER_Y, BUBBLE_RADIUS);
+    pin(A,INVERTER_LEFT_X, INVERTER_MIDDLE_Y, LEFT);
+    pin(E, INVERTER_LEFT_X, TSTATE_ENABLE_PIN_Y, LEFT);
+    pin(Z,INVERTER_RIGHT_X, INVERTER_MIDDLE_Y, RIGHT);
+
+  }
+
+  symbol(IVDA) {
+    canonical_name : "Ia1.0_a1.0";
+    canonical_pin_number(A, 0);
+    canonical_pin_number(Y, 1);
+    canonical_pin_number(Z, 2);
+    LEFT_INVERTER_ORIGIN_X = - INVERTER_X_ORIGIN - 2;
+    sub_symbol(inverter_triangle, LEFT_INVERTER_ORIGIN_X,0,0);
+    circle(LEFT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_RADIUS,         \
+             INVERTER_MIDDLE_Y, BUBBLE_RADIUS);
+
+    RIGHT_INVERTER_ORIGIN_X = INVERTER_X_ORIGIN + 2;
+    sub_symbol(inverter_triangle, RIGHT_INVERTER_ORIGIN_X,0,0);
+    circle(RIGHT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_RADIUS,        \
+             INVERTER_MIDDLE_Y, BUBBLE_RADIUS);
+
+    line(LEFT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_DIAMETER,         \
+         INVERTER_MIDDLE_Y,                                                   \
+         RIGHT_INVERTER_ORIGIN_X + INVERTER_LEFT_X, INVERTER_MIDDLE_Y);
+    sub_symbol(solder_dot, INVERTER_X_ORIGIN,0,0);
+    line(INVERTER_X_ORIGIN, INVERTER_MIDDLE_Y,                                \
+             INVERTER_X_ORIGIN, ceil(INVERTER_TOP_Y) + 1);
+    line(INVERTER_X_ORIGIN, ceil(INVERTER_TOP_Y) + 1,                         \
+             RIGHT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_DIAMETER,    \
+             ceil(INVERTER_TOP_Y) + 1);
+    pin(Y, RIGHT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_DIAMETER,     \
+             ceil(INVERTER_TOP_Y) + 1, RIGHT);
+    pin(Z, RIGHT_INVERTER_ORIGIN_X + INVERTER_RIGHT_X + BUBBLE_DIAMETER,     \
+             INVERTER_MIDDLE_Y, RIGHT);
+    pin(A, LEFT_INVERTER_ORIGIN_X + INVERTER_LEFT_X, INVERTER_MIDDLE_Y, LEFT);
+  }
+
+
+/* stuff for synlibs.  
+Must go here due to 1 symbol generic library limitation in gen */
+
+/* Build the basic ALU body outline */
+
+    ALU_L = 2;
+    ALU_B = 2;
+    ALU_SIDE_H = 12;
+    ALU_V_H = 4;     /* ALU_SIDE_H + ALU_V_H should be divisible by 8 */
+		     /* You can get around this by changing pin
+		      * placement below */
+    ALU_V_W = ALU_V_H;
+    ALU_H = (ALU_SIDE_H * 2) + ALU_V_H;
+    ALU_INDENT = (ALU_H - ALU_SIDE_H) / 2;
+    ALU_W = ALU_INDENT * 2;
+    ALU_T = ALU_B + ALU_H;
+    ALU_R = ALU_L + ALU_W;
+    ALU_TEXT_SIZE = 2;
+    ALU_TEXT_X = ALU_R - ((ALU_W - ALU_V_W) / 2);
+    ALU_TEXT_Y = ALU_B + (ALU_H / 2);
+
+    ALU_A_PIN_Y = (ALU_T - (ALU_SIDE_H / 2));
+    ALU_B_PIN_Y = (ALU_B + (ALU_SIDE_H / 2));
+    ALU_Z_PIN_Y = (ALU_B + (ALU_H / 2));
+    ALU_Z1_PIN_Y = (ALU_Z_PIN_Y + (ALU_SIDE_H / 4));
+    ALU_Z2_PIN_Y = (ALU_Z_PIN_Y - (ALU_SIDE_H / 4));
+    ALU_CI_PIN_X = (ALU_L + (ALU_W / 2));
+    ALU_CI_PIN_Y = (ALU_T - (ALU_W / 4));
+    ALU_CO_PIN_X = (ALU_L + (ALU_W / 2));
+    ALU_CO_PIN_Y = (ALU_B + (ALU_W / 4));
+    ALU_CTL_PIN_X = (ALU_L + (ALU_W / 4));
+    ALU_CTL_PIN_Y = (ALU_T - (ALU_W / 8));
+
+  symbol(alu_sym) {
+    line(ALU_L,ALU_B,ALU_R,ALU_B + ALU_INDENT);
+    line(ALU_R,ALU_B + ALU_INDENT,ALU_R,ALU_T - ALU_INDENT);
+    line(ALU_R,ALU_T - ALU_INDENT,ALU_L,ALU_T);
+    line(ALU_L,ALU_T,ALU_L,ALU_T - ALU_SIDE_H);
+    line(ALU_L,ALU_T - ALU_SIDE_H,ALU_L + ALU_V_W,ALU_B + (ALU_H / 2));
+    line(ALU_L + ALU_V_W,ALU_B + (ALU_H / 2),ALU_L,ALU_B + ALU_SIDE_H);
+    line(ALU_L,ALU_B + ALU_SIDE_H,ALU_L,ALU_B);
+  }
+
+  symbol(add_sym){
+    sub_symbol(alu_sym,0,0,0);
+    pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+    pin(Z, ALU_R,ALU_Z_PIN_Y,RIGHT);
+    pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  }
+
+  symbol(add) {
+    sub_symbol(add_sym,0,0,0);
+    line (ALU_TEXT_X - ALU_TEXT_SIZE, ALU_TEXT_Y, ALU_TEXT_X + ALU_TEXT_SIZE,ALU_TEXT_Y);
+    line (ALU_TEXT_X,ALU_TEXT_Y - ALU_TEXT_SIZE, ALU_TEXT_X,ALU_TEXT_Y + ALU_TEXT_SIZE);
+  }
+
+  symbol(sub) {
+    sub_symbol(add_sym,0,0,0);
+    line (ALU_TEXT_X - ALU_TEXT_SIZE, ALU_TEXT_Y, ALU_TEXT_X + ALU_TEXT_SIZE,ALU_TEXT_Y);
+  }
+
+  symbol(mult) {
+    sub_symbol(alu_sym,0,0,0);
+    pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+    pin(Z,ALU_R,ALU_Z_PIN_Y,RIGHT);
+    pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+    line (ALU_TEXT_X + (4 / 2),ALU_TEXT_Y + (4 / 2) , ALU_TEXT_X - (4 / 2),ALU_TEXT_Y - (4 / 2));
+    line (ALU_TEXT_X - (4 / 2),ALU_TEXT_Y + (4 / 2) , ALU_TEXT_X + (4 / 2),ALU_TEXT_Y - (4 / 2));
+  }
+
+  symbol(mult2) {
+    sub_symbol(alu_sym,0,0,0);
+    pin(A, ALU_L, ALU_A_PIN_Y, LEFT);
+    pin(B, ALU_L, ALU_B_PIN_Y, LEFT);
+    pin(Z1, ALU_R, ALU_Z1_PIN_Y, RIGHT);
+    pin(Z2, ALU_R, ALU_Z2_PIN_Y, RIGHT);
+    line (ALU_TEXT_X + (4 / 2),ALU_TEXT_Y + (4 / 2) , ALU_TEXT_X - (4 / 2),ALU_TEXT_Y - (4 / 2));
+    line (ALU_TEXT_X - (4 / 2),ALU_TEXT_Y + (4 / 2) , ALU_TEXT_X + (4 / 2),ALU_TEXT_Y - (4 / 2));
+  }
+
+  symbol(multp) {
+    sub_symbol(alu_sym,0,0,0);
+    pin(A, ALU_L, ALU_A_PIN_Y, LEFT);
+    pin(B, ALU_L, ALU_B_PIN_Y, LEFT);
+    pin(Z1, ALU_R, ALU_Z1_PIN_Y, RIGHT);
+    pin(Z2, ALU_R, ALU_Z2_PIN_Y, RIGHT);
+    line (ALU_TEXT_X + (4 / 2),ALU_TEXT_Y + (4 / 2) , ALU_TEXT_X - (4 / 2),ALU_TEXT_Y - (4 / 2));
+    line (ALU_TEXT_X - (4 / 2),ALU_TEXT_Y + (4 / 2) , ALU_TEXT_X + (4 / 2),ALU_TEXT_Y - (4 / 2));
+  }
+
+  symbol(cmp_box) {
+ 
+    /* The origins are defined to be the offset from the lower left corner */
+    CMP_LEFT_X = 2;
+    CMP_BOTTOM_Y = 2;
+    CMP_HEIGHT = 16;
+
+    CMP_RIGHT_X = 18;
+    CMP_TOP_Y  = CMP_BOTTOM_Y + CMP_HEIGHT;
+    CMP_MIDDLE_Y = CMP_BOTTOM_Y + CMP_HEIGHT / 2.0;
+
+    CMP_TEXT_X = (CMP_LEFT_X + CMP_RIGHT_X) / 2;
+    CMP_TEXT_Y = (CMP_BOTTOM_Y + CMP_TOP_Y) / 2;
+
+    line(CMP_LEFT_X, CMP_TOP_Y, CMP_RIGHT_X, CMP_MIDDLE_Y);
+    line(CMP_RIGHT_X, CMP_MIDDLE_Y, CMP_LEFT_X, CMP_BOTTOM_Y);
+    line(CMP_LEFT_X, CMP_BOTTOM_Y, CMP_LEFT_X, CMP_TOP_Y);
+
+    pin(A,CMP_LEFT_X,CMP_BOTTOM_Y + (CMP_HEIGHT / 4 * 3),LEFT);
+    pin(B,CMP_LEFT_X,CMP_BOTTOM_Y + (CMP_HEIGHT / 4),LEFT);
+    pin(Z,CMP_RIGHT_X,CMP_MIDDLE_Y,RIGHT);
+  }
+
+symbol(cmp_gt) {
+  sub_symbol(cmp_box,0,0,0);
+  line (CMP_TEXT_X - 1,CMP_TEXT_Y, (CMP_TEXT_X - 4), (CMP_TEXT_Y + 2));
+  line (CMP_TEXT_X - 1,CMP_TEXT_Y, (CMP_TEXT_X - 4), (CMP_TEXT_Y - 2));
+}
+symbol(cmp_gte) {
+  sub_symbol(cmp_box,0,0,0);
+  line (CMP_TEXT_X - 2,CMP_TEXT_Y, (CMP_TEXT_X - 5), (CMP_TEXT_Y + 2));
+  line (CMP_TEXT_X - 2,CMP_TEXT_Y, (CMP_TEXT_X - 5), (CMP_TEXT_Y - 2));
+  line (CMP_TEXT_X - 1, CMP_TEXT_Y - 1, CMP_TEXT_X + 2, CMP_TEXT_Y - 1);
+  line (CMP_TEXT_X - 1, CMP_TEXT_Y + 1, CMP_TEXT_X + 2, CMP_TEXT_Y + 1);
+}
+
+symbol(cmp_lt) {
+  sub_symbol(cmp_box,0,0,0);
+  line (CMP_TEXT_X - 1,CMP_TEXT_Y + 2, (CMP_TEXT_X - 4), CMP_TEXT_Y );
+  line (CMP_TEXT_X - 1,CMP_TEXT_Y - 2, (CMP_TEXT_X - 4), CMP_TEXT_Y );
+  }
+
+symbol(cmp_lte) {
+  sub_symbol(cmp_box,0,0,0);
+  line (CMP_TEXT_X - 2,CMP_TEXT_Y + 2, (CMP_TEXT_X - 5), CMP_TEXT_Y );
+  line (CMP_TEXT_X - 2,CMP_TEXT_Y - 2, (CMP_TEXT_X - 5), CMP_TEXT_Y );
+  line (CMP_TEXT_X - 1, CMP_TEXT_Y - 1, CMP_TEXT_X + 2, CMP_TEXT_Y - 1);
+  line (CMP_TEXT_X - 1, CMP_TEXT_Y + 1, CMP_TEXT_X + 2, CMP_TEXT_Y + 1);
+  }
+
+/* Select OPs */
+
+    SELA_LEFT_X = 2.0;
+    SELA_BOTTOM_Y = 2.0;
+    SELA_HEIGHT = 12.0;
+    SELA_WIDTH = 7.0;
+    SELA_INDENT = 3.0;
+
+    SELA_RIGHT_X = SELA_LEFT_X + SELA_WIDTH;
+    SELA_TOP_Y  = SELA_BOTTOM_Y + SELA_HEIGHT;
+
+symbol(sel_op_box) {
+  line(SELA_LEFT_X, SELA_BOTTOM_Y, SELA_RIGHT_X, SELA_BOTTOM_Y + SELA_INDENT);
+  line(SELA_RIGHT_X, SELA_BOTTOM_Y + SELA_INDENT, SELA_RIGHT_X, SELA_TOP_Y - SELA_INDENT);
+  line(SELA_RIGHT_X, SELA_TOP_Y - SELA_INDENT, SELA_LEFT_X, SELA_TOP_Y);
+  line(SELA_LEFT_X, SELA_TOP_Y, SELA_LEFT_X, SELA_BOTTOM_Y);
+}
+    SELB_LEFT_X = 2.0;
+    SELB_BOTTOM_Y = 2.0;
+    SELB_HEIGHT = 18.0;
+    SELB_WIDTH = 10.0;
+    SELB_INDENT = 3.0;
+ 
+    SELB_RIGHT_X = SELB_LEFT_X + SELB_WIDTH;
+    SELB_TOP_Y  = SELB_BOTTOM_Y + SELB_HEIGHT;
+ 
+symbol(sel_op2_box) {
+  line(SELB_LEFT_X, SELB_BOTTOM_Y, SELB_RIGHT_X, SELB_BOTTOM_Y + SELB_INDENT);
+  line(SELB_RIGHT_X, SELB_BOTTOM_Y + SELB_INDENT, SELB_RIGHT_X, SELB_TOP_Y - SELA_INDENT);
+  line(SELB_RIGHT_X, SELB_TOP_Y - SELB_INDENT, SELB_LEFT_X, SELB_TOP_Y);
+  line(SELB_LEFT_X, SELB_TOP_Y, SELB_LEFT_X, SELB_BOTTOM_Y);
+}
+
+symbol(sel1_op) {
+  sub_symbol(sel_op_box,0,0,0);
+  pin(DATA,SELA_LEFT_X,SELA_TOP_Y - (SELA_HEIGHT / 2),LEFT);
+  pin(CONTROL,SELA_LEFT_X + 2,1 + ((SELA_LEFT_X + 2) * (SELA_INDENT / SELA_WIDTH)),DOWN);
+  pin(Z,SELA_RIGHT_X,SELA_TOP_Y - (SELA_HEIGHT / 2),RIGHT);
+}
+
+symbol(sel2_op) {
+  sub_symbol(sel_op_box,0,0,0);
+  pin(DATA1,SELA_LEFT_X,SELA_TOP_Y - (SELA_HEIGHT / 4),LEFT);
+  pin(DATA2,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 4) * 3 ),LEFT);
+  pin(CONTROL1,SELA_LEFT_X + 2,1 + ((SELA_LEFT_X + 2) * (SELA_INDENT / SELA_WIDTH)),DOWN);
+  pin(CONTROL2,SELA_LEFT_X + 4,1 + ((SELA_LEFT_X + 4) * (SELA_INDENT / SELA_WIDTH)),DOWN);
+  pin(Z,SELA_RIGHT_X,SELA_TOP_Y - (SELA_HEIGHT / 2),RIGHT);
+}
+
+symbol(sel3_op) {
+  sub_symbol(sel_op_box,0,0,0);
+  pin(DATA1,SELA_LEFT_X,SELA_TOP_Y - (SELA_HEIGHT / 4),LEFT);
+  pin(DATA2,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2) ),LEFT);
+  pin(DATA3,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 4) * 3 ),LEFT);
+  pin(CONTROL1,SELA_LEFT_X + 2,1 + ((SELA_LEFT_X + 2) * (SELA_INDENT / SELA_WIDTH)),DOWN);
+  pin(CONTROL2,SELA_LEFT_X + 4,1 + ((SELA_LEFT_X + 4) * (SELA_INDENT / SELA_WIDTH)),DOWN);
+  pin(CONTROL3,SELA_LEFT_X + 6,1 + ((SELA_LEFT_X + 6) * (SELA_INDENT / SELA_WIDTH)),DOWN);
+  pin(Z, SELA_RIGHT_X, (SELA_TOP_Y - (SELA_HEIGHT / 2)),RIGHT);
+}
+
+symbol(sel4_op) {
+  sub_symbol(sel_op_box,0,0,0);
+  pin(DATA1,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2)+ 3),LEFT);
+  pin(DATA2,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2)+ 1),LEFT);
+  pin(DATA3,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2)- 1),LEFT);
+  pin(DATA4,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2)- 3),LEFT);
+  pin(CONTROL1,SELA_LEFT_X + 2,1 + (SELA_LEFT_X + 2) * (SELA_INDENT / SELA_WIDTH),DOWN);
+  pin(CONTROL2,SELA_LEFT_X + 3,1 + (SELA_LEFT_X + 3) * (SELA_INDENT / SELA_WIDTH),DOWN);
+  pin(CONTROL3,SELA_LEFT_X + 4,1 + (SELA_LEFT_X + 4) * (SELA_INDENT / SELA_WIDTH),DOWN);
+  pin(CONTROL4,SELA_LEFT_X + 5,1 + (SELA_LEFT_X + 5) * (SELA_INDENT / SELA_WIDTH),DOWN);
+  pin(Z, SELA_RIGHT_X, (SELA_TOP_Y - (SELA_HEIGHT / 2)),RIGHT);
+}
+
+symbol(sel5_op) {
+  sub_symbol(sel_op_box,0,0,0);
+  pin(DATA1,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2)+ 4),LEFT);
+  pin(DATA2,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2)+ 2),LEFT);
+  pin(DATA3,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2)+ 0),LEFT);
+  pin(DATA4,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2)- 2),LEFT);
+  pin(DATA5,SELA_LEFT_X,SELA_TOP_Y - ((SELA_HEIGHT / 2)- 4),LEFT);
+  pin(CONTROL1,SELA_LEFT_X + 2,1 + (SELA_LEFT_X + 2) * (SELA_INDENT / SELA_WIDTH),DOWN);
+  pin(CONTROL2,SELA_LEFT_X + 3,1 + (SELA_LEFT_X + 3) * (SELA_INDENT / SELA_WIDTH),DOWN);
+  pin(CONTROL3,SELA_LEFT_X + 4,1 + (SELA_LEFT_X + 4) * (SELA_INDENT / SELA_WIDTH),DOWN);
+  pin(CONTROL4,SELA_LEFT_X + 5,1 + (SELA_LEFT_X + 5) * (SELA_INDENT / SELA_WIDTH),DOWN);
+  pin(CONTROL5,SELA_LEFT_X + 6,1 + (SELA_LEFT_X + 6) * (SELA_INDENT / SELA_WIDTH),DOWN);
+  pin(Z, SELA_RIGHT_X, (SELA_TOP_Y - (SELA_HEIGHT / 2)),RIGHT);
+}
+
+symbol(sel6_op) {
+  sub_symbol(sel_op2_box,0,0,0);
+  pin(DATA1,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 5),LEFT);
+  pin(DATA2,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 3),LEFT);
+  pin(DATA3,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 1),LEFT);
+  pin(DATA4,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 1),LEFT);
+  pin(DATA5,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 3),LEFT);
+  pin(DATA6,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 5),LEFT);
+  pin(CONTROL1,SELB_LEFT_X + 3,1.5 + (SELB_LEFT_X + 3) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL2,SELB_LEFT_X + 4,1.5 + (SELB_LEFT_X + 4) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL3,SELB_LEFT_X + 5,1.5 + (SELB_LEFT_X + 5) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL4,SELB_LEFT_X + 6,1.5 + (SELB_LEFT_X + 6) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL5,SELB_LEFT_X + 7,1.5 + (SELB_LEFT_X + 7) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL6,SELB_LEFT_X + 8,1.5 + (SELB_LEFT_X + 8) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(Z, SELB_RIGHT_X, (SELB_TOP_Y - (SELB_HEIGHT / 2)),RIGHT);
+}
+symbol(sel7_op) {
+  sub_symbol(sel_op2_box,0,0,0);
+  pin(DATA1,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 6),LEFT);
+  pin(DATA2,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 4),LEFT);
+  pin(DATA3,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 2),LEFT);
+  pin(DATA4,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 0),LEFT);
+  pin(DATA5,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 2),LEFT);
+  pin(DATA6,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 4),LEFT);
+  pin(DATA7,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 6),LEFT);
+  pin(CONTROL1,SELB_LEFT_X + 2,1.5 + (SELB_LEFT_X + 2) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL2,SELB_LEFT_X + 3,1.5 + (SELB_LEFT_X + 3) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL3,SELB_LEFT_X + 4,1.5 + (SELB_LEFT_X + 4) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL4,SELB_LEFT_X + 5,1.5 + (SELB_LEFT_X + 5) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL5,SELB_LEFT_X + 6,1.5 + (SELB_LEFT_X + 6) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL6,SELB_LEFT_X + 7,1.5 + (SELB_LEFT_X + 7) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL7,SELB_LEFT_X + 8,1.5 + (SELB_LEFT_X + 8) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(Z, SELB_RIGHT_X, (SELB_TOP_Y - (SELB_HEIGHT / 2)),RIGHT);
+}
+
+symbol(sel8_op) {
+  sub_symbol(sel_op2_box,0,0,0);
+  pin(DATA1,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 7),LEFT);
+  pin(DATA2,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 5),LEFT);
+  pin(DATA3,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 3),LEFT);
+  pin(DATA4,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)+ 1),LEFT);
+  pin(DATA5,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 1),LEFT);
+  pin(DATA6,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 3),LEFT);
+  pin(DATA7,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 5),LEFT);
+  pin(DATA8,SELB_LEFT_X,SELB_TOP_Y - ((SELB_HEIGHT / 2)- 7),LEFT);
+  pin(CONTROL1,SELB_LEFT_X + 2,1.5 + (SELB_LEFT_X + 2) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL2,SELB_LEFT_X + 3,1.5 + (SELB_LEFT_X + 3) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL3,SELB_LEFT_X + 4,1.5 + (SELB_LEFT_X + 4) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL4,SELB_LEFT_X + 5,1.5 + (SELB_LEFT_X + 5) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL5,SELB_LEFT_X + 6,1.5 + (SELB_LEFT_X + 6) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL6,SELB_LEFT_X + 7,1.5 + (SELB_LEFT_X + 7) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL7,SELB_LEFT_X + 8,1.5 + (SELB_LEFT_X + 8) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(CONTROL8,SELB_LEFT_X + 9,1.5 + (SELB_LEFT_X + 9) * (SELB_INDENT / SELB_WIDTH),DOWN);
+  pin(Z, SELB_RIGHT_X, (SELB_TOP_Y - (SELB_HEIGHT / 2)),RIGHT);
+}
+
+symbol(ADD_UNS_OP) { 
+  canonical_name : "ADD_UNS_OP_1_1_1"; 
+  sub_symbol(add,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(ADD_TC_OP) { 
+  canonical_name : "ADD_TC_OP_1_1_1"; 
+  sub_symbol(add,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(SUB_UNS_OP) { 
+  canonical_name : "SUB_UNS_OP_1_1_1"; 
+  sub_symbol(sub,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(SUB_TC_OP) { 
+  canonical_name : "SUB_TC_OP_1_1_1"; 
+  sub_symbol(sub,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(MULT_UNS_OP) { 
+  canonical_name : "MULT_UNS_OP_1_1_1"; 
+  sub_symbol(mult,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(MULT_TC_OP) { 
+  canonical_name : "MULT_TC_OP_1_1_1"; 
+  sub_symbol(mult,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(MULT2_UNS_OP) {
+  canonical_name : "MULT2_UNS_OP_1_1_1_1";
+  sub_symbol(mult2,0,0,0);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z1, 2);
+  canonical_pin_number(Z2, 3);
+}
+symbol(MULT2_TC_OP) {
+  canonical_name : "MULT2_TC_OP_1_1_1_1";
+  sub_symbol(mult2,0,0,0);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z1, 2);
+  canonical_pin_number(Z2, 3);
+}
+symbol(MULTP_UNS_OP) {
+  canonical_name : "MULTP_UNS_OP_1_1_1_1";
+  sub_symbol(multp,0,0,0);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z1, 2);
+  canonical_pin_number(Z2, 3);
+}
+symbol(MULTP_TC_OP) {
+  canonical_name : "MULTP_TC_OP_1_1_1_1";
+  sub_symbol(multp,0,0,0);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z1, 2);
+  canonical_pin_number(Z2, 3);
+}
+
+/* comparators */
+
+symbol(LEQ_TC_OP) { 
+  canonical_name : "LEQ_TC_OP_1_1_1"; 
+  sub_symbol(cmp_lte,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(LEQ_UNS_OP) { 
+  canonical_name : "LEQ_UNS_OP_1_1_1"; 
+  sub_symbol(cmp_lte,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(LT_TC_OP) { 
+  canonical_name : "LT_TC_OP_1_1_1"; 
+  sub_symbol(cmp_lt,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(LT_UNS_OP) { 
+  canonical_name : "LT_UNS_OP_1_1_1"; 
+  sub_symbol(cmp_lt,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(GT_TC_OP) { 
+  canonical_name : "GT_TC_OP_1_1_1"; 
+  sub_symbol(cmp_gt,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(GT_UNS_OP) { 
+  canonical_name : "GT_UNS_OP_1_1_1"; 
+  sub_symbol(cmp_gt,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(GEQ_UNS_OP) { 
+  canonical_name : "GEQ_UNS_OP_1_1_1"; 
+  sub_symbol(cmp_gte,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+symbol(GEQ_TC_OP) { 
+  canonical_name : "GEQ_TC_OP_1_1_1"; 
+  sub_symbol(cmp_gte,0,0,0); 
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(Z, 2);
+}
+/* selectors */
+
+symbol(SELECT_OP2) {
+  canonical_name : "SELECT_OP_2_2_1";
+  sub_symbol(sel2_op,0,0,0) ;
+  canonical_pin_number(DATA1, 0);
+  canonical_pin_number(DATA2, 1);
+  canonical_pin_number(CONTROL1, 2);
+  canonical_pin_number(CONTROL2, 3);
+  canonical_pin_number(Z, 4);
+}
+symbol(SELECT_OP3) {
+  canonical_name : "SELECT_OP_3_3_1";
+  sub_symbol(sel3_op,0,0,0) ;
+  canonical_pin_number(DATA1, 0);
+  canonical_pin_number(DATA2, 1);
+  canonical_pin_number(DATA3, 2);
+  canonical_pin_number(CONTROL1, 3);
+  canonical_pin_number(CONTROL2, 4);
+  canonical_pin_number(CONTROL3, 5);
+  canonical_pin_number(Z, 6);
+}
+symbol(SELECT_OP4) {
+  canonical_name : "SELECT_OP_4_4_1";
+  sub_symbol(sel4_op,0,0,0) ;
+  canonical_pin_number(DATA1, 0);
+  canonical_pin_number(DATA2, 1);
+  canonical_pin_number(DATA3, 2);
+  canonical_pin_number(DATA4, 3);
+  canonical_pin_number(CONTROL1, 4);
+  canonical_pin_number(CONTROL2, 5);
+  canonical_pin_number(CONTROL3, 6);
+  canonical_pin_number(CONTROL4, 7);
+  canonical_pin_number(Z, 8);
+}
+symbol(SELECT_OP5) {
+  canonical_name : "SELECT_OP_5_5_1";
+  sub_symbol(sel5_op,0,0,0) ;
+  canonical_pin_number(DATA1, 0);
+  canonical_pin_number(DATA2, 1);
+  canonical_pin_number(DATA3, 2);
+  canonical_pin_number(DATA4, 3);
+  canonical_pin_number(DATA5, 4);
+  canonical_pin_number(CONTROL1, 5);
+  canonical_pin_number(CONTROL2, 6);
+  canonical_pin_number(CONTROL3, 7);
+  canonical_pin_number(CONTROL4, 8);
+  canonical_pin_number(CONTROL5, 9);
+  canonical_pin_number(Z, 10);
+}
+
+symbol(SELECT_OP6) {
+  canonical_name : "SELECT_OP_6_6_1";
+  sub_symbol(sel6_op,0,0,0) ;
+  canonical_pin_number(DATA1, 0);
+  canonical_pin_number(DATA2, 1);
+  canonical_pin_number(DATA3, 2);
+  canonical_pin_number(DATA4, 3);
+  canonical_pin_number(DATA5, 4);
+  canonical_pin_number(DATA6, 5);
+  canonical_pin_number(CONTROL1, 6);
+  canonical_pin_number(CONTROL2, 7);
+  canonical_pin_number(CONTROL3, 8);
+  canonical_pin_number(CONTROL4, 9);
+  canonical_pin_number(CONTROL5, 10);
+  canonical_pin_number(CONTROL6, 11);
+  canonical_pin_number(Z, 12);
+}
+symbol(SELECT_OP7) {
+  canonical_name : "SELECT_OP_7_7_1";
+  sub_symbol(sel7_op,0,0,0) ;
+  canonical_pin_number(DATA1, 0);
+  canonical_pin_number(DATA2, 1);
+  canonical_pin_number(DATA3, 2);
+  canonical_pin_number(DATA4, 3);
+  canonical_pin_number(DATA5, 4);
+  canonical_pin_number(DATA6, 5);
+  canonical_pin_number(DATA7, 6);
+  canonical_pin_number(CONTROL1, 7);
+  canonical_pin_number(CONTROL2, 8);
+  canonical_pin_number(CONTROL3, 9);
+  canonical_pin_number(CONTROL4, 10);
+  canonical_pin_number(CONTROL5, 11);
+  canonical_pin_number(CONTROL6, 12);
+  canonical_pin_number(CONTROL7, 13);
+  canonical_pin_number(Z, 14);
+}
+
+symbol(SELECT_OP8) {
+  canonical_name : "SELECT_OP_8_8_1";
+  sub_symbol(sel8_op,0,0,0) ;
+  canonical_pin_number(DATA1, 0);
+  canonical_pin_number(DATA2, 1);
+  canonical_pin_number(DATA3, 2);
+  canonical_pin_number(DATA4, 3);
+  canonical_pin_number(DATA5, 4);
+  canonical_pin_number(DATA6, 5);
+  canonical_pin_number(DATA7, 6);
+  canonical_pin_number(DATA8, 7);
+  canonical_pin_number(CONTROL1, 8);
+  canonical_pin_number(CONTROL2, 9);
+  canonical_pin_number(CONTROL3, 10);
+  canonical_pin_number(CONTROL4, 11);
+  canonical_pin_number(CONTROL5, 12);
+  canonical_pin_number(CONTROL6, 13);
+  canonical_pin_number(CONTROL7, 14);
+  canonical_pin_number(CONTROL8, 15);
+  canonical_pin_number(Z, 16);
+}
+
+symbol(ADD_UNS_CI_OP) {
+  canonical_name : "ADD_UNS_CI_OP_1_1_1_1"; 
+  sub_symbol(alu_sym,0,0,0);
+  line (ALU_TEXT_X - ALU_TEXT_SIZE, ALU_TEXT_Y, ALU_TEXT_X + ALU_TEXT_SIZE,ALU_TEXT_Y);
+  line (ALU_TEXT_X,ALU_TEXT_Y - ALU_TEXT_SIZE, ALU_TEXT_X,ALU_TEXT_Y + ALU_TEXT_SIZE);
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(CI,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(Z, ALU_R,ALU_Z_PIN_Y,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(CI, 2);
+  canonical_pin_number(Z, 3);
+}
+
+symbol(ADD_TC_CI_OP) {
+  canonical_name : "ADD_TC_CI_OP_1_1_1_1"; 
+  sub_symbol(alu_sym,0,0,0);
+  line (ALU_TEXT_X - ALU_TEXT_SIZE, ALU_TEXT_Y, ALU_TEXT_X + ALU_TEXT_SIZE,ALU_TEXT_Y);
+  line (ALU_TEXT_X,ALU_TEXT_Y - ALU_TEXT_SIZE, ALU_TEXT_X,ALU_TEXT_Y + ALU_TEXT_SIZE);
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(CI,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(Z, ALU_R,ALU_Z_PIN_Y,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(CI, 2);
+  canonical_pin_number(Z, 3);
+}
+
+symbol(CSA_UNS_OP) {
+  canonical_name : "CSA_UNS_OP_1_1_1_1_1_1_1";
+  sub_symbol(csa_sym,0,0,0);
+ 
+  canonical_pin_number(a, 0);
+  canonical_pin_number(b, 1);
+  canonical_pin_number(c, 2);
+  canonical_pin_number(ci, 3);
+  canonical_pin_number(carry, 4);
+  canonical_pin_number(sum, 5);
+  canonical_pin_number(co, 6);
+}
+ 
+symbol(CSA_TC_OP) {
+  canonical_name : "CSA_TC_OP_1_1_1_1_1_1_1";
+  sub_symbol(csa_sym,0,0,0);
+ 
+  canonical_pin_number(a, 0);
+  canonical_pin_number(b, 1);
+  canonical_pin_number(c, 2);
+  canonical_pin_number(ci, 3);
+  canonical_pin_number(carry, 4);
+  canonical_pin_number(sum, 5);
+  canonical_pin_number(co, 6);
+}
+
+/* Modules */
+
+symbol(DW01_csa) {
+  canonical_name : "DW01_csa";
+  sub_symbol(csa_sym,0,0,0);
+ 
+  canonical_pin_number(a, 0);
+  canonical_pin_number(b, 1);
+  canonical_pin_number(c, 2);
+  canonical_pin_number(ci, 3);
+  canonical_pin_number(carry, 4);
+  canonical_pin_number(sum, 5);
+  canonical_pin_number(co, 6);
+}
+
+symbol(DW01_add) {
+  canonical_name : "DW01_add"; 
+  sub_symbol(alu_sym,0,0,0);
+  line (ALU_TEXT_X - ALU_TEXT_SIZE, ALU_TEXT_Y, ALU_TEXT_X + ALU_TEXT_SIZE,ALU_TEXT_Y);
+  line (ALU_TEXT_X,ALU_TEXT_Y - ALU_TEXT_SIZE, ALU_TEXT_X,ALU_TEXT_Y + ALU_TEXT_SIZE);
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(CI,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(SUM, ALU_R,ALU_Z_PIN_Y,RIGHT);
+  pin(CO,ALU_CO_PIN_X,ALU_CO_PIN_Y, DOWN);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(CI, 2);
+  canonical_pin_number(SUM, 3);
+  canonical_pin_number(CO, 4);
+}
+
+symbol(DW01_sub) {
+  canonical_name : "DW01_sub"; 
+  sub_symbol(alu_sym,0,0,0);
+  line (ALU_TEXT_X - ALU_TEXT_SIZE, ALU_TEXT_Y, ALU_TEXT_X + ALU_TEXT_SIZE,ALU_TEXT_Y);
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(CI,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(DIFF, ALU_R,ALU_Z_PIN_Y,RIGHT);
+  pin(CO,ALU_CO_PIN_X,ALU_CO_PIN_Y, DOWN);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(CI, 2);
+  canonical_pin_number(DIFF, 3);
+  canonical_pin_number(CO, 4);
+}
+
+symbol(DW01_addsub) {
+  canonical_name : "DW01_addsub"; 
+  sub_symbol(alu_sym,0,0,0);
+    line (ALU_TEXT_X + 3 ,ALU_TEXT_Y + 4 , \
+          ALU_TEXT_X - 3 ,ALU_TEXT_Y - 2);
+    line (ALU_TEXT_X     ,ALU_TEXT_Y - 2, \
+          ALU_TEXT_X + 4 ,ALU_TEXT_Y - 2 );
+    line (ALU_TEXT_X     ,ALU_TEXT_Y + 4, \
+          ALU_TEXT_X - 4 ,ALU_TEXT_Y + 4 );
+    line (ALU_TEXT_X - 2 ,ALU_TEXT_Y + 6, \
+          ALU_TEXT_X - 2 ,ALU_TEXT_Y + 2 );
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(CI,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(ADD_SUB,ALU_CTL_PIN_X,ALU_CTL_PIN_Y, UP);
+  pin(SUM, ALU_R,ALU_Z_PIN_Y,RIGHT);
+  pin(CO,ALU_CO_PIN_X,ALU_CO_PIN_Y, DOWN);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(CI, 2);
+  canonical_pin_number(ADD_SUB, 3);
+  canonical_pin_number(SUM, 4);
+  canonical_pin_number(CO, 5);
+}
+  
+symbol(DW01_inc) {
+  canonical_name : "DW01_inc"; 
+  sub_symbol(alu_sym,0,0,0);
+  line (ALU_TEXT_X - ALU_TEXT_SIZE, ALU_TEXT_Y, ALU_TEXT_X + ALU_TEXT_SIZE,ALU_TEXT_Y);
+  line (ALU_TEXT_X,ALU_TEXT_Y - ALU_TEXT_SIZE, ALU_TEXT_X,ALU_TEXT_Y + ALU_TEXT_SIZE);
+
+  line (ALU_L, ALU_B_PIN_Y, ALU_L - 1, ALU_B_PIN_Y);
+  line (ALU_L - 3, ALU_B_PIN_Y + 2, ALU_L - 3, ALU_B_PIN_Y - 2);
+  line (ALU_L - 2, ALU_B_PIN_Y - 2, ALU_L - 4, ALU_B_PIN_Y - 2);
+  line (ALU_L - 3, ALU_B_PIN_Y + 2, ALU_L - 4, ALU_B_PIN_Y + 1);
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(SUM, ALU_R,ALU_Z_PIN_Y,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(SUM, 1);
+}
+
+symbol(DW01_dec) {
+  canonical_name : "DW01_dec"; 
+  sub_symbol(alu_sym,0,0,0);
+  line (ALU_TEXT_X - ALU_TEXT_SIZE, ALU_TEXT_Y, ALU_TEXT_X + ALU_TEXT_SIZE,ALU_TEXT_Y);
+
+  line (ALU_L, ALU_B_PIN_Y, ALU_L - 1, ALU_B_PIN_Y);
+  line (ALU_L - 3, ALU_B_PIN_Y + 2, ALU_L - 3, ALU_B_PIN_Y - 2);
+  line (ALU_L - 2, ALU_B_PIN_Y - 2, ALU_L - 4, ALU_B_PIN_Y - 2);
+  line (ALU_L - 3, ALU_B_PIN_Y + 2, ALU_L - 4, ALU_B_PIN_Y + 1);
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(SUM, ALU_R,ALU_Z_PIN_Y,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(SUM, 1);
+}
+
+symbol(DW01_incdec) {
+  canonical_name : "DW01_incdec"; 
+  sub_symbol(alu_sym,0,0,0);
+
+  line (ALU_L, ALU_B_PIN_Y, ALU_L - 1, ALU_B_PIN_Y);
+  line (ALU_L - 3, ALU_B_PIN_Y + 2, ALU_L - 3, ALU_B_PIN_Y - 2);
+  line (ALU_L - 2, ALU_B_PIN_Y - 2, ALU_L - 4, ALU_B_PIN_Y - 2);
+  line (ALU_L - 3, ALU_B_PIN_Y + 2, ALU_L - 4, ALU_B_PIN_Y + 1);
+
+    line (ALU_TEXT_X + 3 ,ALU_TEXT_Y + 4 , \
+          ALU_TEXT_X - 3 ,ALU_TEXT_Y - 2);
+    line (ALU_TEXT_X     ,ALU_TEXT_Y - 2, \
+          ALU_TEXT_X + 4 ,ALU_TEXT_Y - 2 );
+    line (ALU_TEXT_X     ,ALU_TEXT_Y + 4, \
+          ALU_TEXT_X - 4 ,ALU_TEXT_Y + 4 );
+    line (ALU_TEXT_X - 2 ,ALU_TEXT_Y + 6, \
+          ALU_TEXT_X - 2 ,ALU_TEXT_Y + 2 );
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(INC_DEC,ALU_CTL_PIN_X,ALU_CTL_PIN_Y, UP);
+  pin(SUM, ALU_R,ALU_Z_PIN_Y,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(INC_DEC, 1);
+  canonical_pin_number(SUM, 2);
+}
+
+symbol(DW02_mult) {
+  canonical_name : "DW02_mult"; 
+  sub_symbol(alu_sym,0,0,0);
+
+  line (ALU_TEXT_X + 2,ALU_TEXT_Y + 2, ALU_TEXT_X - 2,ALU_TEXT_Y - 2);
+  line (ALU_TEXT_X - 2,ALU_TEXT_Y + 2, ALU_TEXT_X + 2,ALU_TEXT_Y - 2);
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(TC,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(PRODUCT, ALU_R,ALU_Z_PIN_Y,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(TC, 2);
+  canonical_pin_number(PRODUCT, 3);
+}
+ 
+symbol(DW02_mult2) {
+  canonical_name : "DW02_mult2";
+  sub_symbol(alu_sym,0,0,0);
+ 
+  line (ALU_TEXT_X + 2,ALU_TEXT_Y + 2, ALU_TEXT_X - 2,ALU_TEXT_Y - 2);
+  line (ALU_TEXT_X - 2,ALU_TEXT_Y + 2, ALU_TEXT_X + 2,ALU_TEXT_Y - 2);
+ 
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(TC,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(Z1, ALU_R,ALU_Z1_PIN_Y,RIGHT);
+  pin(Z2, ALU_R,ALU_Z2_PIN_Y,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(TC, 2);
+  canonical_pin_number(OUT0, 3);
+  canonical_pin_number(OUT1, 4);
+}
+
+symbol(DW02_multp) {
+  canonical_name : "DW02_multp";
+  sub_symbol(alu_sym,0,0,0);
+ 
+  line (ALU_TEXT_X + 2,ALU_TEXT_Y + 2, ALU_TEXT_X - 2,ALU_TEXT_Y - 2);
+  line (ALU_TEXT_X - 2,ALU_TEXT_Y + 2, ALU_TEXT_X + 2,ALU_TEXT_Y - 2);
+ 
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(TC,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(Z1, ALU_R,ALU_Z1_PIN_Y,RIGHT);
+  pin(Z2, ALU_R,ALU_Z2_PIN_Y,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(TC, 2);
+  canonical_pin_number(OUT0, 3);
+  canonical_pin_number(OUT1, 4);
+}
+
+symbol(DW01_cmp2) {
+  canonical_name : "DW01_cmp2"; 
+  sub_symbol(alu_sym,0,0,0);
+
+    line (ALU_TEXT_X + 3 ,ALU_TEXT_Y + 4 , \
+          ALU_TEXT_X - 3 ,ALU_TEXT_Y - 2);
+    line (ALU_TEXT_X - 4 ,ALU_TEXT_Y + 6, \
+          ALU_TEXT_X - 1 ,ALU_TEXT_Y + 4 );
+    line (ALU_TEXT_X - 1 ,ALU_TEXT_Y + 4, \
+          ALU_TEXT_X - 4 ,ALU_TEXT_Y + 2 );
+    line (ALU_TEXT_X + 4 ,ALU_TEXT_Y - 4, \
+          ALU_TEXT_X + 1 ,ALU_TEXT_Y - 2 );
+    line (ALU_TEXT_X + 1 ,ALU_TEXT_Y - 2, \
+          ALU_TEXT_X + 4 ,ALU_TEXT_Y - 0 );
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(LEQ,ALU_CTL_PIN_X,ALU_CTL_PIN_Y, UP);
+  pin(TC,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(LT_LE, ALU_R,ALU_Z_PIN_Y + 1,RIGHT);
+  pin(GE_GT, ALU_R,ALU_Z_PIN_Y - 1,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(LEQ, 2);
+  canonical_pin_number(TC, 3);
+  canonical_pin_number(LT_LE, 4);
+  canonical_pin_number(GE_GT, 5);
+}
+
+symbol(DW01_cmp6) {
+  canonical_name : "DW01_cmp6"; 
+  sub_symbol(alu_sym,0,0,0);
+
+    line (ALU_TEXT_X + 0 ,ALU_TEXT_Y + 7, \
+          ALU_TEXT_X - 3 ,ALU_TEXT_Y + 5 );
+    line (ALU_TEXT_X - 3 ,ALU_TEXT_Y + 5, \
+          ALU_TEXT_X + 0 ,ALU_TEXT_Y + 3 );
+
+    line (ALU_TEXT_X - 3 ,ALU_TEXT_Y + 1, \
+          ALU_TEXT_X + 0 ,ALU_TEXT_Y + 1 );
+    line (ALU_TEXT_X + 0 ,ALU_TEXT_Y - 1, \
+          ALU_TEXT_X - 3 ,ALU_TEXT_Y - 1 );
+
+    line (ALU_TEXT_X - 3 ,ALU_TEXT_Y - 3, \
+          ALU_TEXT_X + 0 ,ALU_TEXT_Y - 5 );
+    line (ALU_TEXT_X + 0 ,ALU_TEXT_Y - 5, \
+          ALU_TEXT_X - 3 ,ALU_TEXT_Y - 7 );
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(TC,ALU_CI_PIN_X,ALU_CI_PIN_Y, UP);
+  pin(LT, ALU_R,ALU_Z_PIN_Y + 5,RIGHT);
+  pin(GT, ALU_R,ALU_Z_PIN_Y + 3,RIGHT);
+  pin(EQ, ALU_R,ALU_Z_PIN_Y + 1,RIGHT);
+  pin(LE, ALU_R,ALU_Z_PIN_Y - 1,RIGHT);
+  pin(GE, ALU_R,ALU_Z_PIN_Y - 3,RIGHT);
+  pin(NE, ALU_R,ALU_Z_PIN_Y - 5,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(TC, 2);
+  canonical_pin_number(LT, 3);
+  canonical_pin_number(GT, 4);
+  canonical_pin_number(EQ, 5);
+  canonical_pin_number(LE, 6);
+  canonical_pin_number(GE, 7);
+  canonical_pin_number(NE, 8);
+}
+
+EQL_LEFT = 2;
+EQL_BOTTOM = 2;
+EQL_HEIGHT = 8;
+EQL_WIDTH = 12;
+EQL_EQUAL_SEP = 2;
+EQL_EQUAL_LENGTH = 4;
+EQL_EQUAL_LEFT = EQL_LEFT + EQL_WIDTH / 2 - EQL_EQUAL_LENGTH / 2 + 2;
+EQL_EQUAL_BOTTOM = EQL_BOTTOM + EQL_HEIGHT / 2 - EQL_EQUAL_SEP / 2;
+
+symbol(eql_sym) {
+  line( EQL_LEFT, EQL_BOTTOM, EQL_LEFT, EQL_BOTTOM + EQL_HEIGHT );
+  line( EQL_LEFT, EQL_BOTTOM + EQL_HEIGHT, EQL_LEFT + EQL_WIDTH, EQL_BOTTOM + EQL_HEIGHT );
+  line( EQL_LEFT + EQL_WIDTH, EQL_BOTTOM + EQL_HEIGHT, EQL_LEFT + EQL_WIDTH, EQL_BOTTOM );
+  line( EQL_LEFT + EQL_WIDTH, EQL_BOTTOM, EQL_LEFT, EQL_BOTTOM );
+  line( EQL_EQUAL_LEFT, EQL_EQUAL_BOTTOM, EQL_EQUAL_LEFT + EQL_EQUAL_LENGTH, EQL_EQUAL_BOTTOM );
+  line( EQL_EQUAL_LEFT, EQL_EQUAL_BOTTOM + EQL_EQUAL_SEP, EQL_EQUAL_LEFT + EQL_EQUAL_LENGTH, EQL_EQUAL_BOTTOM + EQL_EQUAL_SEP );
+}
+
+SIG_SEP = 1;
+SIG_WIDTH = 2;
+SIG_LEFT = EQL_EQUAL_LEFT - SIG_WIDTH - SIG_SEP;
+SIG_HEIGHT = 2;
+SIG_MIDDLE = EQL_EQUAL_BOTTOM + EQL_EQUAL_SEP / 2;
+
+symbol( sig_asgn ) {
+  line( SIG_LEFT, SIG_MIDDLE, SIG_LEFT + SIG_WIDTH, SIG_MIDDLE + SIG_HEIGHT );
+  line( SIG_LEFT, SIG_MIDDLE, SIG_LEFT + SIG_WIDTH, SIG_MIDDLE - SIG_HEIGHT );
+}
+
+VAR_LEFT = EQL_EQUAL_LEFT - 2;
+VAR_WIDTH = 1;
+VAR_BOTTOM = EQL_EQUAL_BOTTOM;
+VAR_SEP = EQL_EQUAL_SEP;
+
+symbol( var_asgn ) {
+  line( VAR_LEFT, VAR_BOTTOM, VAR_LEFT + VAR_WIDTH, VAR_BOTTOM );
+  line( VAR_LEFT, VAR_BOTTOM + VAR_SEP, VAR_LEFT + VAR_WIDTH, VAR_BOTTOM + VAR_SEP );
+}
+
+symbol(READ_OP) {
+  canonical_name : "READ_OP";
+  sub_symbol( eql_sym, 0, 0, 0 );
+  sub_symbol( sig_asgn, 0, 0, 0 );
+  pin( sig, EQL_LEFT, EQL_BOTTOM + EQL_HEIGHT / 2, LEFT );
+  pin( net, EQL_LEFT + EQL_WIDTH, EQL_BOTTOM + EQL_HEIGHT / 2, RIGHT );
+  canonical_pin_number( sig, 0 );
+  canonical_pin_number( net, 1 );
+}
+
+symbol(WRITE_OP) {
+  canonical_name : "WRITE_OP";
+  sub_symbol( eql_sym, 0, 0, 0 );
+  sub_symbol( sig_asgn, 0, 0, 0 );
+  pin( net, EQL_LEFT, EQL_BOTTOM + EQL_HEIGHT / 2, LEFT );
+  pin( sig, EQL_LEFT + EQL_WIDTH, EQL_BOTTOM + EQL_HEIGHT / 2, RIGHT );
+  canonical_pin_number( net, 0 );
+  canonical_pin_number( sig, 1 );
+}
+
+symbol(VAR_ASSGN_OP) {
+  canonical_name : "VAR_ASSGN_OP";
+  sub_symbol( eql_sym, 0, 0, 0 );
+  sub_symbol( var_asgn, 0, 0, 0 );
+  pin( var, EQL_LEFT, EQL_BOTTOM + EQL_HEIGHT / 2, LEFT );
+  pin( net, EQL_LEFT + EQL_WIDTH, EQL_BOTTOM + EQL_HEIGHT / 2, RIGHT );
+  canonical_pin_number( var, 0 );
+  canonical_pin_number( net, 1 );
+}
+
+  BS_FF_HEIGHT = 18;
+  BS_FF_WIDTH = 9;
+  BS_FF_BOTTOM = 2;
+  BS_FF_LEFT = 2;
+  BS_FF_NOTCH_WIDTH = 2;
+  BS_FF_NOTCH_HEIGHT = 2;
+  BS_FF_CLOCK_POS = BS_FF_BOTTOM + BS_FF_HEIGHT / 4;
+  symbol(BS_BUSSED_FF) {
+    canonical_name : "BS_BUSSED_FF";
+
+    /* Build the border */
+    line( BS_FF_LEFT, BS_FF_BOTTOM, BS_FF_LEFT, BS_FF_BOTTOM + BS_FF_HEIGHT );
+    line( BS_FF_LEFT, BS_FF_BOTTOM + BS_FF_HEIGHT, BS_FF_LEFT + BS_FF_WIDTH, BS_FF_BOTTOM + BS_FF_HEIGHT );
+    line( BS_FF_LEFT + BS_FF_WIDTH, BS_FF_BOTTOM + BS_FF_HEIGHT, BS_FF_LEFT + BS_FF_WIDTH, BS_FF_BOTTOM );
+    line( BS_FF_LEFT + BS_FF_WIDTH, BS_FF_BOTTOM, BS_FF_LEFT, BS_FF_BOTTOM );
+
+    /* Declare the pins */
+    canonical_pin_number( Clk, 0 );
+    canonical_pin_number( Clr, 1 );
+    canonical_pin_number( Enable, 2 );
+    canonical_pin_number( D, 3 );
+    canonical_pin_number( Q, 4 );
+    canonical_pin_number( Pre, 5 );
+
+    /* Set the pins position */
+    pin( Clk, BS_FF_LEFT, BS_FF_CLOCK_POS, LEFT );
+    pin( Clr, BS_FF_LEFT + BS_FF_WIDTH / 3, BS_FF_BOTTOM, DOWN );
+    pin( Enable, BS_FF_LEFT + 2 * BS_FF_WIDTH / 3, BS_FF_BOTTOM, DOWN );
+    pin( D, BS_FF_LEFT, BS_FF_BOTTOM + BS_FF_HEIGHT / 2, LEFT );
+    pin( Q, BS_FF_LEFT + BS_FF_WIDTH, BS_FF_BOTTOM + BS_FF_HEIGHT / 2, RIGHT );
+    pin( Pre, BS_FF_LEFT + BS_FF_WIDTH / 3, BS_FF_BOTTOM + BS_FF_HEIGHT, UP );
+
+
+    /* Build the "notch" for the clk signal */
+    line( BS_FF_LEFT, BS_FF_CLOCK_POS - BS_FF_NOTCH_WIDTH / 2, BS_FF_LEFT + BS_FF_NOTCH_WIDTH, BS_FF_CLOCK_POS );
+    line( BS_FF_LEFT, BS_FF_CLOCK_POS + BS_FF_NOTCH_WIDTH / 2, BS_FF_LEFT + BS_FF_NOTCH_WIDTH, BS_FF_CLOCK_POS );
+
+  }
+
+  RAM_HEIGHT = 25;
+  RAM_WIDTH = 15;
+  RAM_BOTTOM = 2;
+  RAM_LEFT = 2;
+  RAM_NOTCH_WIDTH = 2;
+  RAM_NOTCH_HEIGHT = 2;
+  RAM_CLOCK_POS = RAM_BOTTOM + RAM_HEIGHT / 4;
+  symbol(DW03_ram1_s) {
+    canonical_name : "DW03_ram1_s";
+
+    /* Build the border */
+    line( RAM_LEFT, RAM_BOTTOM, RAM_LEFT, RAM_BOTTOM + RAM_HEIGHT );
+    line( RAM_LEFT, RAM_BOTTOM + RAM_HEIGHT, RAM_LEFT + RAM_WIDTH, RAM_BOTTOM + RAM_HEIGHT );
+    line( RAM_LEFT + RAM_WIDTH, RAM_BOTTOM + RAM_HEIGHT, RAM_LEFT + RAM_WIDTH, RAM_BOTTOM );
+    line( RAM_LEFT + RAM_WIDTH, RAM_BOTTOM, RAM_LEFT, RAM_BOTTOM );
+
+    /* Declare the pins */
+    canonical_pin_number( datain, 0 );
+    canonical_pin_number( addr, 1 );
+    canonical_pin_number( rwb, 2 );
+    canonical_pin_number( clk, 3 );
+    canonical_pin_number( dataout, 4 );
+
+    /* Set the pins position */
+    RAM_BUBBLE_RADIUS = 0.7;
+    pin( datain, RAM_LEFT, RAM_BOTTOM + RAM_HEIGHT / 2, LEFT );
+    pin( addr, RAM_LEFT, RAM_BOTTOM + 3 * RAM_HEIGHT / 4, LEFT );
+    pin( rwb, RAM_LEFT + RAM_WIDTH / 2, RAM_BOTTOM - RAM_BUBBLE_RADIUS * 2, DOWN );
+    pin( clk, RAM_LEFT, RAM_CLOCK_POS, LEFT );
+    pin( dataout, RAM_LEFT + RAM_WIDTH, RAM_BOTTOM + RAM_HEIGHT / 2, RIGHT );
+
+    /* Build the "notch" for the clk signal */
+    line( RAM_LEFT, RAM_CLOCK_POS - RAM_NOTCH_WIDTH / 2, RAM_LEFT + RAM_NOTCH_WIDTH, RAM_CLOCK_POS );
+    line( RAM_LEFT, RAM_CLOCK_POS + RAM_NOTCH_WIDTH / 2, RAM_LEFT + RAM_NOTCH_WIDTH, RAM_CLOCK_POS );
+
+    /* Build the circle for the inverter */
+    circle(RAM_LEFT + RAM_WIDTH / 2, RAM_BOTTOM - RAM_BUBBLE_RADIUS, RAM_BUBBLE_RADIUS);
+
+  }
+
+symbol(DW03_mult_2_stage) {
+  canonical_name : "DW03_mult_2_stage"; 
+
+  PIPE_SEP = 2;
+
+  line(ALU_L,ALU_B,ALU_L + (ALU_R - ALU_L) / 2,ALU_B + ALU_INDENT / 2);
+  line(ALU_L + (ALU_R - ALU_L) / 2 + PIPE_SEP,ALU_B + ALU_INDENT / 2, ALU_R + PIPE_SEP, ALU_B + ALU_INDENT);
+  line(ALU_R + PIPE_SEP,ALU_B + ALU_INDENT,ALU_R + PIPE_SEP,ALU_T - ALU_INDENT);
+  line(ALU_R + PIPE_SEP,ALU_T - ALU_INDENT,ALU_L + (ALU_R - ALU_L) / 2 + PIPE_SEP,ALU_T - ALU_INDENT / 2);
+  line(ALU_L + (ALU_R - ALU_L) / 2,ALU_T - ALU_INDENT / 2,ALU_L,ALU_T);
+  line(ALU_L,ALU_T,ALU_L,ALU_T - ALU_SIDE_H);
+  line(ALU_L,ALU_T - ALU_SIDE_H,ALU_L + ALU_V_W,ALU_B + (ALU_H / 2));
+  line(ALU_L + ALU_V_W,ALU_B + (ALU_H / 2),ALU_L,ALU_B + ALU_SIDE_H);
+  line(ALU_L,ALU_B + ALU_SIDE_H,ALU_L,ALU_B);
+
+  line( ALU_L + (ALU_R - ALU_L) / 2 + PIPE_SEP, ALU_B + ALU_INDENT / 2, ALU_L + (ALU_R - ALU_L) / 2 + PIPE_SEP, ALU_T - ALU_INDENT / 2 );
+  line( ALU_L + (ALU_R - ALU_L) / 2, ALU_B + ALU_INDENT / 2, ALU_L + (ALU_R - ALU_L) / 2, ALU_T - ALU_INDENT / 2 );
+
+  /* Build the "X" symbol */
+  X_OFFSET = PIPE_SEP + 2;
+  line (ALU_TEXT_X + 2 + X_OFFSET,ALU_TEXT_Y + 2, ALU_TEXT_X - 2 + X_OFFSET,ALU_TEXT_Y - 2);
+  line (ALU_TEXT_X - 2 + X_OFFSET,ALU_TEXT_Y + 2, ALU_TEXT_X + 2 + X_OFFSET,ALU_TEXT_Y - 2);
+
+  /* Build a notch for the clock */
+  line( ALU_L, ALU_B + ALU_SIDE_H / 4 - 1, ALU_L + 2, ALU_B + ALU_SIDE_H / 4 );
+  line( ALU_L, ALU_B + ALU_SIDE_H / 4 + 1, ALU_L + 2, ALU_B + ALU_SIDE_H / 4 );
+
+
+  pin(A,ALU_L,ALU_A_PIN_Y, LEFT);
+  pin(B,ALU_L,ALU_B_PIN_Y, LEFT);
+  pin(TC,ALU_L + (ALU_R - ALU_L) / 3,ALU_T - ALU_INDENT / 3, UP);
+  pin(CLK,ALU_L, ALU_B + ALU_SIDE_H / 4, LEFT);
+  pin(PRODUCT, ALU_R + PIPE_SEP,ALU_Z_PIN_Y,RIGHT);
+  canonical_pin_number(A, 0);
+  canonical_pin_number(B, 1);
+  canonical_pin_number(TC, 2);
+  canonical_pin_number(CLK, 3);
+  canonical_pin_number(PRODUCT, 4);
+}
+
+} /* end */
+
+
+/*****************************************************************************/
+
+
+

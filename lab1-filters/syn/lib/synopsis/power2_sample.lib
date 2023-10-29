@@ -1,0 +1,477 @@
+library(power2_sample) {
+
+    default_inout_pin_cap        :  1.0;
+    default_inout_pin_fall_res   :  0.0;
+    default_inout_pin_rise_res   :  0.0;
+    default_input_pin_cap        :  1.0;
+    default_intrinsic_fall       :  1.0;
+    default_intrinsic_rise       :  1.0;
+    default_output_pin_cap       :  0.0;
+    default_output_pin_fall_res  :  0.0;
+    default_output_pin_rise_res  :  0.0;
+    default_slope_fall           :  0.0;
+    default_slope_rise           :  0.0;
+    default_fanout_load          :  1.0;
+
+    
+    k_process_drive_fall         :  1.0;
+    k_process_drive_rise         :  1.0;
+    k_process_intrinsic_fall     :  1.0;
+    k_process_intrinsic_rise     :  1.0;
+    k_process_pin_cap            :  0.0;
+    k_process_slope_fall         :  1.0;
+    k_process_slope_rise         :  1.0;
+    k_process_wire_cap           :  0.0;
+    k_process_wire_res           :  1.0;
+    k_temp_drive_fall            :  0.0037;
+    k_temp_drive_rise            :  0.0037;
+    k_temp_intrinsic_fall        :  0.0037;
+    k_temp_intrinsic_rise        :  0.0037;
+    k_temp_pin_cap               :  0.0;
+    k_temp_slope_fall            :  0.0;
+    k_temp_slope_rise            :  0.0;
+    k_temp_wire_cap              :  0.0;
+    k_temp_wire_res              :  0.0;
+    k_volt_drive_fall            : -0.26;
+    k_volt_drive_rise            : -0.26;
+    k_volt_intrinsic_fall        : -0.26;
+    k_volt_intrinsic_rise        : -0.26;
+    k_volt_pin_cap               :  0.0;
+    k_volt_slope_fall            :  0.0;
+    k_volt_slope_rise            :  0.0;
+    k_volt_wire_cap              :  0.0;
+    k_volt_wire_res              :  0.0;
+
+    time_unit : "1ns"; /* required for power */
+    voltage_unit : "1V"; /* required for power */
+    current_unit : "1uA";
+    capacitive_load_unit (0.1,ff); /* required for power */
+    pulling_resistance_unit : "1kohm";
+
+    /* 
+       Units for internal energy table must be (V**2) * C 
+       for this example Internal power = (1v)**2 * .1 ff =  .1fJoules 
+
+       The # displayed by Design power in report_power command
+       is V**2 * C * (1/time_unit) for this example is .1 uW
+    */
+        /*********************************************/
+        /* Added for DesignPower (Power Estimation). */
+        leakage_power_unit : 1nW;
+        default_cell_leakage_power : 0.2;
+ 
+        k_volt_cell_leakage_power : 0.000000 ;
+        k_temp_cell_leakage_power : 0.000000 ;
+        k_process_cell_leakage_power : 0.000000 ;
+ 
+        k_volt_internal_power : 0.000000 ;
+        k_temp_internal_power : 0.000000 ;
+        k_process_internal_power : 0.000000 ;
+ 
+        power_lut_template(output_by_cap_and_trans) {
+          variable_1 : total_output_net_capacitance;
+          variable_2 : input_transition_time;
+          index_1 ("0.0, 5.0, 20.0");
+          index_2 ("0.1, 1.00, 5.00");
+        }
+ 
+        power_lut_template(input_by_trans) {
+          variable_1 : input_transition_time; 
+          index_1 ("0.1, 1.00, 5.00");
+        }
+ 
+        /* End of power section (for DesignPower) */
+        /******************************************/
+
+    nom_process                  :  1.0;
+    nom_temperature 	         : 25.0;
+    nom_voltage                  :  5.0;
+
+
+    operating_conditions(WCCOM) {
+	process : 1.5 ;
+        temperature : 70 ;
+	voltage : 4.75 ;
+	tree_type : "worst_case_tree" ;
+    }
+    operating_conditions(WCIND) {
+        process : 1.5 ;
+        temperature : 85 ;
+        voltage : 4.75 ;
+        tree_type : "worst_case_tree" ;
+    }
+    operating_conditions(WCMIL) {
+        process : 1.5 ;
+        temperature : 125 ;
+        voltage : 4.5 ;
+        tree_type : "worst_case_tree" ;
+    }
+    operating_conditions(BCCOM) {
+        process : 0.6 ;
+        temperature : 0 ;
+        voltage : 5.25 ;
+        tree_type : "best_case_tree" ;
+    }
+    operating_conditions(BCIND) {
+        process : 0.6 ;
+        temperature : -40 ;
+        voltage : 5.25 ;
+        tree_type : "best_case_tree" ;
+    }
+    operating_conditions(BCMIL) {
+        process : 0.6 ;
+        temperature : -55 ;
+        voltage : 5.5 ;
+        tree_type : "best_case_tree" ;
+    }
+
+    wire_load("05x05") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 0.186 ;
+        fanout_length(1,0.39) ;
+    }
+    wire_load("10x10") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 0.311 ;
+        fanout_length(1,0.53) ;
+    }
+    wire_load("20x20") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 0.547 ;
+        fanout_length(1,0.86) ;
+    }
+    wire_load("30x30") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 0.782 ;
+        fanout_length(1,1.40) ;
+    }
+    wire_load("40x40") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 1.007 ;
+        fanout_length(1,1.90) ;
+    }
+    wire_load("50x50") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 1.218 ;
+        fanout_length(1,1.80) ;
+    }
+    wire_load("60x60") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 1.391 ;
+        fanout_length(1,1.70) ;
+    }
+    wire_load("70x70") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 1.517 ;
+        fanout_length(1,1.80) ;
+    }
+    wire_load("80x80") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 1.590 ;
+        fanout_length(1,1.80) ;
+    }
+    wire_load("90x90") {
+        resistance : 0 ;
+        capacitance : 1 ;
+        area : 0 ;
+        slope : 1.64 ;
+        fanout_length(1,1.9) ;
+    }
+
+cell(AN2) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A B";
+    timing() {
+      intrinsic_rise : 0.48;
+      intrinsic_fall : 0.77;
+      rise_resistance : 0.1443;
+      fall_resistance : 0.0523;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 0.48;
+      intrinsic_fall : 0.77;
+      rise_resistance : 0.1443;
+      fall_resistance : 0.0523;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "B";
+    }
+  }
+                  /**********************************/
+                  /* Output Power for Z Output      */
+                  /**********************************/
+		  cell_leakage_power : 1; 
+		  internal_power(output_by_cap_and_trans) { 
+	             values(" 4.000000 , 8.000000 , 40.000000 ",\
+		            " 2.000000 , 6.000000 , 35.000000 ",\
+		            " 1.000000 , 5.000000 , 30.000000 ");
+		     related_inputs : "A B"
+		     related_outputs : "Z"; 
+		  }
+}
+cell(INV) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "A'";
+    timing() {
+      intrinsic_rise : 0.48;
+      intrinsic_fall : 0.77;
+      rise_resistance : 0.1443;
+      fall_resistance : 0.0523;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A";
+    }
+  }
+                  /**********************************/
+                  /* Output Power for Z Output      */
+                  /**********************************/
+		  cell_leakage_power : 1; 
+		  internal_power(output_by_cap_and_trans) { 
+	             values(" 4.000000 , 8.000000 , 40.000000 ",\
+		            " 2.000000 , 6.000000 , 35.000000 ",\
+		            " 1.000000 , 5.000000 , 30.000000 ");
+		     related_inputs : "A"
+		     related_outputs : "Z"; 
+		  }
+}
+cell(NO2) {
+  area : 2;
+  pin(A) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(B) {
+    direction : input;
+    capacitance : 1;
+  }
+  pin(Z) {
+    direction : output;
+    function : "(A+B)'";
+    timing() {
+      intrinsic_rise : 0.48;
+      intrinsic_fall : 0.77;
+      rise_resistance : 0.1443;
+      fall_resistance : 0.0523;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "A";
+    }
+    timing() {
+      intrinsic_rise : 0.48;
+      intrinsic_fall : 0.77;
+      rise_resistance : 0.1443;
+      fall_resistance : 0.0523;
+      slope_rise : 0.0;
+      slope_fall : 0.0;
+      related_pin : "B";
+    }
+  }
+                  /**********************************/
+                  /* Output Power for Z Output      */
+                  /**********************************/
+		  cell_leakage_power : 1; 
+		  internal_power(output_by_cap_and_trans) { 
+	             values(" 4.000000 , 8.000000 , 40.000000 ",\
+		            " 2.000000 , 6.000000 , 35.000000 ",\
+		            " 1.000000 , 5.000000 , 30.000000 ");
+		     related_inputs : "A B"
+		     related_outputs : "Z"; 
+		  }
+}
+cell(flop1) {
+  area : 7;
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+    timing() {
+      timing_type : setup_rising;
+      intrinsic_rise : 0.8;
+      intrinsic_fall : 0.8;
+      related_pin : "CP";
+    }
+    timing() {
+      timing_type : hold_rising;
+      intrinsic_rise : 0.4;
+      intrinsic_fall : 0.4;
+      related_pin : "CP";
+    }
+  }
+  pin(CP) {
+    direction : input;
+    capacitance : 1;
+    min_pulse_width_high : 1.5;
+    min_pulse_width_low : 1.5;
+  }
+  ff(IQ, IQN) {
+    next_state : "D";
+    clocked_on : "CP";
+  }
+
+                  /**********************************/
+                  /* Internal Power for Clock Input */
+                  /**********************************/
+		  internal_power(input_by_trans) { 
+		     values("0.550000 , 0.600000 , .700000 ");
+		     related_input : "CP"; 
+		  }
+  pin(Q) {
+    direction : output;
+    function : "IQ"
+    timing() {
+      timing_type : rising_edge;
+      intrinsic_rise : 1.09;
+      intrinsic_fall : 1.37;
+      rise_resistance : 0.1458;
+      fall_resistance : 0.0523;
+      related_pin : "CP";
+    }
+  }
+                  /**********************************/
+                  /* Output Power for Z Output      */
+                  /**********************************/
+		  cell_leakage_power : 1; 
+		  internal_power(output_by_cap_and_trans) { 
+	             values(" 4.000000 , 8.000000 , 40.000000 ",\
+		            " 2.000000 , 6.000000 , 35.000000 ",\
+		            " 1.000000 , 5.000000 , 30.000000 ");
+		     related_inputs : "CP D"
+		     related_outputs : "Q QN"; 
+		  }
+  pin(QN) {
+    direction : output;
+    function : "IQN"
+    timing() {
+      timing_type : rising_edge;
+      intrinsic_rise : 1.59;
+      intrinsic_fall : 1.57;
+      rise_resistance : 0.1458;
+      fall_resistance : 0.0523;
+      related_pin : "CP";
+    }
+  }
+}
+cell(latch1) {
+  area : 5;
+  pin(D) {
+    direction : input;
+    capacitance : 1;
+    timing() {
+      timing_type : setup_falling;
+      intrinsic_rise : 0.4;
+      intrinsic_fall : 0.4;
+      related_pin : "G";
+    }
+    timing() {
+      timing_type : hold_falling;
+      intrinsic_rise : 0.4;
+      intrinsic_fall : 0.4;
+      related_pin : "G";
+    }
+  }
+  pin(G) {
+    direction : input;
+    capacitance : 1;
+    min_pulse_width_high : 1.5;
+    min_pulse_width_low : 1.5;
+  }
+                  /**********************************/
+                  /* Internal Power for Enable Input */
+                  /**********************************/
+		  internal_power(input_by_trans) { 
+		     values("0.550000 , 0.600000 , .700000 ");
+		     related_input : "G"; 
+		  }
+  latch ("IQ","IQN") {
+    enable : "G";
+    data_in : "D";
+  }
+  pin(Q) {
+    direction : output;
+    function : "IQ";
+    timing() {
+      timing_type : rising_edge;
+      intrinsic_rise : 0.89;
+      intrinsic_fall : 0.86;
+      rise_resistance : 0.1458;
+      fall_resistance : 0.0653;
+      related_pin : "G";
+    }
+    timing() {
+      timing_sense : positive_unate;
+      intrinsic_rise : 0.89;
+      intrinsic_fall : 0.86;
+      rise_resistance : 0.1458;
+      fall_resistance : 0.0653;
+      related_pin : "D";
+    }
+  }
+                  /**********************************/
+                  /* Output Power for Q Output      */
+                  /**********************************/
+		  cell_leakage_power : 1; 
+		  internal_power(output_by_cap_and_trans) { 
+	             values(" 4.000000 , 8.000000 , 40.000000 ",\
+		            " 2.000000 , 6.000000 , 35.000000 ",\
+		            " 1.000000 , 5.000000 , 30.000000 ");
+		     related_inputs : "G D"
+		     related_outputs : "Q QN"; 
+		  }
+  pin(QN) {
+    direction : output;
+    function : "IQN";
+    timing() {
+      timing_type : rising_edge;
+      intrinsic_rise : 1.18;
+      intrinsic_fall : 1.37;
+      rise_resistance : 0.1443;
+      fall_resistance : 0.0523;
+      related_pin : "G";
+    }
+    timing() {
+      timing_sense : negative_unate;
+      intrinsic_rise : 1.18;
+      intrinsic_fall : 1.37;
+      rise_resistance : 0.1443;
+      fall_resistance : 0.0523;
+      related_pin : "D";
+    }
+  }
+}
+} /* End of library power_sample */

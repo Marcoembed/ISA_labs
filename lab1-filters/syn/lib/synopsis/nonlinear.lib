@@ -1,0 +1,3277 @@
+ library (nonlinear) {
+
+	revision : 0.93;
+	date : "06-JUL-90";
+        delay_model : "table_lookup";
+
+  time_unit : "1ns";
+  voltage_unit : "1V";
+  current_unit : "1uA";
+  pulling_resistance_unit : "1kohm";
+  capacitive_load_unit (0.1, ff);
+
+  default_fanout_load : 0.0 ;
+  default_input_pin_cap : 1.0 ; 
+  default_output_pin_cap : 1.0 ;
+  default_inout_pin_cap : 1.0 ;
+
+
+lu_table_template(prop) {
+  variable_1 : input_net_transition
+  index_1("0, 1, 2, 3, 4");
+  variable_2 : output_net_length
+  index_2("0, 1, 2");
+}
+lu_table_template(tran) {
+  variable_1 : total_output_net_capacitance
+  index_1("0, 1");
+}
+lu_table_template(constraint) {
+  variable_1 : constrained_pin_transition
+  index_1("0, 1, 2, 3, 4");
+  variable_2 : related_pin_transition
+  index_2("0, 1, 2, 3, 4");
+}
+
+k_volt_rise_transition : -0.209;
+k_volt_fall_transition : -0.209;
+k_volt_rise_propagation : -0.209;
+k_volt_fall_propagation : -0.209;
+k_temp_rise_transition : 0.00245;
+k_temp_fall_transition : 0.00245;
+k_temp_rise_propagation : 0.00245;
+k_temp_fall_propagation : 0.00245;
+k_process_rise_transition : 1.0;
+k_process_fall_transition : 1.0;
+k_process_rise_propagation : 1.0;
+k_process_fall_propagation : 1.0;
+
+ /*                                                                  */
+ /* This is the default operating conditions(TYPICAL)                */ 
+ /*                                                                  */
+  nom_process : 1.0;
+  nom_temperature : 25.0;
+  nom_voltage : 5.0;
+ /*                                                                  */
+ /* These are the operating conditions                               */
+  /*                                                                  */
+  operating_conditions(BEST) {
+    process : 0.73;
+    temperature : -40.0;
+    voltage : 5.5;
+    tree_type : "worst_case_tree";
+  }
+  operating_conditions(TYPICAL) {
+    process : 1.0;
+    temperature : 25.0;
+    voltage : 5.0;
+    tree_type : "worst_case_tree";
+  }
+  operating_conditions(WORST) {
+    process : 1.37;
+    temperature : 85.0;
+    voltage : 4.5;
+    tree_type : "worst_case_tree";
+  }
+
+ /* These are the pre-layout wire_estimate values                    */
+ /*                                                                  */
+  wire_load("wire_load_1") {
+    resistance : 0;
+    capacitance : 1;
+    area : 0;
+    slope : 0.31;
+    fanout_length(1,0.94);
+  }
+  wire_load("wire_load_2") {
+    resistance : 0;
+    capacitance : 1;
+    area : 0;
+    slope : 0.41;
+    fanout_length(1,1.22);
+  }
+
+
+  cell( INV ) { /* INVERTER                                          */
+    area :   1 ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( Y )    {
+      direction : output   ;
+      max_fanout :  10 ;
+      function : " !A ";
+      timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.108000");
+        }
+        fall_propagation(prop) {
+          values("0.282500, 0.282500, 0.282500",  \
+  "0.282500, 0.282500, 0.282500",  \
+  "0.282500, 0.282500, 0.282500",  \
+  "0.282500, 0.282500, 0.282500",  \
+  "0.282500, 0.282500, 0.282500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.087000");
+        }
+      }
+    }
+  }
+
+
+  cell( NOR2 ) { /* 2 INPUT NOR                                       */
+    area :   1 ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( B )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( Y )    {
+      direction : output   ;
+      max_fanout :   7 ;
+      function : " (A+B)' ";
+      timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("0.313000, 0.313000, 0.313000",  \
+  "0.313000, 0.313000, 0.313000",  \
+  "0.313000, 0.313000, 0.313000",  \
+  "0.313000, 0.313000, 0.313000",  \
+  "0.313000, 0.313000, 0.313000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.202000");
+        }
+        fall_propagation(prop) {
+          values("0.299500, 0.299500, 0.299500",  \
+  "0.299500, 0.299500, 0.299500",  \
+  "0.299500, 0.299500, 0.299500",  \
+  "0.299500, 0.299500, 0.299500",  \
+  "0.299500, 0.299500, 0.299500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.087000");
+        }
+    }
+      timing ()      {
+        related_pin : B ;
+        rise_propagation(prop) {
+          values("0.415000, 0.415000, 0.415000",  \
+  "0.415000, 0.415000, 0.415000",  \
+  "0.415000, 0.415000, 0.415000",  \
+  "0.415000, 0.415000, 0.415000",  \
+  "0.415000, 0.415000, 0.415000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.202000");
+        }
+        fall_propagation(prop) {
+          values("0.384500, 0.384500, 0.384500",  \
+  "0.384500, 0.384500, 0.384500",  \
+  "0.384500, 0.384500, 0.384500",  \
+  "0.384500, 0.384500, 0.384500",  \
+  "0.384500, 0.384500, 0.384500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.087000");
+        }
+    }
+    }
+  }
+  cell ( OR_AND_INV_2_1) {/* 1,2 OR AND INVERTER */
+    area : 3;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( B )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( C )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+   pin ( Y )    {
+      direction : output   ;
+      max_fanout :   7 ;
+      function : " ((A + B) * (C + D))' ";
+      timing ()      {
+        related_pin : "A B C D";
+        rise_propagation(prop) {
+          values("0.415000, 0.415000, 0.415000",  \
+  "0.415000, 0.415000, 0.415000",  \
+  "0.415000, 0.415000, 0.415000",  \
+  "0.415000, 0.415000, 0.415000",  \
+  "0.415000, 0.415000, 0.415000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.202000");
+        }
+        fall_propagation(prop) {
+          values("0.384500, 0.384500, 0.384500",  \
+  "0.384500, 0.384500, 0.384500",  \
+  "0.384500, 0.384500, 0.384500",  \
+  "0.384500, 0.384500, 0.384500",  \
+  "0.384500, 0.384500, 0.384500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.087000");
+        }
+    }    }
+  }
+
+
+  cell( TBUF ) { /* NON-INVERTING BUFFER                              */
+    area :   1 ;
+    pin ( A )    {
+      direction : input ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( B )    {
+      direction : input ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( Y )    {
+      direction : output   ;
+      max_fanout :  20 ;
+      function : " A ";
+      three_state : " B ";
+      timing ()      {
+        related_pin : " A B " ;
+        rise_propagation(prop) {
+          values("0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+        fall_propagation(prop) {
+          values("0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.040000");
+        }
+    }
+      timing ()      {
+       timing_type : three_state_disable;
+        related_pin : " B " ;
+        rise_propagation(prop) {
+          values("0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+        fall_propagation(prop) {
+          values("0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.040000");
+        }
+    }
+    }
+  }
+
+
+  cell( BUF ) { /* NON-INVERTING BUFFER                              */
+    area :   1 ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( X )    {
+      direction : output   ;
+      max_fanout :  20 ;
+      function : " A ";
+      timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500",  \
+  "0.561500, 0.561500, 0.561500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+        fall_propagation(prop) {
+          values("0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000",  \
+  "0.626000, 0.626000, 0.626000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.040000");
+        }
+    }
+    }
+  }
+
+
+  cell( OR2 ) { /* 2 INPUT OR                                        */
+    area :   1 ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( B )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( Y )    {
+      direction : output   ;
+      max_fanout :  10 ;
+      function : " (A+B) ";
+      timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("0.493500, 0.493500, 0.493500",  \
+  "0.493500, 0.493500, 0.493500",  \
+  "0.493500, 0.493500, 0.493500",  \
+  "0.493500, 0.493500, 0.493500",  \
+  "0.493500, 0.493500, 0.493500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.100000");
+        }
+        fall_propagation(prop) {
+          values("0.789500, 0.789500, 0.789500",  \
+  "0.789500, 0.789500, 0.789500",  \
+  "0.789500, 0.789500, 0.789500",  \
+  "0.789500, 0.789500, 0.789500",  \
+  "0.789500, 0.789500, 0.789500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.074000");
+        }
+    }
+      timing ()      {
+        related_pin : B ;
+        rise_propagation(prop) {
+          values("0.592000, 0.592000, 0.592000",  \
+  "0.592000, 0.592000, 0.592000",  \
+  "0.592000, 0.592000, 0.592000",  \
+  "0.592000, 0.592000, 0.592000",  \
+  "0.592000, 0.592000, 0.592000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.100000");
+        }
+        fall_propagation(prop) {
+          values("0.878000, 0.878000, 0.878000",  \
+  "0.878000, 0.878000, 0.878000",  \
+  "0.878000, 0.878000, 0.878000",  \
+  "0.878000, 0.878000, 0.878000",  \
+  "0.878000, 0.878000, 0.878000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.074000");
+        }
+    }
+    }
+  }
+
+
+  cell( AND2 ) { /* 2 INPUT AND                                        */
+    area :   2 ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( B )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( Y  )    {
+      direction : output   ;
+      max_fanout :  20 ;
+      function : " (A*B) ";
+      timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("0.565000, 0.565000, 0.565000",  \
+  "0.565000, 0.565000, 0.565000",  \
+  "0.565000, 0.565000, 0.565000",  \
+  "0.565000, 0.565000, 0.565000",  \
+  "0.565000, 0.565000, 0.565000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+        fall_propagation(prop) {
+          values("0.946000, 0.946000, 0.946000",  \
+  "0.946000, 0.946000, 0.946000",  \
+  "0.946000, 0.946000, 0.946000",  \
+  "0.946000, 0.946000, 0.946000",  \
+  "0.946000, 0.946000, 0.946000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.049000");
+        }
+    }
+      timing ()      {
+        related_pin : B ;
+        rise_propagation(prop) {
+          values("0.643000, 0.643000, 0.643000",  \
+  "0.643000, 0.643000, 0.643000",  \
+  "0.643000, 0.643000, 0.643000",  \
+  "0.643000, 0.643000, 0.643000",  \
+  "0.643000, 0.643000, 0.643000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+        fall_propagation(prop) {
+          values("1.048000, 1.048000, 1.048000",  \
+  "1.048000, 1.048000, 1.048000",  \
+  "1.048000, 1.048000, 1.048000",  \
+  "1.048000, 1.048000, 1.048000",  \
+  "1.048000, 1.048000, 1.048000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.049000");
+        }
+    }
+    }
+  }
+
+  cell( NAND2 ) { /* 2 INPUT NAND                                      */
+    area :   1 ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( B )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( X )    {
+      direction : output   ;
+      max_fanout :  10 ;
+      function : " (A*B)' ";
+      timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.108000");
+        }
+        fall_propagation(prop) {
+          values("0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.107000");
+        }
+    }
+      timing ()      {
+        related_pin : B ;
+        rise_propagation(prop) {
+          values("0.367500, 0.367500, 0.367500",  \
+  "0.367500, 0.367500, 0.367500",  \
+  "0.367500, 0.367500, 0.367500",  \
+  "0.367500, 0.367500, 0.367500",  \
+  "0.367500, 0.367500, 0.367500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.108000");
+        }
+        fall_propagation(prop) {
+          values("0.350500, 0.350500, 0.350500",  \
+  "0.350500, 0.350500, 0.350500",  \
+  "0.350500, 0.350500, 0.350500",  \
+  "0.350500, 0.350500, 0.350500",  \
+  "0.350500, 0.350500, 0.350500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.107000");
+        }
+    }
+    }
+  }
+
+
+  cell( MUX2_1 ) { /* 2-1 MULTIPLEXER                                   */
+    area :   3 ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( B )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( S )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( Y )    {
+      direction : output   ;
+      max_fanout :   7 ;
+      function : " (S'*A+S*B)' ";
+      timing ()      {
+        related_pin : " A B S ";
+        rise_propagation(prop) {
+          values("0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.108000");
+        }
+        fall_propagation(prop) {
+          values("0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.107000");
+        }
+      }
+    }
+  }  
+
+
+  cell( MUX4_1 ) { /* 4-1 MULTIPLEXER                                   */
+    area :   6 ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( B )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( C )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( S0 )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( S1 )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+    }
+    pin ( Y )    {
+      direction : output   ;
+      max_fanout :   7 ;
+      function : " (A*S0'*S1' + B*S0*S1' + C*S0'*S1 + D*S0*S1)' ";
+      timing ()      {
+        related_pin : " A B C D ";
+        rise_propagation(prop) {
+          values("0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.108000");
+        }
+        fall_propagation(prop) {
+          values("0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.107000");
+        }
+      }
+      timing ()      {
+        related_pin : " S0 S1 " ;
+        rise_propagation(prop) {
+          values("0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500",  \
+  "0.241500, 0.241500, 0.241500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.108000");
+        }
+        fall_propagation(prop) {
+          values("0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000",  \
+  "0.439000, 0.439000, 0.439000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.107000");
+        }
+      }
+    }
+  }
+
+
+  cell( EXOR2 ) { /* EX-OR                                             */
+    area :   2 ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( B )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( X )    {
+      direction : output   ;
+      max_fanout :  10 ;
+      function : " A*B'+A'*B ";
+      timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.103000");
+        }
+        fall_propagation(prop) {
+          values("1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+    }
+      timing ()      {
+        related_pin : B ;
+        rise_propagation(prop) {
+          values("0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.103000");
+        }
+        fall_propagation(prop) {
+          values("1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+    }
+    }
+  }
+
+
+ cell( CAR_GEN ) { /*  CARRY GENERATOR */
+    area : 8  ;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( B )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( C )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( Y )    {
+      direction : output   ;
+      max_fanout :  10 ;
+      function : " (A*C + B*C + A*B*C') ";
+      timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.103000");
+        }
+        fall_propagation(prop) {
+          values("1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+    }
+      timing ()      {
+        related_pin : " B C ";
+        rise_propagation(prop) {
+          values("0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500",  \
+  "0.823500, 0.823500, 0.823500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.103000");
+        }
+        fall_propagation(prop) {
+          values("1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500",  \
+  "1.034500, 1.034500, 1.034500");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+    }
+}
+
+ 
+  cell( D_LAT ) { /* Low enable D-Latch                                          */
+    area :   2 ;
+    pin_opposite ( "Q","NQ");
+    latch ( "QX" , "QY" ) {
+	data_in  : " D ";
+      	enable  : " CK' ";
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("0.740000, 0.740000, 0.740000, 0.740000, 0.740000",  \
+  "0.740000, 0.740000, 0.740000, 0.740000, 0.740000",  \
+  "0.740000, 0.740000, 0.740000, 0.740000, 0.740000",  \
+  "0.740000, 0.740000, 0.740000, 0.740000, 0.740000",  \
+  "0.740000, 0.740000, 0.740000, 0.740000, 0.740000");
+        }
+        fall_constraint(constraint) {
+          values("0.740000, 0.740000, 0.740000, 0.740000, 0.740000",  \
+  "0.740000, 0.740000, 0.740000, 0.740000, 0.740000",  \
+  "0.740000, 0.740000, 0.740000, 0.740000, 0.740000",  \
+  "0.740000, 0.740000, 0.740000, 0.740000, 0.740000",  \
+  "0.740000, 0.740000, 0.740000, 0.740000, 0.740000");
+        }
+    }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+         rise_constraint(constraint) {
+          values("1.980000, 1.980000, 1.980000, 1.980000, 1.980000",  \
+  "1.980000, 1.980000, 1.980000, 1.980000, 1.980000",  \
+  "1.980000, 1.980000, 1.980000, 1.980000, 1.980000",  \
+  "1.980000, 1.980000, 1.980000, 1.980000, 1.980000",  \
+  "1.980000, 1.980000, 1.980000, 1.980000, 1.980000");
+        }
+        fall_constraint(constraint) {
+          values("1.980000, 1.980000, 1.980000, 1.980000, 1.980000",  \
+  "1.980000, 1.980000, 1.980000, 1.980000, 1.980000",  \
+  "1.980000, 1.980000, 1.980000, 1.980000, 1.980000",  \
+  "1.980000, 1.980000, 1.980000, 1.980000, 1.980000",  \
+  "1.980000, 1.980000, 1.980000, 1.980000, 1.980000");
+        }
+     }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D ";
+        rise_propagation(prop) {
+          values("1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.192000");
+        }
+        fall_propagation(prop) {
+          values("1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.266000");
+        }
+      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.098000");
+        }
+        fall_propagation(prop) {
+          values("1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.067000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D ";
+        rise_propagation(prop) {
+          values("1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.192000");
+        }
+        fall_propagation(prop) {
+          values("1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.266000");
+        }
+      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin : " CK ";
+        rise_propagation(prop) {
+          values("1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500",  \
+  "1.279500, 1.279500, 1.279500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.192000");
+        }
+        fall_propagation(prop) {
+          values("1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.266000");
+        }
+      }
+    }
+  }
+
+
+  cell( D_LAT_R ) { /* Low enable D-latch with active high reset                                          */
+    area :   2 ;
+    pin_opposite ( "Q","NQ");
+    latch ( "QX" , "QY" ) {
+	data_in  : " D ";
+      	enable  : " CK'  ";
+        clear : "R";
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("0.760000, 0.760000, 0.760000, 0.760000, 0.760000",  \
+  "0.760000, 0.760000, 0.760000, 0.760000, 0.760000",  \
+  "0.760000, 0.760000, 0.760000, 0.760000, 0.760000",  \
+  "0.760000, 0.760000, 0.760000, 0.760000, 0.760000",  \
+  "0.760000, 0.760000, 0.760000, 0.760000, 0.760000");
+        }
+        fall_constraint(constraint) {
+          values("0.760000, 0.760000, 0.760000, 0.760000, 0.760000",  \
+  "0.760000, 0.760000, 0.760000, 0.760000, 0.760000",  \
+  "0.760000, 0.760000, 0.760000, 0.760000, 0.760000",  \
+  "0.760000, 0.760000, 0.760000, 0.760000, 0.760000",  \
+  "0.760000, 0.760000, 0.760000, 0.760000, 0.760000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("2.740000, 2.740000, 2.740000, 2.740000, 2.740000",  \
+  "2.740000, 2.740000, 2.740000, 2.740000, 2.740000",  \
+  "2.740000, 2.740000, 2.740000, 2.740000, 2.740000",  \
+  "2.740000, 2.740000, 2.740000, 2.740000, 2.740000",  \
+  "2.740000, 2.740000, 2.740000, 2.740000, 2.740000");
+        }
+        fall_constraint(constraint) {
+          values("2.740000, 2.740000, 2.740000, 2.740000, 2.740000",  \
+  "2.740000, 2.740000, 2.740000, 2.740000, 2.740000",  \
+  "2.740000, 2.740000, 2.740000, 2.740000, 2.740000",  \
+  "2.740000, 2.740000, 2.740000, 2.740000, 2.740000",  \
+  "2.740000, 2.740000, 2.740000, 2.740000, 2.740000");
+        }
+      }
+    }
+    pin ( R )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : recovery_rising ;
+        rise_constraint(constraint) {
+          values("1.900000, 1.900000, 1.900000, 1.900000, 1.900000",  \
+  "1.900000, 1.900000, 1.900000, 1.900000, 1.900000",  \
+  "1.900000, 1.900000, 1.900000, 1.900000, 1.900000",  \
+  "1.900000, 1.900000, 1.900000, 1.900000, 1.900000",  \
+  "1.900000, 1.900000, 1.900000, 1.900000, 1.900000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D ";
+        rise_propagation(prop) {
+          values("1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.202000");
+        }
+        fall_propagation(prop) {
+          values("1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.069000");
+        }
+      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.202000");
+        }
+        fall_propagation(prop) {
+          values("1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.069000");
+        }
+      }
+      timing ()      {
+        timing_type : clear ;
+        timing_sense : negative_unate;
+        related_pin :" R ";
+        fall_propagation(prop) {
+          values("1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.069000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D ";
+        rise_propagation(prop) {
+          values("1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.202000");
+        }
+        fall_propagation(prop) {
+          values("1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.069000");
+        }
+      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.202000");
+        }
+        fall_propagation(prop) {
+          values("1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.069000");
+        }
+      }
+      timing ()      {
+        timing_type : preset ;
+        timing_sense : positive_unate;
+        related_pin :" R ";
+        rise_propagation(prop) {
+          values("1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000",  \
+  "1.334000, 1.334000, 1.334000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.202000");
+        }
+      }
+    }
+  }
+
+
+  cell( D_LAT_S ) { /* Low enable D-latch with active high set                                          */
+    area :   2 ;
+    pin_opposite ( "Q","NQ");
+    latch ( "QX" , "QY" ) {
+	data_in  : " D ";
+      	enable  : " CK'  ";
+        preset : " S ";
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000");
+        }
+        fall_constraint(constraint) {
+          values("0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000");
+        }
+        fall_constraint(constraint) {
+          values("0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000");
+        }
+      }
+    }
+    pin ( S )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : recovery_rising ;
+        rise_constraint(constraint) {
+          values("0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000",  \
+  "0.800000, 0.800000, 0.800000, 0.800000, 0.800000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D ";
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+      timing ()      {
+        timing_type : preset ;
+        related_pin :" S ";
+        timing_sense : positive_unate;
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D ";
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+      timing ()      {
+        timing_type : clear;
+        timing_sense : negative_unate;
+        related_pin :" S ";
+
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+    }
+  }
+
+
+  cell( D_LAT__R_S ) { /* Low enable D-latch with active high reset and set                                          */
+    area :   2 ;
+    pin_opposite ( "Q","NQ");
+    latch ( "QX" , "QY" ) {
+	data_in  : " D ";
+      	enable  : " CK'  ";
+        clear : " R ";
+        preset : " S ";
+        clear_preset_var1 : N ;
+        clear_preset_var2 : N ;
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( R )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : recovery_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( S )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : recovery_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D ";
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+      timing ()      {
+        timing_type : clear;
+        related_pin :" R ";
+        timing_sense : negative_unate;
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+      timing ()      {
+        timing_type : preset ;
+        related_pin :" S ";
+        timing_sense : positive_unate;
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D ";
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+      timing ()      {
+        timing_type : preset ;
+        related_pin :" R ";
+        timing_sense : positive_unate;
+        rise_propagation(prop) {
+          values("1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500",  \
+  "1.262500, 1.262500, 1.262500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.205000");
+        }
+      }
+      timing ()      {
+        timing_type : clear;
+        related_pin :" S ";
+        timing_sense : negative_unate;
+        fall_propagation(prop) {
+          values("1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000",  \
+  "1.174000, 1.174000, 1.174000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.070000");
+        }
+      }
+    }
+  }
+
+
+  cell( OR2_D_LAT ) { /* 2 Or with Low enable D-Latch                                          */
+    area :   2 ;
+    pin_opposite ( "Q","NQ");
+    latch ( "QX" , "QY" ) {
+	data_in  : " (D1 + D2) ";
+      	enable  : " CK'  ";
+    }
+    pin ( D1 )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( D2 )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D1 D2 ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin :" D1 D2 ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+      timing ()      {
+        timing_type : falling_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+    }
+  }
+
+
+  cell( MUX_LAT ) { /*  low enable Mux latch                                        */
+    area :   2 ;
+    pin_opposite ( "Q", "NQ" );
+    latch ( "QX" , "QY" ) {
+	data_in   : " ((D*!SE) + (SI*SE)) ";
+      	enable  : " CK  ";
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( SI )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( SE )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+    }
+
+    test_cell() {
+    latch ( "QX", "QY") {
+        data_in : " D ";
+        enable : " CK' ";
+     }
+    pin ( D, CK) {
+	direction : input ;
+     }
+    pin ( SI ) {
+	direction : input ;
+        signal_type : "test_scan_in";
+    }
+    pin ( SE ) {
+	direction : input ;
+        signal_type : "test_scan_enable";
+    }
+    pin ( Q ) {
+	direction : output ;
+        function : " QX ";
+/*      signal_type : "test_scan_out"; */
+    }
+    pin ( NQ ) {
+	direction : output ;
+/*      function : " QY "; */
+        signal_type : "test_scan_out_inverted";
+    }
+  }
+}
+
+  cell( D_FF ) { /* +ve edge triggered D-FF                                          */
+    area :   2 ;
+    pin_opposite ( "Q", "NQ" );
+    ff ( "QX" , "QY" ) {
+	next_state  : " D ";
+      	clocked_on  : " CK  ";
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+         rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+     }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+    }
+  }
+
+
+  cell( D_FF_R ) { /* +ve edge triggered D-ff with active high reset                                         */
+    area :   2 ;
+    pin_opposite ( "Q","NQ");
+    ff ( "QX" , "QY" ) {
+	next_state  : " D ";
+      	clocked_on  : " CK  ";
+        clear : " R ";
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+        fall_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( R )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : recovery_rising ;
+        rise_constraint(constraint) {
+          values("1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000",  \
+  "1.060000, 1.060000, 1.060000, 1.060000, 1.060000");
+        }
+      }
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+      timing ()      {
+        timing_type : clear ;
+        timing_sense : negative_unate ;
+        related_pin :" R ";
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+        fall_propagation(prop) {
+          values("1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000",  \
+  "1.259000, 1.259000, 1.259000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.048000");
+        }
+      }
+      timing ()      {
+        timing_type : preset ;
+        timing_sense : positive_unate ;
+        related_pin :" R ";
+        rise_propagation(prop) {
+          values("1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500",  \
+  "1.357500, 1.357500, 1.357500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.050000");
+        }
+      }
+    }
+  }
+
+
+  cell( D_FF_S ) { /* +ve edge triggered D-ff with active high set                                         */
+    area :   2 ;
+    pin_opposite ( "Q","NQ");
+    ff ( "QX" , "QY" ) {
+	next_state  : " D ";
+      	clocked_on  : " CK  ";
+        preset : " S ";
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( S )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : recovery_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+
+       }
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+      timing ()      {
+        timing_type : preset ;
+        timing_sense : positive_unate ;
+        related_pin :" S ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+      timing ()      {
+        timing_type : clear ;
+        timing_sense : negative_unate ;
+        related_pin :" S ";
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+    }
+  }
+
+
+
+  cell( D_FF_R_S ) { /* +ve edge triggered D-ff with active high set                                         */
+    area :   2 ;
+    pin_opposite ( "Q","NQ");
+    ff ( "QX" , "QY" ) {
+	next_state  : " D ";
+      	clocked_on  : " CK  ";
+        clear : " R ";
+        preset : " S ";
+        clear_preset_var1 : L ;
+        clear_preset_var2 : L ;
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000");
+        }
+        fall_constraint(constraint) {
+          values("1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000");
+        }
+        fall_constraint(constraint) {
+          values("1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( R )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : recovery_rising ;
+        rise_constraint(constraint) {
+          values("1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000");
+        }
+      }
+    }
+    pin ( S )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : recovery_rising ;
+        rise_constraint(constraint) {
+          values("1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000",  \
+  "1.590000, 1.590000, 1.590000, 1.590000, 1.590000");
+        }
+      }
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+      timing ()      {
+        timing_type : clear ;
+        timing_sense : negative_unate ;
+        related_pin :" R ";
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+      timing ()      {
+        timing_type : preset ;
+        timing_sense : positive_unate ;
+        related_pin :" S ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+      timing ()      {
+        timing_type : preset ;
+        timing_sense : positive_unate ;
+        related_pin :" R ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+      }
+      timing ()      {
+        timing_type : clear ;
+        timing_sense : negative_unate ;
+        related_pin :" S ";
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+    }
+  }
+
+
+  cell( OR2_D_FF ) { /* 2OR with +ve edge triggered D-FF                                          */
+    area :   2 ;
+    pin_opposite ( "Q", "NQ" );
+    ff ( "QX" , "QY" ) {
+	next_state  : " (D1 + D2) ";
+      	clocked_on  : " CK  ";
+    }
+    pin ( D1 )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+    }
+    pin ( D2 )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+    }
+  }
+
+
+  cell( MUX_D_FF ) { /*  +ve edge triggered MUX D-FF                                          */
+    area :   2 ;
+    pin_opposite ( "Q", "NQ" );
+    ff ( "QX" , "QY" ) {
+	next_state  : " ((D*!SE) + (SI*SE)) ";
+      	clocked_on  : " CK  ";
+    }
+    pin ( D )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+    }
+    pin ( SI )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+    }
+    pin ( CK )    {
+      direction : input    ;
+      capacitance :   2 ;
+      fanout_load :   2 ;
+    }
+    pin ( SE )    {
+      direction : input    ;
+      capacitance :   1 ;
+      fanout_load :   1 ;
+      timing ()      {
+        related_pin : CK ;
+        timing_type : hold_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+      timing ()      {
+        related_pin : CK ;
+        timing_type : setup_rising ;
+        rise_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+        fall_constraint(constraint) {
+          values("1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000",  \
+  "1.970000, 1.970000, 1.970000, 1.970000, 1.970000");
+        }
+      }
+    }
+    pin ( Q )    {
+      direction : output   ;
+      function  : "QX" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+    }
+    pin ( NQ )    {
+      direction : output   ;
+      function  : "QY" ;
+      max_fanout :  10 ;
+      timing ()      {
+        timing_type : rising_edge ;
+        related_pin :" CK ";
+        rise_propagation(prop) {
+          values("1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500",  \
+  "1.490500, 1.490500, 1.490500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.206000");
+        }
+        fall_propagation(prop) {
+          values("1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000",  \
+  "1.242000, 1.242000, 1.242000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.075000");
+        }
+      }
+    }
+
+    test_cell() {
+    ff ( "QX", "QY") {
+        next_state : " D ";
+        clocked_on : " CK ";
+     }
+    pin ( D, CK) {
+	direction : input ;
+     }
+    pin ( SI ) {
+	direction : input ;
+        signal_type : "test_scan_in";
+    }
+    pin ( SE ) {
+	direction : input ;
+        signal_type : "test_scan_enable";
+    }
+    pin ( Q ) {
+	direction : output ;
+        function : " QX ";
+        signal_type : "test_scan_out";
+    }
+    pin ( NQ ) {
+	direction : output ;
+        function : " QY ";
+        signal_type : "test_scan_out_inverted";
+    }
+  }
+}
+
+  cell( INBUF ) { /* INPUT BUFFER */
+    area :   0 ;
+    pin ( IN )    {
+      direction : input ;
+      capacitance : 1.0 ;
+    }
+    pin ( Y )    {
+      direction : output   ;
+      function : " IN ";
+      max_fanout :  10 ;
+      timing ()      {
+        related_pin : IN ;
+        rise_propagation(prop) {
+          values("1.255500, 1.255500, 1.255500",  \
+  "1.255500, 1.255500, 1.255500",  \
+  "1.255500, 1.255500, 1.255500",  \
+  "1.255500, 1.255500, 1.255500",  \
+  "1.255500, 1.255500, 1.255500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.056000");
+        }
+        fall_propagation(prop) {
+          values("1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000",  \
+  "1.116000, 1.116000, 1.116000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.027000");
+        }
+      }
+    }
+  }
+
+
+  cell( OUTBUF ) { /* OUTPUT BUFFER */
+    area :   0 ;
+    pad_cell : true;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   3 ;
+      fanout_load :   3 ;
+    }
+    pin ( OUT )    {
+      is_pad : true;
+      direction : output   ;
+      drive_current : 0.5 ;
+      function : "A";
+        timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("2.678000, 2.678000, 2.678000",  \
+  "2.678000, 2.678000, 2.678000",  \
+  "2.678000, 2.678000, 2.678000",  \
+  "2.678000, 2.678000, 2.678000",  \
+  "2.678000, 2.678000, 2.678000");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.068000");
+        }
+        fall_propagation(prop) {
+          values("2.348000, 2.348000, 2.348000",  \
+  "2.348000, 2.348000, 2.348000",  \
+  "2.348000, 2.348000, 2.348000",  \
+  "2.348000, 2.348000, 2.348000",  \
+  "2.348000, 2.348000, 2.348000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.027000");
+        }
+      }
+    }
+  }
+
+
+  cell( TOUTBUF ) {  /* OUTPUT BUFFER WITH TRISTATE */
+    area :   0 ;
+    pad_cell : true;
+    pin ( A )    {
+      direction : input    ;
+      capacitance :   5 ;
+      fanout_load :   5 ;
+    }
+    pin ( B ) {
+      direction : input ;
+      capacitance : 3 ;
+      fanout_load : 3 ;
+    }
+    pin ( OUT )    {
+      function : " A ";
+      three_state : " B ";
+      is_pad : true;
+      direction : output   ;
+      drive_current : 0.5 ;
+      timing ()      {
+        related_pin : A ;
+        rise_propagation(prop) {
+          values("0.789500, 0.789500, 0.789500",  \
+  "0.789500, 0.789500, 0.789500",  \
+  "0.789500, 0.789500, 0.789500",  \
+  "0.789500, 0.789500, 0.789500",  \
+  "0.789500, 0.789500, 0.789500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.058000");
+        }
+        fall_propagation(prop) {
+          values("0.895000, 0.895000, 0.895000",  \
+  "0.895000, 0.895000, 0.895000",  \
+  "0.895000, 0.895000, 0.895000",  \
+  "0.895000, 0.895000, 0.895000",  \
+  "0.895000, 0.895000, 0.895000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.049000");
+        }
+      }
+      timing ()      {
+        timing_type : three_state_disable;
+        related_pin : B ;
+        rise_propagation(prop) {
+          values("0.554500, 0.554500, 0.554500",  \
+  "0.554500, 0.554500, 0.554500",  \
+  "0.554500, 0.554500, 0.554500",  \
+  "0.554500, 0.554500, 0.554500",  \
+  "0.554500, 0.554500, 0.554500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.058000");
+        }
+        fall_propagation(prop) {
+          values("0.667000, 0.667000, 0.667000",  \
+  "0.667000, 0.667000, 0.667000",  \
+  "0.667000, 0.667000, 0.667000",  \
+  "0.667000, 0.667000, 0.667000",  \
+  "0.667000, 0.667000, 0.667000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.049000");
+        }
+      }
+      timing ()      {
+        related_pin : B ;
+        rise_propagation(prop) {
+          values("0.554500, 0.554500, 0.554500",  \
+  "0.554500, 0.554500, 0.554500",  \
+  "0.554500, 0.554500, 0.554500",  \
+  "0.554500, 0.554500, 0.554500",  \
+  "0.554500, 0.554500, 0.554500");
+        }
+        rise_transition(tran) {
+          values("0.000000, 0.058000");
+        }
+        fall_propagation(prop) {
+          values("0.667000, 0.667000, 0.667000",  \
+  "0.667000, 0.667000, 0.667000",  \
+  "0.667000, 0.667000, 0.667000",  \
+  "0.667000, 0.667000, 0.667000",  \
+  "0.667000, 0.667000, 0.667000");
+        }
+        fall_transition(tran) {
+          values("0.000000, 0.049000");
+        }
+      }
+    }
+  }
+
+
+
+
+ /*  End of the library                                              */ }
+
+
