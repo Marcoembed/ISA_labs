@@ -1,10 +1,8 @@
 # Synthesis script
-# The logical synthesis process can be divided into the following steps:
-# 1 reading source files;
-# 2 applying constraints;
-# 3 start the synthesis;
-# 4 save the results;
+# ##############################################################################
 
+# Handy functions
+# https://stackoverflow.com/questions/18219420/how-to-convert-a-file-to-a-tcl-list
 proc listFromFile {filename} {
     set f [open $filename r]
     set data [split [string trim [read $f]]]
@@ -12,10 +10,16 @@ proc listFromFile {filename} {
     return $data
 }
 
+# Global variables
 set TOP_LVL_ENTITY "CFG_IIR_BEHAV"
-
 set VHDL_COMPILE_FILE "./src/compile_VHDL.f"
 set VLOG_COMPILE_FILE "./src/compile_VLOG.f"
+
+# The logical synthesis process can be divided into the following steps:
+# 1 reading source files;
+# 2 applying constraints;
+# 3 start the synthesis;
+# 4 save the results;
 
 ################################################################################
 # 1 reading source files
@@ -53,5 +57,39 @@ link
 
 
 ################################################################################
-# 2 reading source files
+# 2 applying constraints
 ################################################################################
+
+# Bind the clock constraint (named MY_CLK) to the internal signal of the architecture (called CLK)
+# use a 10.0 ns period clock => 100MHz
+create_clock -name MY_CLK -period 10.0 CLK
+# clk is a special signal so don't touch it in synthesis
+set dont_touch_network MY_CLK
+# simulate jitter of clk with uncertainty
+set_clock_uncertainty 0.07 [get_clocks MY_CLK]
+
+set_input_delay 0.5 -max -clock MY_CLK [remove_from_collection [all_inputs] CLK]
+set_output_delay 0.5 -max -clock MY_CLK [all_outputs]
+set OUTPUT_LOAD [load_of NangateOpenCellLibrary/BUF_X4/A]
+set_load $OUTPUT_LOAD [all_outputs]
+
+# Removes a level of hierarchy TODO: check what it does
+#-all   Indicates that all  cells  in  the  current  design  or  current instance  are  to be ungrouped.  You must specify either -all or cell_list but not both.
+#-flatten Indicates that the specified cell and all of its subcells are to be  exploded  recursively  until  all  levels  of  hierarchy are removed.
+ungroup -all -flatten
+
+#  Checks the current design for consistency. TODO: check what it does
+check_design
+
+################################################################################
+# 3 Start synthesis
+################################################################################
+compile
+# apply clock gating on FLIP-FLOPS with enable signal
+compile -gate clock
+
+change_names -hierarchy -rules verilog
+report_area > ./reports/dlx_area.txt
+report_timing > ./reports/dlx_timing.txt
+write -f verilog -hierarchy -output ./netlist/dlx.v
+exit

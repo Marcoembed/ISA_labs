@@ -28,7 +28,7 @@ module tb_iir ();
         .A1(A1_i),
         .END_SIM(END_SIM_i));
  
-    CFG_IIR_BEHAV UUT(
+    iir UUT(
         .CLK(CLK_i),
         .RST_n(RST_n_i),
         .X(DIN_i),
@@ -58,7 +58,7 @@ module tb_iir ();
     always @(END_SIM_i) begin
         if(END_SIM_i) begin
            $display("Ending simulation shortly",$time); 
-           //$finish 
+           $finish 
         end
     end
 endmodule
