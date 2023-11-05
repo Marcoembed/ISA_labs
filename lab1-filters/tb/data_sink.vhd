@@ -28,9 +28,9 @@ architecture beh of data_sink is
 begin  -- beh
 
 	process (CLK, RST_N)
-		file res_fp : text open WRITE_MODE is "./sim/artifacts/results_hdl.txt";
+		file res_fp : text open WRITE_MODE is "../sim/artifacts/results_hdl.txt";
 		variable line_out : line;
-		file fp_in : text open READ_MODE is "./sim/artifacts/output13.txt";
+		file fp_in : text open READ_MODE is "../sim/artifacts/output13.txt";
 		variable line_in : line;    
 		variable x : integer;
 		variable cnt : integer := 0;
