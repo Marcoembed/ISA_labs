@@ -62,9 +62,10 @@ link
 
 # Bind the clock constraint (named MY_CLK) to the internal signal of the architecture (called CLK)
 # use a 10.0 ns period clock => 100MHz
-#create_clock -name MY_CLK -period 10.0 CLK
-#create_clock -name MY_CLK -period 0 CLK
-create_clock -name MY_CLK -period 2.46 CLK
+#
+create_clock -name MY_CLK -period 3.00 CLK
+# SLACK MET
+#
 # clk is a special signal so don't touch it in synthesis
 set dont_touch_network MY_CLK
 # simulate jitter of clk with uncertainty
