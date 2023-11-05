@@ -15,7 +15,7 @@ entity data_maker is
 	);
 	port (
 		CLK:		in	std_logic;
-		RST_n:		in	std_logic;
+		RST_N:		in	std_logic;
 		VOUT:		out std_logic;
 		DOUT:		out std_logic_vector(NBIT-1 downto 0);
 		B0:			out std_logic_vector(NBIT-1 downto 0);
@@ -45,14 +45,14 @@ begin	-- beh
 	B1 <= conv_std_logic_vector(215, NBIT);
 	A1 <= conv_std_logic_vector( 82, NBIT);
 
-	process (CLK, RST_n)
+	process (CLK, RST_N)
 		file fp_in: text open READ_MODE is "./sim/samples.txt";
 		variable line_in: line;
 		variable x: integer;
 
 	begin	-- process
 
-		if RST_n = '0' then		-- asynchronous reset (active low)
+		if RST_N = '0' then		-- asynchronous reset (active low)
 			DOUT <= (others => '0') after tco;			
 			VOUT <= '0' after tco;
 			sEndSim <= '0' after tco;
@@ -76,9 +76,9 @@ begin	-- beh
 	end process;
 
 
-	process (CLK, RST_n) is
+	process (CLK, RST_N) is
 	begin	-- process
-		if RST_n = '0' then		-- asynchronous reset (active low)
+		if RST_N = '0' then		-- asynchronous reset (active low)
 			valid <= '0' after tco;
 			lfsr <= conv_std_logic_vector(LFSR_INIT, 12) after tco;
 		elsif CLK'event and CLK = '1' then	-- rising clock edge
@@ -88,9 +88,9 @@ begin	-- beh
 	end process;
 
 
-	process (CLK, RST_n)
+	process (CLK, RST_N)
 	begin	-- process
-		if RST_n = '0' then		-- asynchronous reset (active low)
+		if RST_N = '0' then		-- asynchronous reset (active low)
 			END_SIM_i <= (others => '0') after tco;
 		elsif CLK'event and CLK = '1' then	-- rising clock edge
 			END_SIM_i(0) <= sEndSim after tco;

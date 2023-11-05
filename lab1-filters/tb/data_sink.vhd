@@ -15,7 +15,7 @@ entity data_sink is
 	);
 	port (
 		CLK:	in std_logic;
-		RST_n:	in std_logic;
+		RST_N:	in std_logic;
 		VIN:	in std_logic;
 		DIN:	in std_logic_vector(NBIT-1 downto 0)
 	);
@@ -27,7 +27,7 @@ architecture beh of data_sink is
 
 begin  -- beh
 
-	process (CLK, RST_n)
+	process (CLK, RST_N)
 		file res_fp : text open WRITE_MODE is "./sim/artifacts/results_hdl.txt";
 		variable line_out : line;
 		file fp_in : text open READ_MODE is "./sim/artifacts/output13.txt";
@@ -37,7 +37,7 @@ begin  -- beh
 
 	begin  -- process
 
-		if RST_n = '0' then	-- asynchronous reset (active low)
+		if RST_N = '0' then	-- asynchronous reset (active low)
 			cnt := 0;
 		elsif CLK'event and CLK = '1' then  -- rising clock edge
 			if (VIN = '1') then

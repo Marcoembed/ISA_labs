@@ -9,7 +9,7 @@ entity clk_gen is
 	port (
 		END_SIM:	in  std_logic;
 		CLK:		out std_logic;
-		RST_n:		out std_logic
+		RST_N:		out std_logic
 	);
 end clk_gen;
 
@@ -22,7 +22,7 @@ architecture beh of clk_gen is
 
 begin  -- beh
 
-	RST_n <= '0', '1' after 5*Ts/2;
+	RST_N <= '0', '1' after 5*Ts/2;
 
 	process
 	begin  -- process
