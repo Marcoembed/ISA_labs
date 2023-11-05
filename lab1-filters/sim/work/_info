@@ -1,0 +1,313 @@
+m255
+K4
+z2
+!s11f MIXED_VERSIONS
+!s11e vcom 2020.4 2020.10, Oct 13 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/isa01_2023_2024/marco/lab1-filters/sim
+T_opt
+!s110 1699203452
+VWoGzd:Zca;^;c0EWdVUDH0
+Z1 04 6 4 work tb_iir fast 0
+=1-32c32e71d307-6547c97b-6d632-579c
+o-quiet -auto_acc_if_foreign -work work -L /eda/dk/nangate45/verilog/qsim2020.4
+Z2 tCvgOpt 0
+n@_opt
+Z3 OL;O;2020.4;71
+R0
+T_opt1
+!s110 1699203455
+VWf>10A@XTf1TWF9Bidf_C1
+R1
+=1-32c32e71d307-6547c97e-1d1ee-585c
+o-quiet -auto_acc_if_foreign -work work -L /eda/dk/nangate45/verilog/qsim2020.4 -sdftyp /tb_iir/UUT=../netlist/myiir.sdf -suppress 1948
+R2
+n@_opt1
+R3
+Eclk_gen
+Z4 w1699193681
+Z5 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+Z6 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
+Z7 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z8 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 0
+R0
+Z9 8../tb/clk_gen.vhd
+Z10 F../tb/clk_gen.vhd
+l0
+L8 1
+V3N<U=]g;4M:C@3P6V>AT[0
+!s100 m@LGK1@HPHhYZ9_f76I0g0
+Z11 OL;C;2020.4;71
+32
+Z12 !s110 1699203447
+!i10b 1
+Z13 !s108 1699203447.000000
+Z14 !s90 -work|./work|../tb/clk_gen.vhd|../tb/data_maker.vhd|../tb/data_sink.vhd|
+Z15 !s107 ../tb/data_sink.vhd|../tb/data_maker.vhd|../tb/clk_gen.vhd|
+!i113 0
+Z16 o-work ./work
+Z17 tExplicit 1 CvgOpt 0
+Abeh
+R5
+R6
+R7
+R8
+DEx4 work 7 clk_gen 0 22 3N<U=]g;4M:C@3P6V>AT[0
+!i122 0
+l23
+L18 18
+VPagRILhfoW6bV22;dWS`P2
+!s100 KnC5;D^72INYe=GZ=AgVL1
+R11
+32
+R12
+!i10b 1
+R13
+R14
+R15
+!i113 0
+R16
+R17
+Edata_maker
+Z18 w1699202233
+Z19 DPx4 ieee 16 std_logic_textio 0 22 ^l:n6VFdg74Q?CKDhjD]D3
+R5
+R6
+R7
+R8
+!i122 0
+R0
+Z20 8../tb/data_maker.vhd
+Z21 F../tb/data_maker.vhd
+l0
+Z22 L12 1
+VVK1S6hnGM^k1O<0^kOi:?2
+!s100 8^K2:B2K<gmih[Yn@I?2D3
+R11
+32
+R12
+!i10b 1
+R13
+R14
+R15
+!i113 0
+R16
+R17
+Abeh
+R19
+R5
+R6
+R7
+R8
+DEx4 work 10 data_maker 0 22 VK1S6hnGM^k1O<0^kOi:?2
+!i122 0
+l42
+L30 74
+VEUNRh?Y[FDl?gHg_1Da>l3
+!s100 9;2PS6f=iCP^kTI0D^L433
+R11
+32
+R12
+!i10b 1
+R13
+R14
+R15
+!i113 0
+R16
+R17
+Edata_sink
+Z23 w1699202343
+R19
+R5
+R6
+R7
+R8
+!i122 0
+R0
+Z24 8../tb/data_sink.vhd
+Z25 F../tb/data_sink.vhd
+l0
+R22
+V9IIiBQj00[XBmdN_NmM]k0
+!s100 G5BHAk_mkSGLObGN@GbC23
+R11
+32
+R12
+!i10b 1
+R13
+R14
+R15
+!i113 0
+R16
+R17
+Abeh
+R19
+R5
+R6
+R7
+R8
+DEx4 work 9 data_sink 0 22 9IIiBQj00[XBmdN_NmM]k0
+!i122 0
+l28
+L26 34
+VHTAWC?kf3W>BanJj^>R^B0
+!s100 N5LV0?=[d>ZGk8:i^J^MB1
+R11
+32
+R12
+!i10b 1
+R13
+R14
+R15
+!i113 0
+R16
+R17
+vIIR
+Z26 !s110 1699203448
+!i10b 1
+!s100 <HS?@onZ0NE<VUXcbLeYF1
+Z27 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IFD]TVQGkidOP6bYZH;HW81
+R0
+Z28 w1699198148
+Z29 8../netlist/iir.v
+Z30 F../netlist/iir.v
+!i122 1
+L0 1090 275
+Z31 VDg1SIo80bB@j0V0VzS_@n1
+Z32 OL;L;2020.4;71
+r1
+!s85 0
+31
+R13
+Z33 !s107 ../netlist/iir.v|
+Z34 !s90 -work|./work|../netlist/iir.v|
+!i113 0
+Z35 o-work ./work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R2
+n@i@i@r
+vIIR_DW01_add_1
+R26
+!i10b 1
+!s100 3Y0VkR4_THJB4fl_9nPEj3
+R27
+I3oF:aM8k^ogoR:3UoLhU51
+R0
+R28
+R29
+R30
+!i122 1
+L0 8 42
+R31
+R32
+r1
+!s85 0
+31
+R13
+R33
+R34
+!i113 0
+R35
+R2
+n@i@i@r_@d@w01_add_1
+vIIR_DW_mult_tc_0
+R26
+!i10b 1
+!s100 CX8UhE`iIbdTZ?2e`SSZU3
+R27
+ICIlMBJ:FON[>@[Gl^1b3@3
+R0
+R28
+R29
+R30
+!i122 1
+L0 841 247
+R31
+R32
+r1
+!s85 0
+31
+R13
+R33
+R34
+!i113 0
+R35
+R2
+n@i@i@r_@d@w_mult_tc_0
+vIIR_DW_mult_tc_1
+R26
+!i10b 1
+!s100 86=i5c_Da;6NPj>]DKz5I2
+R27
+IiaYjgcmKM[ISj1H1L5@2Y2
+R0
+R28
+R29
+R30
+!i122 1
+L0 457 382
+R31
+R32
+r1
+!s85 0
+31
+R13
+R33
+R34
+!i113 0
+R35
+R2
+n@i@i@r_@d@w_mult_tc_1
+vIIR_DW_mult_tc_2
+R26
+!i10b 1
+!s100 PRE3]f>>B7GH^DW^=lDWT0
+R27
+I??T@4XN9=d[bDRgJ_`TEi0
+R0
+R28
+R29
+R30
+!i122 1
+L0 52 403
+R31
+R32
+r1
+!s85 0
+31
+R13
+R33
+R34
+!i113 0
+R35
+R2
+n@i@i@r_@d@w_mult_tc_2
+vtb_iir
+R26
+!i10b 1
+!s100 AQ`Son81fgd=I>dQ1gY632
+R27
+IRkjH:3XJc:dM7b:48Ue001
+R0
+w1699200962
+8../tb/tb_iir.v
+F../tb/tb_iir.v
+!i122 2
+L0 3 62
+R31
+R32
+r1
+!s85 0
+31
+!s108 1699203448.000000
+!s107 ../tb/tb_iir.v|
+!s90 -work|./work|../tb/tb_iir.v|
+!i113 0
+R35
+R2

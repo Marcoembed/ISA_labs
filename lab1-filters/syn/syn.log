@@ -1,0 +1,453 @@
+# Synthesis script
+# ##############################################################################
+# Handy functions
+# https://stackoverflow.com/questions/18219420/how-to-convert-a-file-to-a-tcl-list
+proc listFromFile {filename} {
+    set f [open $filename r]
+    set data [split [string trim [read $f]]]
+    close $f
+    return $data
+}
+# Global variables
+set TOP_LVL_ENTITY "CFG_IIR_BEHAV"
+CFG_IIR_BEHAV
+set VHDL_COMPILE_FILE "./src/compile_VHDL.f"
+./src/compile_VHDL.f
+set VLOG_COMPILE_FILE "./src/compile_VLOG.f"
+./src/compile_VLOG.f
+# The logical synthesis process can be divided into the following steps:
+# 1 reading source files;
+# 2 applying constraints;
+# 3 start the synthesis;
+# 4 save the results;
+################################################################################
+# 1 reading source files
+################################################################################
+set vhdl_srcs [listFromFile $VHDL_COMPILE_FILE]
+./src/iir_pkg.vhd ./src/reg.vhd ./src/iir.vhd
+set vlog_srcs [listFromFile $VLOG_COMPILE_FILE]
+# Analyze the src files, with params:
+# -format the format of files that will be analyzed
+# -work work directory library where to put and find files
+analyze -work WORK -format VHDL $vhdl_srcs 
+Running PRESTO HDLC
+Compiling Package Declaration IIR_PKG
+Compiling Package Body IIR_PKG
+Compiling Entity Declaration REG
+Compiling Architecture BEHAV of REG
+Warning:  ./src/reg.vhd:21: The architecture BEHAV has already been analyzed. It is being replaced. (VHD-4)
+Compiling Configuration CFG_REG_BEHAV of REG
+Compiling Entity Declaration IIR
+Compiling Architecture BEHAV of IIR
+Warning:  ./src/iir.vhd:41: The architecture BEHAV has already been analyzed. It is being replaced. (VHD-4)
+Compiling Configuration CFG_IIR_BEHAV of IIR
+Presto compilation completed successfully.
+Loading db file '/home/isa01_2023_2024/marco/lab1-filters/syn/lib/nangate45/synopsis/NangateOpenCellLibrary_typical_ecsm_nowlm.db'
+Loading db file '/home/isa01_2023_2024/marco/lab1-filters/syn/lib/synopsis/dw_foundation.sldb'
+1
+analyze -work WORK -format Verilog $vlog_srcs 
+Error: Value for list 'file_list' must have more than zero elements. (CMD-036)
+# Preserve rtl names in the netlist to ease the procedure for power consumption estimation.
+set power_preserve_rtl_hier_names true
+true
+# Elaborate design, with params:
+# top level entity to elaborate
+# -work work directory library where to put and find files
+# -update Reanalyzes out-of-date intermediate files if the source can be found.
+# [opt] -arch <architecture_name> specify the architecture name, don't need
+#       since we use configuratoins
+#       -parameters {list of generic assignments if any}
+elaborate $TOP_LVL_ENTITY -lib WORK
+Loading db file '/eda/synopsys/2021-22/RHELx86/SYN_2021.06-SP4/libraries/syn/gtech.db'
+Loading db file '/eda/synopsys/2021-22/RHELx86/SYN_2021.06-SP4/libraries/syn/standard.sldb'
+  Loading link library 'NangateOpenCellLibrary'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Component WORK.BEHAV/IIR.BEHAV.A1_IN_REG has been configured to use the following implementation:
+      Work Library: WORK
+      Design Name:  REG
+      Configuration Name : CFG_REG_BEHAV
+Component WORK.BEHAV/IIR.BEHAV.B0_IN_REG has been configured to use the following implementation:
+      Work Library: WORK
+      Design Name:  REG
+      Configuration Name : CFG_REG_BEHAV
+Component WORK.BEHAV/IIR.BEHAV.B1_IN_REG has been configured to use the following implementation:
+      Work Library: WORK
+      Design Name:  REG
+      Configuration Name : CFG_REG_BEHAV
+Component WORK.BEHAV/IIR.BEHAV.IN_REG has been configured to use the following implementation:
+      Work Library: WORK
+      Design Name:  REG
+      Configuration Name : CFG_REG_BEHAV
+Component WORK.BEHAV/IIR.BEHAV.OUT_REG has been configured to use the following implementation:
+      Work Library: WORK
+      Design Name:  REG
+      Configuration Name : CFG_REG_BEHAV
+Component WORK.BEHAV/IIR.BEHAV.U_SN_REG has been configured to use the following implementation:
+      Work Library: WORK
+      Design Name:  REG
+      Configuration Name : CFG_REG_BEHAV
+
+Inferred memory devices in process
+        in routine IIR line 92 in file
+                './src/iir.vhd'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     vin_d1_reg      | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+        in routine IIR line 148 in file
+                './src/iir.vhd'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      VOUT_reg       | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully. (IIR)
+Elaborated 1 design.
+Current design is now 'IIR'.
+Information: Building the design 'REG' instantiated from design 'IIR' with
+        the parameters "DATA_WIDTH=10". (HDL-193)
+
+Inferred memory devices in process
+        in routine REG_DATA_WIDTH10 line 29 in file
+                './src/reg.vhd'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    data_out_reg     | Flip-flop |  10   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully. (REG_DATA_WIDTH10)
+Information: Building the design 'REG' instantiated from design 'IIR' with
+        the parameters "DATA_WIDTH=11". (HDL-193)
+
+Inferred memory devices in process
+        in routine REG_DATA_WIDTH11 line 29 in file
+                './src/reg.vhd'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    data_out_reg     | Flip-flop |  11   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully. (REG_DATA_WIDTH11)
+1
+# If the design contains multiple instances of the same entity you can issue the uniquify command.
+# This will reuse the same entity insetead of creating new ones with the same port
+# https://github.com/ucb-bar/chisel2-deprecated/issues/374
+uniquify
+Information: Uniquified 5 instances of design 'REG_DATA_WIDTH10'. (OPT-1056)
+1
+# Resolve the design reference based on reference names
+# Locate all design and library components and link them to the references in the design
+link
+
+  Linking design 'IIR'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  * (7 designs)               /home/isa01_2023_2024/marco/lab1-filters/IIR.db, etc
+  NangateOpenCellLibrary (library) /home/isa01_2023_2024/marco/lab1-filters/syn/lib/nangate45/synopsis/NangateOpenCellLibrary_typical_ecsm_nowlm.db
+  dw_foundation.sldb (library) /home/isa01_2023_2024/marco/lab1-filters/syn/lib/synopsis/dw_foundation.sldb
+
+1
+################################################################################
+# 2 applying constraints
+################################################################################
+# Bind the clock constraint (named MY_CLK) to the internal signal of the architecture (called CLK)
+# use a 10.0 ns period clock => 100MHz
+#
+create_clock -name MY_CLK -period 2.95 CLK
+1
+# SLACK MET
+#
+# clk is a special signal so don't touch it in synthesis
+set dont_touch_network MY_CLK
+MY_CLK
+# simulate jitter of clk with uncertainty
+set_clock_uncertainty 0.07 [get_clocks MY_CLK]
+1
+set_input_delay 0.5 -max -clock MY_CLK [remove_from_collection [all_inputs] CLK]
+1
+set_output_delay 0.5 -max -clock MY_CLK [all_outputs]
+1
+set OUTPUT_LOAD [load_of NangateOpenCellLibrary/BUF_X4/A]
+3.40189
+set_load $OUTPUT_LOAD [all_outputs]
+1
+# Removes a level of hierarchy TODO: check what it does
+#-all   Indicates that all  cells  in  the  current  design  or  current instance  are  to be ungrouped.  You must specify either -all or cell_list but not both.
+#-flatten Indicates that the specified cell and all of its subcells are to be  exploded  recursively  until  all  levels  of  hierarchy are removed.
+ungroup -all -flatten
+Information: Updating graph... (UID-83)
+1
+#  Checks the current design for consistency. TODO: check what it does
+check_design
+1
+################################################################################
+# 3 Start synthesis
+################################################################################
+compile
+Information: Checking out the license 'DesignWare'. (SEC-104)
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | S-2021.06-DWBB_202106.4 |     *     |
+| Licensed DW Building Blocks        | S-2021.06-DWBB_202106.4 |     *     |
+============================================================================
+
+============================================================================
+| Flow Information                                                         |
+----------------------------------------------------------------------------
+| Flow         | Design Compiler                                           |
+============================================================================
+| Design Information                                      | Value          |
+============================================================================
+| Number of Scenarios                                     | 0              |
+| Leaf Cell Count                                         | 75             |
+| Number of User Hierarchies                              | 0              |
+| Sequential Cell Count                                   | 63             |
+| Macro Count                                             | 0              |
+| Number of Power Domains                                 | 0              |
+| Design with UPF Data                                    | false          |
+============================================================================
+
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'IIR'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Implementation Selection
+  ----------------------------------
+  Processing 'IIR_DW01_add_0'
+  Processing 'IIR_DW01_add_1'
+  Mapping 'IIR_DW_mult_tc_0'
+  Mapping 'IIR_DW_mult_tc_1'
+  Mapping 'IIR_DW_mult_tc_2'
+
+  Beginning Mapping Optimizations  (Medium effort)
+  -------------------------------
+Information: The register 'OUT_REG/data_out_reg[3]' is a constant and will be removed. (OPT-1206)
+Information: The register 'OUT_REG/data_out_reg[2]' is a constant and will be removed. (OPT-1206)
+Information: The register 'OUT_REG/data_out_reg[1]' is a constant and will be removed. (OPT-1206)
+Information: The register 'OUT_REG/data_out_reg[0]' is a constant and will be removed. (OPT-1206)
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:04    1747.9      0.89       3.8       0.0                          
+    0:00:05    1747.4      0.89       3.8       0.0                          
+    0:00:05    1747.4      0.89       3.8       0.0                          
+    0:00:05    1747.9      0.89       3.8       0.0                          
+    0:00:05    1747.9      0.89       3.8       0.0                          
+    0:00:05    1612.0      0.90       3.9       0.0                          
+    0:00:05    1612.8      0.87       3.7       0.0                          
+    0:00:05    1614.6      0.78       3.1       0.0                          
+    0:00:05    1616.5      0.74       2.9       0.0                          
+    0:00:05    1618.1      0.73       2.8       0.0                          
+    0:00:05    1619.7      0.69       2.7       0.0                          
+    0:00:06    1621.8      0.61       2.2       0.0                          
+    0:00:06    1624.5      0.56       1.9       0.0                          
+    0:00:06    1626.6      0.55       1.8       0.0                          
+    0:00:06    1626.6      0.55       1.8       0.0                          
+    0:00:06    1626.6      0.55       1.8       0.0                          
+    0:00:06    1626.6      0.55       1.8       0.0                          
+    0:00:06    1626.6      0.55       1.8       0.0                          
+    0:00:06    1626.6      0.55       1.8       0.0                          
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:06    1626.6      0.55       1.8       0.0                          
+    0:00:06    1652.9      0.49       1.5      68.0 OUT_REG/data_out_reg[9]/D
+    0:00:06    1665.4      0.47       1.4      68.0 OUT_REG/data_out_reg[9]/D
+    0:00:06    1679.8      0.44       1.3      68.0 OUT_REG/data_out_reg[9]/D
+    0:00:07    1692.0      0.43       1.2      68.0 OUT_REG/data_out_reg[9]/D
+    0:00:07    1708.5      0.36       0.9      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:07    1712.0      0.33       0.8      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:07    1712.0      0.32       0.8      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:07    1717.8      0.30       0.7      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:07    1721.3      0.29       0.7      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:08    1730.1      0.28       0.6      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:08    1735.7      0.27       0.6      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:08    1743.6      0.24       0.5      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:08    1754.8      0.22       0.5      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:09    1755.1      0.22       0.4      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:09    1764.9      0.20       0.4      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:09    1765.7      0.18       0.4      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:09    1769.2      0.18       0.4      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:10    1774.5      0.17       0.3      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:10    1774.8      0.16       0.3      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:10    1775.8      0.15       0.3      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:10    1778.5      0.15       0.3      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:10    1780.1      0.15       0.3      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:10    1780.1      0.15       0.3      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:11    1780.1      0.14       0.2      75.1 OUT_REG/data_out_reg[9]/D
+    0:00:11    1792.0      0.14       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:11    1792.6      0.13       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:11    1795.8      0.13       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:12    1797.1      0.13       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:12    1797.1      0.13       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:12    1797.1      0.13       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:12    1800.3      0.12       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:13    1799.8      0.12       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:13    1810.7      0.12       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:14    1811.5      0.11       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:14    1812.0      0.11       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:14    1812.5      0.10       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:14    1813.9      0.10       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:15    1813.9      0.10       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:15    1812.8      0.10       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:15    1812.0      0.10       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:15    1813.1      0.10       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:15    1813.1      0.09       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:16    1814.1      0.09       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:16    1814.1      0.09       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:16    1814.1      0.09       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:17    1825.0      0.09       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:17    1831.7      0.09       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:17    1831.4      0.09       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:17    1830.6      0.08       0.2     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:17    1831.4      0.08       0.1     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:18    1831.4      0.08       0.1     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:18    1831.4      0.08       0.1     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:18    1831.1      0.08       0.1     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:18    1831.1      0.08       0.1     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:18    1833.5      0.08       0.1     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:18    1834.1      0.08       0.1     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:19    1834.1      0.07       0.1     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:19    1834.9      0.07       0.1     109.1 OUT_REG/data_out_reg[9]/D
+    0:00:19    1845.0      0.07       0.1      76.3 OUT_REG/data_out_reg[9]/D
+    0:00:19    1853.2      0.06       0.1     117.0 OUT_REG/data_out_reg[9]/D
+    0:00:20    1853.2      0.06       0.1     117.0 OUT_REG/data_out_reg[9]/D
+    0:00:20    1845.8      0.04       0.1     117.0 OUT_REG/data_out_reg[9]/D
+    0:00:20    1845.8      0.04       0.1     117.0 OUT_REG/data_out_reg[9]/D
+    0:00:21    1854.6      0.04       0.1     151.0 OUT_REG/data_out_reg[9]/D
+    0:00:21    1855.1      0.04       0.1     151.0 OUT_REG/data_out_reg[9]/D
+    0:00:21    1855.1      0.04       0.1     151.0 OUT_REG/data_out_reg[9]/D
+    0:00:21    1854.0      0.04       0.1     151.0 OUT_REG/data_out_reg[9]/D
+    0:00:22    1854.8      0.04       0.1     151.0 OUT_REG/data_out_reg[9]/D
+    0:00:22    1860.4      0.04       0.1     151.0 OUT_REG/data_out_reg[9]/D
+    0:00:22    1864.1      0.04       0.1     151.0 OUT_REG/data_out_reg[9]/D
+    0:00:22    1863.9      0.03       0.1     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:22    1864.9      0.03       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:22    1865.7      0.03       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:23    1865.7      0.03       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:23    1865.7      0.03       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:23    1865.7      0.03       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:23    1867.3      0.03       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:24    1867.9      0.02       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:24    1868.4      0.02       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:24    1868.4      0.02       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:24    1868.4      0.02       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:24    1871.8      0.02       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:24    1871.8      0.01       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:25    1871.8      0.01       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:25    1872.6      0.01       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:25    1872.6      0.01       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:27    1872.6      0.01       0.0     147.0 OUT_REG/data_out_reg[9]/D
+    0:00:28    1874.2      0.01       0.0     147.0                          
+    0:00:28    1872.9      0.01       0.0     147.0                          
+
+
+  Beginning Design Rule Fixing  (max_transition)  (max_capacitance)
+  ----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:28    1872.9      0.01       0.0     147.0                          
+    0:00:28    1832.7      0.01       0.0       0.0 OUT_REG/data_out_reg[9]/D
+    0:00:29    1841.5      0.01       0.0       9.2 OUT_REG/data_out_reg[9]/D
+    0:00:29    1843.9      0.01       0.0       9.2 OUT_REG/data_out_reg[9]/D
+    0:00:29    1843.1      0.01       0.0       9.2 OUT_REG/data_out_reg[9]/D
+    0:00:29    1845.0      0.00       0.0       9.2 OUT_REG/data_out_reg[9]/D
+    0:00:30    1845.0      0.00       0.0       9.2 OUT_REG/data_out_reg[9]/D
+    0:00:30    1845.8      0.00       0.0       9.2 OUT_REG/data_out_reg[9]/D
+    0:00:30    1845.8      0.00       0.0       9.2 OUT_REG/data_out_reg[9]/D
+    0:00:31    1844.7      0.00       0.0       9.2 OUT_REG/data_out_reg[9]/D
+    0:00:31    1835.9      0.00       0.0       0.0 mult_208/a[3]            
+    0:00:32    1835.9      0.00       0.0       0.0 OUT_REG/data_out_reg[9]/D
+    0:00:32    1836.7      0.00       0.0       0.0                          
+
+
+  Beginning Area-Recovery Phase  (cleanup)
+  -----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:32    1836.7      0.00       0.0       0.0                          
+    0:00:32    1836.7      0.00       0.0       0.0                          
+    0:00:32    1830.3      0.00       0.0       0.0                          
+    0:00:32    1827.2      0.00       0.0       0.0                          
+    0:00:32    1827.2      0.00       0.0       0.0                          
+    0:00:32    1827.2      0.00       0.0       0.0                          
+    0:00:32    1827.2      0.00       0.0       0.0                          
+    0:00:32    1827.2      0.00       0.0       0.0                          
+    0:00:33    1828.2      0.00       0.0       0.0                          
+    0:00:33    1809.1      0.00       0.0       0.0                          
+    0:00:33    1799.0      0.00       0.0       0.0                          
+    0:00:33    1799.0      0.00       0.0       0.0                          
+    0:00:33    1799.0      0.00       0.0       0.0                          
+    0:00:33    1799.0      0.00       0.0       0.0                          
+    0:00:33    1799.0      0.00       0.0       0.0                          
+    0:00:33    1799.0      0.00       0.0       0.0                          
+    0:00:33    1801.1      0.00       0.0       0.0 OUT_REG/data_out_reg[9]/D
+    0:00:34    1800.3      0.00       0.0       0.0                          
+    0:00:35    1797.4      0.00       0.0       0.0 OUT_REG/data_out_reg[9]/D
+    0:00:35    1799.0      0.00       0.0       0.0                          
+Loading db file '/home/isa01_2023_2024/marco/lab1-filters/syn/lib/nangate45/synopsis/NangateOpenCellLibrary_typical_ecsm_nowlm.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+1
+# apply clock gating on FLIP-FLOPS with enable signal
+compile -gate clock
+Error: extra positional option 'clock' (CMD-012)
+change_names -hierarchy -rules verilog
+Warning: The specified replacement character (_) is conflicting with the specified allowed or restricted character.   (UCN-4)
+Warning: In the design IIR_DW01_add_1, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design IIR_DW01_add_1, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design IIR_DW01_add_1, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design IIR_DW01_add_1, net 'A[0]' is connecting multiple ports. (UCN-1)
+1
+report_area > ./reports/iir_area.txt
+report_timing > ./reports/iir_timing.txt
+write_sdf ./netlist/myiir.sdf 
+Information: Annotated 'cell' delays are assumed to include load delay. (UID-282)
+Information: Writing timing information to file '/home/isa01_2023_2024/marco/lab1-filters/netlist/myiir.sdf'. (WT-3)
+1
+write_sdc ./netlist/myiir.sdc 
+1
+write -f verilog -hierarchy -output ./netlist/iir.v
+Writing verilog file '/home/isa01_2023_2024/marco/lab1-filters/netlist/iir.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+1
+exit
+
+Memory usage for this session 190 Mbytes.
+Memory usage for this session including child processes 190 Mbytes.
+CPU usage for this session 46 seconds ( 0.01 hours ).
+Elapsed time for this session 50 seconds ( 0.01 hours ).
+
+Thank you...
+

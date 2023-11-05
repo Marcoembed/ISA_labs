@@ -1,0 +1,20 @@
+# vsim work.tb_iir -do "./script.tcl" 
+# Start time: 18:29:26 on Oct 27,2023
+# Loading work.tb_iir
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading work.clk_gen(beh)
+# Loading ieee.std_logic_textio(body)
+# Loading work.data_maker(beh)
+# Loading ieee.numeric_std(body)
+# Loading ieee.math_real(body)
+# Loading work.iir_pkg(body)
+# Loading work.iir(behavioural)
+# Loading work.reg(behav)
+# Loading work.data_sink(beh)
+# do ./script.tcl
+# End time: 18:29:35 on Oct 27,2023, Elapsed time: 0:00:09
+# Errors: 0, Warnings: 0
