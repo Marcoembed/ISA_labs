@@ -62,7 +62,9 @@ link
 
 # Bind the clock constraint (named MY_CLK) to the internal signal of the architecture (called CLK)
 # use a 10.0 ns period clock => 100MHz
-create_clock -name MY_CLK -period 10.0 CLK
+#create_clock -name MY_CLK -period 10.0 CLK
+#create_clock -name MY_CLK -period 0 CLK
+create_clock -name MY_CLK -period 2.46 CLK
 # clk is a special signal so don't touch it in synthesis
 set dont_touch_network MY_CLK
 # simulate jitter of clk with uncertainty
@@ -89,7 +91,9 @@ compile
 compile -gate clock
 
 change_names -hierarchy -rules verilog
-report_area > ./reports/dlx_area.txt
-report_timing > ./reports/dlx_timing.txt
-write -f verilog -hierarchy -output ./netlist/dlx.v
+report_area > ./reports/iir_area.txt
+report_timing > ./reports/iir_timing.txt
+write_sdf ./netlist/myiir.sdf 
+write_sdc ./netlist/myiir.sdc 
+write -f verilog -hierarchy -output ./netlist/iir.v
 exit
