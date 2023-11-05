@@ -58,7 +58,7 @@ module tb_iir ();
     always @(END_SIM_i) begin
         if(END_SIM_i) begin
            $display("Ending simulation shortly",$time); 
-           $finish 
+           $finish;
         end
     end
 endmodule
