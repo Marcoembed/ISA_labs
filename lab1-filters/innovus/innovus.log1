@@ -1,0 +1,1159 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2020 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v20.11-s130_1, built Wed Aug 5 15:53:11 PDT 2020
+Options:	
+Date:		Sun Nov  5 18:08:25 2023
+Host:		isaserver (x86_64 w/Linux 3.10.0-1160.81.1.el7.x86_64) (6cores*6cpus*QEMU Virtual CPU version 2.5+ 16384KB)
+OS:		CentOS Linux release 7.9.2009 (Core)
+
+License:
+		invs	Innovus Implementation System	20.1	checkout succeeded
+		8 CPU jobs allowed with the current license(s). Use setMultiCpuUsage to set your required CPU count.
+Change the soft stacksize limit to 0.2%RAM (64 mbytes). Set global soft_stack_size_limit to change the value.
+
+**INFO:  MMMC transition support version v31-84 
+
+<CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+<CMD> suppressMessage ENCEXT-2799
+<CMD> win
+<CMD> set init_design_netlisttype verilog
+<CMD> set init_design_settop 1
+<CMD> set init_top_cell myfir
+<CMD> set init_verilog ../netlist/myfir.v
+<CMD> set init_lef_file /eda/dk/nangate45/lef/NangateOpenCellLibrary.lef
+<CMD> set init_gnd_net VSS
+<CMD> set init_pwr_net VDD
+<CMD> init_design
+
+Loading LEF file /eda/dk/nangate45/lef/NangateOpenCellLibrary.lef ...
+Set DBUPerIGU to M2 pitch 380.
+
+viaInitial starts at Sun Nov  5 18:10:37 2023
+viaInitial ends at Sun Nov  5 18:10:37 2023
+
+##  Check design process and node:  
+##  Both design process and tech node are not set.
+
+*** End library_loading (cpu=0.00min, real=0.00min, mem=0.0M, fe_cpu=0.94min, fe_real=2.20min, fe_mem=768.4M) ***
+**ERROR: (IMPSYT-16038):	The specified file '../netlist/myfir.v' could not be found. Check your file system, correct the file name.
+**ERROR: (IMPIMEX-7008):	No netlist files are found.
+<CMD> init_design
+
+Loading LEF file /eda/dk/nangate45/lef/NangateOpenCellLibrary.lef ...
+**WARN: (IMPLF-119):	LAYER 'poly' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'active' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal1' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via1' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal2' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via2' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal3' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via3' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal4' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via4' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal5' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via5' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal6' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via6' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal7' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via7' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal8' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via8' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal9' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via9' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (EMS-27):	Message (IMPLF-119) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+**ERROR: (IMPLF-223):	The LEF via 'via1_4' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_0' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_1' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_2' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_3' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_5' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_6' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_7' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_8' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_8' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_4' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_5' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_7' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_6' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_0' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_1' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_2' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_3' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via3_2' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via3_0' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**WARN: (EMS-27):	Message (IMPLF-223) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-1' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-2' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-3' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-4' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-1' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-2' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-3' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-4' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via3Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via3Array-1' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via3Array-2' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via4Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via5Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via6Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via7Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via8Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via9Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-58):	MACRO 'AND2_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND2_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND2_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND3_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND3_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND3_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND4_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND4_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND4_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'ANTENNA_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI211_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI211_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI211_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI21_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI21_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI21_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI221_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI221_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI221_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI222_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (EMS-27):	Message (IMPLF-58) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+**WARN: (IMPLF-61):	134 duplicated MACRO definitions have been found in the LEF file(s). Their content except DENSITY and PIN ANTENNA* data, and certain properties, have been ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-61' for more detail.
+
+##  Check design process and node:  
+##  Both design process and tech node are not set.
+
+*** End library_loading (cpu=0.00min, real=0.00min, mem=0.0M, fe_cpu=1.00min, fe_real=2.42min, fe_mem=768.4M) ***
+**ERROR: (IMPSYT-16038):	The specified file '../netlist/myfir.v' could not be found. Check your file system, correct the file name.
+**ERROR: (IMPIMEX-7008):	No netlist files are found.
+<CMD> set init_design_netlisttype verilog
+<CMD> set init_design_settop 1
+<CMD> set init_top_cell myfir
+<CMD> set init_verilog ../netlist/myfir.v
+<CMD> set init_lef_file /eda/dk/nangate45/lef/NangateOpenCellLibrary.lef
+<CMD> set init_gnd_net VSS
+<CMD> set init_pwr_net VDD
+<CMD> init_design
+
+Loading LEF file /eda/dk/nangate45/lef/NangateOpenCellLibrary.lef ...
+**WARN: (IMPLF-119):	LAYER 'poly' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'active' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal1' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via1' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal2' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via2' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal3' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via3' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal4' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via4' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal5' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via5' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal6' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via6' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal7' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via7' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal8' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via8' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'metal9' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (IMPLF-119):	LAYER 'via9' has been found in the database. Its content except ANTENNA* data will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-119' for more detail.
+**WARN: (EMS-27):	Message (IMPLF-119) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+**ERROR: (IMPLF-223):	The LEF via 'via1_4' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_0' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_1' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_2' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_3' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_5' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_6' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_7' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via1_8' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_8' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_4' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_5' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_7' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_6' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_0' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_1' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_2' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via2_3' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via3_2' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**ERROR: (IMPLF-223):	The LEF via 'via3_0' has been defined and found in the database. The current definition will be ignored. Review the LEF files to ensure that you have not specified duplicate LEF files, or LEF files with duplicate VIA definitions.
+Type 'man IMPLF-223' for more detail.
+**WARN: (EMS-27):	Message (IMPLF-223) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-1' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-2' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-3' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via1Array-4' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-1' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-2' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-3' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via2Array-4' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via3Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via3Array-1' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via3Array-2' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via4Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via5Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via6Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via7Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via8Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-151):	The viaRule 'Via9Array-0' has been defined, the content will be skipped.
+**WARN: (IMPLF-58):	MACRO 'AND2_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND2_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND2_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND3_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND3_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND3_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND4_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND4_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AND4_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'ANTENNA_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI211_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI211_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI211_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI21_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI21_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI21_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI221_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI221_X2' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI221_X4' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (IMPLF-58):	MACRO 'AOI222_X1' has been found in the database. Its content except DENSITY and PIN ANTENNA* data, and certain properties, will be ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-58' for more detail.
+**WARN: (EMS-27):	Message (IMPLF-58) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+**WARN: (IMPLF-61):	134 duplicated MACRO definitions have been found in the LEF file(s). Their content except DENSITY and PIN ANTENNA* data, and certain properties, have been ignored.
+Review the LEF files specified in the init_lef_file variable and remove redundant definitions.
+Type 'man IMPLF-61' for more detail.
+
+##  Check design process and node:  
+##  Both design process and tech node are not set.
+
+*** End library_loading (cpu=0.00min, real=0.00min, mem=0.0M, fe_cpu=1.10min, fe_real=2.87min, fe_mem=769.6M) ***
+**ERROR: (IMPSYT-16038):	The specified file '../netlist/myfir.v' could not be found. Check your file system, correct the file name.
+**ERROR: (IMPIMEX-7008):	No netlist files are found.
+<CMD> set init_design_netlisttype verilog
+<CMD> set init_design_settop 1
+<CMD> set init_top_cell myfir
+<CMD> set init_verilog ../netlist/myfir.v
+<CMD> set init_lef_file /eda/dk/nangate45/lef/NangateOpenCellLibrary.lef
+<CMD> set init_gnd_net VSS
+<CMD> set init_pwr_net VDD
+<CMD> set init_mmmc_file mmm_design.tcl
+<CMD> init_design
+#% Begin Load MMMC data ... (date=11/05 18:12:16, mem=591.3M)
+**ERROR: (TCLCMD-989):	cannot open SDC file '../netlist/myfir.sdc' for mode 'SDC_layout'
+<CMD> set init_mmmc_file mmm_design.tcl
+<CMD> init_design
+% Begin Load MMMC data ... (date=11/05 18:12:19, mem=591.5M)
+Extraction setup Started 
+Innovus terminated by internal (SEGV) error/signal...
+*** Stack trace:
+*** Stack trace:
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x13819885]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(syStackTrace+0xb6)[0x13819d07]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x4c66a83]
+/lib64/libpthread.so.0(+0xf62f)[0x7fe51b23162f]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_ZN12peLayerPitch17computeLayerPitchEv+0x4f)[0xd1e775f]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_ZN14peEngineClient16getLayerInfoByIdERSt6vectorI11eeLayerInfoSaIS1_EE+0x8d9)[0xd1e0d89]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_ZN14peEngineClient12getLayerInfoERSt6vectorI11eeLayerInfoSaIS1_EE+0xc0b)[0xd1e1cfb]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_ZN21eeExtEngineDesignData12setLayerInfoEv+0x4b)[0x522b4ab]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0xd107278]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_Z10dbMCRCInitv+0x9)[0xd10dff9]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_Z28peiInitializeExtractionSetUpb+0x27)[0xd10e277]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x10245d82]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_ZN6TAMmmc14updateRcCornerEP14TAMmmcRcCornerPKcf9tabooleanR18TAMmmcTripleFactorS4_fS4_S6_S4_S6_S4_fS4_fS4_S6_S4_S6_S4_S3_S3_S3_fS4_S3_+0x3a7)[0x13a7c897]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_Z30TaCmd_createOrUpdate_rc_cornerPvP10Tcl_InterpiPPc9tabooleanP6tcmCmd+0x88f)[0x14c2cacf]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_ZN10tcmBaseCmd7executeEP10Tcl_InterpiPPc+0x28f)[0x15b84b8f]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_ZN6tcmMgr9cmdParserEPvP10Tcl_InterpiPPc+0x693)[0x15b781d3]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(TclInvokeStringCommand+0x7f)[0x218b56df]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(TclNRRunCallbacks+0x46)[0x218ba056]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x218bc527]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(Tcl_EvalEx+0x15)[0x218bce55]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(TclNREvalObjEx+0x6e)[0x218bcefe]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x2197270a]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x218d0150]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(TclNRRunCallbacks+0x46)[0x218ba056]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x218bc527]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x21985121]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x218bc134]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(Tcl_EvalEx+0x15)[0x218bce55]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(Tcl_Eval+0x14)[0x218bce74]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_Z10qtfTclEvalPcbb+0xa4)[0x11f3ead4]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_ZN8qtfsItem10fUpdateVarEv+0x245)[0x11ee4e55]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5(_ZN11QMetaObject8activateEP7QObjectiiPPv+0x5de)[0x7fe51ee68ebe]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(_ZN15QAbstractButton7clickedEb+0x31)[0x7fe51e850041]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(+0x349253)[0x7fe51e850253]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(+0x34a541)[0x7fe51e851541]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(_ZN15QAbstractButton17mouseReleaseEventEP11QMouseEvent+0xcb)[0x7fe51e8516eb]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(_ZN7QWidget5eventEP6QEvent+0x1e7)[0x7fe51e6dd947]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(_ZN19QApplicationPrivate13notify_helperEP7QObjectP6QEvent+0x9b)[0x7fe51e69f05b]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(_ZN12QApplication6notifyEP7QObjectP6QEvent+0xf6b)[0x7fe51e6a703b]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5(_ZN16QCoreApplication15notifyInternal2EP7QObjectP6QEvent+0x107)[0x7fe51ee3da87]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(_ZN19QApplicationPrivate14sendMouseEventEP7QWidgetP11QMouseEventS1_S1_PS1_R8QPointerIS0_Eb+0x1cc)[0x7fe51e6a58fc]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(+0x1eff2d)[0x7fe51e6f6f2d]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(+0x1f281a)[0x7fe51e6f981a]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(_ZN19QApplicationPrivate13notify_helperEP7QObjectP6QEvent+0x9b)[0x7fe51e69f05b]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5(_ZN12QApplication6notifyEP7QObjectP6QEvent+0x229)[0x7fe51e6a62f9]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5(_ZN16QCoreApplication15notifyInternal2EP7QObjectP6QEvent+0x107)[0x7fe51ee3da87]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Gui.so.5(_ZN22QGuiApplicationPrivate17processMouseEventEPN29QWindowSystemInterfacePrivate10MouseEventE+0x6f2)[0x7fe51f2b07b2]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Gui.so.5(_ZN22QGuiApplicationPrivate24processWindowSystemEventEPN29QWindowSystemInterfacePrivate17WindowSystemEventE+0x104)[0x7fe51f2b2224]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Gui.so.5(_ZN22QWindowSystemInterface22sendWindowSystemEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE+0xba)[0x7fe51f28e25a]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_ZN23QUnixEventDispatcherQPA13processEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE+0x15)[0x215302c5]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so(_ZN17TqEventDispatcher13processEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE+0x119)[0x7fe51fc932e9]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so(+0x180ed)[0x7fe51fc900ed]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(Tcl_DoOneEvent+0xbf)[0x2197eb1f]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so(_ZN17TqEventDispatcher13processEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE+0x69)[0x7fe51fc93239]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5(_ZN10QEventLoop4execE6QFlagsINS_17ProcessEventsFlagEE+0xe9)[0x7fe51ee3c0c9]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5(_ZN16QCoreApplication4execEv+0x83)[0x7fe51ee44953]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so(_ZN13TqApplication4execEv+0x176)[0x7fe51fc92896]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(_Z12edi_app_initP10Tcl_Interp+0x2a8)[0x4d12f98]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(Tcl_MainEx+0x176)[0x219793c6]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus(main+0x1d1)[0x4354bd1]
+/lib64/libc.so.6(__libc_start_main+0xf4)[0x7fe51a649554]
+/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus[0x4c637ac]
+========================================
+               pstack
+========================================
+Thread 15 (Thread 0x7fe510801700 (LWP 12176)):
+#0  0x00007fe51b2309dd in accept () at ../sysdeps/unix/syscall-template.S:81
+#1  0x000000002004beae in ProcessInfo::handleConnection(void*) ()
+#2  0x0000000004f7507a in create_head(void*) ()
+#3  0x00007fe51b229ea5 in start_thread (arg=0x7fe510801700) at pthread_create.c:307
+#4  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 14 (Thread 0x7fe510000700 (LWP 12177)):
+#0  0x00007fe51a71cb43 in select () at ../sysdeps/unix/syscall-template.S:81
+#1  0x000000002004408b in ProcessInfo::sampleUsage(void*) ()
+#2  0x0000000004f7507a in create_head(void*) ()
+#3  0x00007fe51b229ea5 in start_thread (arg=0x7fe510000700) at pthread_create.c:307
+#4  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 13 (Thread 0x7fe50f7ff700 (LWP 12181)):
+#0  0x00007fe51a6ec9fd in nanosleep () at ../sysdeps/unix/syscall-template.S:81
+#1  0x00007fe51a6ec894 in __sleep (seconds=0) at ../sysdeps/unix/sysv/linux/sleep.c:137
+#2  0x0000000013833972 in syiPeakMem(void*) ()
+#3  0x0000000004f7507a in create_head(void*) ()
+#4  0x00007fe51b229ea5 in start_thread (arg=0x7fe50f7ff700) at pthread_create.c:307
+#5  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 12 (Thread 0x7fe50effd700 (LWP 12184)):
+#0  0x00007fe51b230e9d in nanosleep () at ../sysdeps/unix/syscall-template.S:81
+#1  0x000000000640338d in rdaiLicRecheck(void*) ()
+#2  0x0000000004f7507a in create_head(void*) ()
+#3  0x00007fe51b229ea5 in start_thread (arg=0x7fe50effd700) at pthread_create.c:307
+#4  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 11 (Thread 0x7fe50d7ba700 (LWP 12217)):
+#0  0x00007fe51a71addd in poll () at ../sysdeps/unix/syscall-template.S:81
+#1  0x00007fe51c125022 in poll (__timeout=-1, __nfds=1, __fds=0x7fe50d722710) at /usr/include/bits/poll2.h:46
+#2  _xcb_conn_wait (c=c@entry=0x7fe50db26000, cond=cond@entry=0x7fe50db26040, vector=vector@entry=0x0, count=count@entry=0x0) at xcb_conn.c:479
+#3  0x00007fe51c126c6f in xcb_wait_for_event (c=0x7fe50db26000) at xcb_in.c:697
+#4  0x00007fe50d80fa59 in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5XcbQpa.so.5
+#5  0x00007fe51ec5f17a in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#6  0x0000000004f7507a in create_head(void*) ()
+#7  0x00007fe51b229ea5 in start_thread (arg=0x7fe50d7ba700) at pthread_create.c:307
+#8  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 10 (Thread 0x7fe506dcf700 (LWP 12227)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd0b8, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+#2  pipe_semaphore_wait (sema=0x7fe510afd0b8) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+#3  thread_function (init_data=init_data@entry=0x7fe510afd018) at lp_rast.c:805
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe506dcf700) at pthread_create.c:307
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 9 (Thread 0x7fe5065ce700 (LWP 12228)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd218, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+#2  pipe_semaphore_wait (sema=0x7fe510afd218) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+#3  thread_function (init_data=init_data@entry=0x7fe510afd178) at lp_rast.c:805
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe5065ce700) at pthread_create.c:307
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 8 (Thread 0x7fe505dcd700 (LWP 12229)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd378, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+#2  pipe_semaphore_wait (sema=0x7fe510afd378) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+#3  thread_function (init_data=init_data@entry=0x7fe510afd2d8) at lp_rast.c:805
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe505dcd700) at pthread_create.c:307
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 7 (Thread 0x7fe5055cc700 (LWP 12230)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd4d8, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+#2  pipe_semaphore_wait (sema=0x7fe510afd4d8) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+#3  thread_function (init_data=init_data@entry=0x7fe510afd438) at lp_rast.c:805
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe5055cc700) at pthread_create.c:307
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 6 (Thread 0x7fe504dcb700 (LWP 12231)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd638, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+#2  pipe_semaphore_wait (sema=0x7fe510afd638) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+#3  thread_function (init_data=init_data@entry=0x7fe510afd598) at lp_rast.c:805
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe504dcb700) at pthread_create.c:307
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 5 (Thread 0x7fe5045ca700 (LWP 12233)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd798, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+#2  pipe_semaphore_wait (sema=0x7fe510afd798) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+#3  thread_function (init_data=init_data@entry=0x7fe510afd6f8) at lp_rast.c:805
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe5045ca700) at pthread_create.c:307
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 4 (Thread 0x7fe503a81700 (LWP 12237)):
+#0  0x00007fe51a71cb43 in select () at ../sysdeps/unix/syscall-template.S:81
+#1  0x00000000219bcb37 in NotifierThreadProc ()
+#2  0x0000000004f7507a in create_head(void*) ()
+#3  0x00007fe51b229ea5 in start_thread (arg=0x7fe503a81700) at pthread_create.c:307
+#4  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 3 (Thread 0x7fe502adf700 (LWP 12287)):
+#0  0x00007fe51b2313c1 in do_sigwait (sig=0x7fe502a47804, set=<optimized out>) at ../sysdeps/unix/sysv/linux/sigwait.c:60
+#1  __sigwait (set=0x7fe502a47810, sig=0x7fe502a47804) at ../sysdeps/unix/sysv/linux/sigwait.c:95
+#2  0x0000000004c6415f in ctrlCHandle(void*) ()
+#3  0x0000000004f7507a in create_head(void*) ()
+#4  0x00007fe51b229ea5 in start_thread (arg=0x7fe502adf700) at pthread_create.c:307
+#5  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 2 (Thread 0x7fe4e680f700 (LWP 13309)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+#1  0x00007fe51ec5ffbb in QWaitCondition::wait(QMutex*, unsigned long) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#2  0x00007fe51e8abe22 in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#3  0x00007fe51ec5f17a in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#4  0x0000000004f7507a in create_head(void*) ()
+#5  0x00007fe51b229ea5 in start_thread (arg=0x7fe4e680f700) at pthread_create.c:307
+#6  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+Thread 1 (Thread 0x7fe524437cc0 (LWP 12064)):
+#0  0x00007fe51a6ec659 in __libc_waitpid (pid=18514, stat_loc=stat_loc@entry=0x7fff2da05180, options=options@entry=0) at ../sysdeps/unix/sysv/linux/waitpid.c:40
+#1  0x00007fe51a669f62 in do_system (line=line@entry=0x7fff2da09310 "/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/etc/innovus/.pstk /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus 12064 1") at ../sysdeps/posix/system.c:148
+#2  0x00007fe51a66a311 in __libc_system (line=0x7fff2da09310 "/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/etc/innovus/.pstk /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus 12064 1") at ../sysdeps/posix/system.c:189
+#3  0x00000000138198b0 in syStackTraceDump(_IO_FILE*, bool) ()
+#4  0x0000000013819d08 in syStackTrace ()
+#5  0x0000000004c66a84 in rdaiErrorHandler(int, siginfo*, void*) ()
+#6  <signal handler called>
+#7  0x000000000d1e775f in peLayerPitch::computeLayerPitch() ()
+#8  0x000000000d1e0d8a in peEngineClient::getLayerInfoById(std::vector<eeLayerInfo, std::allocator<eeLayerInfo> >&) ()
+#9  0x000000000d1e1cfc in peEngineClient::getLayerInfo(std::vector<eeLayerInfo, std::allocator<eeLayerInfo> >&) ()
+#10 0x000000000522b4ac in eeExtEngineDesignData::setLayerInfo() ()
+#11 0x000000000d107279 in eeExtEngineDesignData::resetDesignData() [clone .constprop.417] ()
+#12 0x000000000d10dffa in dbMCRCInit() ()
+#13 0x000000000d10e278 in peiInitializeExtractionSetUp(bool) ()
+#14 0x0000000010245d83 in toiCteUpdateRcCornerPostCallback(TAMmmcRcCorner*, TAMmmcUpdateRcCornerCbkInfo*) ()
+#15 0x0000000013a7c898 in TAMmmc::updateRcCorner(TAMmmcRcCorner*, char const*, float, taboolean, TAMmmcTripleFactor&, taboolean, float, taboolean, TAMmmcTripleFactor&, taboolean, TAMmmcTripleFactor&, taboolean, float, taboolean, float, taboolean, TAMmmcTripleFactor&, taboolean, TAMmmcTripleFactor&, taboolean, char const*, char const*, char const*, float, taboolean, char const*) ()
+#16 0x0000000014c2cad0 in TaCmd_createOrUpdate_rc_corner(void*, Tcl_Interp*, int, char**, taboolean, tcmCmd*) ()
+#17 0x0000000015b84b90 in tcmBaseCmd::execute(Tcl_Interp*, int, char**) ()
+#18 0x0000000015b781d4 in tcmMgr::cmdParser(void*, Tcl_Interp*, int, char**) ()
+#19 0x00000000218b56e0 in TclInvokeStringCommand ()
+#20 0x00000000218ba057 in TclNRRunCallbacks ()
+#21 0x00000000218bc528 in TclEvalEx ()
+#22 0x00000000218bce56 in Tcl_EvalEx ()
+#23 0x00000000218bceff in TclNREvalObjEx ()
+#24 0x000000002197270b in TclNREvalFile ()
+#25 0x00000000218d0151 in TclNRSourceObjCmd ()
+#26 0x00000000218ba057 in TclNRRunCallbacks ()
+#27 0x00000000218bc528 in TclEvalEx ()
+#28 0x0000000021985122 in TclSubstTokens ()
+#29 0x00000000218bc135 in TclEvalEx ()
+#30 0x00000000218bce56 in Tcl_EvalEx ()
+#31 0x00000000218bce75 in Tcl_Eval ()
+#32 0x0000000011f3ead5 in qtfTclEval(char*, bool, bool) ()
+#33 0x0000000011ee4e56 in qtfsItem::fUpdateVar() ()
+#34 0x00007fe51ee68ebf in QMetaObject::activate(QObject*, int, int, void**) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#35 0x00007fe51e850042 in QAbstractButton::clicked(bool) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#36 0x00007fe51e850254 in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#37 0x00007fe51e851542 in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#38 0x00007fe51e8516ec in QAbstractButton::mouseReleaseEvent(QMouseEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#39 0x00007fe51e6dd948 in QWidget::event(QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#40 0x00007fe51e69f05c in QApplicationPrivate::notify_helper(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#41 0x00007fe51e6a703c in QApplication::notify(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#42 0x00007fe51ee3da88 in QCoreApplication::notifyInternal2(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#43 0x00007fe51e6a58fd in QApplicationPrivate::sendMouseEvent(QWidget*, QMouseEvent*, QWidget*, QWidget*, QWidget**, QPointer<QWidget>&, bool) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#44 0x00007fe51e6f6f2e in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#45 0x00007fe51e6f981b in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#46 0x00007fe51e69f05c in QApplicationPrivate::notify_helper(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#47 0x00007fe51e6a62fa in QApplication::notify(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#48 0x00007fe51ee3da88 in QCoreApplication::notifyInternal2(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#49 0x00007fe51f2b07b3 in QGuiApplicationPrivate::processMouseEvent(QWindowSystemInterfacePrivate::MouseEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Gui.so.5
+#50 0x00007fe51f2b2225 in QGuiApplicationPrivate::processWindowSystemEvent(QWindowSystemInterfacePrivate::WindowSystemEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Gui.so.5
+#51 0x00007fe51f28e25b in QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Gui.so.5
+#52 0x00000000215302c6 in QUnixEventDispatcherQPA::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) ()
+#53 0x00007fe51fc932ea in TqEventDispatcher::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so
+#54 0x00007fe51fc900ee in tcl_dispatch_qt () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so
+#55 0x000000002197eb20 in Tcl_DoOneEvent ()
+#56 0x00007fe51fc9323a in TqEventDispatcher::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so
+#57 0x00007fe51ee3c0ca in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#58 0x00007fe51ee44954 in QCoreApplication::exec() () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#59 0x00007fe51fc92897 in TqApplication::exec() () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so
+#60 0x0000000004d12f99 in edi_app_init(Tcl_Interp*) ()
+#61 0x00000000219793c7 in Tcl_MainEx ()
+#62 0x0000000004354bd2 in main ()
+========================================
+                gdb
+========================================
+Using: gdb
+[New LWP 13309]
+[New LWP 12287]
+[New LWP 12237]
+[New LWP 12233]
+[New LWP 12231]
+[New LWP 12230]
+[New LWP 12229]
+[New LWP 12228]
+[New LWP 12227]
+[New LWP 12217]
+[New LWP 12184]
+[New LWP 12181]
+[New LWP 12177]
+[New LWP 12176]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+
+warning: the debug information found in "/usr/lib/debug//lib64/libexpat.so.1.6.0.debug" does not match "/lib64/libexpat.so.1" (CRC mismatch).
+
+
+warning: the debug information found in "/usr/lib/debug/usr/lib64/libexpat.so.1.6.0.debug" does not match "/lib64/libexpat.so.1" (CRC mismatch).
+
+
+warning: the debug information found in "/usr/lib/debug//usr/lib64/libexpat.so.1.6.0.debug" does not match "/lib64/libexpat.so.1" (CRC mismatch).
+
+
+warning: the debug information found in "/usr/lib/debug/usr/lib64//libexpat.so.1.6.0.debug" does not match "/lib64/libexpat.so.1" (CRC mismatch).
+
+
+warning: the debug information found in "/usr/lib/debug//lib64/libfreebl3.so.debug" does not match "/lib64/libfreebl3.so" (CRC mismatch).
+
+
+warning: the debug information found in "/usr/lib/debug/usr/lib64/libfreebl3.so.debug" does not match "/lib64/libfreebl3.so" (CRC mismatch).
+
+Missing separate debuginfo for /lib64/libtiff.so.3
+Try: yum --enablerepo='*debug*' install /usr/lib/debug/.build-id/43/abf97c85c4acbe7a3e2a7f94a0c18af7335e55.debug
+0x00007fe51a6ec659 in __libc_waitpid (pid=18514, stat_loc=stat_loc@entry=0x7fff2da05180, options=options@entry=0) at ../sysdeps/unix/sysv/linux/waitpid.c:40
+40	  int result = INLINE_SYSCALL (wait4, 4, pid, stat_loc, options, NULL);
+
+Thread 15 (Thread 0x7fe510801700 (LWP 12176)):
+#0  0x00007fe51b2309dd in accept () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#1  0x000000002004beae in ProcessInfo::handleConnection(void*) ()
+#2  0x0000000004f7507a in create_head(void*) ()
+#3  0x00007fe51b229ea5 in start_thread (arg=0x7fe510801700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe510801700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621801068288, -1499789707030431473, 0, 8392704, 4, 140621801068288, 1505765609712515343, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#4  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 14 (Thread 0x7fe510000700 (LWP 12177)):
+#0  0x00007fe51a71cb43 in select () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#1  0x000000002004408b in ProcessInfo::sampleUsage(void*) ()
+#2  0x0000000004f7507a in create_head(void*) ()
+#3  0x00007fe51b229ea5 in start_thread (arg=0x7fe510000700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe510000700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621792675584, -1499789707030431473, 0, 8392704, 4, 140621792675584, 1505806292179613967, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#4  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 13 (Thread 0x7fe50f7ff700 (LWP 12181)):
+#0  0x00007fe51a6ec9fd in nanosleep () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#1  0x00007fe51a6ec894 in __sleep (seconds=0) at ../sysdeps/unix/sysv/linux/sleep.c:137
+        ts = {tv_sec = 5, tv_nsec = 190869096}
+        set = {__val = {65536, 0 <repeats 15 times>}}
+        oset = {__val = {0, 3543892497278398063, 3314660527794566702, 7454983988420020784, 4611697492217458281, 0, 4643497913475923968, 140621967131346, 140621783660000, 140621783659848, 0, 140621783659848, 0, 140621783660000, 0, 140621783660008}}
+        result = <optimized out>
+#2  0x0000000013833972 in syiPeakMem(void*) ()
+#3  0x0000000004f7507a in create_head(void*) ()
+#4  0x00007fe51b229ea5 in start_thread (arg=0x7fe50f7ff700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe50f7ff700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621784282880, -1499789707030431473, 0, 8392704, 4, 140621784282880, 1505807398670563599, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#5  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 12 (Thread 0x7fe50effd700 (LWP 12184)):
+#0  0x00007fe51b230e9d in nanosleep () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#1  0x000000000640338d in rdaiLicRecheck(void*) ()
+#2  0x0000000004f7507a in create_head(void*) ()
+#3  0x00007fe51b229ea5 in start_thread (arg=0x7fe50effd700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe50effd700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621775886080, -1499789707030431473, 0, 8392704, 4, 140621775886080, 1505804099061938447, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#4  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 11 (Thread 0x7fe50d7ba700 (LWP 12217)):
+#0  0x00007fe51a71addd in poll () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#1  0x00007fe51c125022 in poll (__timeout=-1, __nfds=1, __fds=0x7fe50d722710) at /usr/include/bits/poll2.h:46
+No locals.
+#2  _xcb_conn_wait (c=c@entry=0x7fe50db26000, cond=cond@entry=0x7fe50db26040, vector=vector@entry=0x0, count=count@entry=0x0) at xcb_conn.c:479
+        ret = <optimized out>
+        fd = {fd = 17, events = 1, revents = 0}
+#3  0x00007fe51c126c6f in xcb_wait_for_event (c=0x7fe50db26000) at xcb_in.c:697
+        ret = 0x0
+#4  0x00007fe50d80fa59 in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5XcbQpa.so.5
+#5  0x00007fe51ec5f17a in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#6  0x0000000004f7507a in create_head(void*) ()
+#7  0x00007fe51b229ea5 in start_thread (arg=0x7fe50d7ba700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe50d7ba700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621750445824, -1499789707030431473, 0, 8392704, 4, 140621750445824, 1505811760746723599, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#8  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 10 (Thread 0x7fe506dcf700 (LWP 12227)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+No locals.
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd0b8, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+No locals.
+#2  pipe_semaphore_wait (sema=0x7fe510afd0b8) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+No locals.
+#3  thread_function (init_data=init_data@entry=0x7fe510afd018) at lp_rast.c:805
+        task = 0x7fe510afd018
+        rast = 0x7fe510afd000
+        thread_name = "llvmpipe-0\000\004\000\000\000"
+        fpstate = <optimized out>
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+        pack = {func = 0x7fe50a7ff000 <thread_function>, arg = 0x7fe510afd018}
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe506dcf700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe506dcf700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621639382784, -1499789707030431473, 0, 8392704, 4, 140621639382784, 1505786207301925135, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 9 (Thread 0x7fe5065ce700 (LWP 12228)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+No locals.
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd218, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+No locals.
+#2  pipe_semaphore_wait (sema=0x7fe510afd218) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+No locals.
+#3  thread_function (init_data=init_data@entry=0x7fe510afd178) at lp_rast.c:805
+        task = 0x7fe510afd178
+        rast = 0x7fe510afd000
+        thread_name = "llvmpipe-1\000\004\000\000\000"
+        fpstate = <optimized out>
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+        pack = {func = 0x7fe50a7ff000 <thread_function>, arg = 0x7fe510afd178}
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe5065ce700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe5065ce700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621630990080, -1499789707030431473, 0, 8392704, 4, 140621630990080, 1505787307350423823, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 8 (Thread 0x7fe505dcd700 (LWP 12229)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+No locals.
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd378, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+No locals.
+#2  pipe_semaphore_wait (sema=0x7fe510afd378) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+No locals.
+#3  thread_function (init_data=init_data@entry=0x7fe510afd2d8) at lp_rast.c:805
+        task = 0x7fe510afd2d8
+        rast = 0x7fe510afd000
+        thread_name = "llvmpipe-2\000\004\000\000\000"
+        fpstate = <optimized out>
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+        pack = {func = 0x7fe50a7ff000 <thread_function>, arg = 0x7fe510afd2d8}
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe505dcd700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe505dcd700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621622597376, -1499789707030431473, 0, 8392704, 4, 140621622597376, 1505792803297949967, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 7 (Thread 0x7fe5055cc700 (LWP 12230)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+No locals.
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd4d8, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+No locals.
+#2  pipe_semaphore_wait (sema=0x7fe510afd4d8) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+No locals.
+#3  thread_function (init_data=init_data@entry=0x7fe510afd438) at lp_rast.c:805
+        task = 0x7fe510afd438
+        rast = 0x7fe510afd000
+        thread_name = "llvmpipe-3\000\004\000\000\000"
+        fpstate = <optimized out>
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+        pack = {func = 0x7fe50a7ff000 <thread_function>, arg = 0x7fe510afd438}
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe5055cc700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe5055cc700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621614204672, -1499789707030431473, 0, 8392704, 4, 140621614204672, 1505793903346448655, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 6 (Thread 0x7fe504dcb700 (LWP 12231)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+No locals.
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd638, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+No locals.
+#2  pipe_semaphore_wait (sema=0x7fe510afd638) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+No locals.
+#3  thread_function (init_data=init_data@entry=0x7fe510afd598) at lp_rast.c:805
+        task = 0x7fe510afd598
+        rast = 0x7fe510afd000
+        thread_name = "llvmpipe-4\000\004\000\000\000"
+        fpstate = <optimized out>
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+        pack = {func = 0x7fe50a7ff000 <thread_function>, arg = 0x7fe510afd598}
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe504dcb700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe504dcb700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621605811968, -1499789707030431473, 0, 8392704, 4, 140621605811968, 1505790603200952591, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 5 (Thread 0x7fe5045ca700 (LWP 12233)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+No locals.
+#1  0x00007fe50a7ff0b3 in cnd_wait (mtx=0x7fe510afd798, cond=<optimized out>) at ../../../../include/c11/threads_posix.h:155
+No locals.
+#2  pipe_semaphore_wait (sema=0x7fe510afd798) at ../../../../src/gallium/auxiliary/os/os_thread.h:108
+No locals.
+#3  thread_function (init_data=init_data@entry=0x7fe510afd6f8) at lp_rast.c:805
+        task = 0x7fe510afd6f8
+        rast = 0x7fe510afd000
+        thread_name = "llvmpipe-5\000\004\000\000\000"
+        fpstate = <optimized out>
+#4  0x00007fe50a7fec27 in impl_thrd_routine (p=<optimized out>) at ../../../../include/c11/threads_posix.h:87
+        pack = {func = 0x7fe50a7ff000 <thread_function>, arg = 0x7fe510afd6f8}
+#5  0x0000000004f7507a in create_head(void*) ()
+#6  0x00007fe51b229ea5 in start_thread (arg=0x7fe5045ca700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe5045ca700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621597419264, -1499789707030431473, 0, 8392704, 4, 140621597419264, 1505791703249451279, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#7  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 4 (Thread 0x7fe503a81700 (LWP 12237)):
+#0  0x00007fe51a71cb43 in select () at ../sysdeps/unix/syscall-template.S:81
+No locals.
+#1  0x00000000219bcb37 in NotifierThreadProc ()
+#2  0x0000000004f7507a in create_head(void*) ()
+#3  0x00007fe51b229ea5 in start_thread (arg=0x7fe503a81700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe503a81700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621585585920, -1499789707030431473, 0, 8392704, 4, 140621585585920, 1505796602196523279, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#4  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 3 (Thread 0x7fe502adf700 (LWP 12287)):
+#0  0x00007fe51b2313c1 in do_sigwait (sig=0x7fe502a47804, set=<optimized out>) at ../sysdeps/unix/sysv/linux/sigwait.c:60
+        __arg4 = 8
+        __arg2 = 0
+        _a3 = 0
+        _a1 = 140621568571408
+        resultvar = <optimized out>
+        __arg3 = 0
+        __arg1 = 140621568571408
+        _a4 = 8
+        _a2 = 0
+        ret = <optimized out>
+        tmpset = {__val = {4294886224, 4294886199, 13599952811394841983, 14033993809767416683, 140621569490944, 140621569499136, 863854368, 8192, 8192, 0, 140621569193728, 571064739, 140621912326464, 140621569193728, 2, 140621585769472}}
+#1  __sigwait (set=0x7fe502a47810, sig=0x7fe502a47804) at ../sysdeps/unix/sysv/linux/sigwait.c:95
+        oldtype = 0
+        result = 128
+#2  0x0000000004c6415f in ctrlCHandle(void*) ()
+#3  0x0000000004f7507a in create_head(void*) ()
+#4  0x00007fe51b229ea5 in start_thread (arg=0x7fe502adf700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe502adf700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621569193728, -1499789707030431473, 0, 8392704, 4, 140621569193728, 1505794908905666831, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#5  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 2 (Thread 0x7fe4e680f700 (LWP 13309)):
+#0  pthread_cond_wait@@GLIBC_2.3.2 () at ../nptl/sysdeps/unix/sysv/linux/x86_64/pthread_cond_wait.S:185
+No locals.
+#1  0x00007fe51ec5ffbb in QWaitCondition::wait(QMutex*, unsigned long) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#2  0x00007fe51e8abe22 in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#3  0x00007fe51ec5f17a in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#4  0x0000000004f7507a in create_head(void*) ()
+#5  0x00007fe51b229ea5 in start_thread (arg=0x7fe4e680f700) at pthread_create.c:307
+        __res = <optimized out>
+        pd = 0x7fe4e680f700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140621096482560, -1499789707030431473, 1, 8392704, 4, 140621096482560, 1505998722283731215, 1505780556140640527}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+        pagesize_m1 = <optimized out>
+        sp = <optimized out>
+        freesize = <optimized out>
+#6  0x00007fe51a725b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+No locals.
+
+Thread 1 (Thread 0x7fe524437cc0 (LWP 12064)):
+#0  0x00007fe51a6ec659 in __libc_waitpid (pid=18514, stat_loc=stat_loc@entry=0x7fff2da05180, options=options@entry=0) at ../sysdeps/unix/sysv/linux/waitpid.c:40
+        resultvar = <optimized out>
+        oldtype = 0
+        result = <optimized out>
+#1  0x00007fe51a669f62 in do_system (line=line@entry=0x7fff2da09310 "/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/etc/innovus/.pstk /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus 12064 1") at ../sysdeps/posix/system.c:148
+        __result = <optimized out>
+        _buffer = {__routine = 0x7fe51a66a200 <cancel_handler>, __arg = 0x7fff2da05150, __canceltype = 1, __prev = 0x0}
+        _avail = 1
+        status = 765481536
+        save = <optimized out>
+        pid = 18514
+        sa = {__sigaction_handler = {sa_handler = 0x1, sa_sigaction = 0x1}, sa_mask = {__val = {65536, 0 <repeats 15 times>}}, sa_flags = 0, sa_restorer = 0x7fff2da05204}
+        omask = {__val = {1026, 9213125925, 140733958870272, 0, 140733958869568, 140733958869536, 140737488355327, 4, 5, 140621970846784, 0, 2, 3847593847362158584, 140621912370688, 140621134377888, 32}}
+#2  0x00007fe51a66a311 in __libc_system (line=0x7fff2da09310 "/eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/etc/innovus/.pstk /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/innovus/bin/64bit/innovus 12064 1") at ../sysdeps/posix/system.c:189
+        oldtype = 0
+        result = <optimized out>
+#3  0x00000000138198b0 in syStackTraceDump(_IO_FILE*, bool) ()
+#4  0x0000000013819d08 in syStackTrace ()
+#5  0x0000000004c66a84 in rdaiErrorHandler(int, siginfo*, void*) ()
+#6  <signal handler called>
+No locals.
+#7  0x000000000d1e775f in peLayerPitch::computeLayerPitch() ()
+#8  0x000000000d1e0d8a in peEngineClient::getLayerInfoById(std::vector<eeLayerInfo, std::allocator<eeLayerInfo> >&) ()
+#9  0x000000000d1e1cfc in peEngineClient::getLayerInfo(std::vector<eeLayerInfo, std::allocator<eeLayerInfo> >&) ()
+#10 0x000000000522b4ac in eeExtEngineDesignData::setLayerInfo() ()
+#11 0x000000000d107279 in eeExtEngineDesignData::resetDesignData() [clone .constprop.417] ()
+#12 0x000000000d10dffa in dbMCRCInit() ()
+#13 0x000000000d10e278 in peiInitializeExtractionSetUp(bool) ()
+#14 0x0000000010245d83 in toiCteUpdateRcCornerPostCallback(TAMmmcRcCorner*, TAMmmcUpdateRcCornerCbkInfo*) ()
+#15 0x0000000013a7c898 in TAMmmc::updateRcCorner(TAMmmcRcCorner*, char const*, float, taboolean, TAMmmcTripleFactor&, taboolean, float, taboolean, TAMmmcTripleFactor&, taboolean, TAMmmcTripleFactor&, taboolean, float, taboolean, float, taboolean, TAMmmcTripleFactor&, taboolean, TAMmmcTripleFactor&, taboolean, char const*, char const*, char const*, float, taboolean, char const*) ()
+#16 0x0000000014c2cad0 in TaCmd_createOrUpdate_rc_corner(void*, Tcl_Interp*, int, char**, taboolean, tcmCmd*) ()
+#17 0x0000000015b84b90 in tcmBaseCmd::execute(Tcl_Interp*, int, char**) ()
+#18 0x0000000015b781d4 in tcmMgr::cmdParser(void*, Tcl_Interp*, int, char**) ()
+#19 0x00000000218b56e0 in TclInvokeStringCommand ()
+#20 0x00000000218ba057 in TclNRRunCallbacks ()
+#21 0x00000000218bc528 in TclEvalEx ()
+#22 0x00000000218bce56 in Tcl_EvalEx ()
+#23 0x00000000218bceff in TclNREvalObjEx ()
+#24 0x000000002197270b in TclNREvalFile ()
+#25 0x00000000218d0151 in TclNRSourceObjCmd ()
+#26 0x00000000218ba057 in TclNRRunCallbacks ()
+#27 0x00000000218bc528 in TclEvalEx ()
+#28 0x0000000021985122 in TclSubstTokens ()
+#29 0x00000000218bc135 in TclEvalEx ()
+#30 0x00000000218bce56 in Tcl_EvalEx ()
+#31 0x00000000218bce75 in Tcl_Eval ()
+#32 0x0000000011f3ead5 in qtfTclEval(char*, bool, bool) ()
+#33 0x0000000011ee4e56 in qtfsItem::fUpdateVar() ()
+#34 0x00007fe51ee68ebf in QMetaObject::activate(QObject*, int, int, void**) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#35 0x00007fe51e850042 in QAbstractButton::clicked(bool) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#36 0x00007fe51e850254 in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#37 0x00007fe51e851542 in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#38 0x00007fe51e8516ec in QAbstractButton::mouseReleaseEvent(QMouseEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#39 0x00007fe51e6dd948 in QWidget::event(QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#40 0x00007fe51e69f05c in QApplicationPrivate::notify_helper(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#41 0x00007fe51e6a703c in QApplication::notify(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#42 0x00007fe51ee3da88 in QCoreApplication::notifyInternal2(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#43 0x00007fe51e6a58fd in QApplicationPrivate::sendMouseEvent(QWidget*, QMouseEvent*, QWidget*, QWidget*, QWidget**, QPointer<QWidget>&, bool) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#44 0x00007fe51e6f6f2e in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#45 0x00007fe51e6f981b in ?? () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#46 0x00007fe51e69f05c in QApplicationPrivate::notify_helper(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#47 0x00007fe51e6a62fa in QApplication::notify(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#48 0x00007fe51ee3da88 in QCoreApplication::notifyInternal2(QObject*, QEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#49 0x00007fe51f2b07b3 in QGuiApplicationPrivate::processMouseEvent(QWindowSystemInterfacePrivate::MouseEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Gui.so.5
+#50 0x00007fe51f2b2225 in QGuiApplicationPrivate::processWindowSystemEvent(QWindowSystemInterfacePrivate::WindowSystemEvent*) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Gui.so.5
+#51 0x00007fe51f28e25b in QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Gui.so.5
+#52 0x00000000215302c6 in QUnixEventDispatcherQPA::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) ()
+#53 0x00007fe51fc932ea in TqEventDispatcher::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so
+#54 0x00007fe51fc900ee in tcl_dispatch_qt () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so
+#55 0x000000002197eb20 in Tcl_DoOneEvent ()
+#56 0x00007fe51fc9323a in TqEventDispatcher::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so
+#57 0x00007fe51ee3c0ca in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#58 0x00007fe51ee44954 in QCoreApplication::exec() () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#59 0x00007fe51fc92897 in TqApplication::exec() () from /eda/cadence/2020-21/RHELx86/INNOVUS_20.11.000/tools.lnx86/lib/64bit/libtq.so
+#60 0x0000000004d12f99 in edi_app_init(Tcl_Interp*) ()
+#61 0x00000000219793c7 in Tcl_MainEx ()
+#62 0x0000000004354bd2 in main ()
+A debugging session is active.
+
+	Inferior 1 [process 12064] will be detached.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+[Inferior 1 (process 12064) detached]
+
+*** Memory Usage v#2 (Current mem = 776.906M, initial mem = 272.289M) ***
+*** Message Summary: 352 warning(s), 61 error(s)
+
+--- Ending "Innovus" (totcpu=0:01:22, real=0:05:27, mem=776.9M) ---
