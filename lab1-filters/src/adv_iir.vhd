@@ -8,9 +8,9 @@
 -- Project Name: advanced iir filter
 -- Description: Advanced Infinite Impulse Response Filter first order
 --
--- Additional Comments: Optimize version of iir filter exploiting J-lookahed
+-- Additional Comments: Optimized version of iir filter exploiting J-lookahed
 --						technique.
---						Pipeline and retiming technique are employed to enhance
+--						Pipeline and retiming techniques are employed to enhance
 --						performance.
 --------------------------------------------------------------------------------
 
@@ -68,6 +68,10 @@ architecture behav of adv_iir is
 
 begin
 
+	--------------------------------------------------
+	-- REGISTERS
+	--------------------------------------------------
+
 	-------------------------------------------------- valid INPUT REG
   	VALID_IN : process (CLK, RST_N) is
   	begin
@@ -80,6 +84,7 @@ begin
 
   	end process VALID_IN;
 
+	-------------------------------------------------- INPUT REG
 	IN_REG: reg
 		port map(
   	    	CLK   => CLK,
@@ -90,6 +95,7 @@ begin
   	    	DOUT => x_o
 		);
 
+	-------------------------------------------------- SW0 REG
 	SW0_REG: reg
 		port map(
   	    	CLK   => CLK,
@@ -100,6 +106,7 @@ begin
   	    	DOUT => f1_o
 		);
 
+	-------------------------------------------------- SW1 REG
 	SW1_REG: reg
 		port map(
   	    	CLK   => CLK,
@@ -110,6 +117,7 @@ begin
   	    	DOUT => w_o
 		);
 
+	-------------------------------------------------- SW2 REG
 	SW2_REG: reg
 		port map(
   	    	CLK   => CLK,
@@ -120,6 +128,7 @@ begin
   	    	DOUT => s_o
 		);
 
+	-------------------------------------------------- SW3 REG
 	SW3_REG: reg
 		port map(
   	    	CLK   => CLK,
@@ -130,6 +139,7 @@ begin
   	    	DOUT => fb_o
 		);
 
+	-------------------------------------------------- SW4 REG
 	SW4_REG: reg
 		port map(
   	    	CLK   => CLK,
@@ -140,6 +150,7 @@ begin
   	    	DOUT => s2_o 
 		);
 
+	-------------------------------------------------- SW5 REG
 	SW5_REG: reg
 		port map(
   	    	CLK   => CLK,
@@ -150,6 +161,7 @@ begin
   	    	DOUT => f3_o
 		);
 
+	-------------------------------------------------- SW6 REG
 	SW6_REG: reg
 		port map(
   	    	CLK   => CLK,
@@ -160,6 +172,7 @@ begin
   	    	DOUT => f2_o
 		);
 
+	-------------------------------------------------- OUT REG
 	OUT_REG: reg
 		port map(
   	    	CLK   => CLK,
@@ -169,6 +182,10 @@ begin
   	    	DIN  => y_i,
   	    	DOUT => Y
 		);
+	
+	--------------------------------------------------
+	-- COMPUTATION
+	--------------------------------------------------
 		
   	a1_in <= signed(A1);
   	a1_2_in <= signed(A1_2);
