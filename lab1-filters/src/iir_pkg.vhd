@@ -20,7 +20,7 @@ library ieee;
 
 package iir_pkg is
 
-	constant NBIT:		integer := 10;
+	constant NBIT:		integer := 11;
 	constant IIR_ORDER:	integer :=  1;
 	--constant SHAMT:		integer :=  9;
 	constant SHAMT:		integer := 13;

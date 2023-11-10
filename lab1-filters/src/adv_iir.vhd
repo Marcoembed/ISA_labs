@@ -86,6 +86,7 @@ begin
 
 	-------------------------------------------------- INPUT REG
 	IN_REG: reg
+        generic map ( DATA_WIDTH => 10)
 		port map(
   	    	CLK   => CLK,
   	    	RST_N => RST_N,
@@ -174,8 +175,9 @@ begin
 
 	-------------------------------------------------- OUT REG
 	OUT_REG: reg
+        generic map ( DATA_WIDTH => 10)
 		port map(
-  	    	CLK   => CLK,
+            CLK   => CLK,
   	    	RST_N => RST_N,
 
   	    	EN   => '1',
