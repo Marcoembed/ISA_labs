@@ -193,7 +193,10 @@ begin
   	    	RST_N => RST_N,
 
   	    	EN   => '1',
-  	    	DIN  => y_i,
+
+-- entrano NBIT+1 bit con y_i, ma ne escono solo NBIT con Y, quindi potrei far entrare solo gli NBIT più significativi
+
+  	    	DIN  => y_i(NBIT-1 downto 0),
   	    	DOUT => Y
 		);
 	
