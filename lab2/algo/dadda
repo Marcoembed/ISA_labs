@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+
+import sys
+
+Npp = 5
+Nbit = 11
+partial_products = [[0] * 11 for _ in range(5)]
+signs = [1, 0, 1, 1, 0]
+
+pp_dec = sys.argv
+
+def dec_to_bin(dec_num, length):
+    return str(format(dec_num, f'0{length}b'))
+
+for pp in range(len(partial_products)):
+    partial_products[pp] = [int(digit) for digit in dec_to_bin(int(pp_dec[pp+1]), 11)]
+    print("pp[", pp, "]:", partial_products[pp])
+
+partial_products[0] = [int(not(signs[0]))] + [signs[0]] + [signs[0]] + partial_products[0]
+
+for pp in range(len(partial_products)-1):
+    partial_products[pp+1] = [1] + [signs[pp+1]] + partial_products[pp+1]
+
+print(partial_products)
+
+
