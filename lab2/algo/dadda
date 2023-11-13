@@ -4,23 +4,44 @@ import sys
 
 Npp = 5
 Nbit = 11
-partial_products = [[0] * 11 for _ in range(5)]
-signs = [1, 0, 1, 1, 0]
 
+#init values
+
+partial_products = [[0] * Nbit for _ in range(Npp)]
+signs = [0 for _ in range(Npp)]
 pp_dec = sys.argv
 
+# Binary to decimal function
 def dec_to_bin(dec_num, length):
     return str(format(dec_num, f'0{length}b'))
 
+# partial product assignment (binary)
 for pp in range(len(partial_products)):
     partial_products[pp] = [int(digit) for digit in dec_to_bin(int(pp_dec[pp+1]), 11)]
     print("pp[", pp, "]:", partial_products[pp])
 
+# signs assignment
+signs = [partial_products[0][0], partial_products[1][0], partial_products[2][0], partial_products[3][0], partial_products[4][0]]
+print(signs)
+
+# first partial product sign extension
 partial_products[0] = [int(not(signs[0]))] + [signs[0]] + [signs[0]] + partial_products[0]
 
+# partial products sign extension
 for pp in range(len(partial_products)-1):
     partial_products[pp+1] = [1] + [signs[pp+1]] + partial_products[pp+1]
 
 print(partial_products)
 
+# tree generation, weight positions
 
+## diagonal disposition in matrix
+
+matrix = [[0] * (2*Nbit-1) for _ in range(Npp)]
+for row in range(Npp):
+    for shift_col, col in enumerate(range(Nbit)):
+        matrix[row][shift_col] = partial_products[row][col]
+    shift_col = col + 2
+
+for row in matrix:
+    print(row)
