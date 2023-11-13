@@ -2,12 +2,9 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-library work;
-  use work.iir_pkg.all;
-
 entity REG is
   generic (
-    DATA_WIDTH : integer := NBIT
+    DATA_WIDTH : integer := 11
   );
   port (
     CLK   : in    std_logic;
