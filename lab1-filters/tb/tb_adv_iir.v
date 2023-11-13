@@ -1,6 +1,6 @@
-//`timescale 1ns
+//timescale 1ns
 
-module tb_adv_iir ();
+module tb_adv_iir();
 
     wire CLK_i;
     wire RST_N_i;
@@ -48,7 +48,7 @@ module tb_adv_iir ();
         .VIN(VOUT_i),
         .DIN(DOUT_i));   
 
-    // Logging
+//Logging
     always @(posedge CLK_i, negedge RST_N_i) begin
         if(!RST_N_i) begin
            $display("Time=%0t Reset async",$time); 
@@ -57,7 +57,7 @@ module tb_adv_iir ();
         end
     end
 
-    // End simulation
+//End simulation
     always @(END_SIM_i) begin
         if(END_SIM_i) begin
            $display("Ending simulation shortly",$time); 

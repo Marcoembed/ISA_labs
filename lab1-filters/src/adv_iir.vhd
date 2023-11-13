@@ -41,7 +41,7 @@ end entity adv_iir;
 architecture behav of adv_iir is
 
 
-	signal x_o			: signed(NBIT downto 0);
+	signal x_o			: signed(NBIT-1 downto 0);
 	signal f1_i			: signed(2 * (NBIT + 1) - 1 downto 0);
 	signal f1_o			: signed(NBIT downto 0);
 	signal w_i			: signed(NBIT downto 0);
@@ -57,13 +57,24 @@ architecture behav of adv_iir is
 	signal f3_o			: signed(NBIT downto 0);
 	signal y_i			: signed(NBIT downto 0);
 
-	signal a1_in		: signed(NBIT-1 downto 0);
-	signal a1_2_in		: signed(NBIT-1 downto 0);
-	signal b0_in		: signed(NBIT-1 downto 0);
-	signal b1_in		: signed(NBIT-1 downto 0);
+	signal a1_in		: signed(NBIT downto 0);
+	signal a1_2_in		: signed(NBIT downto 0);
+	signal b0_in		: signed(NBIT downto 0);
+	signal b1_in		: signed(NBIT downto 0);
 
 	signal vin_d1		: std_logic;
 	signal vin_d2		: std_logic;
+
+    component REG is
+    generic ( DATA_WIDTH : integer := 11);
+    port (
+        CLK   : in    std_logic;
+        RST_N : in    std_logic;
+        EN    : in    std_logic;
+        DIN   : in    signed(DATA_WIDTH - 1 downto 0);
+        DOUT  : out   signed(DATA_WIDTH -1  downto 0)
+    );
+    end component;
 	
 
 begin
@@ -86,13 +97,15 @@ begin
 
 	-------------------------------------------------- INPUT REG
 	IN_REG: reg
+        generic map ( DATA_WIDTH => 10)
 		port map(
   	    	CLK   => CLK,
   	    	RST_N => RST_N,
 
   	    	EN   => '1',
   	    	DIN  => X,
-  	    	DOUT => x_o
+            DOUT => x_o   
+        
 		);
 
 	-------------------------------------------------- SW0 REG
@@ -102,7 +115,7 @@ begin
   	    	RST_N => RST_N,
 
   	    	EN   => '1',
-  	    	DIN  => f1_i(2 * NBIT - 1 downto SHAMT),
+  	    	DIN  => f1_i(NBIT downto 0),
   	    	DOUT => f1_o
 		);
 
@@ -135,7 +148,7 @@ begin
   	    	RST_N => RST_N,
 
   	    	EN   => '1',
-  	    	DIN  => fb_i(2 * NBIT - 1 downto SHAMT),
+  	    	DIN  => fb_i(NBIT downto 0),
   	    	DOUT => fb_o
 		);
 
@@ -157,7 +170,7 @@ begin
   	    	RST_N => RST_N,
 
   	    	EN   => '1',
-  	    	DIN  => f3_i(2 * NBIT - 1 downto SHAMT),
+  	    	DIN  => f3_i(NBIT downto 0),
   	    	DOUT => f3_o
 		);
 
@@ -168,18 +181,22 @@ begin
   	    	RST_N => RST_N,
 
   	    	EN   => '1',
-  	    	DIN  => f2_i(2 * NBIT - 1 downto SHAMT),
+  	    	DIN  => f2_i(NBIT downto 0),
   	    	DOUT => f2_o
 		);
 
 	-------------------------------------------------- OUT REG
 	OUT_REG: reg
+        generic map ( DATA_WIDTH => 10)
 		port map(
-  	    	CLK   => CLK,
+            CLK   => CLK,
   	    	RST_N => RST_N,
 
   	    	EN   => '1',
-  	    	DIN  => y_i,
+
+-- entrano NBIT+1 bit con y_i, ma ne escono solo NBIT con Y, quindi potrei far entrare solo gli NBIT più significativi
+
+  	    	DIN  => y_i(NBIT-1 downto 0),
   	    	DOUT => Y
 		);
 	
@@ -187,17 +204,17 @@ begin
 	-- COMPUTATION
 	--------------------------------------------------
 		
-  	a1_in <= signed(A1);
-  	a1_2_in <= signed(A1_2);
-  	b0_in <= signed(B0);
-  	b1_in <= signed(B1);
+  	a1_in <= resize(signed(A1), NBIT+1);
+  	a1_2_in <= resize(signed(A1_2), NBIT+1);
+  	b0_in <= resize(signed(B0), NBIT+1);
+  	b1_in <= resize(signed(B1), NBIT+1);
 
-	f1_i <= resize(a1_in, NBIT + 1) * x_o;
-	w_i <= f1_o + x_o;
+	f1_i <= shift_left((shift_right(a1_in * resize(x_o, NBIT+1), SHAMT)), SHAMT-NBIT+1);
+	w_i <= f1_o + resize(x_o, NBIT+1);
 	s_i <= w_o + fb_o;
-	fb_i <= resize(a1_2_in, NBIT + 1) * s_o;
-	f3_i <= resize(b0_in, NBIT + 1) * s_o;
-	f2_i <= resize(b1_in, NBIT + 1) * s2_o;
+	fb_i <= a1_2_in * s_o;
+	f3_i <= b0_in * s_o;
+	f2_i <= b1_in * s2_o;
 	y_i <= f3_o + f2_o;
 
 
