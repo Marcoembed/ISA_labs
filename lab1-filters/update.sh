@@ -14,6 +14,9 @@ files[3]="/tb/data_sink.vhd"
 files[4]="/tb/data_maker_adv.vhd"
 files[5]="/tb/clk_gen.vhd"
 files[6]="/tb/tb_adv_iir.v"
+files[7]="/sim/power.sh"
+files[8]="/sim/power.tcl"
+files[9]="/syn/power2.tcl"
 
 for file in "${files[@]}"; do
     
