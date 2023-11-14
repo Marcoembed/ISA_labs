@@ -22,7 +22,6 @@ for pp in range(len(partial_products)):
 
 # signs assignment
 signs = [partial_products[0][0], partial_products[1][0], partial_products[2][0], partial_products[3][0], partial_products[4][0]]
-print(signs)
 
 # first partial product sign extension
 partial_products[0] = [int(not(signs[0]))] + [signs[0]] + [signs[0]] + partial_products[0]
@@ -31,17 +30,30 @@ partial_products[0] = [int(not(signs[0]))] + [signs[0]] + [signs[0]] + partial_p
 for pp in range(len(partial_products)-1):
     partial_products[pp+1] = [1] + [signs[pp+1]] + partial_products[pp+1]
 
-print(partial_products)
+for row in partial_products:
+    print(row)
 
 # tree generation, weight positions
 
 ## diagonal disposition in matrix
 
-matrix = [[0] * (2*Nbit-1) for _ in range(Npp)]
+matrix = [[0] * (2*Nbit) for _ in range(Npp)]
+shift = Nbit-1
+first = 0
+
 for row in range(Npp):
-    for shift_col, col in enumerate(range(Nbit)):
-        matrix[row][shift_col] = partial_products[row][col]
-    shift_col = col + 2
+    if first:
+        Start = Nbit+1
+    else:
+        Start = Nbit+2
+    for col in range(Start, -1, -1):
+        if first:
+            index = shift + col - 1
+        else:
+            index = shift + col - 2
+        matrix[row][index] = partial_products[row][col]
+    shift -= 2
+    first = 1
 
 for row in matrix:
     print(row)
