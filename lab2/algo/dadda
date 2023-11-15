@@ -5,47 +5,49 @@ import sys
 Npp = 5
 Nbit = 11
 
-#init values
+# init values
 
 partial_products = [[0] * Nbit for _ in range(Npp)]
 signs = [0 for _ in range(Npp)]
 pp_dec = sys.argv
 
+
 # Binary to decimal function
 def dec_to_bin(dec_num, length):
     return str(format(dec_num, f'0{length}b'))
 
+
 # partial product assignment (binary)
 for pp in range(len(partial_products)):
-    partial_products[pp] = [int(digit) for digit in dec_to_bin(int(pp_dec[pp+1]), 11)]
-    print("pp[", pp, "]:", partial_products[pp])
+    partial_products[pp] = [int(digit) for digit in dec_to_bin(int(pp_dec[pp + 1]), 11)]
+    # print("pp[", pp, "]:", partial_products[pp])
 
 # signs assignment
-signs = [partial_products[0][0], partial_products[1][0], partial_products[2][0], partial_products[3][0], partial_products[4][0]]
+signs = [partial_products[0][0], partial_products[1][0], partial_products[2][0], partial_products[3][0],
+         partial_products[4][0]]
 
 # first partial product sign extension
-partial_products[0] = [int(not(signs[0]))] + [signs[0]] + [signs[0]] + partial_products[0]
+partial_products[0] = [int(not (signs[0]))] + [signs[0]] + [signs[0]] + partial_products[0]
 
 # partial products sign extension
-for pp in range(len(partial_products)-1):
-    partial_products[pp+1] = [1] + [signs[pp+1]] + partial_products[pp+1]
+for pp in range(len(partial_products) - 1):
+    partial_products[pp + 1] = [1] + [signs[pp + 1]] + partial_products[pp + 1]
 
-for row in partial_products:
-    print(row)
+# for row in partial_products:
+#    print()
 
 # tree generation, weight positions
 
-## diagonal disposition in matrix
-
-matrix = [[0] * (2*Nbit) for _ in range(Npp)]
-shift = Nbit-1
+# diagonal disposition in matrix
+matrix = [['x'] * (2 * Nbit) for _ in range(Npp)]
+shift = Nbit - 1
 first = 0
 
 for row in range(Npp):
     if first:
-        Start = Nbit+1
+        Start = Nbit + 1
     else:
-        Start = Nbit+2
+        Start = Nbit + 2
     for col in range(Start, -1, -1):
         if first:
             index = shift + col - 1
@@ -55,5 +57,55 @@ for row in range(Npp):
     shift -= 2
     first = 1
 
-for row in matrix:
-    print(row)
+# print('for row in matrix:\n\tprint(row)\n')
+# for row in matrix:
+#    print(row)
+
+# print('\n\nVertical table\n\n')
+vertical_table = [[Npp] for _ in range(2 * Nbit)]
+tmp_list = [0] * Npp
+for i in range(2 * Nbit):
+    c = 0
+    for row in matrix:
+        # print(c, ') Row[', i, '] is:', row[i])
+        tmp_list[c] = row[i]
+        c = c + 1
+    # print('Tmp list is:', tmp_list)
+
+    # print('\n\nVertical table was:', vertical_table)
+    # print('Tmp_list at cycle', i, 'is:', tmp_list)
+    vertical_table[i] = tmp_list.copy()
+# print('Vertical table is:', vertical_table, end='\n\n')
+
+print('\n\n\n ')
+print(vertical_table)
+print('\n\n\n Delete x values \n')
+
+for col in vertical_table:
+    const_len_col = len(col)
+    len_col = const_len_col
+    i = 0
+    # print('\nCol is:', col, '\n')
+    while i < len_col:
+        # print('col[', const_len_col + i - len_col, '] =', col[i])
+        if col[i] == 'x':
+            # print('Delete col. col:', end=' ')
+            del col[i]
+            len_col = len_col - 1
+            # print(col)
+        else:
+            i = i + 1
+    # print('Col without x is:', col)
+
+print('\n', vertical_table, '\n')
+
+for i in range(Npp):
+    for col in vertical_table:
+        if i < len(col):
+            if col[i] == 1:
+                print('1', end='')
+            else:
+                print('0', end='')
+        else:
+            print(' ', end='')
+    print()
