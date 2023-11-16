@@ -23,11 +23,10 @@ vlog -work work ../tb/tb_adv_iir.v
 ###############################################################
 ##########   Run Modelsim GUI, add waves, run sim    ##########
 ###############################################################
-vsim work.tb_adv_iir -voptargs=+acc
+#vsim work.tb_adv_iir -voptargs=+acc
 
 
-#vsim -c work.tb_adv_iir -voptargs=+acc
+vsim -c work.tb_adv_iir -voptargs=+acc -do mini_tcl.tcl
 #vsim -c work.tb_adv_iir -voptargs=+acc > log1
-#quit
-#exit
+
 
