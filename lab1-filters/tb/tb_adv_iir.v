@@ -42,7 +42,7 @@ module tb_adv_iir();
         .Y(DOUT_i),
         .VOUT(VOUT_i));
 
-    data_sink DS(
+    data_sink_adv DS(
         .CLK(CLK_i),
         .RST_N(RST_N_i),
         .VIN(VOUT_i),

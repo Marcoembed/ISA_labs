@@ -4,7 +4,7 @@ library ieee;
 
 entity REG is
   generic (
-    DATA_WIDTH : integer := 11
+    DATA_WIDTH : integer := 16
   );
   port (
     CLK   : in    std_logic;

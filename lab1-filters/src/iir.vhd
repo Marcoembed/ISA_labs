@@ -66,6 +66,20 @@ architecture BEHAV of IIR is
   	signal vin_d2     : std_logic;
 
 	--------------------------------------------------
+	-- Components
+	--------------------------------------------------
+    component REG is
+    generic ( DATA_WIDTH : integer := 16);
+    port (
+        CLK   : in    std_logic;
+        RST_N : in    std_logic;
+        EN    : in    std_logic;
+        DIN   : in    signed(DATA_WIDTH - 1 downto 0);
+        DOUT  : out   signed(DATA_WIDTH -1  downto 0)
+    );
+    end component;
+
+	--------------------------------------------------
 	-- ARCHITECTURE GRAPH
 	--------------------------------------------------
 	--
@@ -103,6 +117,7 @@ begin
 
   	-------------------------------------------------- A1 INPUT REG
   	A1_IN_REG : reg
+  		generic map (DATA_WIDTH => NBIT)
   	  port map (
   	    CLK   => CLK,
   	    RST_N => RST_N,
@@ -114,6 +129,7 @@ begin
 
   	-------------------------------------------------- B0 INPUT REG
   	B0_IN_REG : reg
+  		generic map (DATA_WIDTH => NBIT)
   	  port map (
   	    CLK   => CLK,
   	    RST_N => RST_N,
@@ -125,6 +141,7 @@ begin
 
   	-------------------------------------------------- B1 INPUT REG
   	B1_IN_REG : reg
+  		generic map (DATA_WIDTH => NBIT)
   	  port map (
   	    CLK   => CLK,
   	    RST_N => RST_N,
@@ -136,6 +153,7 @@ begin
 
   	-------------------------------------------------- SAMPLE INPUT REG
   	IN_REG : reg
+  		generic map (DATA_WIDTH => NBIT)
   	  port map (
   	    CLK   => CLK,
   	    RST_N => RST_N,
@@ -160,6 +178,7 @@ begin
 
   	-------------------------------------------------- DATA OUTPUT REG
   	OUT_REG : reg
+  		generic map (DATA_WIDTH => NBIT)
   	  port map (
   	    CLK   => CLK,
   	    RST_N => RST_N,
@@ -171,9 +190,7 @@ begin
 
   	-------------------------------------------------- SN REG
   	U_SN_REG : reg
-  	  generic map (
-  	    DATA_WIDTH => NBIT + 1
-  	  )
+  		generic map (DATA_WIDTH => NBIT+1)
   	  port map (
   	    CLK   => CLK,
   	    RST_N => RST_N,

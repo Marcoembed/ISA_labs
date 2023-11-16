@@ -1,6 +1,3 @@
-source /eda/scripts/init_design_vision
-source /eda/scripts/init_questa_core_prime
-
 rm -rf work
 vlib work
 vcom -work ./work ../tb/*.vhd

@@ -9,7 +9,7 @@ use std.textio.all;
 
 
 
-entity data_sink is
+entity data_sink_adv is
 	generic (
 		NBIT: integer := 10
 	);
@@ -19,18 +19,18 @@ entity data_sink is
 		VIN:	in std_logic;
 		DIN:	in std_logic_vector(NBIT-1 downto 0)
 	);
-end data_sink;
+end data_sink_adv;
 
 
 
-architecture beh of data_sink is
+architecture beh of data_sink_adv is
 
 begin  -- beh
 
 	process (CLK, RST_N)
-		file res_fp : text open WRITE_MODE is "../sim/artifacts/output_hdl_basic.txt";
+		file res_fp : text open WRITE_MODE is "../sim/artifacts/output_hdl_adv.txt";
 		variable line_out : line;
-		file fp_in : text open READ_MODE is "../sim/artifacts/output_basic_13.txt";
+		file fp_in : text open READ_MODE is "../sim/artifacts/output_adv_12.txt";
 		variable line_in : line;    
 		variable x : integer;
 		variable cnt : integer := 0;
@@ -49,7 +49,7 @@ begin  -- beh
 					read(line_in, x);
 					assert conv_integer(signed(DIN)) = x report "Results are different: index=" & integer'image(cnt) & " c=" & integer'image(x) & " HDL=" & integer'image(conv_integer(signed(DIN)))  severity error;
 				else
-					assert VIN = '0' report "Reached EOF in output_basic_13.txt" severity error;  
+					assert VIN = '0' report "Reached EOF in output_adv_12.txt" severity error;  
 				end if;
 				cnt := cnt + 1;
 			end if;

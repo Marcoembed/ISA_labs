@@ -22,9 +22,15 @@ package iir_pkg is
 
 	constant NBIT:		integer := 10;
 	constant IIR_ORDER:	integer :=  1;
-	--constant SHAMT:		integer :=  9;
-	constant SHAMT:		integer := 13;
 
+	-- "Lossless" multiplications
+	--constant SHAMT:		integer :=  9;
+
+	-- Basic IIR SHAMT that guarantees THD < -30 dB
+	--constant SHAMT:		integer := 13;
+
+	-- Advanced IIR SHAMT that guarantees THD < -30 dB
+	constant SHAMT:		integer := 12;
 
 end package iir_pkg;
 
