@@ -14,7 +14,7 @@ module tb_adv_iir();
     wire VOUT_i;
     wire END_SIM_i;
  
-    clk_gen CG(
+    adv_clk_gen CG(
         .END_SIM(END_SIM_i),
         .CLK(CLK_i),
         .RST_N(RST_N_i));

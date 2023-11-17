@@ -14,7 +14,7 @@ vlib work
 ###############################################################
 vcom -work work ../src/iir_pkg.vhd 
 vcom -work work ../src/reg.vhd 
-vcom -work work ../tb/clk_gen.vhd 
+vcom -work work ../tb/adv_clk_gen.vhd 
 vcom -work work ../src/adv_iir.vhd 
 vcom -work work ../tb/data_maker_adv.vhd 
 vcom -work work ../tb/data_sink_adv.vhd 

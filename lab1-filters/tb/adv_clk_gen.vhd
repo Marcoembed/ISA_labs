@@ -1,0 +1,35 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+
+
+entity adv_clk_gen is
+	port (
+		END_SIM:	in  std_logic;
+		CLK:		out std_logic;
+		RST_N:		out std_logic
+	);
+end adv_clk_gen;
+
+
+
+architecture beh of adv_clk_gen is
+
+	constant Ts : time := 100 ns;
+	signal CLK_i : std_logic := '1';
+
+begin  -- beh
+
+	RST_N <= '0', '1' after 5*Ts/2;
+
+	process
+	begin  -- process
+		CLK_i <= not(CLK_i);
+		wait for Ts/2;
+	end process;
+
+	CLK <= CLK_i and not(END_SIM);
+
+end beh;
