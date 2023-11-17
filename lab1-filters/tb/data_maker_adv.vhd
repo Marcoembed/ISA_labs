@@ -30,7 +30,7 @@ end data_maker_adv;
 
 architecture beh of data_maker_adv is
 
-	constant tco: time := 10 ns;
+	constant tco: time := 5 ns;
 	constant N_CYC_END_SIM: integer := 11;
 	constant LFSR_INIT: integer := 1365;
 
