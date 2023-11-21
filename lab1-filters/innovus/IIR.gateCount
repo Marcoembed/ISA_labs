@@ -1,5 +1,0 @@
-Gate area 0.7980 um^2
-Level 0 Module IIR                                      Gates=      2137 Cells=     984 Area=    1705.3 um^2
-Level 1 Module mult_208                                 Gates=574        Cells=330      Area=     458.1 um^2
-Level 1 Module mult_193                                 Gates=556        Cells=295      Area=     443.7 um^2
-Level 1 Module mult_204                                 Gates=495        Cells=217      Area=     395.0 um^2
