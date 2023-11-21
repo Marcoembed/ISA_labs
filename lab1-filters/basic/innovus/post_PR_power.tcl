@@ -20,7 +20,7 @@ encMessage warning 0
 encMessage debug 0
 encMessage info 0
 is_common_ui_mode
-restoreDesign /home/isa01_2023_2024/renato/ISA_labs/LAB1/basic/innovus/IIR.dat IIR
+restoreDesign ./IIR.dat IIR
 setDrawView fplan
 encMessage warning 1
 encMessage debug 0
