@@ -1,0 +1,64 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2020 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v20.11-s130_1, built Wed Aug 5 15:53:11 PDT 2020
+Options:	-abort_on_error -no_gui -files post_PR_power.tcl 
+Date:		Tue Nov 21 18:23:18 2023
+Host:		isaserver (x86_64 w/Linux 3.10.0-1160.81.1.el7.x86_64) (6cores*6cpus*QEMU Virtual CPU version 2.5+ 16384KB)
+OS:		CentOS Linux release 7.9.2009 (Core)
+
+License:
+		invs	Innovus Implementation System	20.1	checkout succeeded
+		8 CPU jobs allowed with the current license(s). Use setMultiCpuUsage to set your required CPU count.
+Change the soft stacksize limit to 0.2%RAM (64 mbytes). Set global soft_stack_size_limit to change the value.
+
+**INFO:  MMMC transition support version v31-84 
+
+<CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+<CMD> suppressMessage ENCEXT-2799
+Sourcing file "post_PR_power.tcl" ...
+<CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+<CMD> suppressMessage ENCEXT-2799
+<CMD> win
+Cannot display window in tcl mode
+<CMD> encMessage warning 0
+Suppress "**WARN ..." messages.
+<CMD> encMessage debug 0
+<CMD> encMessage info 0
+my_rc
+**ERROR: (IMPIMEX-3):	There is no verilog netlist found in init_verilog. The variable is either not specified or specified incorrectly. Check the location of Verilog file in the global file.
+
+
+ERROR: 
+
+
+    while executing
+"error $catchMsg"
+    (procedure "restoreDesign" line 31)
+
+**ERROR: (IMPSYT-6692):	Invalid return code while executing 'post_PR_power.tcl' was returned and script processing was stopped. Review the following error in 'post_PR_power.tcl' then restart.
+Error info: post_PR_power.tcl: 
+    while executing
+"error $catchMsg"
+    (procedure "restoreDesign" line 31)
+    invoked from within
+"restoreDesign /home/isa01_2023_2024/renato/ISA_labs/LAB1/adv/innovus/IIR.dat IIR"
+    (file "post_PR_power.tcl" line 23)
+    invoked from within
+"::se_source_orig post_PR_power.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel [concat ::se_source_orig $args]"
+    (procedure "source" line 176)
+    invoked from within
+"source post_PR_power.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel #0 source post_PR_power.tcl"
+    ("eval" body line 1)
+    invoked from within
+"eval {uplevel #0 source post_PR_power.tcl}"
+    (in namespace inscope "::" script line 1)
+    invoked from within
+"namespace inscope :: eval "uplevel #0 source $fileName"".

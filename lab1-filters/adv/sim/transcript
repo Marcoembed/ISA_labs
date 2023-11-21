@@ -1,0 +1,1773 @@
+# do power.tcl
+# vsim -c -L /eda/dk/nangate45/verilog/qsim2020.4 work.tb_iir 
+# Start time: 18:37:33 on Nov 21,2023
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: ../netlist/iir.v(17): (vopt-2685) [TFMPC] - Too few port connections for 'U1_10'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(17): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(39): (vopt-2685) [TFMPC] - Too few port connections for 'U1_10'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(39): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(315): (vopt-2685) [TFMPC] - Too few port connections for 'U3'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(315): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(817): (vopt-2685) [TFMPC] - Too few port connections for 'U3'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(817): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(1116): (vopt-2685) [TFMPC] - Too few port connections for 'count_vin_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1116): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1118): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1118): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1120): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1120): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1122): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1122): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1124): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1124): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1126): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1126): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1128): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1128): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1130): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1130): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1132): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1132): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1134): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1134): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1136): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1136): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1138): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1138): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1140): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1140): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1142): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1142): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1144): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1144): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1146): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1146): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1148): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1148): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1149): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1149): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1150): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1150): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1151): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1151): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1153): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1153): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1155): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1155): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1157): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1157): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1159): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1159): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1161): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1161): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1173): (vopt-2685) [TFMPC] - Too few port connections for 'add_287_U1_9'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1173): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(1175): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1175): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1177): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1177): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1179): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1179): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1181): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1181): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1183): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1183): (vopt-2718) [TFMPC] - Missing connection for port 'Q'.
+# ** Warning: ../netlist/iir.v(1184): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1184): (vopt-2718) [TFMPC] - Missing connection for port 'Q'.
+# ** Warning: ../netlist/iir.v(1185): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1185): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1187): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1187): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1189): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1189): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1191): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1191): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1193): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1193): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1195): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1195): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1197): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1197): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1199): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1199): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1201): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1201): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1203): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1203): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1205): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1205): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1207): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1207): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1209): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1209): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1211): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1211): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1213): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1213): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1215): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1215): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1217): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1217): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1219): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1219): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1221): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1221): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1223): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1223): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1225): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1225): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1227): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1227): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1229): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1229): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1231): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1231): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1233): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1233): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1235): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1235): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1237): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1237): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1239): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1239): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1243): (vopt-2685) [TFMPC] - Too few port connections for 'add_283'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1243): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(1246): (vopt-2685) [TFMPC] - Too few port connections for 'add_282'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1246): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(1286): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1286): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1288): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1288): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1290): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1290): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1292): (vopt-2685) [TFMPC] - Too few port connections for 'count_vin_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1292): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1293): (vopt-2685) [TFMPC] - Too few port connections for 'count_vin_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1293): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1294): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1294): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1296): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1296): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1298): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1298): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1300): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1300): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1302): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1302): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1304): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1304): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1306): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1306): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1308): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1308): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1310): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1310): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1312): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1312): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1314): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1314): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1316): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1316): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1318): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1318): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1320): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1320): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1322): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1322): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1324): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1324): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1326): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1326): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1328): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1328): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1330): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1330): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1332): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1332): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1334): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1334): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1336): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1336): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1338): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1338): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1340): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1340): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1342): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1342): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1344): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1344): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1346): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1346): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1348): (vopt-2685) [TFMPC] - Too few port connections for 'vin_d1_reg'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1348): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1349): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1349): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1351): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1351): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1353): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1353): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1355): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1355): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1357): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1357): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1359): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1359): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1361): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1361): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1363): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1363): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1365): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1365): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1367): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1367): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1369): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1369): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1371): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1371): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1373): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1373): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1375): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1375): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1377): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1377): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1379): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1379): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1381): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1381): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1383): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1383): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1385): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1385): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1387): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1387): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1389): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1389): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1391): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1391): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1393): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1393): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1395): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1395): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1397): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1397): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1399): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1399): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1401): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1401): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1403): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1403): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1405): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1405): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1407): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1407): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1409): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1409): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1411): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1411): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=262.
+# //  Questa Sim-64
+# //  Version 2020.4 linux_x86_64 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# ** Warning: License feature 'msimhdlsim' will expire in 9 days.
+# Loading work.tb_iir(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.DFFR_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.DFF_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.FA_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.XOR2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.NAND3_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.AND2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.HA_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.XNOR2_X2(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.MUX2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.AOI222_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.OAI222_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.INV_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.NAND2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.OAI22_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.NOR2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.AOI22_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.AOI21_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.OAI21_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.OR3_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.NOR3_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.XNOR2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.CLKGATETST_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.BUF_X1(fast)
+# ** Warning: License feature 'msimhdlmix' will expire in 9 days.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading work.clk_gen(beh)#1
+# Loading ieee.std_logic_textio(body)
+# Loading work.data_maker(beh)#1
+# Loading work.data_sink(beh)#1
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'count_vin_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/count_vin_reg_2_ File: ../netlist/iir.v Line: 1116
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1118
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1120
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1122
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1124
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1126
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1128
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1130
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1132
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1134
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1136
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1138
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1140
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1142
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1144
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1146
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1148
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1149
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1150
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1151
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1153
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1155
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1157
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1159
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1161
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1175
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1177
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1179
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1181
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1185
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1187
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1189
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1191
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1193
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1195
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1197
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1199
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1201
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1203
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1205
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1207
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1209
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1211
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1213
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1215
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1217
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1219
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1221
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1223
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1225
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1227
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1229
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1231
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1233
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1235
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1237
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1239
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1286
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1288
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1290
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'count_vin_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/count_vin_reg_1_ File: ../netlist/iir.v Line: 1292
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'count_vin_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/count_vin_reg_0_ File: ../netlist/iir.v Line: 1293
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1294
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1296
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1298
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1300
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1302
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1304
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1306
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1308
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1310
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1312
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1314
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1316
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1318
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1320
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1322
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1324
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1326
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1328
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1330
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1332
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1334
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1336
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1338
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1340
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1342
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1344
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1346
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'vin_d1_reg'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/vin_d1_reg File: ../netlist/iir.v Line: 1348
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1349
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1351
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1353
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1355
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1357
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1359
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1361
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1363
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1365
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1367
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1369
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1371
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1373
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1375
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1377
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1379
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1381
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1383
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1385
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1387
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1389
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1391
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1393
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1395
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1397
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1399
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1401
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1403
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1405
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1407
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1409
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1411
+# End time: 18:37:38 on Nov 21,2023, Elapsed time: 0:00:05
+# Errors: 0, Warnings: 384
+# vsim -c -L /eda/dk/nangate45/verilog/qsim2020.4 -sdftyp "/tb_iir/UUT=../netlist/myiir.sdf" work.tb_iir 
+# Start time: 18:37:38 on Nov 21,2023
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: ../netlist/iir.v(17): (vopt-2685) [TFMPC] - Too few port connections for 'U1_10'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(17): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(39): (vopt-2685) [TFMPC] - Too few port connections for 'U1_10'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(39): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(315): (vopt-2685) [TFMPC] - Too few port connections for 'U3'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(315): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(817): (vopt-2685) [TFMPC] - Too few port connections for 'U3'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(817): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(1116): (vopt-2685) [TFMPC] - Too few port connections for 'count_vin_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1116): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1118): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1118): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1120): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1120): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1122): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1122): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1124): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1124): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1126): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1126): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1128): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1128): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1130): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1130): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1132): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1132): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1134): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1134): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1136): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1136): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1138): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1138): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1140): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1140): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1142): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1142): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1144): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1144): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1146): (vopt-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1146): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1148): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1148): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1149): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1149): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1150): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1150): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1151): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1151): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1153): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1153): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1155): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1155): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1157): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1157): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1159): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1159): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1161): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1161): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1173): (vopt-2685) [TFMPC] - Too few port connections for 'add_287_U1_9'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1173): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(1175): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1175): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1177): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1177): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1179): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1179): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1181): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1181): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1183): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1183): (vopt-2718) [TFMPC] - Missing connection for port 'Q'.
+# ** Warning: ../netlist/iir.v(1184): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1184): (vopt-2718) [TFMPC] - Missing connection for port 'Q'.
+# ** Warning: ../netlist/iir.v(1185): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1185): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1187): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1187): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1189): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1189): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1191): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1191): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1193): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1193): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1195): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1195): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1197): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1197): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1199): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1199): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1201): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1201): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1203): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1203): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1205): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1205): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1207): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1207): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1209): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1209): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1211): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1211): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1213): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1213): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1215): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1215): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1217): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1217): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1219): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1219): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1221): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1221): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1223): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1223): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1225): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1225): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1227): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1227): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1229): (vopt-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1229): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1231): (vopt-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1231): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1233): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1233): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1235): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1235): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1237): (vopt-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1237): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1239): (vopt-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1239): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1243): (vopt-2685) [TFMPC] - Too few port connections for 'add_283'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1243): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(1246): (vopt-2685) [TFMPC] - Too few port connections for 'add_282'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1246): (vopt-2718) [TFMPC] - Missing connection for port 'CO'.
+# ** Warning: ../netlist/iir.v(1286): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1286): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1288): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1288): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1290): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1290): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1292): (vopt-2685) [TFMPC] - Too few port connections for 'count_vin_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1292): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1293): (vopt-2685) [TFMPC] - Too few port connections for 'count_vin_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1293): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1294): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1294): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1296): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1296): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1298): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1298): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1300): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1300): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1302): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1302): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1304): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1304): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1306): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1306): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1308): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1308): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1310): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_10_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1310): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1312): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1312): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1314): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1314): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1316): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1316): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1318): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1318): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1320): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1320): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1322): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1322): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1324): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1324): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1326): (vopt-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1326): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1328): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1328): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1330): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1330): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1332): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1332): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1334): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1334): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1336): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1336): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1338): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1338): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1340): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1340): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1342): (vopt-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1342): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1344): (vopt-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1344): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1346): (vopt-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1346): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1348): (vopt-2685) [TFMPC] - Too few port connections for 'vin_d1_reg'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1348): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1349): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1349): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1351): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1351): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1353): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1353): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1355): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1355): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1357): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1357): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1359): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1359): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1361): (vopt-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1361): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1363): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1363): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1365): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1365): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1367): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1367): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1369): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1369): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1371): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1371): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1373): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1373): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1375): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1375): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1377): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1377): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1379): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1379): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1381): (vopt-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1381): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1383): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1383): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1385): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1385): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1387): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1387): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1389): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1389): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1391): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1391): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1393): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1393): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1395): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1395): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1397): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1397): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1399): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1399): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1401): (vopt-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1401): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1403): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1403): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1405): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1405): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1407): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1407): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1409): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1409): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Warning: ../netlist/iir.v(1411): (vopt-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+# ** Warning: ../netlist/iir.v(1411): (vopt-2718) [TFMPC] - Missing connection for port 'QN'.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=262.
+# ** Warning: License feature 'msimhdlsim' will expire in 9 days.
+# Loading work.tb_iir(fast)
+# Loading work.iir(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.DFFR_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.DFF_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.FA_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.XOR2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.NAND3_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.AND2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.HA_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.XNOR2_X2(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.MUX2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.AOI222_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.OAI222_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.INV_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.NAND2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.OAI22_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.NOR2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.AOI22_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.AOI21_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.OAI21_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.OR3_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.NOR3_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.XNOR2_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.CLKGATETST_X1(fast)
+# Loading /eda/dk/nangate45/verilog/qsim2020.4.BUF_X1(fast)
+# ** Warning: License feature 'msimhdlmix' will expire in 9 days.
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading work.clk_gen(beh)#1
+# Loading ieee.std_logic_textio(body)
+# Loading work.data_maker(beh)#1
+# Loading work.data_sink(beh)#1
+# Loading instances from ../netlist/myiir.sdf
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'count_vin_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/count_vin_reg_2_ File: ../netlist/iir.v Line: 1116
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1118
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1120
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1122
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1124
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1126
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1128
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1130
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1132
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1134
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1136
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1138
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1140
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1142
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1144
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_2_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1146
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1148
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1149
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1150
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1151
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1153
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1155
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1157
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1159
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1161
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1175
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1177
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1179
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1181
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1185
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1187
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1189
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1191
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1193
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1195
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1197
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1199
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1201
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1203
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1205
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1207
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1209
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1211
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1213
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1215
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1217
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1219
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1221
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1223
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1225
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1227
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW6_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1229
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW5_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1231
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1233
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1235
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW0_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1237
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW3_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1239
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1286
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1288
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1290
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'count_vin_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/count_vin_reg_1_ File: ../netlist/iir.v Line: 1292
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'count_vin_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/count_vin_reg_0_ File: ../netlist/iir.v Line: 1293
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1294
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1296
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1298
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1300
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1302
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1304
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1306
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1308
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_10_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_10_ File: ../netlist/iir.v Line: 1310
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1312
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1314
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1316
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1318
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1320
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1322
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1324
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW4_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1326
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1328
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1330
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1332
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1334
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1336
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1338
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1340
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW2_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1342
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'SW1_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1344
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'OUT_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1346
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'vin_d1_reg'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/vin_d1_reg File: ../netlist/iir.v Line: 1348
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1349
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1351
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1353
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1355
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1357
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1359
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1361
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1363
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1365
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1367
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1369
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1371
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1373
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1375
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1377
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1379
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B1_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1381
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1383
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1385
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1387
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1389
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1391
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_4_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_4_ File: ../netlist/iir.v Line: 1393
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_3_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_3_ File: ../netlist/iir.v Line: 1395
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_2_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_2_ File: ../netlist/iir.v Line: 1397
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_1_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_1_ File: ../netlist/iir.v Line: 1399
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'B0_IN_REG_data_out_reg_0_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_0_ File: ../netlist/iir.v Line: 1401
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_9_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_9_ File: ../netlist/iir.v Line: 1403
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_8_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_8_ File: ../netlist/iir.v Line: 1405
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_7_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_7_ File: ../netlist/iir.v Line: 1407
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_6_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_6_ File: ../netlist/iir.v Line: 1409
+# ** Warning: (vsim-2685) [TFMPC] - Too few port connections for 'A1_IN_REG_data_out_reg_5_'.  Expected 5, found 4.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_5_ File: ../netlist/iir.v Line: 1411
+# Loading timing data from ../netlist/myiir.sdf
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_0_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_1_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_2_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B0_IN_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_0_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_1_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_2_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/B1_IN_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/vin_d1_reg
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_2_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_10_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_0_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW4_REG_data_out_reg_1_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_0_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_1_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_2_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/count_vin_reg_0_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/count_vin_reg_1_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_0_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_1_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_2_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_10_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_10_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW0_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW3_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW5_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW6_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_10_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW1_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/OUT_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_10_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/SW2_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_2_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_1_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/IN_REG_data_out_reg_0_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_9_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_8_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_7_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_6_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_5_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_2_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_1_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_2_IN_REG_data_out_reg_0_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_4_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_3_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_2_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_1_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/A1_IN_REG_data_out_reg_0_
+# ** Warning: (vsim-3448) nofile(1758): Timing check limit can not be negative. Setting negative check constraint (0 ns) to zero.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir/UUT/count_vin_reg_2_
+# ** Note: (vsim-3587) SDF Backannotation Successfully Completed.
+#    Time: 0 ns  Iteration: 0  Instance: /tb_iir File: ../tb/tb_iir.v
+# Time=0 Reset async
+# Time=4 Reset async
+# Time=5 Reset async
+# Time=12 Reset async
+# Time=20 VIN:0, DIN:    0, VOUT: x, DOUT:    0
+# Time=28 VIN:0, DIN:    0, VOUT: x, DOUT:    0
+# Time=36 VIN:1, DIN:    0, VOUT: 0, DOUT:    0
+# Time=44 VIN:1, DIN:  158, VOUT: 0, DOUT:    0
+# Time=52 VIN:1, DIN:    0, VOUT: 0, DOUT:    0
+# Time=60 VIN:1, DIN:  414, VOUT: 0, DOUT:    0
+# Time=68 VIN:1, DIN:    0, VOUT: 0, DOUT:    0
+# Time=76 VIN:1, DIN:  511, VOUT: 1, DOUT:    0
+# Time=84 VIN:0, DIN:  511, VOUT: 1, DOUT:   64
+# Time=92 VIN:1, DIN: 1023, VOUT: 1, DOUT:   72
+# Time=100 VIN:1, DIN:  414, VOUT: 0, DOUT:  176
+# Time=108 VIN:1, DIN: 1023, VOUT: 1, DOUT:  176
+# Time=116 VIN:1, DIN:  158, VOUT: 1, DOUT:  192
+# Time=124 VIN:1, DIN: 1023, VOUT: 1, DOUT:  240
+# Time=132 VIN:1, DIN:  865, VOUT: 1, DOUT:  248
+# Time=140 VIN:1, DIN: 1023, VOUT: 1, DOUT:  200
+# Time=148 VIN:0, DIN: 1023, VOUT: 1, DOUT:  192
+# Time=156 VIN:0, DIN: 1023, VOUT: 1, DOUT:   88
+# Time=164 VIN:0, DIN: 1023, VOUT: 0, DOUT:   72
+# Time=172 VIN:0, DIN: 1023, VOUT: 0, DOUT:   72
+# Time=180 VIN:0, DIN: 1023, VOUT: 0, DOUT:   72
+# Time=188 VIN:0, DIN: 1023, VOUT: 0, DOUT:   72
+# Time=196 VIN:1, DIN:  609, VOUT: 0, DOUT:   72
+# Time=204 VIN:0, DIN:  609, VOUT: 0, DOUT:   72
+# Time=212 VIN:0, DIN:  609, VOUT: 1, DOUT:   72
+# Time=220 VIN:0, DIN:  609, VOUT: 0, DOUT:  960
+# Time=228 VIN:0, DIN:  609, VOUT: 0, DOUT:  960
+# Time=236 VIN:0, DIN:  609, VOUT: 0, DOUT:  960
+# Time=244 VIN:1, DIN: 1023, VOUT: 0, DOUT:  960
+# Time=252 VIN:1, DIN:  512, VOUT: 0, DOUT:  960
+# Time=260 VIN:0, DIN:  512, VOUT: 1, DOUT:  960
+# Time=268 VIN:0, DIN:  512, VOUT: 1, DOUT:  936
+# Time=276 VIN:0, DIN:  512, VOUT: 0, DOUT:  824
+# Time=284 VIN:0, DIN:  512, VOUT: 0, DOUT:  824
+# Time=292 VIN:1, DIN:    0, VOUT: 0, DOUT:  824
+# Time=300 VIN:0, DIN:    0, VOUT: 0, DOUT:  824
+# Time=308 VIN:1, DIN:  609, VOUT: 1, DOUT:  824
+# Time=316 VIN:0, DIN:  609, VOUT: 0, DOUT:  800
+# Time=324 VIN:0, DIN:  609, VOUT: 1, DOUT:  800
+# Time=332 VIN:0, DIN:  609, VOUT: 0, DOUT:  752
+# Time=340 VIN:1, DIN:    0, VOUT: 0, DOUT:  752
+# Time=348 VIN:1, DIN:  865, VOUT: 0, DOUT:  752
+# Time=356 VIN:1, DIN:    0, VOUT: 1, DOUT:  752
+# Time=364 VIN:1, DIN:  158, VOUT: 1, DOUT:  744
+# Time=372 VIN:0, DIN:  158, VOUT: 1, DOUT:  792
+# Time=380 VIN:0, DIN:  158, VOUT: 1, DOUT:  800
+# Time=388 VIN:1, DIN:    0, VOUT: 0, DOUT:  904
+# Time=396 VIN:0, DIN:    0, VOUT: 0, DOUT:  904
+# Time=404 VIN:0, DIN:    0, VOUT: 1, DOUT:  904
+# Time=412 VIN:0, DIN:    0, VOUT: 0, DOUT:  920
+# Time=420 VIN:1, DIN:  414, VOUT: 0, DOUT:  920
+# Time=428 VIN:0, DIN:  414, VOUT: 0, DOUT:  920
+# Time=436 VIN:1, DIN:    0, VOUT: 1, DOUT:  920
+# Time=444 VIN:1, DIN:  511, VOUT: 0, DOUT:   32
+# Time=452 VIN:0, DIN:  511, VOUT: 1, DOUT:   32
+# Time=460 VIN:0, DIN:  511, VOUT: 1, DOUT:   56
+# Time=468 VIN:1, DIN: 1023, VOUT: 0, DOUT:  168
+# Time=476 VIN:1, DIN:  414, VOUT: 0, DOUT:  168
+# Time=484 VIN:1, DIN: 1023, VOUT: 1, DOUT:  168
+# Time=492 VIN:0, DIN: 1023, VOUT: 1, DOUT:  192
+# Time=500 VIN:1, DIN:  158, VOUT: 1, DOUT:  240
+# Time=508 VIN:0, DIN:  158, VOUT: 0, DOUT:  248
+# Time=516 VIN:1, DIN: 1023, VOUT: 1, DOUT:  248
+# Time=524 VIN:0, DIN: 1023, VOUT: 0, DOUT:  200
+# Time=532 VIN:0, DIN: 1023, VOUT: 1, DOUT:  200
+# Time=540 VIN:1, DIN:  865, VOUT: 0, DOUT:  192
+# Time=548 VIN:1, DIN: 1023, VOUT: 0, DOUT:  192
+# Time=556 VIN:1, DIN:  609, VOUT: 1, DOUT:  192
+# Time=564 VIN:1, DIN: 1023, VOUT: 1, DOUT:   88
+# Time=572 VIN:1, DIN:  512, VOUT: 1, DOUT:   72
+# Time=580 VIN:0, DIN:  512, VOUT: 1, DOUT:  960
+# Time=588 VIN:1, DIN:    0, VOUT: 1, DOUT:  936
+# Time=596 VIN:0, DIN:    0, VOUT: 0, DOUT:  824
+# Time=604 VIN:0, DIN:    0, VOUT: 1, DOUT:  824
+# Time=612 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=620 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=628 VIN:1, DIN:  609, VOUT: 0, DOUT:  800
+# Time=636 VIN:1, DIN:    0, VOUT: 0, DOUT:  800
+# Time=644 VIN:1, DIN:  865, VOUT: 1, DOUT:  800
+# Time=652 VIN:0, DIN:  865, VOUT: 1, DOUT:  752
+# Time=660 VIN:0, DIN:  865, VOUT: 1, DOUT:  744
+# Time=668 VIN:0, DIN:  865, VOUT: 0, DOUT:  792
+# Time=676 VIN:1, DIN:    0, VOUT: 0, DOUT:  792
+# Time=684 VIN:0, DIN:    0, VOUT: 0, DOUT:  792
+# Time=692 VIN:0, DIN:    0, VOUT: 1, DOUT:  792
+# Time=700 VIN:1, DIN:  158, VOUT: 0, DOUT:  800
+# Time=708 VIN:0, DIN:  158, VOUT: 0, DOUT:  800
+# Time=716 VIN:0, DIN:  158, VOUT: 1, DOUT:  800
+# Time=724 VIN:1, DIN:    0, VOUT: 0, DOUT:  904
+# Time=732 VIN:1, DIN:  414, VOUT: 0, DOUT:  904
+# Time=740 VIN:0, DIN:  414, VOUT: 1, DOUT:  904
+# Time=748 VIN:1, DIN:    0, VOUT: 1, DOUT:  920
+# Time=756 VIN:1, DIN:  511, VOUT: 0, DOUT:   32
+# Time=764 VIN:0, DIN:  511, VOUT: 1, DOUT:   32
+# Time=772 VIN:1, DIN:    0, VOUT: 1, DOUT:   56
+# Time=780 VIN:0, DIN:    0, VOUT: 0, DOUT:  168
+# Time=788 VIN:1, DIN:  414, VOUT: 1, DOUT:  168
+# Time=796 VIN:1, DIN: 1023, VOUT: 0, DOUT:  192
+# Time=804 VIN:0, DIN: 1023, VOUT: 1, DOUT:  192
+# Time=812 VIN:1, DIN:  158, VOUT: 1, DOUT:  240
+# Time=820 VIN:1, DIN:    0, VOUT: 0, DOUT:  248
+# Time=828 VIN:1, DIN:  865, VOUT: 1, DOUT:  248
+# Time=836 VIN:1, DIN: 1023, VOUT: 1, DOUT:  208
+# Time=844 VIN:0, DIN: 1023, VOUT: 1, DOUT:  200
+# Time=852 VIN:1, DIN:  609, VOUT: 1, DOUT:   88
+# Time=860 VIN:1, DIN: 1023, VOUT: 0, DOUT:   72
+# Time=868 VIN:0, DIN: 1023, VOUT: 1, DOUT:   72
+# Time=876 VIN:0, DIN: 1023, VOUT: 1, DOUT:  960
+# Time=884 VIN:0, DIN: 1023, VOUT: 0, DOUT:  936
+# Time=892 VIN:1, DIN:  512, VOUT: 0, DOUT:  936
+# Time=900 VIN:1, DIN:    0, VOUT: 0, DOUT:  936
+# Time=908 VIN:0, DIN:    0, VOUT: 1, DOUT:  936
+# Time=916 VIN:1, DIN:  609, VOUT: 1, DOUT:  824
+# Time=924 VIN:0, DIN:  609, VOUT: 0, DOUT:  800
+# Time=932 VIN:0, DIN:  609, VOUT: 1, DOUT:  800
+# Time=940 VIN:1, DIN:    0, VOUT: 0, DOUT:  752
+# Time=948 VIN:0, DIN:    0, VOUT: 0, DOUT:  752
+# Time=956 VIN:1, DIN:  865, VOUT: 1, DOUT:  752
+# Time=964 VIN:1, DIN:    0, VOUT: 0, DOUT:  744
+# Time=972 VIN:1, DIN:  158, VOUT: 1, DOUT:  744
+# Time=980 VIN:0, DIN:  158, VOUT: 1, DOUT:  792
+# Time=988 VIN:1, DIN:    0, VOUT: 1, DOUT:  800
+# Time=996 VIN:1, DIN:  414, VOUT: 0, DOUT:  904
+# Time=1004 VIN:1, DIN:    0, VOUT: 1, DOUT:  904
+# Time=1012 VIN:0, DIN:    0, VOUT: 1, DOUT:  920
+# Time=1020 VIN:0, DIN:    0, VOUT: 1, DOUT:   32
+# Time=1028 VIN:1, DIN:  511, VOUT: 0, DOUT:   56
+# Time=1036 VIN:1, DIN:    0, VOUT: 0, DOUT:   56
+# Time=1044 VIN:0, DIN:    0, VOUT: 1, DOUT:   56
+# Time=1052 VIN:0, DIN:    0, VOUT: 1, DOUT:  168
+# Time=1060 VIN:1, DIN:  414, VOUT: 0, DOUT:  192
+# Time=1068 VIN:0, DIN:  414, VOUT: 0, DOUT:  192
+# Time=1076 VIN:1, DIN: 1023, VOUT: 1, DOUT:  192
+# Time=1084 VIN:0, DIN: 1023, VOUT: 0, DOUT:  240
+# Time=1092 VIN:1, DIN:  158, VOUT: 1, DOUT:  240
+# Time=1100 VIN:0, DIN:  158, VOUT: 0, DOUT:  248
+# Time=1108 VIN:1, DIN: 1023, VOUT: 1, DOUT:  248
+# Time=1116 VIN:1, DIN:  865, VOUT: 0, DOUT:  208
+# Time=1124 VIN:1, DIN: 1023, VOUT: 1, DOUT:  208
+# Time=1132 VIN:1, DIN:  609, VOUT: 1, DOUT:  200
+# Time=1140 VIN:1, DIN: 1023, VOUT: 1, DOUT:   88
+# Time=1148 VIN:1, DIN:  512, VOUT: 1, DOUT:   72
+# Time=1156 VIN:1, DIN:    0, VOUT: 1, DOUT:  960
+# Time=1164 VIN:0, DIN:    0, VOUT: 1, DOUT:  936
+# Time=1172 VIN:0, DIN:    0, VOUT: 1, DOUT:  824
+# Time=1180 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=1188 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=1196 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=1204 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=1212 VIN:1, DIN:  609, VOUT: 0, DOUT:  800
+# Time=1220 VIN:0, DIN:  609, VOUT: 0, DOUT:  800
+# Time=1228 VIN:0, DIN:  609, VOUT: 1, DOUT:  800
+# Time=1236 VIN:0, DIN:  609, VOUT: 0, DOUT:  752
+# Time=1244 VIN:0, DIN:  609, VOUT: 0, DOUT:  752
+# Time=1252 VIN:0, DIN:  609, VOUT: 0, DOUT:  752
+# Time=1260 VIN:1, DIN:    0, VOUT: 0, DOUT:  752
+# Time=1268 VIN:1, DIN:  865, VOUT: 0, DOUT:  752
+# Time=1276 VIN:0, DIN:  865, VOUT: 1, DOUT:  752
+# Time=1284 VIN:0, DIN:  865, VOUT: 1, DOUT:  744
+# Time=1292 VIN:0, DIN:  865, VOUT: 0, DOUT:  792
+# Time=1300 VIN:0, DIN:  865, VOUT: 0, DOUT:  792
+# Time=1308 VIN:1, DIN:    0, VOUT: 0, DOUT:  792
+# Time=1316 VIN:0, DIN:    0, VOUT: 0, DOUT:  792
+# Time=1324 VIN:1, DIN:  158, VOUT: 1, DOUT:  792
+# Time=1332 VIN:0, DIN:  158, VOUT: 0, DOUT:  800
+# Time=1340 VIN:0, DIN:  158, VOUT: 1, DOUT:  800
+# Time=1348 VIN:0, DIN:  158, VOUT: 0, DOUT:  904
+# Time=1356 VIN:1, DIN:    0, VOUT: 0, DOUT:  904
+# Time=1364 VIN:1, DIN:  414, VOUT: 0, DOUT:  904
+# Time=1372 VIN:1, DIN:    0, VOUT: 1, DOUT:  904
+# Time=1380 VIN:1, DIN:  511, VOUT: 1, DOUT:  920
+# Time=1388 VIN:0, DIN:  511, VOUT: 1, DOUT:   32
+# Time=1396 VIN:0, DIN:  511, VOUT: 1, DOUT:   56
+# Time=1404 VIN:1, DIN: 1023, VOUT: 0, DOUT:  168
+# Time=1412 VIN:0, DIN: 1023, VOUT: 0, DOUT:  168
+# Time=1420 VIN:0, DIN: 1023, VOUT: 1, DOUT:  168
+# Time=1428 VIN:0, DIN: 1023, VOUT: 0, DOUT:  192
+# Time=1436 VIN:1, DIN:  414, VOUT: 0, DOUT:  192
+# Time=1444 VIN:0, DIN:  414, VOUT: 0, DOUT:  192
+# Time=1452 VIN:1, DIN: 1023, VOUT: 1, DOUT:  192
+# Time=1460 VIN:1, DIN:  158, VOUT: 0, DOUT:  240
+# Time=1468 VIN:0, DIN:  158, VOUT: 1, DOUT:  240
+# Time=1476 VIN:0, DIN:  158, VOUT: 1, DOUT:  248
+# Time=1484 VIN:1, DIN: 1023, VOUT: 0, DOUT:  200
+# Time=1492 VIN:1, DIN:  865, VOUT: 0, DOUT:  200
+# Time=1500 VIN:1, DIN:    0, VOUT: 1, DOUT:  200
+# Time=1508 VIN:0, DIN:    0, VOUT: 1, DOUT:  192
+# Time=1516 VIN:1, DIN:  609, VOUT: 1, DOUT:   88
+# Time=1524 VIN:0, DIN:  609, VOUT: 0, DOUT:   72
+# Time=1532 VIN:1, DIN:    0, VOUT: 1, DOUT:   72
+# Time=1540 VIN:0, DIN:    0, VOUT: 0, DOUT:  960
+# Time=1548 VIN:0, DIN:    0, VOUT: 1, DOUT:  960
+# Time=1556 VIN:1, DIN:  512, VOUT: 0, DOUT:  936
+# Time=1564 VIN:1, DIN:    0, VOUT: 0, DOUT:  936
+# Time=1572 VIN:1, DIN:  609, VOUT: 1, DOUT:  936
+# Time=1580 VIN:1, DIN: 1023, VOUT: 1, DOUT:  824
+# Time=1588 VIN:1, DIN:  865, VOUT: 1, DOUT:  800
+# Time=1596 VIN:0, DIN:  865, VOUT: 1, DOUT:  760
+# Time=1604 VIN:1, DIN: 1023, VOUT: 1, DOUT:  752
+# Time=1612 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Time=1620 VIN:0, DIN: 1023, VOUT: 1, DOUT:  792
+# Time=1628 VIN:0, DIN: 1023, VOUT: 0, DOUT:  800
+# Time=1636 VIN:0, DIN: 1023, VOUT: 0, DOUT:  800
+# Time=1644 VIN:1, DIN:  158, VOUT: 0, DOUT:  800
+# Time=1652 VIN:1, DIN:    0, VOUT: 0, DOUT:  800
+# Time=1660 VIN:1, DIN:  414, VOUT: 1, DOUT:  800
+# Time=1668 VIN:0, DIN:  414, VOUT: 1, DOUT:  904
+# Time=1676 VIN:0, DIN:  414, VOUT: 1, DOUT:  920
+# Time=1684 VIN:0, DIN:  414, VOUT: 0, DOUT:   32
+# Time=1692 VIN:1, DIN: 1023, VOUT: 0, DOUT:   32
+# Time=1700 VIN:0, DIN: 1023, VOUT: 0, DOUT:   32
+# Time=1708 VIN:0, DIN: 1023, VOUT: 1, DOUT:   32
+# Time=1716 VIN:1, DIN:  511, VOUT: 0, DOUT:   56
+# Time=1724 VIN:0, DIN:  511, VOUT: 0, DOUT:   56
+# Time=1732 VIN:0, DIN:  511, VOUT: 1, DOUT:   56
+# Time=1740 VIN:1, DIN: 1023, VOUT: 0, DOUT:  168
+# Time=1748 VIN:1, DIN:  414, VOUT: 0, DOUT:  168
+# Time=1756 VIN:0, DIN:  414, VOUT: 1, DOUT:  168
+# Time=1764 VIN:1, DIN: 1023, VOUT: 1, DOUT:  192
+# Time=1772 VIN:1, DIN:  158, VOUT: 0, DOUT:  232
+# Time=1780 VIN:0, DIN:  158, VOUT: 1, DOUT:  232
+# Time=1788 VIN:1, DIN: 1023, VOUT: 1, DOUT:  240
+# Time=1796 VIN:0, DIN: 1023, VOUT: 0, DOUT:  200
+# Time=1804 VIN:1, DIN:  865, VOUT: 1, DOUT:  200
+# Time=1812 VIN:1, DIN: 1023, VOUT: 0, DOUT:  192
+# Time=1820 VIN:0, DIN: 1023, VOUT: 1, DOUT:  192
+# Time=1828 VIN:1, DIN:  609, VOUT: 1, DOUT:   88
+# Time=1836 VIN:1, DIN: 1023, VOUT: 0, DOUT:   72
+# Time=1844 VIN:1, DIN:  512, VOUT: 1, DOUT:   72
+# Time=1852 VIN:1, DIN: 1023, VOUT: 1, DOUT:  960
+# Time=1860 VIN:0, DIN: 1023, VOUT: 1, DOUT:  936
+# Time=1868 VIN:1, DIN:  609, VOUT: 1, DOUT:  824
+# Time=1876 VIN:1, DIN: 1023, VOUT: 0, DOUT:  800
+# Time=1884 VIN:0, DIN: 1023, VOUT: 1, DOUT:  800
+# Time=1892 VIN:0, DIN: 1023, VOUT: 1, DOUT:  752
+# Time=1900 VIN:0, DIN: 1023, VOUT: 0, DOUT:  744
+# Time=1908 VIN:1, DIN:  865, VOUT: 0, DOUT:  744
+# Time=1916 VIN:1, DIN:    0, VOUT: 0, DOUT:  744
+# Time=1924 VIN:0, DIN:    0, VOUT: 1, DOUT:  744
+# Time=1932 VIN:1, DIN:  158, VOUT: 1, DOUT:  784
+# Time=1940 VIN:0, DIN:  158, VOUT: 0, DOUT:  792
+# Time=1948 VIN:0, DIN:  158, VOUT: 1, DOUT:  792
+# Time=1956 VIN:1, DIN: 1023, VOUT: 0, DOUT:  904
+# Time=1964 VIN:0, DIN: 1023, VOUT: 0, DOUT:  904
+# Time=1972 VIN:1, DIN:  414, VOUT: 1, DOUT:  904
+# Time=1980 VIN:1, DIN:    0, VOUT: 0, DOUT:  920
+# Time=1988 VIN:1, DIN:  511, VOUT: 1, DOUT:  920
+# Time=1996 VIN:0, DIN:  511, VOUT: 1, DOUT:   32
+# Time=2004 VIN:1, DIN:    0, VOUT: 1, DOUT:   56
+# Time=2012 VIN:1, DIN:  414, VOUT: 0, DOUT:  168
+# Time=2020 VIN:1, DIN:    0, VOUT: 1, DOUT:  168
+# Time=2028 VIN:0, DIN:    0, VOUT: 1, DOUT:  192
+# Time=2036 VIN:0, DIN:    0, VOUT: 1, DOUT:  240
+# Time=2044 VIN:1, DIN:  158, VOUT: 0, DOUT:  248
+# Time=2052 VIN:1, DIN: 1023, VOUT: 0, DOUT:  248
+# Time=2060 VIN:0, DIN: 1023, VOUT: 1, DOUT:  248
+# Time=2068 VIN:0, DIN: 1023, VOUT: 1, DOUT:  208
+# Time=2076 VIN:1, DIN:  865, VOUT: 0, DOUT:  200
+# Time=2084 VIN:0, DIN:  865, VOUT: 0, DOUT:  200
+# Time=2092 VIN:1, DIN:    0, VOUT: 1, DOUT:  200
+# Time=2100 VIN:0, DIN:    0, VOUT: 0, DOUT:   88
+# Time=2108 VIN:1, DIN:  609, VOUT: 1, DOUT:   88
+# Time=2116 VIN:0, DIN:  609, VOUT: 0, DOUT:   72
+# Time=2124 VIN:1, DIN:    0, VOUT: 1, DOUT:   72
+# Time=2132 VIN:1, DIN:  512, VOUT: 0, DOUT:  960
+# Time=2140 VIN:1, DIN:    0, VOUT: 1, DOUT:  960
+# Time=2148 VIN:1, DIN:  609, VOUT: 1, DOUT:  936
+# Time=2156 VIN:1, DIN: 1023, VOUT: 1, DOUT:  824
+# Time=2164 VIN:1, DIN:  865, VOUT: 1, DOUT:  800
+# Time=2172 VIN:1, DIN:    0, VOUT: 1, DOUT:  760
+# Time=2180 VIN:0, DIN:    0, VOUT: 1, DOUT:  752
+# Time=2188 VIN:0, DIN:    0, VOUT: 1, DOUT:  792
+# Time=2196 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=2204 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=2212 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=2220 VIN:0, DIN:    0, VOUT: 0, DOUT:  800
+# Time=2228 VIN:1, DIN:  158, VOUT: 0, DOUT:  800
+# Time=2236 VIN:0, DIN:  158, VOUT: 0, DOUT:  800
+# Time=2244 VIN:0, DIN:  158, VOUT: 1, DOUT:  800
+# Time=2252 VIN:0, DIN:  158, VOUT: 0, DOUT:  904
+# Time=2260 VIN:0, DIN:  158, VOUT: 0, DOUT:  904
+# Time=2268 VIN:0, DIN:  158, VOUT: 0, DOUT:  904
+# Time=2276 VIN:1, DIN:    0, VOUT: 0, DOUT:  904
+# Time=2284 VIN:1, DIN:  414, VOUT: 0, DOUT:  904
+# Time=2292 VIN:0, DIN:  414, VOUT: 1, DOUT:  904
+# Time=2300 VIN:0, DIN:  414, VOUT: 1, DOUT:  920
+# Time=2308 VIN:0, DIN:  414, VOUT: 0, DOUT:   32
+# Time=2316 VIN:0, DIN:  414, VOUT: 0, DOUT:   32
+# Time=2324 VIN:1, DIN:    0, VOUT: 0, DOUT:   32
+# Time=2332 VIN:0, DIN:    0, VOUT: 0, DOUT:   32
+# Time=2340 VIN:1, DIN:  511, VOUT: 1, DOUT:   32
+# Time=2348 VIN:0, DIN:  511, VOUT: 0, DOUT:   56
+# Time=2356 VIN:0, DIN:  511, VOUT: 1, DOUT:   56
+# Time=2364 VIN:0, DIN:  511, VOUT: 0, DOUT:  168
+# Time=2372 VIN:1, DIN: 1023, VOUT: 0, DOUT:  168
+# Time=2380 VIN:1, DIN:  414, VOUT: 0, DOUT:  168
+# Time=2388 VIN:1, DIN: 1023, VOUT: 1, DOUT:  168
+# Time=2396 VIN:1, DIN:  158, VOUT: 1, DOUT:  192
+# Time=2404 VIN:0, DIN:  158, VOUT: 1, DOUT:  240
+# Time=2412 VIN:0, DIN:  158, VOUT: 1, DOUT:  248
+# Time=2420 VIN:1, DIN:    0, VOUT: 0, DOUT:  200
+# Time=2428 VIN:0, DIN:    0, VOUT: 0, DOUT:  200
+# Time=2436 VIN:0, DIN:    0, VOUT: 1, DOUT:  200
+# Time=2444 VIN:0, DIN:    0, VOUT: 0, DOUT:  192
+# Time=2452 VIN:1, DIN:  865, VOUT: 0, DOUT:  192
+# Time=2460 VIN:0, DIN:  865, VOUT: 0, DOUT:  192
+# Time=2468 VIN:1, DIN: 1023, VOUT: 1, DOUT:  192
+# Time=2476 VIN:1, DIN:  609, VOUT: 0, DOUT:   88
+# Time=2484 VIN:0, DIN:  609, VOUT: 1, DOUT:   88
+# Time=2492 VIN:0, DIN:  609, VOUT: 1, DOUT:   72
+# Time=2500 VIN:1, DIN: 1023, VOUT: 0, DOUT:  960
+# Time=2508 VIN:1, DIN:  512, VOUT: 0, DOUT:  960
+# Time=2516 VIN:1, DIN: 1023, VOUT: 1, DOUT:  960
+# Time=2524 VIN:0, DIN: 1023, VOUT: 1, DOUT:  936
+# Time=2532 VIN:1, DIN:  609, VOUT: 1, DOUT:  824
+# Time=2540 VIN:0, DIN:  609, VOUT: 0, DOUT:  800
+# Time=2548 VIN:1, DIN:    0, VOUT: 1, DOUT:  800
+# Time=2556 VIN:0, DIN:    0, VOUT: 0, DOUT:  752
+# Time=2564 VIN:0, DIN:    0, VOUT: 1, DOUT:  752
+# Time=2572 VIN:1, DIN:  865, VOUT: 0, DOUT:  744
+# Time=2580 VIN:1, DIN:    0, VOUT: 0, DOUT:  744
+# Time=2588 VIN:1, DIN:  158, VOUT: 1, DOUT:  744
+# Time=2596 VIN:1, DIN: 1023, VOUT: 1, DOUT:  784
+# Time=2604 VIN:1, DIN:  414, VOUT: 1, DOUT:  792
+# Time=2612 VIN:0, DIN:  414, VOUT: 1, DOUT:  904
+# Time=2620 VIN:1, DIN:    0, VOUT: 1, DOUT:  920
+# Time=2628 VIN:0, DIN:    0, VOUT: 0, DOUT:   32
+# Time=2636 VIN:0, DIN:    0, VOUT: 1, DOUT:   32
+# Time=2644 VIN:0, DIN:    0, VOUT: 0, DOUT:   56
+# Time=2652 VIN:0, DIN:    0, VOUT: 0, DOUT:   56
+# Time=2660 VIN:1, DIN:  511, VOUT: 0, DOUT:   56
+# Time=2668 VIN:1, DIN:    0, VOUT: 0, DOUT:   56
+# Time=2676 VIN:1, DIN:  414, VOUT: 1, DOUT:   56
+# Time=2684 VIN:0, DIN:  414, VOUT: 1, DOUT:  168
+# Time=2692 VIN:0, DIN:  414, VOUT: 1, DOUT:  192
+# Time=2700 VIN:0, DIN:  414, VOUT: 0, DOUT:  240
+# Time=2708 VIN:1, DIN:    0, VOUT: 0, DOUT:  240
+# Time=2716 VIN:0, DIN:    0, VOUT: 0, DOUT:  240
+# Time=2724 VIN:0, DIN:    0, VOUT: 1, DOUT:  240
+# Time=2732 VIN:1, DIN:  158, VOUT: 0, DOUT:  248
+# Time=2740 VIN:0, DIN:  158, VOUT: 0, DOUT:  248
+# Time=2748 VIN:0, DIN:  158, VOUT: 1, DOUT:  248
+# Time=2756 VIN:1, DIN: 1023, VOUT: 0, DOUT:  208
+# Time=2764 VIN:1, DIN:  865, VOUT: 0, DOUT:  208
+# Time=2772 VIN:0, DIN:  865, VOUT: 1, DOUT:  208
+# Time=2780 VIN:1, DIN: 1023, VOUT: 1, DOUT:  200
+# Time=2788 VIN:1, DIN:  609, VOUT: 0, DOUT:   88
+# Time=2796 VIN:0, DIN:  609, VOUT: 1, DOUT:   88
+# Time=2804 VIN:1, DIN:    0, VOUT: 1, DOUT:   72
+# Time=2812 VIN:0, DIN:    0, VOUT: 0, DOUT:  960
+# Time=2820 VIN:1, DIN:  512, VOUT: 1, DOUT:  960
+# Time=2828 VIN:1, DIN:    0, VOUT: 0, DOUT:  936
+# Time=2836 VIN:0, DIN:    0, VOUT: 1, DOUT:  936
+# Time=2844 VIN:1, DIN:  609, VOUT: 1, DOUT:  824
+# Time=2852 VIN:1, DIN:    0, VOUT: 0, DOUT:  800
+# Time=2860 VIN:1, DIN:  865, VOUT: 1, DOUT:  800
+# Time=2868 VIN:1, DIN:    0, VOUT: 1, DOUT:  760
+# Time=2876 VIN:0, DIN:    0, VOUT: 1, DOUT:  752
+# Time=2884 VIN:1, DIN:  158, VOUT: 1, DOUT:  792
+# Time=2892 VIN:1, DIN:    0, VOUT: 0, DOUT:  800
+# Time=2900 VIN:0, DIN:    0, VOUT: 1, DOUT:  800
+# Time=2908 VIN:0, DIN:    0, VOUT: 1, DOUT:  904
+# Time=2916 VIN:0, DIN:    0, VOUT: 0, DOUT:  920
+# Time=2924 VIN:1, DIN:  414, VOUT: 0, DOUT:  920
+# Time=2932 VIN:1, DIN: 1023, VOUT: 0, DOUT:  920
+# Time=2940 VIN:0, DIN: 1023, VOUT: 1, DOUT:  920
+# Time=2948 VIN:1, DIN:  511, VOUT: 1, DOUT:   32
+# Time=2956 VIN:0, DIN:  511, VOUT: 0, DOUT:   56
+# Time=2964 VIN:0, DIN:  511, VOUT: 1, DOUT:   56
+# Time=2972 VIN:1, DIN: 1023, VOUT: 0, DOUT:  168
+# Time=2980 VIN:0, DIN: 1023, VOUT: 0, DOUT:  168
+# Time=2988 VIN:1, DIN:  414, VOUT: 1, DOUT:  168
+# Time=2996 VIN:1, DIN:    0, VOUT: 0, DOUT:  192
+# Time=3004 VIN:1, DIN:  158, VOUT: 1, DOUT:  192
+# Time=3012 VIN:0, DIN:  158, VOUT: 1, DOUT:  232
+# Time=3020 VIN:1, DIN:    0, VOUT: 1, DOUT:  240
+# Time=3028 VIN:1, DIN:  865, VOUT: 0, DOUT:  200
+# Time=3036 VIN:1, DIN: 1023, VOUT: 1, DOUT:  200
+# Time=3044 VIN:0, DIN: 1023, VOUT: 1, DOUT:  192
+# Time=3052 VIN:0, DIN: 1023, VOUT: 1, DOUT:   88
+# Time=3060 VIN:1, DIN:  609, VOUT: 0, DOUT:   72
+# Time=3068 VIN:1, DIN:    0, VOUT: 0, DOUT:   72
+# Time=3076 VIN:0, DIN:    0, VOUT: 1, DOUT:   72
+# Time=3084 VIN:0, DIN:    0, VOUT: 1, DOUT:  960
+# Time=3092 VIN:1, DIN:  512, VOUT: 0, DOUT:  936
+# Time=3100 VIN:0, DIN:  512, VOUT: 0, DOUT:  936
+# Time=3108 VIN:1, DIN: 1023, VOUT: 1, DOUT:  936
+# Time=3116 VIN:0, DIN: 1023, VOUT: 0, DOUT:  824
+# Time=3124 VIN:1, DIN:  609, VOUT: 1, DOUT:  824
+# Time=3132 VIN:0, DIN:  609, VOUT: 0, DOUT:  800
+# Time=3140 VIN:1, DIN:    0, VOUT: 1, DOUT:  800
+# Time=3148 VIN:1, DIN:  865, VOUT: 0, DOUT:  760
+# Time=3156 VIN:1, DIN: 1023, VOUT: 1, DOUT:  760
+# Time=3164 VIN:0, DIN: 1023, VOUT: 1, DOUT:  752
+# Time=3172 VIN:0, DIN: 1023, VOUT: 1, DOUT:  784
+# Time=3180 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Time=3188 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Time=3196 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Time=3204 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Time=3212 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Time=3220 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Time=3228 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Time=3236 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Time=3244 VIN:0, DIN: 1023, VOUT: 0, DOUT:  792
+# Ending simulation shortly                3249
+# ** Note: $finish    : ../tb/tb_iir.v(64)
+#    Time: 3249 ns  Iteration: 1  Instance: /tb_iir
+# End time: 18:37:44 on Nov 21,2023, Elapsed time: 0:00:06
+# Errors: 0, Warnings: 508

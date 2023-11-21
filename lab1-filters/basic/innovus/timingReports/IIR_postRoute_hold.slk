@@ -1,0 +1,20 @@
+# Format: clock  timeReq  slackR/slackF  holdR/holdF  instName/pinName   # cycle(s)
+MY_CLK(R)->MY_CLK(R)	0.085    */0.100         */-0.012        VOUT_reg/D    1
+MY_CLK(R)->MY_CLK(R)	0.054    */0.143         */-0.009        U_SN_REG_data_out_reg_0_/D    1
+MY_CLK(R)->MY_CLK(R)	0.054    */0.146         */-0.009        U_SN_REG_data_out_reg_2_/D    1
+MY_CLK(R)->MY_CLK(R)	0.054    */0.147         */-0.009        U_SN_REG_data_out_reg_1_/D    1
+MY_CLK(R)->MY_CLK(R)	0.054    */0.148         */-0.008        U_SN_REG_data_out_reg_3_/D    1
+MY_CLK(R)->MY_CLK(R)	0.053    */0.192         */-0.008        U_SN_REG_data_out_reg_4_/D    1
+MY_CLK(R)->MY_CLK(R)	0.069    0.207/*         -0.024/*        U_SN_REG_data_out_reg_7_/D    1
+MY_CLK(R)->MY_CLK(R)	0.069    0.210/*         -0.024/*        U_SN_REG_data_out_reg_8_/D    1
+MY_CLK(R)->MY_CLK(R)	0.070    0.210/*         -0.025/*        U_SN_REG_data_out_reg_5_/D    1
+MY_CLK(R)->MY_CLK(R)	0.069    0.213/*         -0.024/*        U_SN_REG_data_out_reg_6_/D    1
+MY_CLK(R)->MY_CLK(R)	-0.014   0.215/*         0.006/*         clk_gate_U_SN_REG_data_out_reg/latch/E    1
+MY_CLK(R)->MY_CLK(R)	0.069    0.217/*         -0.023/*        U_SN_REG_data_out_reg_10_/D    1
+MY_CLK(R)->MY_CLK(R)	0.069    0.218/*         -0.024/*        U_SN_REG_data_out_reg_9_/D    1
+MY_CLK(R)->MY_CLK(R)	0.091    0.219/*         -0.017/*        OUT_REG_data_out_reg_9_/D    1
+MY_CLK(R)->MY_CLK(R)	0.091    0.294/*         -0.018/*        OUT_REG_data_out_reg_8_/D    1
+MY_CLK(R)->MY_CLK(R)	0.092    0.315/*         -0.018/*        OUT_REG_data_out_reg_7_/D    1
+MY_CLK(R)->MY_CLK(R)	0.091    0.330/*         -0.018/*        OUT_REG_data_out_reg_6_/D    1
+MY_CLK(R)->MY_CLK(R)	0.085    */0.344         */-0.012        OUT_REG_data_out_reg_4_/D    1
+MY_CLK(R)->MY_CLK(R)	0.091    0.361/*         -0.018/*        OUT_REG_data_out_reg_5_/D    1

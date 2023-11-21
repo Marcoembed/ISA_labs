@@ -1,0 +1,97 @@
+*----------------------------------------------------------------------------------------
+*	Innovus 20.11-s130_1 (64bit) 08/05/2020 15:53 (Linux 2.6.32-431.11.2.el6.x86_64)
+*	
+*
+* 	Date & Time:	2023-Nov-20 16:23:59 (2023-Nov-20 15:23:59 GMT)
+*
+*----------------------------------------------------------------------------------------
+*
+*	Design: iir
+*
+*	Liberty Libraries used: 
+*	        MyAnView: /home/isa01_2023_2024/renato/ISA_labs/LAB1/adv/innovus/IIR.dat/libs/mmmc/NangateOpenCellLibrary_typical_ecsm_nowlm.lib
+*
+*	Power Domain used: 
+*              Rail:        VDD      Voltage:        1.1 
+*
+*       Power View : MyAnView
+*
+*       User-Defined Activity : N.A.
+*
+*       Activity File: N.A.
+*
+*       Hierarchical Global Activity: N.A.
+*
+*       Global Activity: N.A.
+*
+*       Sequential Element Activity: N.A.
+*
+*       Primary Input Activity: 0.200000
+*
+*       Default icg ratio: N.A.
+*
+*       Global Comb ClockGate Ratio: N.A.
+*
+*	Power Units = 1mW
+*
+*	Time Units = 1e-09 secs 
+*
+*       report_power -outfile report_file -sort total
+*
+-----------------------------------------------------------------------------------------
+
+
+Total Power 
+-----------------------------------------------------------------------------------------
+Total Internal Power:        0.37136393 	   55.7046%
+Total Switching Power:       0.25003069 	   37.5046%
+Total Leakage Power:         0.04527231 	    6.7908%
+Total Power:                 0.66666694 
+-----------------------------------------------------------------------------------------
+
+
+Group                           Internal   Switching     Leakage       Total  Percentage 
+                                Power      Power         Power         Power  (%)        
+-----------------------------------------------------------------------------------------
+Sequential                        0.1113      0.0353      0.0105      0.1571       23.56 
+Macro                                  0           0           0           0           0 
+IO                                     0           0           0           0           0 
+Combinational                     0.2563      0.1951     0.03462      0.4861       72.91 
+Clock (Combinational)           0.001322     0.01275   3.056e-05     0.01411       2.116 
+Clock (Sequential)              0.002406    0.006868   0.0001234    0.009398        1.41 
+-----------------------------------------------------------------------------------------
+Total                             0.3714        0.25     0.04527      0.6667         100 
+-----------------------------------------------------------------------------------------
+
+
+Rail                  Voltage   Internal   Switching     Leakage       Total  Percentage 
+                                Power      Power         Power         Power  (%)        
+-----------------------------------------------------------------------------------------
+VDD                       1.1     0.3714        0.25     0.04527      0.6667         100 
+
+
+Clock                           Internal   Switching     Leakage       Total  Percentage 
+                                Power      Power         Power         Power  (%)        
+-----------------------------------------------------------------------------------------
+MY_CLK                          0.003729     0.01962   0.0001539     0.02351       3.526 
+-----------------------------------------------------------------------------------------
+Total (excluding duplicates)    0.003729     0.01962   0.0001539     0.02351       3.526 
+-----------------------------------------------------------------------------------------
+Clock: MY_CLK
+Clock Period: 0.008000 usec 
+Clock Toggle Rate:   250.0000 Mhz 
+Clock Static Probability:  0.5000
+
+
+
+-----------------------------------------------------------------------------------------
+*	Power Distribution Summary: 
+*                Highest Average Power:       CTS_ccl_a_buf_00003 (CLKBUF_X3):          0.01411 
+*                Highest Leakage Power: clk_gate_SW6_REG_data_out_reg/latch (CLKGATETST_X4):        0.0001234 
+*          Total Cap:      6.48071e-12 F
+*          Total instances in design:  1008
+*          Total instances in design with no power:     0
+*          Total instances in design with no activity:     0
+*          Total Fillers and Decap:     0
+-----------------------------------------------------------------------------------------
+

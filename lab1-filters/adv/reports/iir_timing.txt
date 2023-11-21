@@ -1,0 +1,71 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : iir
+Version: S-2021.06-SP4
+Date   : Tue Nov 21 18:26:31 2023
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: A1_2_IN_REG_data_out_reg_1_
+              (rising edge-triggered flip-flop clocked by MY_CLK)
+  Endpoint: SW3_REG_data_out_reg_10_
+            (rising edge-triggered flip-flop clocked by MY_CLK)
+  Path Group: MY_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  iir                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MY_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  A1_2_IN_REG_data_out_reg_1_/CK (DFFR_X1)                0.00       0.00 r
+  A1_2_IN_REG_data_out_reg_1_/Q (DFFR_X1)                 0.18       0.18 r
+  mult_284/a[1] (iir_DW_mult_tc_1)                        0.00       0.18 r
+  mult_284/U250/ZN (XNOR2_X1)                             0.13       0.31 r
+  mult_284/U361/ZN (NAND2_X1)                             0.10       0.41 f
+  mult_284/U273/ZN (OAI22_X1)                             0.08       0.49 r
+  mult_284/U60/S (FA_X1)                                  0.12       0.61 f
+  mult_284/U355/ZN (AOI222_X1)                            0.13       0.74 r
+  mult_284/U265/ZN (OAI222_X1)                            0.07       0.80 f
+  mult_284/U264/ZN (AOI222_X1)                            0.11       0.92 r
+  mult_284/U259/ZN (OAI222_X1)                            0.07       0.98 f
+  mult_284/U258/ZN (AOI222_X1)                            0.11       1.10 r
+  mult_284/U252/ZN (OAI222_X1)                            0.07       1.16 f
+  mult_284/U251/ZN (AOI222_X1)                            0.11       1.28 r
+  mult_284/U255/ZN (OAI222_X1)                            0.07       1.34 f
+  mult_284/U9/CO (FA_X1)                                  0.10       1.44 f
+  mult_284/U8/CO (FA_X1)                                  0.09       1.53 f
+  mult_284/U7/CO (FA_X1)                                  0.09       1.62 f
+  mult_284/U6/CO (FA_X1)                                  0.09       1.71 f
+  mult_284/U5/CO (FA_X1)                                  0.09       1.80 f
+  mult_284/U4/CO (FA_X1)                                  0.09       1.89 f
+  mult_284/U3/CO (FA_X1)                                  0.09       1.98 f
+  mult_284/U282/Z (XOR2_X1)                               0.07       2.05 f
+  mult_284/U268/ZN (XNOR2_X1)                             0.06       2.11 f
+  mult_284/product[19] (iir_DW_mult_tc_1)                 0.00       2.11 f
+  SW3_REG_data_out_reg_10_/D (DFFR_X1)                    0.01       2.11 f
+  data arrival time                                                  2.11
+
+  clock MY_CLK (rise edge)                                8.00       8.00
+  clock network delay (ideal)                             0.00       8.00
+  clock uncertainty                                      -0.07       7.93
+  SW3_REG_data_out_reg_10_/CK (DFFR_X1)                   0.00       7.93 r
+  library setup time                                     -0.04       7.89
+  data required time                                                 7.89
+  --------------------------------------------------------------------------
+  data required time                                                 7.89
+  data arrival time                                                 -2.11
+  --------------------------------------------------------------------------
+  slack (MET)                                                        5.77
+
+
+1

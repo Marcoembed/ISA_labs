@@ -1,0 +1,100 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : IIR
+Version: S-2021.06-SP4
+Date   : Tue Nov 21 18:43:11 2023
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: A1_IN_REG_data_out_reg_1_
+              (rising edge-triggered flip-flop clocked by MY_CLK)
+  Endpoint: OUT_REG_data_out_reg_9_
+            (rising edge-triggered flip-flop clocked by MY_CLK)
+  Path Group: MY_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  IIR                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MY_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  A1_IN_REG_data_out_reg_1_/CK (DFFR_X1)                  0.00       0.00 r
+  A1_IN_REG_data_out_reg_1_/Q (DFFR_X1)                   0.18       0.18 r
+  mult_218/a[1] (IIR_DW_mult_tc_1)                        0.00       0.18 r
+  mult_218/U250/ZN (XNOR2_X1)                             0.13       0.31 r
+  mult_218/U359/ZN (NAND2_X1)                             0.10       0.41 f
+  mult_218/U273/ZN (OAI22_X1)                             0.08       0.49 r
+  mult_218/U60/S (FA_X1)                                  0.12       0.61 f
+  mult_218/U270/ZN (AOI222_X1)                            0.13       0.74 r
+  mult_218/U267/ZN (OAI222_X1)                            0.07       0.80 f
+  mult_218/U258/ZN (AOI222_X1)                            0.11       0.92 r
+  mult_218/U255/ZN (OAI222_X1)                            0.07       0.98 f
+  mult_218/U262/ZN (AOI222_X1)                            0.10       1.08 r
+  mult_218/U261/ZN (INV_X1)                               0.03       1.11 f
+  mult_218/U260/ZN (AOI222_X1)                            0.09       1.20 r
+  mult_218/U259/ZN (INV_X1)                               0.03       1.23 f
+  mult_218/U254/ZN (AOI222_X1)                            0.09       1.32 r
+  mult_218/U253/ZN (INV_X1)                               0.03       1.35 f
+  mult_218/U252/ZN (AOI222_X1)                            0.09       1.44 r
+  mult_218/U251/ZN (INV_X1)                               0.03       1.47 f
+  mult_218/U264/ZN (AOI222_X1)                            0.09       1.56 r
+  mult_218/U263/ZN (INV_X1)                               0.03       1.59 f
+  mult_218/U8/CO (FA_X1)                                  0.09       1.68 f
+  mult_218/U7/CO (FA_X1)                                  0.09       1.77 f
+  mult_218/U6/S (FA_X1)                                   0.11       1.88 f
+  mult_218/product[15] (IIR_DW_mult_tc_1)                 0.00       1.88 f
+  add_223/B[6] (IIR_DW01_add_1)                           0.00       1.88 f
+  add_223/U1_6/S (FA_X1)                                  0.18       2.06 r
+  add_223/SUM[6] (IIR_DW01_add_1)                         0.00       2.06 r
+  mult_233/b[6] (IIR_DW_mult_tc_2)                        0.00       2.06 r
+  mult_233/U318/Z (XOR2_X1)                               0.09       2.15 r
+  mult_233/U269/ZN (OAI22_X1)                             0.04       2.19 f
+  mult_233/U56/S (FA_X1)                                  0.14       2.33 r
+  mult_233/U55/S (FA_X1)                                  0.11       2.45 f
+  mult_233/U255/ZN (AOI222_X1)                            0.13       2.57 r
+  mult_233/U252/ZN (OAI222_X1)                            0.07       2.64 f
+  mult_233/U259/ZN (AOI222_X1)                            0.10       2.74 r
+  mult_233/U258/ZN (INV_X1)                               0.03       2.77 f
+  mult_233/U257/ZN (AOI222_X1)                            0.09       2.86 r
+  mult_233/U256/ZN (INV_X1)                               0.03       2.89 f
+  mult_233/U251/ZN (AOI222_X1)                            0.09       2.98 r
+  mult_233/U250/ZN (INV_X1)                               0.03       3.01 f
+  mult_233/U249/ZN (AOI222_X1)                            0.09       3.10 r
+  mult_233/U248/ZN (INV_X1)                               0.03       3.13 f
+  mult_233/U261/ZN (AOI222_X1)                            0.09       3.22 r
+  mult_233/U260/ZN (INV_X1)                               0.03       3.25 f
+  mult_233/U7/CO (FA_X1)                                  0.09       3.34 f
+  mult_233/U6/CO (FA_X1)                                  0.09       3.43 f
+  mult_233/U5/CO (FA_X1)                                  0.09       3.52 f
+  mult_233/U4/CO (FA_X1)                                  0.09       3.61 f
+  mult_233/U3/CO (FA_X1)                                  0.09       3.70 f
+  mult_233/U281/Z (XOR2_X1)                               0.08       3.78 f
+  mult_233/U266/ZN (XNOR2_X1)                             0.06       3.84 f
+  mult_233/product[18] (IIR_DW_mult_tc_2)                 0.00       3.84 f
+  add_237_U1_9/S (FA_X1)                                  0.14       3.98 r
+  OUT_REG_data_out_reg_9_/D (DFFR_X1)                     0.01       3.98 r
+  data arrival time                                                  3.98
+
+  clock MY_CLK (rise edge)                               12.00      12.00
+  clock network delay (ideal)                             0.00      12.00
+  clock uncertainty                                      -0.07      11.93
+  OUT_REG_data_out_reg_9_/CK (DFFR_X1)                    0.00      11.93 r
+  library setup time                                     -0.03      11.90
+  data required time                                                11.90
+  --------------------------------------------------------------------------
+  data required time                                                11.90
+  data arrival time                                                 -3.98
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.91
+
+
+1

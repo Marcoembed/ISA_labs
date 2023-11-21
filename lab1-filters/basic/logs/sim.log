@@ -1,0 +1,94 @@
+You can run vsim
+QuestaSim-64 vcom 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 18:42:03 on Nov 21,2023
+vcom -work work ../src/iir_pkg.vhd 
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Compiling package iir_pkg
+-- Compiling package body iir_pkg
+-- Loading package iir_pkg
+End time: 18:42:04 on Nov 21,2023, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+QuestaSim-64 vcom 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 18:42:04 on Nov 21,2023
+vcom -work work ../src/reg.vhd 
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity REG
+-- Compiling architecture BEHAV of REG
+-- Compiling configuration CFG_REG_BEHAV
+-- Loading entity REG
+-- Loading architecture BEHAV of REG
+End time: 18:42:05 on Nov 21,2023, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+QuestaSim-64 vcom 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 18:42:05 on Nov 21,2023
+vcom -work work ../tb/clk_gen.vhd 
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity clk_gen
+-- Compiling architecture beh of clk_gen
+End time: 18:42:05 on Nov 21,2023, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+QuestaSim-64 vcom 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 18:42:05 on Nov 21,2023
+vcom -work work ../src/iir.vhd 
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Loading package iir_pkg
+-- Compiling entity IIR
+-- Compiling architecture BEHAV of IIR
+-- Compiling configuration CFG_IIR_BEHAV
+-- Loading entity IIR
+-- Loading architecture BEHAV of IIR
+-- Loading entity REG
+-- Loading configuration cfg_reg_behav
+End time: 18:42:06 on Nov 21,2023, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+QuestaSim-64 vcom 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 18:42:06 on Nov 21,2023
+vcom -work work ../tb/data_maker.vhd 
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Loading package std_logic_textio
+-- Compiling entity data_maker
+-- Compiling architecture beh of data_maker
+End time: 18:42:06 on Nov 21,2023, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+QuestaSim-64 vcom 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 18:42:06 on Nov 21,2023
+vcom -work work ../tb/data_sink.vhd 
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Loading package std_logic_textio
+-- Compiling entity data_sink
+-- Compiling architecture beh of data_sink
+End time: 18:42:07 on Nov 21,2023, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+QuestaSim-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 18:42:07 on Nov 21,2023
+vlog -work work ../tb/tb_iir.v 
+-- Compiling module tb_iir
+
+Top level modules:
+	tb_iir
+End time: 18:42:07 on Nov 21,2023, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+/home/isa01_2023_2024/matteo/lab1-filters/basic/bash_scripts

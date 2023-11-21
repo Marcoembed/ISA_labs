@@ -1,0 +1,365 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2020 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v20.11-s130_1, built Wed Aug 5 15:53:11 PDT 2020
+Options:	
+Date:		Mon Nov 20 14:50:43 2023
+Host:		isaserver (x86_64 w/Linux 3.10.0-1160.81.1.el7.x86_64) (6cores*6cpus*QEMU Virtual CPU version 2.5+ 16384KB)
+OS:		CentOS Linux release 7.9.2009 (Core)
+
+License:
+		invs	Innovus Implementation System	20.1	checkout succeeded
+		8 CPU jobs allowed with the current license(s). Use setMultiCpuUsage to set your required CPU count.
+Change the soft stacksize limit to 0.2%RAM (64 mbytes). Set global soft_stack_size_limit to change the value.
+
+**INFO:  MMMC transition support version v31-84 
+
+<CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+<CMD> suppressMessage ENCEXT-2799
+<CMD> win
+<CMD> encMessage warning 0
+Suppress "**WARN ..." messages.
+<CMD> encMessage debug 0
+<CMD> encMessage info 0
+my_rc
+Loading view definition file from /home/isa01_2023_2024/renato/ISA_labs/LAB1/basic/innovus/IIR.dat/viewDefinition.tcl
+**ERROR: (TECHLIB-1346):	The attribute 'index_1' defined in group 'ecsm_waveform' on line 393863 is not monotonically increasing for values '0.000041' to '0.000037'. This may lead to undesirable analysis results. The attribute will be ignored. (File /eda/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+**ERROR: (TECHLIB-1256):	The ecsm_waveform group 1 is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for ecsm_waveform group 1 to find the details of the issues in this group. (File /eda/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib, Line 393862)
+**ERROR: (TECHLIB-420):	Number of ecsm_waveforms in the 'rise_transition' table on pin ZN of cell OAI222_X2 does not match the number of transition table axis points specified in the template 'Timing_7_7'. Ignoring waveform data. (File /eda/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib, Line 393848)
+**ERROR: (TECHLIB-1346):	The attribute 'index_1' defined in group 'ecsm_waveform' on line 395723 is not monotonically increasing for values '0.000041' to '0.000037'. This may lead to undesirable analysis results. The attribute will be ignored. (File /eda/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+**ERROR: (TECHLIB-1256):	The ecsm_waveform group 1 is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for ecsm_waveform group 1 to find the details of the issues in this group. (File /eda/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib, Line 395722)
+**ERROR: (TECHLIB-420):	Number of ecsm_waveforms in the 'rise_transition' table on pin ZN of cell OAI222_X2 does not match the number of transition table axis points specified in the template 'Timing_7_7'. Ignoring waveform data. (File /eda/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib, Line 395708)
+*** End library_loading (cpu=0.04min, real=0.08min, mem=11.0M, fe_cpu=0.74min, fe_real=3.57min, fe_mem=782.8M) ***
+*** Netlist is unique.
+Loading preference file /home/isa01_2023_2024/renato/ISA_labs/LAB1/basic/innovus/IIR.dat/gui.pref.tcl ...
+**WARN: (IMPTCM-77):	Option "-drouteStartIteration" for command setNanoRouteMode is obsolete and will be removed in a future release. The obsolete option still works in this release but to avoid this warning and to ensure compatibility with future releases, remove the obsolete option from your script.
+Loading place ...
+'set_default_switching_activity' finished successfully.
+my_delay
+**WARN: (IMPESI-3505):	setDelayCalMode -eng_copyNetPropToNewNet true (default=false) will be obsoleted along with its sgs2set equivalent.  This parameter will continue to be supported in the current release, but will be removed in the next major release of the software.
+**WARN: (IMPCTE-107):	The following globals have been obsoleted since version 20.11-s130_1. They will be removed in the next release. 
+timing_enable_default_delay_arc
+<CMD> gui_select -rect {-3.68900 10.91600 1.21400 13.41550}
+<CMD> setDrawView fplan
+<CMD> setDrawView place
+Starting snapshot creation...
+<CMD> getDrawView
+<CMD> setDrawView fplan
+<CMD> win
+<CMD> dumpToGIF /ss_snapsht1.fplan.gif
+Starting snapshot creation...
+<CMD> getDrawView
+<CMD> win
+<CMD> dumpToGIF /ss_snapsht1.fplan.gif
+<CMD> setDrawView place
+Starting snapshot creation...
+<CMD> getDrawView
+<CMD> setDrawView fplan
+<CMD> win
+<CMD> dumpToGIF /ss_snapsht1.fplan.gif
+<CMD> setDrawView place
+<CMD> setEditMode -snap false
+<CMD> gui_select -rect {-2.24700 63.40750 65.62700 -2.15900}
+**WARN: (IMPWIN-1481):	You have selected more than 10000 wires/vias, we will temporarily disable the function "Hilite Net When Selecting a Wire". 
+<CMD> deselectAll
+<CMD> setEditMode -snap true
+Starting snapshot creation...
+<CMD> getDrawView
+<CMD> setDrawView fplan
+<CMD> win
+<CMD> dumpToGIF snap/ss_snapsht1.fplan.gif
+<CMD> getDrawView
+<CMD> setDrawView amoeba
+<CMD> win
+<CMD> dumpToGIF snap/ss_snapsht1.amoeba.gif
+<CMD> getDrawView
+<CMD> setDrawView place
+<CMD> win
+<CMD> dumpToGIF snap/ss_snapsht1.place.gif
+Completed snapshot creation (cpu = 0:0:1, real = 0:0:2, mem = 1118.62M, memory increment = 11.66M)
+Saving snapshot for fplan view to ss_snapsht1.fplan.gif
+Saving snapshot for amoeba view to ss_snapsht1.amoeba.gif
+Saving snapshot for place view to ss_snapsht1.place.gif
+my_rc
+<CMD> reset_parasitics
+Performing RC Extraction ...
+<CMD> extractRC
+**WARN: (IMPEXT-3518):	The lower process node is set (using command 'setDesignMode') but the technology file for TQuantus extraction not specified. Therefore, going for postRoute (effortLevel low) extraction instead of recommended extractor 'TQuantus' for lower nodes. Use command 'set_analysis_view/update_rc_corner' to specify the technology file for TQuantus extraction to take place.
+Extraction called for design 'IIR' of instances=1933 and nets=964 using extraction engine 'postRoute' at effort level 'low' .
+PostRoute (effortLevel low) RC Extraction called for design IIR.
+RC Extraction called in multi-corner(1) mode.
+Process corner(s) are loaded.
+ Corner: my_rc
+extractDetailRC Option : -outfile /tmp/innovus_temp_14899_isaserver_isa01_2023_2024_GruTe2/IIR_14899_vHs2p3.rcdb.d  -extended
+RC Mode: PostRoute -effortLevel low [Extended CapTable, RC Table Resistances]
+      RC Corner Indexes            0   
+Capacitance Scaling Factor   : 1.00000 
+Coupling Cap. Scaling Factor : 1.00000 
+Resistance Scaling Factor    : 1.00000 
+Clock Cap. Scaling Factor    : 1.00000 
+Clock Res. Scaling Factor    : 1.00000 
+Shrink Factor                : 1.00000
+Initializing multi-corner capacitance tables ... 
+Initializing multi-corner resistance tables ...
+Checking LVS Completed (CPU Time= 0:00:00.0  MEM= 1115.2M)
+Extracted 10.0182% (CPU Time= 0:00:00.3  MEM= 1179.1M)
+Extracted 20.0224% (CPU Time= 0:00:00.4  MEM= 1179.1M)
+Extracted 30.0266% (CPU Time= 0:00:00.4  MEM= 1179.1M)
+Extracted 40.0168% (CPU Time= 0:00:00.4  MEM= 1179.1M)
+Extracted 50.021% (CPU Time= 0:00:00.4  MEM= 1180.1M)
+Extracted 60.0252% (CPU Time= 0:00:00.4  MEM= 1180.1M)
+Extracted 70.0154% (CPU Time= 0:00:00.4  MEM= 1180.1M)
+Extracted 80.0196% (CPU Time= 0:00:00.4  MEM= 1180.1M)
+Extracted 90.0238% (CPU Time= 0:00:00.5  MEM= 1180.1M)
+Extracted 100% (CPU Time= 0:00:00.5  MEM= 1180.1M)
+Number of Extracted Resistors     : 11950
+Number of Extracted Ground Cap.   : 12837
+Number of Extracted Coupling Cap. : 26654
+Filtering XCap in 'relativeAndCoupling' mode using values coupling_c_threshold=0.1fF, relative_c_threshold=1, and total_c_threshold=0fF.
+ Corner: my_rc
+Checking LVS Completed (CPU Time= 0:00:00.0  MEM= 1148.1M)
+PostRoute (effortLevel low) RC Extraction DONE (CPU Time: 0:00:02.2  Real Time: 0:00:08.0  MEM: 1148.105M)
+<CMD> set_power_analysis_mode -reset
+<CMD> set_power_analysis_mode -method static -corner max -create_binary_db true -write_static_currents true -honor_negative_energy true -ignore_control_signals true
+<CMD> set_power_output_dir -reset
+<CMD> set_power_output_dir ./
+<CMD> set_default_switching_activity -reset
+<CMD> set_default_switching_activity -input_activity 0.2 -period 10.0
+** INFO:  (VOLTUS_POWR-3229): Using user defined default frequency 100MHz for power calculation.
+
+'set_default_switching_activity' finished successfully.
+<CMD> read_activity_file -reset
+<CMD> read_activity_file -format VCD -scope /tb_iir/UUT -start {} -end {} -block {} ../vcd/design.vcd
+
+Power Net Detected:
+        Voltage	    Name
+             0V	    VSS
+           1.1V	    VDD
+#################################################################################
+# Design Stage: PostRoute
+# Design Name: IIR
+# Design Mode: 45nm
+# Analysis Mode: MMMC OCV 
+# Parasitics Mode: SPEF/RCDB 
+# Signoff Settings: SI On 
+#################################################################################
+             0V	    VSS
+           1.1V	    VDD
+MY_CLK(83.3333MHz) Parsing VCD file ../vcd/design.vcd
+
+Starting Reading VCD variables
+2023-Nov-20 15:12:30 (2023-Nov-20 14:12:30 GMT)
+2023-Nov-20 15:12:30 (2023-Nov-20 14:12:30 GMT): 10%
+
+Finished Reading VCD variables
+2023-Nov-20 15:12:30 (2023-Nov-20 14:12:30 GMT)
+   
+The vcd command required:
+   		0.02 user, 0.00 system, and 0.10 real seconds
+
+   Total number of value changes: 44248.
+
+   Total simulation time: 4.872e-06s.
+
+   With this vcd command,  9997 value changes and 4.872e-06 second
+simulation time were counted for power consumption calculation.
+
+  Filename (activity)                    : ../vcd/design.vcd
+  Names in file that matched to design   : 145/149
+  Annotation coverage for this file
+   (Unique nets matched/Total nets)       : 141/903 = 15.6146%
+
+  4 nets were found in the VCD file(s) but were not in
+  the design.  These nets are not reported because
+  'set_power_analysis_mode' -report_missing_nets' is set to false
+(default).
+
+  Total annotation coverage for all files of type VCD: 141/903 = 15.6146%
+  Percent of VCD annotated nets with zero toggles: 45/903 = 4.98339%
+
+'read_activity_file' finished successfully.
+<CMD> set_power -reset
+<CMD> set_powerup_analysis -reset
+<CMD> set_dynamic_power_simulation -reset
+<CMD> report_power -rail_analysis_format VS -outfile .//IIR.rpt
+Using Power View: MyAnView.
+Starting SI iteration 1 using Infinite Timing Windows
+#################################################################################
+# Design Stage: PostRoute
+# Design Name: IIR
+# Design Mode: 45nm
+# Analysis Mode: MMMC OCV 
+# Parasitics Mode: SPEF/RCDB 
+# Signoff Settings: SI On 
+#################################################################################
+AAE_INFO: 1 threads acquired from CTE.
+Start delay calculation (fullDC) (1 T). (MEM=1148.11)
+Initializing multi-corner capacitance tables ... 
+Initializing multi-corner resistance tables ...
+Total number of fetched objects 965
+AAE_INFO-618: Total number of nets in the design is 964,  100.0 percent of the nets selected for SI analysis
+End delay calculation. (MEM=1164.32 CPU=0:00:01.0 REAL=0:00:04.0)
+End delay calculation (fullDC). (MEM=1137.24 CPU=0:00:01.6 REAL=0:00:06.0)
+Loading CTE timing window with TwFlowType 0...(CPU = 0:00:00.0, REAL = 0:00:00.0, MEM = 1137.2M)
+Add other clocks and setupCteToAAEClockMapping during iter 1
+Loading CTE timing window is completed (CPU = 0:00:00.0, REAL = 0:00:01.0, MEM = 1137.2M)
+Starting SI iteration 2
+Start delay calculation (fullDC) (1 T). (MEM=1078.36)
+Glitch Analysis: View MyAnView -- Total Number of Nets Skipped = 0. 
+Glitch Analysis: View MyAnView -- Total Number of Nets Analyzed = 965. 
+Total number of fetched objects 965
+AAE_INFO-618: Total number of nets in the design is 964,  0.3 percent of the nets selected for SI analysis
+End delay calculation. (MEM=1119.5 CPU=0:00:00.1 REAL=0:00:00.0)
+End delay calculation (fullDC). (MEM=1119.5 CPU=0:00:00.1 REAL=0:00:00.0)
+
+Begin Power Analysis
+
+             0V	    VSS
+           1.1V	    VDD
+Begin Processing Timing Library for Power Calculation
+
+Begin Processing Timing Library for Power Calculation
+
+
+
+Begin Processing Power Net/Grid for Power Calculation
+
+Ended Processing Power Net/Grid for Power Calculation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=878.00MB/2261.38MB/901.93MB)
+
+Begin Processing Timing Window Data for Power Calculation
+
+Ended Processing Timing Window Data for Power Calculation: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=878.02MB/2261.38MB/901.93MB)
+
+Begin Processing User Attributes
+
+Ended Processing User Attributes: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=878.04MB/2261.38MB/901.93MB)
+
+Begin Processing Signal Activity
+
+
+Starting Levelizing
+2023-Nov-20 15:12:38 (2023-Nov-20 14:12:38 GMT)
+2023-Nov-20 15:12:38 (2023-Nov-20 14:12:38 GMT): 10%
+2023-Nov-20 15:12:38 (2023-Nov-20 14:12:38 GMT): 20%
+2023-Nov-20 15:12:38 (2023-Nov-20 14:12:38 GMT): 30%
+2023-Nov-20 15:12:38 (2023-Nov-20 14:12:38 GMT): 40%
+2023-Nov-20 15:12:38 (2023-Nov-20 14:12:38 GMT): 50%
+2023-Nov-20 15:12:38 (2023-Nov-20 14:12:38 GMT): 60%
+2023-Nov-20 15:12:38 (2023-Nov-20 14:12:38 GMT): 70%
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 80%
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 90%
+
+Finished Levelizing
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT)
+
+Starting Activity Propagation
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT)
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 10%
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 20%
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 30%
+
+Finished Activity Propagation
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT)
+
+Activity annotation summary:
+        Primary Inputs : 43/43 = 100%
+          Flop outputs : 60/60 = 100%
+  Memory/Macro outputs : 0/0 = 0%
+      Tristate outputs : 0/0 = 0%
+            Total Nets : 141/903 = 15.6146%
+
+Ended Processing Signal Activity: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=878.26MB/2261.38MB/901.93MB)
+
+Begin Power Computation
+
+      ----------------------------------------------------------
+      # of cell(s) missing both power/leakage table: 0
+      # of cell(s) missing power table: 0
+      # of cell(s) missing leakage table: 0
+      # of MSMV cell(s) missing power_level: 0
+      ----------------------------------------------------------
+
+
+
+Starting Calculating power
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT)
+ ... Calculating switching power
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 10%
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 20%
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 30%
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 40%
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 50%
+ ... Calculating internal and leakage power
+2023-Nov-20 15:12:39 (2023-Nov-20 14:12:39 GMT): 60%
+2023-Nov-20 15:12:40 (2023-Nov-20 14:12:40 GMT): 70%
+2023-Nov-20 15:12:40 (2023-Nov-20 14:12:40 GMT): 80%
+2023-Nov-20 15:12:40 (2023-Nov-20 14:12:40 GMT): 90%
+
+Finished Calculating power
+2023-Nov-20 15:12:40 (2023-Nov-20 14:12:40 GMT)
+Ended Power Computation: (cpu=0:00:00, real=0:00:01, mem(process/total/peak)=878.75MB/2261.38MB/901.93MB)
+
+Begin Processing User Attributes
+
+Ended Processing User Attributes: (cpu=0:00:00, real=0:00:00, mem(process/total/peak)=878.75MB/2261.38MB/901.93MB)
+
+Ended Power Analysis: (cpu=0:00:00, real=0:00:01, mem(process/total/peak)=878.82MB/2261.38MB/901.93MB)
+
+Begin Boundary Leakage Calculation
+Ended Boundary Leakage Calculation: (cpu=0:00:00, real=0:00:00,
+mem(process/total/peak)=878.83MB/2261.38MB/901.93MB)
+Begin Static Power Report Generation
+*
+
+
+
+Total Power
+-----------------------------------------------------------------------------------------
+Total Internal Power:        0.09665117 	   51.4369%
+Total Switching Power:       0.05971024 	   31.7773%
+Total Leakage Power:         0.03154091 	   16.7858%
+Total Power:                 0.18790233
+-----------------------------------------------------------------------------------------
+Ended Static Power Report Generation: (cpu=0:00:00, real=0:00:00,
+mem(process/total/peak)=879.37MB/2261.38MB/901.93MB)
+
+Begin Creating Binary Database
+Ended Creating Binary Database: (cpu=0:00:01, real=0:00:06,
+mem(process/total/peak)=1393.61MB/3012.80MB/1394.00MB)
+
+Output file is .//IIR.rpt.
+<CMD> report_power -outfile report_power -sort { total }
+Using Power View: MyAnView.
+Begin Boundary Leakage Calculation
+Ended Boundary Leakage Calculation: (cpu=0:00:00, real=0:00:00,
+mem(process/total/peak)=1400.73MB/3014.19MB/1400.73MB)
+Begin Static Power Report Generation
+*
+
+
+
+Total Power
+-----------------------------------------------------------------------------------------
+Total Internal Power:        0.09665117 	   51.4369%
+Total Switching Power:       0.05971024 	   31.7773%
+Total Leakage Power:         0.03154091 	   16.7858%
+Total Power:                 0.18790233
+-----------------------------------------------------------------------------------------
+Ended Static Power Report Generation: (cpu=0:00:00, real=0:00:00,
+mem(process/total/peak)=1400.89MB/3014.19MB/1400.90MB)
+
+
+Output file is .//report_power.
+
+--------------------------------------------------------------------------------
+Exiting Innovus on Mon Nov 20 15:20:01 2023
+  Total CPU time:     0:03:11
+  Total real time:    0:29:23
+  Peak memory (main): 1401.04MB
+
+
+*** Memory Usage v#2 (Current mem = 1870.926M, initial mem = 272.285M) ***
+*** Message Summary: 5 warning(s), 6 error(s)
+
+--- Ending "Innovus" (totcpu=0:03:08, real=0:29:18, mem=1870.9M) ---
