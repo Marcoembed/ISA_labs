@@ -63,7 +63,7 @@ def dadda_fun(vertical_table):
 
 #            print("Cin =", c_in, "A =", A, "B =", A, "\nS =", s, "C =", c)
 
-    for i in range(Npp):
+    for i in range(Npp+1):
         for col in vertical_table:
             if i < len(col):
                 if col[i] == 1:
@@ -84,7 +84,7 @@ def dec_to_bin(dec_num, length):
 
 # init values
 partial_products = [[0] * Nbit for _ in range(Npp)]
-signs = [0 for _ in range(Npp)]
+signs = sys.argv[-1]
 pp_dec = sys.argv
 
 if len(pp_dec) < 6:
@@ -96,19 +96,12 @@ for pp in range(len(partial_products)):
     partial_products[pp] = [int(digit) for digit in dec_to_bin(int(pp_dec[pp + 1]), 11)]
     # print("pp[", pp, "]:", partial_products[pp])
 
-# signs assignment
-signs = [partial_products[0][0], partial_products[1][0], partial_products[2][0], partial_products[3][0],
-         partial_products[4][0]]
-
 # first partial product sign extension
-partial_products[0] = [int(not (signs[0]))] + [signs[0]] + [signs[0]] + partial_products[0]
+partial_products[0] = [int(not (signs[-1]))] + [signs[-1]] + [signs[-1]] + partial_products[0]
 
 # partial products sign extension
 for pp in range(len(partial_products) - 1):
-    partial_products[pp + 1] = [1] + [signs[pp + 1]] + partial_products[pp + 1]
-
-# for row in partial_products:
-#    print()
+    partial_products[pp + 1] = [1] + [signs[len(partial_products) - pp - 1]] + partial_products[pp + 1]
 
 # tree generation, weight positions
 
@@ -151,10 +144,6 @@ for i in range(2 * Nbit):
     vertical_table[i] = tmp_list.copy()
 # print('Vertical table is:', vertical_table, end='\n\n')
 
-#print('\n\n\n ')
-#print(vertical_table)
-#print('\n\n\n Delete x values \n')
-
 for col in vertical_table:
     const_len_col = len(col)
     len_col = const_len_col
@@ -173,7 +162,10 @@ for col in vertical_table:
 
 # print('\n', vertical_table, '\n')
 
-for i in range(Npp):
+for i in range(len(signs)):
+    vertical_table[-(i*2)-1].append(int(signs[i]))
+
+for i in range(Npp+1):
     for col in vertical_table:
         if i < len(col):
             if col[i] == 1:
