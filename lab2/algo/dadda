@@ -4,23 +4,90 @@
 ## Eliminare i commenti per stampare tutto ##
 #############################################
 
-
 import sys
 
 Npp = 5
 Nbit = 11
 
-# init values
 
-partial_products = [[0] * Nbit for _ in range(Npp)]
-signs = [0 for _ in range(Npp)]
-pp_dec = sys.argv
+def dadda_fun(vertical_table):
+    max_l_col = 0
+    for i in range(len(vertical_table)):
+        l_col = len(vertical_table[i])
+        if l_col > max_l_col:
+            max_l_col = l_col
+    #    print("len", i, ") ", l_col)
+#    print("L max is: ", max_l_col)
+
+    empty_col = []
+    if not (vertical_table[-1] == empty_col):
+        vertical_table.append(empty_col)
+
+    for i in range(len(vertical_table) - 1):
+        col = vertical_table[i]
+        next_col = vertical_table[i + 1]
+        if len(vertical_table[i]) == max_l_col:
+            print("Adding an HA in col", i)
+            col = vertical_table[i]
+            A = col[-1]
+            B = col[-2]
+            s = int((A and (not B)) or (B and (not A)))
+            c = int(A and B)
+#            print("A =", A, "B =", B, "\nS =", s, "C =", c)
+
+            col.remove(A)
+            col.remove(B)
+            col.append(s)
+            next_col.append(c)
+
+        elif len(vertical_table[i]) > max_l_col:
+            print("Adding an FA in col", i)
+            c_in = col[-1]
+            A = col[-2]
+            B = col[-3]
+            s = int((not c_in and (not A) and B)
+                    or (not c_in and A and (not B))
+                    or (c_in and (not A) and (not B))
+                    or (c_in and A and B))
+            c = int((A and B)
+                    or (c_in and A and (not B))
+                    or (c_in and B and (not A)))
+
+            col.remove(c_in)
+            col.remove(A)
+            col.remove(B)
+            col.append(s)
+            next_col.append(c)
+
+#            print("Cin =", c_in, "A =", A, "B =", A, "\nS =", s, "C =", c)
+
+    for i in range(Npp):
+        for col in vertical_table:
+            if i < len(col):
+                if col[i] == 1:
+                    print('1', end='')
+                else:
+                    print('0', end='')
+            else:
+                print(' ', end='')
+        print()
+
+    return vertical_table
 
 
 # Binary to decimal function
 def dec_to_bin(dec_num, length):
     return str(format(dec_num, f'0{length}b'))
 
+
+# init values
+partial_products = [[0] * Nbit for _ in range(Npp)]
+signs = [0 for _ in range(Npp)]
+pp_dec = sys.argv
+
+if len(pp_dec) < 6:
+    print("Error: required 5 partial product")
+    exit(-1)
 
 # partial product assignment (binary)
 for pp in range(len(partial_products)):
@@ -82,9 +149,9 @@ for i in range(2 * Nbit):
     vertical_table[i] = tmp_list.copy()
 # print('Vertical table is:', vertical_table, end='\n\n')
 
-print('\n\n\n ')
-print(vertical_table)
-print('\n\n\n Delete x values \n')
+#print('\n\n\n ')
+#print(vertical_table)
+#print('\n\n\n Delete x values \n')
 
 for col in vertical_table:
     const_len_col = len(col)
@@ -102,7 +169,7 @@ for col in vertical_table:
             i = i + 1
     # print('Col without x is:', col)
 
-print('\n', vertical_table, '\n')
+# print('\n', vertical_table, '\n')
 
 for i in range(Npp):
     for col in vertical_table:
@@ -114,4 +181,8 @@ for i in range(Npp):
         else:
             print(' ', end='')
     print()
+
+for i in range(3):
+    print("\n\nITERATION:", i)
+    vertical_table = dadda_fun(vertical_table)
 
