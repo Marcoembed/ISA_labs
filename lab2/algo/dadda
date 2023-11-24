@@ -29,8 +29,10 @@ def dadda_fun(vertical_table):
         if len(vertical_table[i]) == max_l_col:
             print("Adding an HA in col", i)
             col = vertical_table[i]
-            A = col[-1]
-            B = col[-2]
+            #A = col[-1]
+            #B = col[-2]
+            A = col[max_l_col-1]
+            B = col[max_l_col-2]
             s = int((A and (not B)) or (B and (not A)))
             c = int(A and B)
 #            print("A =", A, "B =", B, "\nS =", s, "C =", c)
@@ -182,7 +184,7 @@ for i in range(Npp):
             print(' ', end='')
     print()
 
-for i in range(3):
+for i in range(Npp-2):
     print("\n\nITERATION:", i)
     vertical_table = dadda_fun(vertical_table)
 
