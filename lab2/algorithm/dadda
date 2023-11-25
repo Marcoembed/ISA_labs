@@ -1,0 +1,244 @@
+#!/usr/bin/python3
+
+"""
+File:           dadda.py
+Author:         Marco Crisolgo,
+                Renato Belmonte,
+                Matteo Lago,
+                Simone Ruffini
+
+Email:          s305673@studenti.polito.it
+Description:    Dadda algorithm implementation,
+                bits               --> 11 bits,
+                partial products   --> 5
+"""
+
+import sys
+
+Npp = 5
+Nbit = 11
+
+# Full Adder
+def FA(A, B, c_in):
+    s_out = int((not c_in and (not A) and B)
+            or (not c_in and A and (not B))
+            or (c_in and (not A) and (not B))
+            or (c_in and A and B))
+    c_out = int((A and B)
+            or (c_in and A and (not B))
+            or (c_in and B and (not A)))
+    return s_out, c_out
+
+
+# Half Adder
+def HA(A, B):
+    s_out = int((A and (not B)) or (B and (not A)))
+    c_out = int(A and B)
+    return s_out, c_out
+
+def dadda_fun(vertical_table, goal):
+    empty_col = []
+    if not (vertical_table[-1] == empty_col):
+        vertical_table.append(empty_col)
+
+    for i in reversed(range(len(vertical_table) - 1)):
+        col = vertical_table[i]
+        next_col = vertical_table[i - 1]
+        if len(vertical_table[i]) > goal:
+            diff = len(col) - goal
+            if diff == 3:
+                print("Adding an FA + HA in col", len(vertical_table)-i-2)
+
+                # data
+                c_in = col[0]
+                A_FA = col[1]
+                B_FA = col[2]
+                A_HA = col[3]
+                B_HA = col[4]
+
+                # operation: FA + HA
+                s_FA, c_FA = FA(A_FA, B_FA, c_in)
+                s_HA, c_HA = HA(A_HA, B_HA)
+
+                # remove used data from list
+                col.remove(c_in)
+                col.remove(A_FA)
+                col.remove(B_FA)
+                col.remove(A_HA)
+                col.remove(B_HA)
+
+                # add computed result to list
+                col.append(s_FA)
+                next_col.append(c_FA)
+                col.append(s_HA)
+                next_col.append(c_HA)
+
+            elif diff == 2:
+                print("Adding an FA in col", len(vertical_table)-i-2)
+
+                # data
+                c_in = col[0]
+                A_FA = col[1]
+                B_FA = col[2]
+
+                # operation: FA
+                s_FA, c_FA = FA(A_FA, B_FA, c_in)
+
+                # remove used data from list
+                col.remove(c_in)
+                col.remove(A_FA)
+                col.remove(B_FA)
+
+                # add computed result to list
+                col.append(s_FA)
+                next_col.append(c_FA)
+
+            elif diff == 1:
+                print("Adding an HA in col", len(vertical_table)-i-2)
+
+                # data
+                A_HA = col[0]
+                B_HA = col[1]
+
+                # operation: HA
+                s_HA, c_HA = HA(A_HA, B_HA)
+
+                # remove used data from list
+                col.remove(A_HA)
+                col.remove(B_HA)
+
+                # add computed result to list
+                col.append(s_HA)
+                next_col.append(c_HA)
+
+                # print("Cin =", c_in, "A =", A, "B =", A, "\nS =", s, "C =", c)
+
+    for i in range(Npp+1):
+        for col in vertical_table:
+            if i < len(col):
+                if col[i] == 1:
+                    print('1', end='')
+                else:
+                    print('0', end='')
+            else:
+                print(' ', end='')
+        print()
+
+    return vertical_table
+
+
+# Binary to decimal function
+def dec_to_bin(dec_num, length):
+    return str(format(dec_num, f'0{length}b'))
+
+# init values
+partial_products = [[0] * Nbit for _ in range(Npp)]
+signs = (sys.argv[-1])
+pp_dec = sys.argv
+
+if len(pp_dec) < 6:
+    print("Error: required 5 partial product")
+    exit(-1)
+
+# partial product assignment (binary)
+for pp in range(len(partial_products)):
+    partial_products[pp] = [int(digit) for digit in dec_to_bin(int(pp_dec[pp + 1]), 11)]
+
+# first partial product sign extension
+
+
+partial_products[0] = [0 if int(signs[-1]) else 1] + [int(signs[-1])] + [int(signs[-1])] + partial_products[0]
+
+
+# partial products sign extension
+for pp in range(len(partial_products) - 1):
+    if pp == len(partial_products)-2:
+        partial_products[pp + 1] = [int(signs[len(partial_products) - pp - 1])] + partial_products[pp + 1]
+    else:
+        partial_products[pp + 1] = [1] + [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[pp + 1]
+
+# tree generation, weight positions
+
+for row in partial_products:
+    print(row)
+# diagonal disposition in matrix
+matrix = [['x'] * (2 * (Nbit-1)) for _ in range(Npp)]
+
+# x x x x x x x x x x x x x x
+# - x x x x x x x x x x x x x
+# - x x x x x x x x x x x x x
+# - x x x x x x x x x x x x x
+# - - x x x x x x x x x x x x
+#
+# to
+#
+# - - - - - - x x x x x x x x x x x x x x
+# - - - - - x x x x x x x x x x x x x
+# - - - x x x x x x x x x x x x x
+# - x x x x x x x x x x x x x
+# x x x x x x x x x x x x
+#
+
+offset = Npp
+first = 1
+
+for row in range(Npp):
+    if row == 0:
+        bits = Nbit + 3
+    elif row == Npp - 1:
+        bits = Nbit + 1
+    else:
+        bits = Nbit + 2
+    for col in range(bits):
+        index = offset + col + 1
+        matrix[row][index] = partial_products[row][col]
+    # if the next row is the last one or the second one, decrement offset by one
+    if ((row + 1) == Npp - 1) or ((row + 1) == 1):
+        offset -= 1
+    else:
+        offset -= 2
+
+for row in matrix:
+    print(row)
+
+vertical_table = [[Npp] for _ in range(2 * (Nbit - 1))]
+tmp_list = [0] * Npp
+
+for i in range(2 * (Nbit - 1)):
+    c = 0
+    for row in matrix:
+        tmp_list[c] = row[i]
+        c = c + 1
+
+    vertical_table[i] = tmp_list.copy()
+
+for col in vertical_table:
+    const_len_col = len(col)
+    len_col = const_len_col
+    i = 0
+    while i < len_col:
+        if col[i] == 'x':
+            del col[i]
+            len_col = len_col - 1
+        else:
+            i = i + 1
+
+for i in range(len(signs)):
+    vertical_table[-(i*2)-1].append(int(signs[i]))
+
+for i in range(Npp+1):
+    for col in vertical_table:
+        if i < len(col):
+            if col[i] == 1:
+                print('1', end='')
+            else:
+                print('0', end='')
+        else:
+            print(' ', end='')
+    print()
+
+for i in range(Npp-2):
+    print("\n\nITERATION:", i)
+    vertical_table = dadda_fun(vertical_table, Npp - (i+1))
+    print("Goal:", Npp - (i+1))
+
