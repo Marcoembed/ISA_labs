@@ -139,7 +139,7 @@ pp_gen = [[0] * Nbit for _ in range(Npp)]
 partial_products = [[0] * Nbit for _ in range(Npp)]
 
 #Signs generic
-signs_gen = ['b9', 'b7', 'b5', 'b3', 'b1']
+signs_gen = ['b9x', 'b7x', 'b5x', 'b3x', 'b1x']
 
 # Signs
 signs = (sys.argv[-1])
@@ -162,11 +162,11 @@ for pp in range(len(partial_products)):
 # partial product generic sign extension
 for pp in range(Npp):
     if pp == Npp-1:
-        pp_gen[pp] = [signs_gen[0]] + pp_gen[pp]
+        pp_gen[pp] = ['x' + signs_gen[0]] + pp_gen[pp]
     elif pp == 0:
-        pp_gen[0] = ['!' + signs_gen[-1]] + [signs_gen[-1]] + [signs_gen[-1]] + pp_gen[0]
+        pp_gen[0] = ['!' + signs_gen[-1]] + ['x' + signs_gen[-1]] + ['x' + signs_gen[-1]] + pp_gen[0]
     else:
-        pp_gen[pp] = ['1'] + ['!' + signs_gen[Npp - pp - 1]] + pp_gen[pp]
+        pp_gen[pp] = ['xxx1'] + ['!' + signs_gen[Npp - pp - 1]] + pp_gen[pp]
 
 for row in pp_gen:
     print(row)
@@ -181,8 +181,9 @@ for pp in range(len(partial_products) - 1):
     else:
         partial_products[pp + 1] = [1] + [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[pp + 1]
 
-# tree generation, weight positions
-# diagonal disposition in matrix
+# TREE GENERATION, WEIGHT POSITIONS
+
+# diagonal disposition in matrix (binary)
 matrix = [['x'] * (2 * (Nbit-1)) for _ in range(Npp)]
 
 # x x x x x x x x x x x x x x
@@ -201,7 +202,6 @@ matrix = [['x'] * (2 * (Nbit-1)) for _ in range(Npp)]
 #
 
 offset = Npp
-first = 1
 
 for row in range(Npp):
     if row == 0:
@@ -219,6 +219,30 @@ for row in range(Npp):
     else:
         offset -= 2
 
+# diagonal disposition in matrix (label)
+matrix_gen = [['oooo'] * (2 * (Nbit-1)) for _ in range(Npp)]
+
+offset = Npp
+for row in range(Npp):
+    if row == 0:
+        bits = Nbit + 3
+    elif row == Npp - 1:
+        bits = Nbit + 1
+    else:
+        bits = Nbit + 2
+    for col in range(bits):
+        index = offset + col + 1
+        matrix_gen[row][index] = pp_gen[row][col]
+    # if the next row is the last one or the second one, decrement offset by one
+    if ((row + 1) == Npp - 1) or ((row + 1) == 1):
+        offset -= 1
+    else:
+        offset -= 2
+
+for row in matrix_gen:
+    print(row)
+
+# Columns generation (binary)
 vertical_table = [[Npp] for _ in range(2 * (Nbit - 1))]
 tmp_list = [0] * Npp
 
@@ -227,7 +251,6 @@ for i in range(2 * (Nbit - 1)):
     for row in matrix:
         tmp_list[c] = row[i]
         c = c + 1
-
     vertical_table[i] = tmp_list.copy()
 
 for col in vertical_table:
@@ -253,6 +276,39 @@ for i in range(Npp+1):
                 print('0', end='')
         else:
             print(' ', end='')
+    print()
+
+# Generic columns generation (label)
+vt_gen = [[Npp] for _ in range(2 * (Nbit - 1))]
+tmp_list_gen = [0] * Npp
+
+for i in range(2 * (Nbit - 1)):
+    c = 0
+    for row in matrix_gen:
+        tmp_list_gen[c] = row[i]
+        c = c + 1
+    vt_gen[i] = tmp_list_gen.copy()
+
+for col in vt_gen:
+    const_len_col = len(col)
+    len_col = const_len_col
+    i = 0
+    while i < len_col:
+        if col[i] == 'oooo':
+            del col[i]
+            len_col = len_col - 1
+        else:
+            i = i + 1
+
+for i in range(len(signs_gen)):
+    vt_gen[-(i*2)-1].append('x' + signs_gen[i])
+
+for i in range(Npp+1):
+    for col in vt_gen:
+        if i < len(col):
+            print(col[i], ' ', end='')
+        else:
+            print('    ', ' ', end='')
     print()
 
 for i in range(Npp-2):
