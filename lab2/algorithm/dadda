@@ -153,7 +153,7 @@ if len(pp_dec) < 6:
 # partial product generic assignment (label)
 for pp in range(Npp):
     for pbit in range(Nbit):
-        pp_gen[pp][pbit] = "p" + str(pp) + "p" + str(Nbit-pbit-1)
+        pp_gen[pp][pbit] = "p" + str(pp+1) + "p" + str(Nbit-pbit-1)
 
 # partial product assignment (binary)
 for pp in range(len(partial_products)):
