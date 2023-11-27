@@ -18,6 +18,9 @@ import sys
 Npp = 5
 Nbit = 11
 
+def FA_gen(w0, w1, w2, lev, col):
+    print('FA FA' + lev + '_' + col + ' ' + '(' + w0 + ',' + w1 + ',' + w2 + ')' + ';')
+
 # Full Adder
 def FA(A, B, c_in):
     s_out = int((not c_in and (not A) and B)
@@ -28,7 +31,6 @@ def FA(A, B, c_in):
             or (c_in and A and (not B))
             or (c_in and B and (not A)))
     return s_out, c_out
-
 
 # Half Adder
 def HA(A, B):
@@ -162,14 +164,16 @@ for pp in range(len(partial_products)):
 # partial product generic sign extension
 for pp in range(Npp):
     if pp == Npp-1:
-        pp_gen[pp] = ['x' + signs_gen[0]] + pp_gen[pp]
+        pp_gen[pp] = pp_gen[pp]
+    if pp == Npp-2:
+        pp_gen[pp] = ['!' + signs_gen[0]] + pp_gen[pp]
     elif pp == 0:
         pp_gen[0] = ['!' + signs_gen[-1]] + ['x' + signs_gen[-1]] + ['x' + signs_gen[-1]] + pp_gen[0]
     else:
         pp_gen[pp] = ['xxx1'] + ['!' + signs_gen[Npp - pp - 1]] + pp_gen[pp]
 
-for row in pp_gen:
-    print(row)
+#for row in pp_gen:
+#    print(row)
 
 # first partial product sign extension
 partial_products[0] = [0 if int(signs[-1]) else 1] + [int(signs[-1])] + [int(signs[-1])] + partial_products[0]
@@ -239,8 +243,8 @@ for row in range(Npp):
     else:
         offset -= 2
 
-for row in matrix_gen:
-    print(row)
+#for row in matrix_gen:
+#    print(row)
 
 # Columns generation (binary)
 vertical_table = [[Npp] for _ in range(2 * (Nbit - 1))]
@@ -315,5 +319,6 @@ for i in range(Npp+1):
 for i in range(Npp-2):
     print("\n\nITERATION:", i)
     vertical_table = dadda_fun(vertical_table, Npp - (i+1))
+    vt_gen = dadda_fun(vt_gen, Npp - (i+1))
     print("Goal:", Npp - (i+1))
 
