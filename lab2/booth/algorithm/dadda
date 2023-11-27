@@ -22,13 +22,14 @@ def FA_gen(w0, w1, w2, lev, col):
 
 # Full Adder
 def FA(A, B, c_in):
-    s_out = int((not c_in and (not A) and B)
-                or (not c_in and A and (not B))
+    s_out = int(((not c_in) and (not A) and B)
+                or ((not c_in) and A and (not B))
                 or (c_in and (not A) and (not B))
                 or (c_in and A and B))
     c_out = int((A and B)
                 or (c_in and A and (not B))
                 or (c_in and B and (not A)))
+
     return s_out, c_out
 
 
@@ -52,12 +53,12 @@ def dadda_fun(vertical_table, goal):
             if diff == 4:
                 print("Adding an FA + FA in col", len(vertical_table) - i - 2)
                 # data
-                c_in_1 = col[0]
-                A_FA_1 = col[1]
-                B_FA_1 = col[2]
-                c_in_2 = col[3]
-                A_FA_2 = col[4]
-                B_FA_2 = col[5]
+                c_in_1 = int(col[0])
+                A_FA_1 = int(col[1])
+                B_FA_1 = int(col[2])
+                c_in_2 = int(col[3])
+                A_FA_2 = int(col[4])
+                B_FA_2 = int(col[5])
 
                 # operation: FA + FA
                 s_FA_1, c_FA_1 = FA(A_FA_1, B_FA_1, c_in_1)
@@ -81,11 +82,11 @@ def dadda_fun(vertical_table, goal):
                 print("Adding an FA + HA in col", len(vertical_table) - i - 2)
 
                 # data
-                c_in = col[0]
-                A_FA = col[1]
-                B_FA = col[2]
-                A_HA = col[3]
-                B_HA = col[4]
+                c_in = int(col[0])
+                A_FA = int(col[1])
+                B_FA = int(col[2])
+                A_HA = int(col[3])
+                B_HA = int(col[4])
 
                 # operation: FA + HA
                 s_FA, c_FA = FA(A_FA, B_FA, c_in)
@@ -108,9 +109,9 @@ def dadda_fun(vertical_table, goal):
                 print("Adding an FA in col", len(vertical_table) - i - 2)
 
                 # data
-                c_in = col[0]
-                A_FA = col[1]
-                B_FA = col[2]
+                c_in = int(col[0])
+                A_FA = int(col[1])
+                B_FA = int(col[2])
 
                 # operation: FA
                 s_FA, c_FA = FA(A_FA, B_FA, c_in)
@@ -144,7 +145,7 @@ def dadda_fun(vertical_table, goal):
 
                 # print("Cin =", c_in, "A =", A, "B =", A, "\nS =", s, "C =", c)
 
-    for i in range(Npp + 1):
+    for i in range(goal):
         for col in vertical_table:
             if i < len(col):
                 if col[i] == 1:
@@ -372,28 +373,29 @@ levels.remove(levels[-1])
 
 k = 0
 for goal in reversed(levels):
-    print("\n\nITERATION:", k, "Goal:", goal)
+    print("\nITERATION:", k, "Goal:", goal)
     vertical_table = dadda_fun(vertical_table, goal)
-    vt_gen = dadda_fun(vt_gen, goal)
+    #    vt_gen = dadda_fun(vt_gen, goal)
     k += 1
 
+print('\n\n')
 res = 0
 c_in = 0
 n = len(vertical_table)
 for i in range(n):
     if not (len(vertical_table[-i - 1]) == 0):
-        a = vertical_table[-i - 1][0]
+        a = int(vertical_table[-i - 1][0])
         if len(vertical_table[-i - 1]) == 1:
             b = 0
         else:
-            b = vertical_table[-i - 1][1]
+            b = int(vertical_table[-i - 1][1])
         s, c_in = FA(a, b, c_in)
         if i == n:
             res -= s * 2 ** (i - 1)
-            print(i, ")", a, "+", b, "+", c_in, "= -", s, "* 2^", (i - 1), "=", (2 ** (i - 1)), "res =", res)
+            print(i, ")", a, "+", b, "+", c_in, "= -", s, "* 2^", i, "=", (2 ** i), "res =", res)
         else:
             res += s * 2 ** (i - 1)
-            print(i, ")", a, "+", b, "+", c_in, "=", s, "* 2^", (i - 1), "=", (2 ** (i - 1)), "res =", res)
+            print(i, ")", a, "+", b, "+", c_in, "=", s, "* 2^", i, "=", (2 ** i), "res =", res)
     #    res += (el1 + el2) << (n - 1)
 
 print(res)
