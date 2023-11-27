@@ -177,7 +177,7 @@ partial_products[0] = [0 if int(signs[-1]) else 1] + [int(signs[-1])] + [int(sig
 # partial products sign extension
 for pp in range(len(partial_products) - 1):
     if pp == len(partial_products)-2:
-        partial_products[pp + 1] = [int(signs[len(partial_products) - pp - 1])] + partial_products[pp + 1]
+        partial_products[pp + 1] = [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[pp + 1]
     else:
         partial_products[pp + 1] = [1] + [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[pp + 1]
 
@@ -305,6 +305,7 @@ for i in range(len(signs_gen)):
 
 for i in range(Npp+1):
     for col in vt_gen:
+        # This is only for graphic representation
         if i < len(col):
             print(col[i], ' ', end='')
         else:
