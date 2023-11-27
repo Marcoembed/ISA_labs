@@ -1,0 +1,14 @@
+cf_math_pkg.sv
+lzc.sv
+rr_arb_tree.sv
+fpnew_pkg.sv
+fpnew_classifier.sv
+fpnew_rounding.sv
+fpnew_fma.sv
+fpnew_opgroup_fmt_slice.sv
+fpnew_opgroup_block.sv
+fpnew_top.sv
+
+clk_gen.vhd
+data_gen16.vhd
+tb_fpnew_top_rtl.sv

@@ -1,0 +1,115 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/marco/Documents/emb_sys_material/isa/labs/lab2/cvfpu_lite/src
+Xboot_sv_unit
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1699285818
+VCj7[[4AJG@EDUZ>EhjZYk3
+r1
+!s85 0
+!i10b 1
+!s100 WHSZU^79AVXhXHeLF^hRa1
+ICj7[[4AJG@EDUZ>EhjZYk3
+!i103 1
+S1
+R0
+Z3 w1699285818
+Z4 8/tmp/vgw93G9/90/boot.sv
+Z5 F/tmp/vgw93G9/90/boot.sv
+Fregisters.svh
+!i122 4
+L0 15 0
+Z6 OV;L;2020.1;71
+31
+Z7 !s108 1699285818.000000
+!s107 registers.svh|/tmp/vgw93G9/90/boot.sv|
+Z8 !s90 -quiet|-lint|/tmp/vgw93G9/90/boot.sv|
+!i113 1
+Z9 o-quiet -lint
+Z10 tCvgOpt 0
+vbooth
+!s105 boot_sv_unit
+DXx4 work 12 boot_sv_unit 0 22 Cj7[[4AJG@EDUZ>EhjZYk3
+R1
+DXx4 work 9 fpnew_pkg 0 22 T2XL^l6B[[Qfc:]]K_1ke0
+R2
+!i10b 1
+!s100 ]LWGK3Qc:jJ16FGPRABM00
+Z11 !s11b Dg1SIo80bB@j0V0VzS_@n1
+I:DhZz[R?Ce:zI<cL2b`<g0
+VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+R3
+R4
+R5
+!i122 4
+L0 3 13
+R6
+r1
+!s85 0
+31
+R7
+Z12 !s107 registers.svh|/tmp/vgw93G9/90/boot.sv|
+R8
+!i113 1
+R9
+R10
+Xcf_math_pkg
+R1
+!s110 1699284081
+!i10b 1
+!s100 M`XP_^8YB?aFdNkI8Q9m^1
+R11
+II]nlUZG<Y2S_olni8:TJU0
+VI]nlUZG<Y2S_olni8:TJU0
+S1
+R0
+w1699284081
+8/tmp/vgw93G9/8/cf_math_pkg.sv
+F/tmp/vgw93G9/8/cf_math_pkg.sv
+!i122 0
+L0 18 0
+R6
+r1
+!s85 0
+31
+!s108 1699284081.000000
+!s107 /tmp/vgw93G9/8/cf_math_pkg.sv|
+!s90 -quiet|-lint|/tmp/vgw93G9/8/cf_math_pkg.sv|
+!i113 1
+R9
+R10
+Xfpnew_pkg
+R1
+!s110 1699284225
+!i10b 1
+!s100 :j4K;fhKO1LHXYG8SY0Uf2
+R11
+IT2XL^l6B[[Qfc:]]K_1ke0
+VT2XL^l6B[[Qfc:]]K_1ke0
+S1
+R0
+w1699284225
+8/tmp/vgw93G9/21/fpnew_pkg.sv
+F/tmp/vgw93G9/21/fpnew_pkg.sv
+!i122 1
+L0 17 0
+R6
+r1
+!s85 0
+31
+!s108 1699284225.000000
+!s107 /tmp/vgw93G9/21/fpnew_pkg.sv|
+!s90 -quiet|-lint|/tmp/vgw93G9/21/fpnew_pkg.sv|
+!i113 1
+R9
+R10
