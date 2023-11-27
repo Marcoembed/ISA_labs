@@ -134,7 +134,6 @@ def dadda_fun(vertical_table, goal):
 def dec_to_bin(dec_num, length):
     return str(format(dec_num, f'0{length}b'))
 
-
 # INIT VALUES
 
 # Partial products generic
@@ -182,7 +181,9 @@ for pp in range(Npp):
 partial_products[0] = [0 if int(signs[-1]) else 1] + [int(signs[-1])] + [int(signs[-1])] + partial_products[0]
 
 # partial products sign extension
-for pp in range(len(partial_products) - 1):
+for pp in range(Npp):
+    if pp == Npp-1:
+        
     if pp == len(partial_products) - 2:
         partial_products[pp + 1] = [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[pp + 1]
     else:
