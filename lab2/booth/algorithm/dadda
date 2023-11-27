@@ -10,7 +10,7 @@ Author:         Marco Crisolgo,
 Email:          s305673@studenti.polito.it
 Description:    Dadda algorithm implementation,
                 bits               --> 11 bits,
-                partial products   --> 5
+                partial products   --> 6
 """
 
 import sys
@@ -18,6 +18,7 @@ import sys
 
 def FA_gen(w0, w1, w2, lev, col):
     print('FA FA' + lev + '_' + col + ' ' + '(' + w0 + ',' + w1 + ',' + w2 + ')' + ';')
+
 
 # Full Adder
 def FA(A, B, c_in):
@@ -29,6 +30,7 @@ def FA(A, B, c_in):
                 or (c_in and A and (not B))
                 or (c_in and B and (not A)))
     return s_out, c_out
+
 
 # Half Adder
 def HA(A, B):
@@ -47,6 +49,34 @@ def dadda_fun(vertical_table, goal):
         next_col = vertical_table[i - 1]
         if len(vertical_table[i]) > goal:
             diff = len(col) - goal
+            if diff == 4:
+                print("Adding an FA + FA in col", len(vertical_table) - i - 2)
+                # data
+                c_in_1 = col[0]
+                A_FA_1 = col[1]
+                B_FA_1 = col[2]
+                c_in_2 = col[3]
+                A_FA_2 = col[4]
+                B_FA_2 = col[5]
+
+                # operation: FA + FA
+                s_FA_1, c_FA_1 = FA(A_FA_1, B_FA_1, c_in_1)
+                s_FA_2, c_FA_2 = FA(A_FA_2, B_FA_2, c_in_2)
+
+                # remove used data from list
+                col.remove(c_in_1)
+                col.remove(A_FA_1)
+                col.remove(B_FA_1)
+                col.remove(c_in_2)
+                col.remove(A_FA_2)
+                col.remove(B_FA_2)
+
+                # add computed result to list
+                col.append(s_FA_1)
+                col.append(s_FA_2)
+                next_col.append(c_FA_1)
+                next_col.append(c_FA_2)
+
             if diff == 3:
                 print("Adding an FA + HA in col", len(vertical_table) - i - 2)
 
@@ -132,6 +162,7 @@ def dadda_fun(vertical_table, goal):
 def dec_to_bin(dec_num, length):
     return str(format(dec_num, f'0{length}b'))
 
+
 # INIT VALUES
 
 Npp = 6
@@ -151,7 +182,7 @@ signs = (sys.argv[-1])
 
 pp_dec = sys.argv
 
-if len(pp_dec) != Npp+2:
+if len(pp_dec) != Npp + 2:
     print("Error: ", Npp, "partial products are required")
     exit(-1)
 
@@ -173,7 +204,7 @@ for pp in range(Npp - 1):
     else:
         pp_gen[pp] = ['xxx1'] + ['!' + signs_gen[Npp - pp - 1]] + pp_gen[pp]
 
-#for row in pp_gen:
+# for row in pp_gen:
 #    print(row)
 
 # partial products sign extension
@@ -181,7 +212,8 @@ for pp in range(Npp - 1):
     if pp == Npp - 2:
         partial_products[pp] = [1 - int(signs[Npp - pp - 2])] + partial_products[pp]
     elif pp == 0:
-        partial_products[pp] = [(1 - int(signs[Npp - pp - 2]))] + [signs[Npp - pp - 2]] + [signs[Npp - pp - 2]] + partial_products[pp]
+        partial_products[pp] = [(1 - int(signs[Npp - pp - 2]))] + [signs[Npp - pp - 2]] + [signs[Npp - pp - 2]] + \
+                               partial_products[pp]
     else:
         partial_products[pp] = [1] + [1 - int(signs[Npp - pp - 2])] + partial_products[pp]
 
@@ -207,8 +239,8 @@ matrix = [['x'] * (2 * (Nbit - 1)) for _ in range(Npp)]
 # x x x x x x x x x x
 #
 
+partial_products[-1].remove(partial_products[-1][0])
 offset = Npp
-
 for row in range(Npp):
     if row == 0:
         bits = Nbit + 3
@@ -260,7 +292,7 @@ for row in range(Npp):
         offset = offset
     else:
         offset -= 2
-#for row in matrix_gen:
+# for row in matrix_gen:
 #    print(row)
 
 # Columns generation (binary)
@@ -333,13 +365,18 @@ for i in range(Npp + 1):
             print('    ', ' ', end='')
     print()
 
-for i in range(Npp - 2):
-    print("\n\nITERATION:", i)
-    vertical_table = dadda_fun(vertical_table, Npp - (i+1))
-    vt_gen = dadda_fun(vt_gen, Npp - (i+1))
-    print("Goal:", Npp - (i+1))
+levels = [2]
+while levels[-1] < Npp:
+    levels.append(int((levels[-1] * 3 / 2) // 1))
+levels.remove(levels[-1])
 
-print("PIPPO")
+k = 0
+for goal in reversed(levels):
+    print("\n\nITERATION:", k, "Goal:", goal)
+    vertical_table = dadda_fun(vertical_table, goal)
+    vt_gen = dadda_fun(vt_gen, goal)
+    k += 1
+
 res = 0
 c_in = 0
 n = len(vertical_table)
