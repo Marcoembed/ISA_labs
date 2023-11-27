@@ -15,8 +15,6 @@ Description:    Dadda algorithm implementation,
 
 import sys
 
-Npp = 5
-Nbit = 11
 
 def FA_gen(w0, w1, w2, lev, col):
     print('FA FA' + lev + '_' + col + ' ' + '(' + w0 + ',' + w1 + ',' + w2 + ')' + ';')
@@ -136,6 +134,9 @@ def dec_to_bin(dec_num, length):
 
 # INIT VALUES
 
+Npp = 6
+Nbit = 11
+
 # Partial products generic
 pp_gen = [[0] * Nbit for _ in range(Npp)]
 
@@ -150,8 +151,8 @@ signs = (sys.argv[-1])
 
 pp_dec = sys.argv
 
-if len(pp_dec) < 6:
-    print("Error: 5 partial product required")
+if len(pp_dec) != Npp+2:
+    print("Error: ", Npp, "partial products are required")
     exit(-1)
 
 # partial product generic assignment (label)
@@ -160,14 +161,12 @@ for pp in range(Npp):
         pp_gen[pp][pbit] = "p" + str(pp + 1) + "p" + str(Nbit - pbit - 1)
 
 # partial product assignment (binary)
-for pp in range(len(partial_products)):
+for pp in range(Npp):
     partial_products[pp] = [int(digit) for digit in dec_to_bin(int(pp_dec[pp + 1]), 11)]
 
 # partial product generic sign extension
-for pp in range(Npp):
-    if pp == Npp-1:
-        pp_gen[pp] = pp_gen[pp]
-    if pp == Npp-2:
+for pp in range(Npp - 1):
+    if pp == Npp - 2:
         pp_gen[pp] = ['!' + signs_gen[0]] + pp_gen[pp]
     elif pp == 0:
         pp_gen[0] = ['!' + signs_gen[-1]] + ['x' + signs_gen[-1]] + ['x' + signs_gen[-1]] + pp_gen[0]
@@ -177,18 +176,14 @@ for pp in range(Npp):
 #for row in pp_gen:
 #    print(row)
 
-# first partial product sign extension
-partial_products[0] = [0 if int(signs[-1]) else 1] + [int(signs[-1])] + [int(signs[-1])] + partial_products[0]
-
 # partial products sign extension
-for pp in range(Npp):
-    if pp == Npp-1:
-        
-    if pp == len(partial_products) - 2:
-        partial_products[pp + 1] = [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[pp + 1]
+for pp in range(Npp - 1):
+    if pp == Npp - 2:
+        partial_products[pp] = [1 - int(signs[Npp - pp - 2])] + partial_products[pp]
+    elif pp == 0:
+        partial_products[pp] = [(1 - int(signs[Npp - pp - 2]))] + [signs[Npp - pp - 2]] + [signs[Npp - pp - 2]] + partial_products[pp]
     else:
-        partial_products[pp + 1] = [1] + [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[
-            pp + 1]
+        partial_products[pp] = [1] + [1 - int(signs[Npp - pp - 2])] + partial_products[pp]
 
 # TREE GENERATION, WEIGHT POSITIONS
 
@@ -200,6 +195,7 @@ matrix = [['x'] * (2 * (Nbit - 1)) for _ in range(Npp)]
 # - x x x x x x x x x x x x x
 # - x x x x x x x x x x x x x
 # - - x x x x x x x x x x x x
+# - - - x x x x x x x x x x x
 #
 # to
 #
@@ -208,6 +204,7 @@ matrix = [['x'] * (2 * (Nbit - 1)) for _ in range(Npp)]
 # - - - x x x x x x x x x x x x x
 # - x x x x x x x x x x x x x
 # x x x x x x x x x x x x
+# x x x x x x x x x x
 #
 
 offset = Npp
@@ -216,38 +213,53 @@ for row in range(Npp):
     if row == 0:
         bits = Nbit + 3
     elif row == Npp - 1:
+        bits = Nbit - 1
+    elif row == Npp - 2:
         bits = Nbit + 1
     else:
         bits = Nbit + 2
+
     for col in range(bits):
-        index = offset + col + 1
+        index = offset + col
         matrix[row][index] = partial_products[row][col]
     # if the next row is the last one or the second one, decrement offset by one
-    if ((row + 1) == Npp - 1) or ((row + 1) == 1):
+    if ((row + 1) == Npp - 2) or ((row + 1) == 1):
         offset -= 1
+    elif (row + 1) == Npp - 1:
+        offset = offset
     else:
         offset -= 2
+
+for row in matrix:
+    for elem in row:
+        print(elem, end=' ')
+    print()
 
 # diagonal disposition in matrix (label)
 matrix_gen = [['oooo'] * (2 * (Nbit - 1)) for _ in range(Npp)]
 
 offset = Npp
+
 for row in range(Npp):
     if row == 0:
         bits = Nbit + 3
     elif row == Npp - 1:
+        bits = Nbit - 1
+    elif row == Npp - 2:
         bits = Nbit + 1
     else:
         bits = Nbit + 2
+
     for col in range(bits):
-        index = offset + col + 1
-        matrix_gen[row][index] = pp_gen[row][col]
+        index = offset + col
+        matrix_gen[row][index] = partial_products[row][col]
     # if the next row is the last one or the second one, decrement offset by one
-    if ((row + 1) == Npp - 1) or ((row + 1) == 1):
+    if ((row + 1) == Npp - 2) or ((row + 1) == 1):
         offset -= 1
+    elif (row + 1) == Npp - 1:
+        offset = offset
     else:
         offset -= 2
-
 #for row in matrix_gen:
 #    print(row)
 
