@@ -18,15 +18,16 @@ import sys
 Npp = 5
 Nbit = 11
 
+
 # Full Adder
 def FA(A, B, c_in):
     s_out = int((not c_in and (not A) and B)
-            or (not c_in and A and (not B))
-            or (c_in and (not A) and (not B))
-            or (c_in and A and B))
+                or (not c_in and A and (not B))
+                or (c_in and (not A) and (not B))
+                or (c_in and A and B))
     c_out = int((A and B)
-            or (c_in and A and (not B))
-            or (c_in and B and (not A)))
+                or (c_in and A and (not B))
+                or (c_in and B and (not A)))
     return s_out, c_out
 
 
@@ -35,6 +36,7 @@ def HA(A, B):
     s_out = int((A and (not B)) or (B and (not A)))
     c_out = int(A and B)
     return s_out, c_out
+
 
 def dadda_fun(vertical_table, goal):
     empty_col = []
@@ -47,7 +49,7 @@ def dadda_fun(vertical_table, goal):
         if len(vertical_table[i]) > goal:
             diff = len(col) - goal
             if diff == 3:
-                print("Adding an FA + HA in col", len(vertical_table)-i-2)
+                print("Adding an FA + HA in col", len(vertical_table) - i - 2)
 
                 # data
                 c_in = col[0]
@@ -74,7 +76,7 @@ def dadda_fun(vertical_table, goal):
                 next_col.append(c_HA)
 
             elif diff == 2:
-                print("Adding an FA in col", len(vertical_table)-i-2)
+                print("Adding an FA in col", len(vertical_table) - i - 2)
 
                 # data
                 c_in = col[0]
@@ -94,7 +96,7 @@ def dadda_fun(vertical_table, goal):
                 next_col.append(c_FA)
 
             elif diff == 1:
-                print("Adding an HA in col", len(vertical_table)-i-2)
+                print("Adding an HA in col", len(vertical_table) - i - 2)
 
                 # data
                 A_HA = col[0]
@@ -113,7 +115,7 @@ def dadda_fun(vertical_table, goal):
 
                 # print("Cin =", c_in, "A =", A, "B =", A, "\nS =", s, "C =", c)
 
-    for i in range(Npp+1):
+    for i in range(Npp + 1):
         for col in vertical_table:
             if i < len(col):
                 if col[i] == 1:
@@ -126,9 +128,11 @@ def dadda_fun(vertical_table, goal):
 
     return vertical_table
 
+
 # Binary to decimal function
 def dec_to_bin(dec_num, length):
     return str(format(dec_num, f'0{length}b'))
+
 
 # INIT VALUES
 
@@ -138,7 +142,7 @@ pp_gen = [[0] * Nbit for _ in range(Npp)]
 # Partial products
 partial_products = [[0] * Nbit for _ in range(Npp)]
 
-#Signs generic
+# Signs generic
 signs_gen = ['b9x', 'b7x', 'b5x', 'b3x', 'b1x']
 
 # Signs
@@ -153,7 +157,7 @@ if len(pp_dec) < 6:
 # partial product generic assignment (label)
 for pp in range(Npp):
     for pbit in range(Nbit):
-        pp_gen[pp][pbit] = "p" + str(pp+1) + "p" + str(Nbit-pbit-1)
+        pp_gen[pp][pbit] = "p" + str(pp + 1) + "p" + str(Nbit - pbit - 1)
 
 # partial product assignment (binary)
 for pp in range(len(partial_products)):
@@ -161,7 +165,7 @@ for pp in range(len(partial_products)):
 
 # partial product generic sign extension
 for pp in range(Npp):
-    if pp == Npp-1:
+    if pp == Npp - 1:
         pp_gen[pp] = ['x' + signs_gen[0]] + pp_gen[pp]
     elif pp == 0:
         pp_gen[0] = ['!' + signs_gen[-1]] + ['x' + signs_gen[-1]] + ['x' + signs_gen[-1]] + pp_gen[0]
@@ -176,15 +180,16 @@ partial_products[0] = [0 if int(signs[-1]) else 1] + [int(signs[-1])] + [int(sig
 
 # partial products sign extension
 for pp in range(len(partial_products) - 1):
-    if pp == len(partial_products)-2:
+    if pp == len(partial_products) - 2:
         partial_products[pp + 1] = [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[pp + 1]
     else:
-        partial_products[pp + 1] = [1] + [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[pp + 1]
+        partial_products[pp + 1] = [1] + [0 if int(signs[len(partial_products) - pp - 1]) else 1] + partial_products[
+            pp + 1]
 
 # TREE GENERATION, WEIGHT POSITIONS
 
 # diagonal disposition in matrix (binary)
-matrix = [['x'] * (2 * (Nbit-1)) for _ in range(Npp)]
+matrix = [['x'] * (2 * (Nbit - 1)) for _ in range(Npp)]
 
 # x x x x x x x x x x x x x x
 # - x x x x x x x x x x x x x
@@ -220,7 +225,7 @@ for row in range(Npp):
         offset -= 2
 
 # diagonal disposition in matrix (label)
-matrix_gen = [['oooo'] * (2 * (Nbit-1)) for _ in range(Npp)]
+matrix_gen = [['oooo'] * (2 * (Nbit - 1)) for _ in range(Npp)]
 
 offset = Npp
 for row in range(Npp):
@@ -265,9 +270,9 @@ for col in vertical_table:
             i = i + 1
 
 for i in range(len(signs)):
-    vertical_table[-(i*2)-1].append(int(signs[i]))
+    vertical_table[-(i * 2) - 1].append(int(signs[i]))
 
-for i in range(Npp+1):
+for i in range(Npp + 1):
     for col in vertical_table:
         if i < len(col):
             if col[i] == 1:
@@ -301,9 +306,9 @@ for col in vt_gen:
             i = i + 1
 
 for i in range(len(signs_gen)):
-    vt_gen[-(i*2)-1].append('x' + signs_gen[i])
+    vt_gen[-(i * 2) - 1].append('x' + signs_gen[i])
 
-for i in range(Npp+1):
+for i in range(Npp + 1):
     for col in vt_gen:
         # This is only for graphic representation
         if i < len(col):
@@ -312,8 +317,29 @@ for i in range(Npp+1):
             print('    ', ' ', end='')
     print()
 
-for i in range(Npp-2):
+for i in range(Npp - 2):
     print("\n\nITERATION:", i)
-    vertical_table = dadda_fun(vertical_table, Npp - (i+1))
-    print("Goal:", Npp - (i+1))
+    vertical_table = dadda_fun(vertical_table, Npp - (i + 1))
+    print("Goal:", Npp - (i + 1))
 
+print("PIPPO")
+res = 0
+c_in = 0
+n = len(vertical_table)
+for i in range(n):
+    if not (len(vertical_table[-i - 1]) == 0):
+        a = vertical_table[-i - 1][0]
+        if len(vertical_table[-i - 1]) == 1:
+            b = 0
+        else:
+            b = vertical_table[-i - 1][1]
+        s, c_in = FA(a, b, c_in)
+        if i == n:
+            res -= s * 2 ** (i - 1)
+            print(i, ")", a, "+", b, "+", c_in, "= -", s, "* 2^", (i - 1), "=", (2 ** (i - 1)), "res =", res)
+        else:
+            res += s * 2 ** (i - 1)
+            print(i, ")", a, "+", b, "+", c_in, "=", s, "* 2^", (i - 1), "=", (2 ** (i - 1)), "res =", res)
+    #    res += (el1 + el2) << (n - 1)
+
+print(res)
