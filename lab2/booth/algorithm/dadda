@@ -42,8 +42,8 @@ def HA(A, B):
 
 def dadda_fun(vertical_table, goal):
     empty_col = []
-    if not (vertical_table[-1] == empty_col):
-        vertical_table.append(empty_col)
+    if not (vertical_table[0] == empty_col):
+        vertical_table.insert(0, empty_col)
 
     for i in reversed(range(len(vertical_table) - 1)):
         col = vertical_table[i]
@@ -254,7 +254,7 @@ for row in range(Npp):
 
     for col in range(bits):
         index = offset + col
-        matrix[row][index] = partial_products[row][col]
+        matrix[row][index] = int(partial_products[row][col])
     # if the next row is the last one or the second one, decrement offset by one
     if ((row + 1) == Npp - 2) or ((row + 1) == 1):
         offset -= 1
@@ -267,6 +267,7 @@ for row in matrix:
     for elem in row:
         print(elem, end=' ')
     print()
+
 
 # diagonal disposition in matrix (label)
 matrix_gen = [['oooo'] * (2 * (Nbit - 1)) for _ in range(Npp)]
@@ -285,7 +286,7 @@ for row in range(Npp):
 
     for col in range(bits):
         index = offset + col
-        matrix_gen[row][index] = partial_products[row][col]
+        matrix_gen[row][index] = int(partial_products[row][col])
     # if the next row is the last one or the second one, decrement offset by one
     if ((row + 1) == Npp - 2) or ((row + 1) == 1):
         offset -= 1
@@ -318,8 +319,9 @@ for col in vertical_table:
         else:
             i = i + 1
 
+
 for i in range(len(signs)):
-    vertical_table[-(i * 2) - 1].append(int(signs[i]))
+    vertical_table[-(i * 2) - 1].append(int(signs[-i-1]))
 
 for i in range(Npp + 1):
     for col in vertical_table:
@@ -382,20 +384,22 @@ print('\n\n')
 res = 0
 c_in = 0
 n = len(vertical_table)
-for i in range(n):
+for i in range(n-1):
     if not (len(vertical_table[-i - 1]) == 0):
         a = int(vertical_table[-i - 1][0])
         if len(vertical_table[-i - 1]) == 1:
             b = 0
         else:
             b = int(vertical_table[-i - 1][1])
+        print(i, ')', a, '+', b, "+", c_in, "= ", end='')
         s, c_in = FA(a, b, c_in)
-        if i == n:
-            res -= s * 2 ** (i - 1)
-            print(i, ")", a, "+", b, "+", c_in, "= -", s, "* 2^", i, "=", (2 ** i), "res =", res)
+        print(s, '(s);', c_in, '(c_out)', end='\t')
+        if i == (n - 2):
+            res -= s * (2 ** i)
+            print('\t-', s, "* 2^", i, "=", -(2 ** i), "res =", res)
         else:
-            res += s * 2 ** (i - 1)
-            print(i, ")", a, "+", b, "+", c_in, "=", s, "* 2^", i, "=", (2 ** i), "res =", res)
+            res += s * (2 ** i)
+            print('\t', s, "* 2^", i, "=", (2 ** i), "res =", res)
     #    res += (el1 + el2) << (n - 1)
 
 print(res)
