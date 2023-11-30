@@ -50,8 +50,11 @@ def dadda_fun(vertical_table, goal):
         next_col = vertical_table[i - 1]
         if len(vertical_table[i]) > goal:
             diff = len(col) - goal
+            column = len(vertical_table) - i - 1
             if diff == 4:
-                print("Adding an FA + FA in col", len(vertical_table) - i - 2)
+                print("Adding an FA + FA in col", column, '\tFA inputs: pp[0][', column, ']',
+                      ' pp[1][', column, ']', ' pp[2][', column, ']', '\tFA inputs: pp[3][', column, ']',
+                      ' pp[4][', column, ']', ' pp[5][', column, ']')
                 # data
                 c_in_1 = int(col[0])
                 A_FA_1 = int(col[1])
@@ -79,7 +82,9 @@ def dadda_fun(vertical_table, goal):
                 next_col.append(c_FA_2)
 
             if diff == 3:
-                print("Adding an FA + HA in col", len(vertical_table) - i - 2)
+                print("Adding an FA + HA in col", column, '\tFA inputs: pp[0][', column, ']',
+                      ' pp[1][', column, ']', ' pp[2][', column, ']',
+                      'HA inputs: pp[3][', column, ']', ' pp[4][', column, ']')
 
                 # data
                 c_in = int(col[0])
@@ -106,7 +111,8 @@ def dadda_fun(vertical_table, goal):
                 next_col.append(c_HA)
 
             elif diff == 2:
-                print("Adding an FA in col", len(vertical_table) - i - 2)
+                print("Adding an FA in col", column, '\tFA inputs: pp[0][', column, ']',
+                      ' pp[1][', column, ']', ' pp[2][', column, ']')
 
                 # data
                 c_in = int(col[0])
@@ -126,7 +132,7 @@ def dadda_fun(vertical_table, goal):
                 next_col.append(c_FA)
 
             elif diff == 1:
-                print("Adding an HA in col", len(vertical_table) - i - 2)
+                print("Adding an HA in col", column, '\tHA inputs: pp[0][', column, ']', ' pp[1][', column, ']')
 
                 # data
                 A_HA = col[0]
@@ -182,7 +188,6 @@ signs_gen = ['b9x', 'b7x', 'b5x', 'b3x', 'b1x']
 signs = (sys.argv[-1])
 
 pp_dec = sys.argv
-
 if len(pp_dec) != Npp + 2:
     print("Error: ", Npp, "partial products are required")
     exit(-1)
@@ -268,7 +273,6 @@ for row in matrix:
         print(elem, end=' ')
     print()
 
-
 # diagonal disposition in matrix (label)
 matrix_gen = [['oooo'] * (2 * (Nbit - 1)) for _ in range(Npp)]
 
@@ -319,9 +323,8 @@ for col in vertical_table:
         else:
             i = i + 1
 
-
 for i in range(len(signs)):
-    vertical_table[-(i * 2) - 1].append(int(signs[-i-1]))
+    vertical_table[-(i * 2) - 1].append(int(signs[-i - 1]))
 
 for i in range(Npp + 1):
     for col in vertical_table:
@@ -384,7 +387,7 @@ print('\n\n')
 res = 0
 c_in = 0
 n = len(vertical_table)
-for i in range(n-1):
+for i in range(n - 1):
     if not (len(vertical_table[-i - 1]) == 0):
         a = int(vertical_table[-i - 1][0])
         if len(vertical_table[-i - 1]) == 1:
