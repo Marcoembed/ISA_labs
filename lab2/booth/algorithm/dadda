@@ -14,11 +14,14 @@ Description:    Dadda algorithm implementation,
 """
 
 import sys
+import numpy as np
 
 
-def FA_gen(w0, w1, w2, lev, col):
-    print('FA FA' + lev + '_' + col + ' ' + '(' + w0 + ',' + w1 + ',' + w2 + ')' + ';')
+def FA_gen(w0, w1, w2, s, c, lev, col):
+    print('FA FA' + lev + '_' + col + ' ' + '(' + w0 + ',' + w1 + ',' + w2 + ',' + s + ',' + c + ')' + ';')
 
+def HA_gen(w0, w1, s, c, lev, col):
+    print('HA HA' + lev + '_' + col + ' ' + '(' + w0 + ',' + w1 + ',' + s + ',' + c + ')' + ';')
 
 # Full Adder
 def FA(A, B, c_in):
@@ -40,15 +43,17 @@ def HA(A, B):
     return s_out, c_out
 
 
-def dadda_fun(vertical_table, goal):
+def dadda_fun(vertical_table, vt_gen, goal, level):
     empty_col = []
     if not (vertical_table[0] == empty_col):
         vertical_table.insert(0, empty_col)
 
     for i in reversed(range(len(vertical_table) - 1)):
         col = vertical_table[i]
+        col_gen = vt_gen[i]
         next_col = vertical_table[i - 1]
-        if len(vertical_table[i]) > goal:
+        next_col_gen = vt_gen[i - 1]
+        if len(col) > goal:
             diff = len(col) - goal
             column = len(vertical_table) - i - 1
             if diff == 4:
@@ -66,6 +71,10 @@ def dadda_fun(vertical_table, goal):
                 # operation: FA + FA
                 s_FA_1, c_FA_1 = FA(A_FA_1, B_FA_1, c_in_1)
                 s_FA_2, c_FA_2 = FA(A_FA_2, B_FA_2, c_in_2)
+
+                # portmap
+                FA_gen(vt_gen[0][col_gen],vt_gen[1][col_gen],vt_gen[2][col_gen], 's1[' + level + '][' + col_gen + ']','c1['+ level + '][' + next_col_gen + ']' , level, col_gen)
+                FA_gen(vt_gen[3][col_gen],vt_gen[4][col_gen],vt_gen[5][col_gen], 's2[' + level + '][' + col_gen + ']','c2['+ level + '][' + next_col_gen + ']' , level, col_gen)
 
                 # remove used data from list
                 col.remove(c_in_1)
@@ -97,6 +106,10 @@ def dadda_fun(vertical_table, goal):
                 s_FA, c_FA = FA(A_FA, B_FA, c_in)
                 s_HA, c_HA = HA(A_HA, B_HA)
 
+                # portmap
+                FA_gen(vt_gen[0][col_gen],vt_gen[1][col_gen],vt_gen[2][col_gen], 's1[' + level + '][' + col_gen + ']','c1['+ level + '][' + next_col_gen + ']' , level, col_gen)
+                HA_gen(vt_gen[3][col_gen],vt_gen[4][col_gen], 's2[' + level + '][' + col_gen + ']','c2['+ level + '][' + next_col_gen + ']' , level, col_gen)
+
                 # remove used data from list
                 col.remove(c_in)
                 col.remove(A_FA)
@@ -122,6 +135,9 @@ def dadda_fun(vertical_table, goal):
                 # operation: FA
                 s_FA, c_FA = FA(A_FA, B_FA, c_in)
 
+                # portmap
+                FA_gen(vt_gen[0][col_gen],vt_gen[1][col_gen],vt_gen[2][col_gen], 's1[' + level + '][' + col_gen + ']','c1['+ level + '][' + next_col_gen + ']' , level, col_gen)
+
                 # remove used data from list
                 col.remove(c_in)
                 col.remove(A_FA)
@@ -140,6 +156,9 @@ def dadda_fun(vertical_table, goal):
 
                 # operation: HA
                 s_HA, c_HA = HA(A_HA, B_HA)
+
+                # portmap
+                HA_gen(vt_gen[0][col_gen],vt_gen[1][col_gen], 's1[' + level + '][' + col_gen + ']','c1['+ level + '][' + next_col_gen + ']' , level, col_gen)
 
                 # remove used data from list
                 col.remove(A_HA)
@@ -162,7 +181,7 @@ def dadda_fun(vertical_table, goal):
                 print(' ', end='')
         print()
 
-    return vertical_table
+    return vertical_table, vt_gen
 
 
 # Binary to decimal function
@@ -182,7 +201,7 @@ pp_gen = [[0] * Nbit for _ in range(Npp)]
 partial_products = [[0] * Nbit for _ in range(Npp)]
 
 # Signs generic
-signs_gen = ['b9x', 'b7x', 'b5x', 'b3x', 'b1x']
+signs_gen = ['b9', 'b7', 'b5', 'b3', 'b1']
 
 # Signs
 signs = (sys.argv[-1])
@@ -195,7 +214,10 @@ if len(pp_dec) != Npp + 2:
 # partial product generic assignment (label)
 for pp in range(Npp):
     for pbit in range(Nbit):
-        pp_gen[pp][pbit] = "p" + str(pp + 1) + "p" + str(Nbit - pbit - 1)
+        if pbit == 0:
+            pp_gen[pp][pbit] = 'pp' + '[' + str(pp + 1) + '][' + str(Nbit - pbit - 1) + ']'
+        else:
+            pp_gen[pp][pbit] = ' pp' + '[' + str(pp + 1) + '][' + str(Nbit - pbit - 1) + ']'
 
 # partial product assignment (binary)
 for pp in range(Npp):
@@ -204,14 +226,11 @@ for pp in range(Npp):
 # partial product generic sign extension
 for pp in range(Npp - 1):
     if pp == Npp - 2:
-        pp_gen[pp] = ['!' + signs_gen[0]] + pp_gen[pp]
+        pp_gen[pp] = ['      !' + signs_gen[0]] + pp_gen[pp]
     elif pp == 0:
-        pp_gen[0] = ['!' + signs_gen[-1]] + ['x' + signs_gen[-1]] + ['x' + signs_gen[-1]] + pp_gen[0]
+        pp_gen[0] = ['      !' + signs_gen[-1]] + ['       ' + signs_gen[-1]] + ['       ' + signs_gen[-1]] + pp_gen[0]
     else:
-        pp_gen[pp] = ['xxx1'] + ['!' + signs_gen[Npp - pp - 1]] + pp_gen[pp]
-
-# for row in pp_gen:
-#    print(row)
+        pp_gen[pp] = ['        1'] + ['      !' + signs_gen[Npp - pp - 2]] + pp_gen[pp]
 
 # partial products sign extension
 for pp in range(Npp - 1):
@@ -274,7 +293,7 @@ for row in matrix:
     print()
 
 # diagonal disposition in matrix (label)
-matrix_gen = [['oooo'] * (2 * (Nbit - 1)) for _ in range(Npp)]
+matrix_gen = [['         '] * (2 * (Nbit - 1)) for _ in range(Npp)]
 
 offset = Npp
 
@@ -287,10 +306,9 @@ for row in range(Npp):
         bits = Nbit + 1
     else:
         bits = Nbit + 2
-
     for col in range(bits):
         index = offset + col
-        matrix_gen[row][index] = int(partial_products[row][col])
+        matrix_gen[row][index] = pp_gen[row][col]
     # if the next row is the last one or the second one, decrement offset by one
     if ((row + 1) == Npp - 2) or ((row + 1) == 1):
         offset -= 1
@@ -298,8 +316,9 @@ for row in range(Npp):
         offset = offset
     else:
         offset -= 2
-# for row in matrix_gen:
-#    print(row)
+
+for row in matrix_gen:
+    print(row)
 
 # Columns generation (binary)
 vertical_table = [[Npp] for _ in range(2 * (Nbit - 1))]
@@ -353,14 +372,14 @@ for col in vt_gen:
     len_col = const_len_col
     i = 0
     while i < len_col:
-        if col[i] == 'oooo':
+        if col[i] == '         ':
             del col[i]
             len_col = len_col - 1
         else:
             i = i + 1
 
 for i in range(len(signs_gen)):
-    vt_gen[-(i * 2) - 1].append('x' + signs_gen[i])
+    vt_gen[-(i*2) - 1].append('         ' + signs_gen[-i -1])
 
 for i in range(Npp + 1):
     for col in vt_gen:
@@ -368,7 +387,7 @@ for i in range(Npp + 1):
         if i < len(col):
             print(col[i], ' ', end='')
         else:
-            print('    ', ' ', end='')
+            print('          ', end='')
     print()
 
 levels = [2]
@@ -376,12 +395,12 @@ while levels[-1] < Npp:
     levels.append(int((levels[-1] * 3 / 2) // 1))
 levels.remove(levels[-1])
 
-k = 0
+level = 0
 for goal in reversed(levels):
-    print("\nITERATION:", k, "Goal:", goal)
-    vertical_table = dadda_fun(vertical_table, goal)
-    #    vt_gen = dadda_fun(vt_gen, goal)
-    k += 1
+    print("\nITERATION:", level, "Goal:", goal)
+    vertical_table, vt_gen = dadda_fun(vertical_table, vt_gen, goal, level)
+    level += 1
+
 
 print('\n\n')
 res = 0
