@@ -59,6 +59,7 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
         if len(col) > goal:
             diff = len(col) - goal
             column = len(vertical_table) - i - 1
+            next_column = column + 1
             if diff == 4:
                 #print("Adding an FA + FA in col", column, '\tFA inputs: pp[0][', column, ']',
                 #      ' pp[1][', column, ']', ' pp[2][', column, ']', '\tFA inputs: pp[3][', column, ']',
@@ -81,9 +82,9 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
 
                 # result (label)
                 s1 = 's1[' + str(level) + '][' + str(column) + ']'
-                c1 = 'c1[' + str(level) + '][' + str(column) + ']'
+                c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
                 s2 = 's2[' + str(level) + '][' + str(column) + ']'
-                c2 = 'c2[' + str(level) + '][' + str(column) + ']'
+                c2 = 'c2[' + str(level) + '][' + str(next_column) + ']'
 
                 # operation: FA + FA
                 s_FA_1, c_FA_1 = FA(A_FA_1, B_FA_1, c_in_1)
@@ -142,9 +143,9 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
 
                 # result (label)
                 s1 = 's1[' + str(level) + '][' + str(column) + ']'
-                c1 = 'c1[' + str(level) + '][' + str(column) + ']'
+                c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
                 s2 = 's2[' + str(level) + '][' + str(column) + ']'
-                c2 = 'c2[' + str(level) + '][' + str(column) + ']'
+                c2 = 'c2[' + str(level) + '][' + str(next_column) + ']'
 
                 # operation: FA + HA
                 s_FA, c_FA = FA(A_FA, B_FA, c_in)
@@ -196,7 +197,7 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
 
                 # result (label)
                 s1 = 's1[' + str(level) + '][' + str(column) + ']'
-                c1 = 'c1[' + str(level) + '][' + str(column) + ']'
+                c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
 
                 # operation: FA
                 s_FA, c_FA = FA(A_FA, B_FA, c_in)
@@ -235,7 +236,7 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
 
                 # result (label)
                 s1 = 's1[' + str(level) + '][' + str(column) + ']'
-                c1 = 'c1[' + str(level) + '][' + str(column) + ']'
+                c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
 
                 # operation: HA
                 s_HA, c_HA = HA(A_HA, B_HA)
