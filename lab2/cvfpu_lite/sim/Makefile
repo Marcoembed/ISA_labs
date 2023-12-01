@@ -11,7 +11,7 @@ VSIM_FLAGS 	= -do
 NOGUI		= -c
 SRC_DIR		= src
 TB_DIR		= tb
-#TCL			= $(wildcard ./script.tcl)
+TCL			= $(wildcard ./script.tcl)
 TESTBENCH   = $(wildcard ../$(TB_DIR)/tb_fpnew_top_rtl.sv)
 TB			= $(notdir $(basename $(TESTBENCH)))
 
@@ -50,6 +50,6 @@ sim:
 	@echo "Starting simulation ..."
 	#$(VSIM) $(NOGUI) $(WORK_LIB).$(TB) $(VSIM_FLAGS) $(TCL) ### NO GUI ###
 	#$(VSIM) $(NOGUI) $(WORK_LIB).tb_fpnew_top 
-	$(VSIM) $(WORK_LIB).tb_fpnew_top 
+	$(VSIM) $(WORK_LIB).tb_fpnew_top $(VSIM) $(TCL) 
 
 .PHONY: all comp sim
