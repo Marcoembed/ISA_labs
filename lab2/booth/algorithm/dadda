@@ -18,10 +18,10 @@ import numpy as np
 
 
 def FA_gen(w0, w1, w2, s, c, lev, col):
-    print('FA FA' + lev + '_' + col + ' ' + '(' + w0 + ',' + w1 + ',' + w2 + ',' + s + ',' + c + ')' + ';')
+    print('FA FA' + str(lev) + '_' + str(col) + ' ' + '(' + w0 + ',' + w1 + ',' + w2 + ',' + s + ',' + c + ')' + ';')
 
 def HA_gen(w0, w1, s, c, lev, col):
-    print('HA HA' + lev + '_' + col + ' ' + '(' + w0 + ',' + w1 + ',' + s + ',' + c + ')' + ';')
+    print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + w0 + ',' + w1 + ',' + s + ',' + c + ')' + ';')
 
 # Full Adder
 def FA(A, B, c_in):
@@ -57,9 +57,9 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
             diff = len(col) - goal
             column = len(vertical_table) - i - 1
             if diff == 4:
-                print("Adding an FA + FA in col", column, '\tFA inputs: pp[0][', column, ']',
-                      ' pp[1][', column, ']', ' pp[2][', column, ']', '\tFA inputs: pp[3][', column, ']',
-                      ' pp[4][', column, ']', ' pp[5][', column, ']')
+                #print("Adding an FA + FA in col", column, '\tFA inputs: pp[0][', column, ']',
+                #      ' pp[1][', column, ']', ' pp[2][', column, ']', '\tFA inputs: pp[3][', column, ']',
+                #      ' pp[4][', column, ']', ' pp[5][', column, ']')
                 # data
                 c_in_1 = int(col[0])
                 A_FA_1 = int(col[1])
@@ -68,21 +68,41 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
                 A_FA_2 = int(col[4])
                 B_FA_2 = int(col[5])
 
+                # result (label)
+                s1 = 's1[' + str(level) + '][' + str(column) + ']'
+                c1 = 'c1[' + str(level) + '][' + str(column) + ']'
+                s2 = 's2[' + str(level) + '][' + str(column) + ']'
+                c2 = 'c2[' + str(level) + '][' + str(column) + ']'
+
                 # operation: FA + FA
                 s_FA_1, c_FA_1 = FA(A_FA_1, B_FA_1, c_in_1)
                 s_FA_2, c_FA_2 = FA(A_FA_2, B_FA_2, c_in_2)
 
                 # portmap
-                FA_gen(vt_gen[0][col_gen],vt_gen[1][col_gen],vt_gen[2][col_gen], 's1[' + level + '][' + col_gen + ']','c1['+ level + '][' + next_col_gen + ']' , level, col_gen)
-                FA_gen(vt_gen[3][col_gen],vt_gen[4][col_gen],vt_gen[5][col_gen], 's2[' + level + '][' + col_gen + ']','c2['+ level + '][' + next_col_gen + ']' , level, col_gen)
+                FA_gen(col_gen[0],col_gen[1],col_gen[2], s1, c1, '1_' + str(level), str(column))
+                FA_gen(col_gen[3],col_gen[4],col_gen[5], s2, c2, '2_' + str(level), str(column))
 
-                # remove used data from list
+                # remove used data from list (binary)
                 col.remove(c_in_1)
                 col.remove(A_FA_1)
                 col.remove(B_FA_1)
                 col.remove(c_in_2)
                 col.remove(A_FA_2)
                 col.remove(B_FA_2)
+
+                # remove gen data (label)
+                col_gen.remove(col_gen[0])
+                col_gen.remove(col_gen[1])
+                col_gen.remove(col_gen[2])
+                col_gen.remove(col_gen[3])
+                col_gen.remove(col_gen[4])
+                col_gen.remove(col_gen[5])
+
+                # add gen result (label)
+                col_gen.append(s1)
+                col_gen.append(s2)
+                next_col_gen.append(c1)
+                next_col_gen.append(c2)
 
                 # add computed result to list
                 col.append(s_FA_1)
@@ -91,9 +111,9 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
                 next_col.append(c_FA_2)
 
             if diff == 3:
-                print("Adding an FA + HA in col", column, '\tFA inputs: pp[0][', column, ']',
-                      ' pp[1][', column, ']', ' pp[2][', column, ']',
-                      'HA inputs: pp[3][', column, ']', ' pp[4][', column, ']')
+                #print("Adding an FA + HA in col", column, '\tFA inputs: pp[0][', column, ']',
+                #      ' pp[1][', column, ']', ' pp[2][', column, ']',
+                #      'HA inputs: pp[3][', column, ']', ' pp[4][', column, ']')
 
                 # data
                 c_in = int(col[0])
@@ -102,13 +122,19 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
                 A_HA = int(col[3])
                 B_HA = int(col[4])
 
+                # result (label)
+                s1 = 's1[' + str(level) + '][' + str(column) + ']'
+                c1 = 'c1[' + str(level) + '][' + str(column) + ']'
+                s2 = 's2[' + str(level) + '][' + str(column) + ']'
+                c2 = 'c2[' + str(level) + '][' + str(column) + ']'
+
                 # operation: FA + HA
                 s_FA, c_FA = FA(A_FA, B_FA, c_in)
                 s_HA, c_HA = HA(A_HA, B_HA)
 
                 # portmap
-                FA_gen(vt_gen[0][col_gen],vt_gen[1][col_gen],vt_gen[2][col_gen], 's1[' + level + '][' + col_gen + ']','c1['+ level + '][' + next_col_gen + ']' , level, col_gen)
-                HA_gen(vt_gen[3][col_gen],vt_gen[4][col_gen], 's2[' + level + '][' + col_gen + ']','c2['+ level + '][' + next_col_gen + ']' , level, col_gen)
+                FA_gen(col_gen[0],col_gen[1],col_gen[2], s1, c1, str(level), str(column))
+                HA_gen(col_gen[3],col_gen[4], s2, c2, str(level), str(column))
 
                 # remove used data from list
                 col.remove(c_in)
@@ -116,6 +142,19 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
                 col.remove(B_FA)
                 col.remove(A_HA)
                 col.remove(B_HA)
+
+                # remove gen data (label)
+                col_gen.remove(col_gen[0])
+                col_gen.remove(col_gen[1])
+                col_gen.remove(col_gen[2])
+                col_gen.remove(col_gen[3])
+                col_gen.remove(col_gen[4])
+
+                # add gen result (label)
+                col_gen.append(s1)
+                col_gen.append(s2)
+                next_col_gen.append(c1)
+                next_col_gen.append(c2)
 
                 # add computed result to list
                 col.append(s_FA)
@@ -124,45 +163,70 @@ def dadda_fun(vertical_table, vt_gen, goal, level):
                 next_col.append(c_HA)
 
             elif diff == 2:
-                print("Adding an FA in col", column, '\tFA inputs: pp[0][', column, ']',
-                      ' pp[1][', column, ']', ' pp[2][', column, ']')
+                #print("Adding an FA in col", column, '\tFA inputs: pp[0][', column, ']',
+                #      ' pp[1][', column, ']', ' pp[2][', column, ']')
 
                 # data
                 c_in = int(col[0])
                 A_FA = int(col[1])
                 B_FA = int(col[2])
 
+                # result (label)
+                s1 = 's1[' + str(level) + '][' + str(column) + ']'
+                c1 = 'c1[' + str(level) + '][' + str(column) + ']'
+
                 # operation: FA
                 s_FA, c_FA = FA(A_FA, B_FA, c_in)
 
                 # portmap
-                FA_gen(vt_gen[0][col_gen],vt_gen[1][col_gen],vt_gen[2][col_gen], 's1[' + level + '][' + col_gen + ']','c1['+ level + '][' + next_col_gen + ']' , level, col_gen)
+                FA_gen(col_gen[0],col_gen[1],col_gen[2], s1, c1, str(level), str(column))
 
                 # remove used data from list
                 col.remove(c_in)
                 col.remove(A_FA)
                 col.remove(B_FA)
 
+                # remove gen data (label)
+                col_gen.remove(col_gen[0])
+                col_gen.remove(col_gen[1])
+                col_gen.remove(col_gen[2])
+
+                # add gen result (label)
+                col_gen.append(s1)
+                next_col_gen.append(c1)
+
                 # add computed result to list
                 col.append(s_FA)
                 next_col.append(c_FA)
 
             elif diff == 1:
-                print("Adding an HA in col", column, '\tHA inputs: pp[0][', column, ']', ' pp[1][', column, ']')
+                #print("Adding an HA in col", column, '\tHA inputs: pp[0][', column, ']', ' pp[1][', column, ']')
 
                 # data
                 A_HA = col[0]
                 B_HA = col[1]
 
+                # result (label)
+                s1 = 's1[' + str(level) + '][' + str(column) + ']'
+                c1 = 'c1[' + str(level) + '][' + str(column) + ']'
+
                 # operation: HA
                 s_HA, c_HA = HA(A_HA, B_HA)
 
                 # portmap
-                HA_gen(vt_gen[0][col_gen],vt_gen[1][col_gen], 's1[' + level + '][' + col_gen + ']','c1['+ level + '][' + next_col_gen + ']' , level, col_gen)
+                HA_gen(col_gen[0],col_gen[1], s1, c1, str(level), str(column))
 
                 # remove used data from list
                 col.remove(A_HA)
                 col.remove(B_HA)
+
+                # remove gen data (label)
+                col_gen.remove(col_gen[0])
+                col_gen.remove(col_gen[1])
+
+                # add gen result (label)
+                col_gen.append(s1)
+                next_col_gen.append(c1)
 
                 # add computed result to list
                 col.append(s_HA)
