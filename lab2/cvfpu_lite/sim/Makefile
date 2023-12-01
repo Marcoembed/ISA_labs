@@ -30,12 +30,7 @@ comp: $(MODULES)
 	@echo "#####	Compiling File: $@"
 	@echo "#################################################" 
 	@echo 
-	#if [[ $@ == tb_fpnew_top_rtl.sv ]]; then \
-	#	$(VCOM) ../$(TB_DIR)/$@ \
-	#else \
-	#	$(VCOM) ../$(SRC_DIR)/$@
-	#fi
-	$(VCOM)  ../$(TB_DIR)/$@
+	$(VCOM) ../$(TB_DIR)/$@; 
 
 %.v %.sv:
 	@echo 
@@ -48,7 +43,6 @@ comp: $(MODULES)
 	else \
 		$(VLOG) ../$(SRC_DIR)/$@; \
 	fi
-	$(VLOG) ../$(SRC_DIR)/$@
 
 	@echo "Done"
 
