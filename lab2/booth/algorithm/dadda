@@ -9,6 +9,7 @@ Author:         Marco Crisolgo,
 
 Email:          s305673@studenti.polito.it
 Description:    Dadda algorithm implementation,
+                portmap generator,
                 bits               --> 11 bits,
                 partial products   --> 6
 """
@@ -28,9 +29,20 @@ class bcolors:
 
 def FA_gen(w0, w1, w2, s, c, lev, col):
     print('FA FA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w2.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + s.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
+    original_stdout = sys.stdout
+    with open('portmap.txt', 'a') as pm:
+        sys.stdout = pm
+        print('FA FA' + str(lev) + '_' + str(col) + ' ' + '(' + w0.replace(" ","") + ', ' + w1.replace(" ","") + ', ' + w2.replace(" ","") + ', ' + s.replace(" ","") + ', ' + c.replace(" ","") + ')' + ';')
+        sys.stdout = original_stdout
+
 
 def HA_gen(w0, w1, s, c, lev, col):
-    print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ","") + ', ' + bcolors.FAIL + s.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
+    print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ", "") + ', ' + bcolors.FAIL + s.replace(" ", "") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
+    original_stdout = sys.stdout
+    with open('portmap.txt', 'a') as pm:
+        sys.stdout = pm
+        print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + w0.replace(" ", "") + ', ' + w1.replace(" ","") + ', ' + s.replace(" ", "") + ', ' + c.replace(" ", "") + ')' + ';')
+        sys.stdout = original_stdout
 
 # Full Adder
 def FA(A, B, c_in):
@@ -504,7 +516,22 @@ levels.remove(levels[-1])
 
 level = 0
 for goal in reversed(levels):
-    print("\nITERATION:", level, "Goal:", goal)
+    if level == 0:
+        print("\nITERATION:", level, "Goal:", goal)
+        original_stdout = sys.stdout
+        with open('portmap.txt', 'w') as pm:
+            sys.stdout = pm
+            print("\n\\\\ITERATION:", level, "Goal:", goal)
+            print()
+            sys.stdout = original_stdout
+    else:
+        print("\nITERATION:", level, "Goal:", goal)
+        original_stdout = sys.stdout
+        with open('portmap.txt', 'a') as pm:
+            sys.stdout = pm
+            print("\n\\\\ITERATION:", level, "Goal:", goal)
+            print()
+            sys.stdout = original_stdout
     vertical_table, vt_gen = dadda_fun(vertical_table, vt_gen, goal, level)
     level += 1
 
