@@ -15,6 +15,8 @@ Description:    Dadda algorithm implementation,
 """
 
 import sys
+import argparse
+
 
 class bcolors:
     HEADER = '\033[95m'
@@ -27,22 +29,24 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def FA_gen(w0, w1, w2, s, c, lev, col):
-    print('FA FA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w2.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + s.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
+def FA_gen(w0, w1, w2, s, c, lev, col, printout):
     original_stdout = sys.stdout
     with open('portmap.txt', 'a') as pm:
         sys.stdout = pm
         print('FA FA' + str(lev) + '_' + str(col) + ' ' + '(' + w0.replace(" ","") + ', ' + w1.replace(" ","") + ', ' + w2.replace(" ","") + ', ' + s.replace(" ","") + ', ' + c.replace(" ","") + ')' + ';')
         sys.stdout = original_stdout
+    if printout:
+        print('FA FA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w2.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + s.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
 
 
-def HA_gen(w0, w1, s, c, lev, col):
-    print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ", "") + ', ' + bcolors.FAIL + s.replace(" ", "") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
+def HA_gen(w0, w1, s, c, lev, col, printout):
     original_stdout = sys.stdout
     with open('portmap.txt', 'a') as pm:
         sys.stdout = pm
         print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + w0.replace(" ", "") + ', ' + w1.replace(" ","") + ', ' + s.replace(" ", "") + ', ' + c.replace(" ", "") + ')' + ';')
         sys.stdout = original_stdout
+    if printout:
+        print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ", "") + ', ' + bcolors.FAIL + s.replace(" ", "") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
 
 # Full Adder
 def FA(A, B, c_in):
@@ -64,486 +68,555 @@ def HA(A, B):
     return s_out, c_out
 
 
-def dadda_fun(vertical_table, vt_gen, goal, level):
+def dadda_fun(vertical_table, goal, level, printout, test):
     empty_col = []
     if not (vertical_table[0] == empty_col):
         vertical_table.insert(0, empty_col)
 
-    if not (vt_gen[0] == empty_col):
-        vt_gen.insert(0, empty_col)
-
     for i in reversed(range(len(vertical_table))):
         col = vertical_table[i]
-        col_gen = vt_gen[i]
         next_col = vertical_table[i - 1]
-        next_col_gen = vt_gen[i - 1]
         if len(col) > goal:
             diff = len(col) - goal
             column = len(vertical_table) - i - 1
             next_column = column + 1
             if diff == 4:
-                #print("Adding an FA + FA in col", column, '\tFA inputs: pp[0][', column, ']',
-                #      ' pp[1][', column, ']', ' pp[2][', column, ']', '\tFA inputs: pp[3][', column, ']',
-                #      ' pp[4][', column, ']', ' pp[5][', column, ']')
-                # data
-                c_in_1 = int(col[0])
-                A_FA_1 = int(col[1])
-                B_FA_1 = int(col[2])
-                c_in_2 = int(col[3])
-                A_FA_2 = int(col[4])
-                B_FA_2 = int(col[5])
+                if test:
+                    # data
+                    c_in_1 = int(col[0])
+                    A_FA_1 = int(col[1])
+                    B_FA_1 = int(col[2])
+                    c_in_2 = int(col[3])
+                    A_FA_2 = int(col[4])
+                    B_FA_2 = int(col[5])
 
-                # data gen (label)
-                w0 = col_gen[0]
-                w1 = col_gen[1]
-                w2 = col_gen[2]
-                w3 = col_gen[3]
-                w4 = col_gen[4]
-                w5 = col_gen[5]
+                    # operation: FA + FA
+                    s_FA_1, c_FA_1 = FA(A_FA_1, B_FA_1, c_in_1)
+                    s_FA_2, c_FA_2 = FA(A_FA_2, B_FA_2, c_in_2)
 
-                # result (label)
-                s1 = 's1[' + str(level) + '][' + str(column) + ']'
-                c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
-                s2 = 's2[' + str(level) + '][' + str(column) + ']'
-                c2 = 'c2[' + str(level) + '][' + str(next_column) + ']'
+                    # remove used data from list (binary)
+                    col.remove(c_in_1)
+                    col.remove(A_FA_1)
+                    col.remove(B_FA_1)
+                    col.remove(c_in_2)
+                    col.remove(A_FA_2)
+                    col.remove(B_FA_2)
 
-                # operation: FA + FA
-                s_FA_1, c_FA_1 = FA(A_FA_1, B_FA_1, c_in_1)
-                s_FA_2, c_FA_2 = FA(A_FA_2, B_FA_2, c_in_2)
+                    # add computed result to list
+                    col.append(s_FA_1)
+                    col.append(s_FA_2)
+                    next_col.append(c_FA_1)
+                    next_col.append(c_FA_2)
 
-                # portmap
-                FA_gen(w0, w1, w2, s1, c1, '1_' + str(level), str(column))
-                FA_gen(w3, w4, w5, s2, c2, '2_' + str(level), str(column))
+                else:
 
-                # remove used data from list (binary)
-                col.remove(c_in_1)
-                col.remove(A_FA_1)
-                col.remove(B_FA_1)
-                col.remove(c_in_2)
-                col.remove(A_FA_2)
-                col.remove(B_FA_2)
+                    # data gen (label)
+                    w0 = col[0]
+                    w1 = col[1]
+                    w2 = col[2]
+                    w3 = col[3]
+                    w4 = col[4]
+                    w5 = col[5]
 
-                # remove gen data (label)
-                col_gen.remove(w0)
-                col_gen.remove(w1)
-                col_gen.remove(w2)
-                col_gen.remove(w3)
-                col_gen.remove(w4)
-                col_gen.remove(w5)
+                    # result (label)
+                    s1 = 's1[' + str(level) + '][' + str(column) + ']'
+                    c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
+                    s2 = 's2[' + str(level) + '][' + str(column) + ']'
+                    c2 = 'c2[' + str(level) + '][' + str(next_column) + ']'
 
-                # add gen result (label)
-                col_gen.append(s1)
-                col_gen.append(s2)
-                next_col_gen.append(c1)
-                next_col_gen.append(c2)
+                    # portmap
+                    FA_gen(w0, w1, w2, s1, c1, '1_' + str(level), str(column), printout)
+                    FA_gen(w3, w4, w5, s2, c2, '2_' + str(level), str(column), printout)
 
-                # add computed result to list
-                col.append(s_FA_1)
-                col.append(s_FA_2)
-                next_col.append(c_FA_1)
-                next_col.append(c_FA_2)
+                    # remove gen data (label)
+                    col.remove(w0)
+                    col.remove(w1)
+                    col.remove(w2)
+                    col.remove(w3)
+                    col.remove(w4)
+                    col.remove(w5)
+
+                    # add gen result (label)
+                    col.append(s1)
+                    col.append(s2)
+                    next_col.append(c1)
+                    next_col.append(c2)
 
             if diff == 3:
-                #print("Adding an FA + HA in col", column, '\tFA inputs: pp[0][', column, ']',
-                #      ' pp[1][', column, ']', ' pp[2][', column, ']',
-                #      'HA inputs: pp[3][', column, ']', ' pp[4][', column, ']')
+                if test:
+                    # data
+                    c_in = int(col[0])
+                    A_FA = int(col[1])
+                    B_FA = int(col[2])
+                    A_HA = int(col[3])
+                    B_HA = int(col[4])
 
-                # data
-                c_in = int(col[0])
-                A_FA = int(col[1])
-                B_FA = int(col[2])
-                A_HA = int(col[3])
-                B_HA = int(col[4])
 
-                # data gen (label)
-                w0 = col_gen[0]
-                w1 = col_gen[1]
-                w2 = col_gen[2]
-                w3 = col_gen[3]
-                w4 = col_gen[4]
+                    # operation: FA + HA
+                    s_FA, c_FA = FA(A_FA, B_FA, c_in)
+                    s_HA, c_HA = HA(A_HA, B_HA)
 
-                # result (label)
-                s1 = 's1[' + str(level) + '][' + str(column) + ']'
-                c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
-                s2 = 's2[' + str(level) + '][' + str(column) + ']'
-                c2 = 'c2[' + str(level) + '][' + str(next_column) + ']'
+                    # remove used data from list
+                    col.remove(c_in)
+                    col.remove(A_FA)
+                    col.remove(B_FA)
+                    col.remove(A_HA)
+                    col.remove(B_HA)
 
-                # operation: FA + HA
-                s_FA, c_FA = FA(A_FA, B_FA, c_in)
-                s_HA, c_HA = HA(A_HA, B_HA)
+                    # add computed result to list
+                    col.append(s_FA)
+                    next_col.append(c_FA)
+                    col.append(s_HA)
+                    next_col.append(c_HA)
 
-                # portmap
-                FA_gen(w0, w1, w2, s1, c1, str(level), str(column))
-                HA_gen(w3, w4, s2, c2, str(level), str(column))
+                else:
 
-                # remove used data from list
-                col.remove(c_in)
-                col.remove(A_FA)
-                col.remove(B_FA)
-                col.remove(A_HA)
-                col.remove(B_HA)
+                    # data gen (label)
+                    w0 = col[0]
+                    w1 = col[1]
+                    w2 = col[2]
+                    w3 = col[3]
+                    w4 = col[4]
 
-                # remove gen data (label)
-                col_gen.remove(w0)
-                col_gen.remove(w1)
-                col_gen.remove(w2)
-                col_gen.remove(w3)
-                col_gen.remove(w4)
+                    # result (label)
+                    s1 = 's1[' + str(level) + '][' + str(column) + ']'
+                    c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
+                    s2 = 's2[' + str(level) + '][' + str(column) + ']'
+                    c2 = 'c2[' + str(level) + '][' + str(next_column) + ']'
 
-                # add gen result (label)
-                col_gen.append(s1)
-                col_gen.append(s2)
-                next_col_gen.append(c1)
-                next_col_gen.append(c2)
+                    # portmap
+                    FA_gen(w0, w1, w2, s1, c1, str(level), str(column), printout)
+                    HA_gen(w3, w4, s2, c2, str(level), str(column), printout)
 
-                # add computed result to list
-                col.append(s_FA)
-                next_col.append(c_FA)
-                col.append(s_HA)
-                next_col.append(c_HA)
+                    # remove gen data (label)
+                    col.remove(w0)
+                    col.remove(w1)
+                    col.remove(w2)
+                    col.remove(w3)
+                    col.remove(w4)
+
+                    # add gen result (label)
+                    col.append(s1)
+                    col.append(s2)
+                    next_col.append(c1)
+                    next_col.append(c2)
 
             elif diff == 2:
-                #print("Adding an FA in col", column, '\tFA inputs: pp[0][', column, ']',
-                #      ' pp[1][', column, ']', ' pp[2][', column, ']')
+                if test:
+                    # data
+                    c_in = int(col[0])
+                    A_FA = int(col[1])
+                    B_FA = int(col[2])
 
-                # data
-                c_in = int(col[0])
-                A_FA = int(col[1])
-                B_FA = int(col[2])
+                    # operation: FA
+                    s_FA, c_FA = FA(A_FA, B_FA, c_in)
 
-                # gen data (label)
-                w0 = col_gen[0]
-                w1 = col_gen[1]
-                w2 = col_gen[2]
+                    # remove used data from list
+                    col.remove(c_in)
+                    col.remove(A_FA)
+                    col.remove(B_FA)
 
-                # result (label)
-                s1 = 's1[' + str(level) + '][' + str(column) + ']'
-                c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
+                    # add computed result to list
+                    col.append(s_FA)
+                    next_col.append(c_FA)
+                else:
 
-                # operation: FA
-                s_FA, c_FA = FA(A_FA, B_FA, c_in)
+                    # gen data (label)
+                    w0 = col[0]
+                    w1 = col[1]
+                    w2 = col[2]
 
-                # portmap
-                FA_gen(w0, w1, w2, s1, c1, str(level), str(column))
+                    # result (label)
+                    s1 = 's1[' + str(level) + '][' + str(column) + ']'
+                    c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
 
-                # remove used data from list
-                col.remove(c_in)
-                col.remove(A_FA)
-                col.remove(B_FA)
+                    # portmap
+                    FA_gen(w0, w1, w2, s1, c1, str(level), str(column), printout)
 
-                # remove gen data (label)
-                col_gen.remove(w0)
-                col_gen.remove(w1)
-                col_gen.remove(w2)
+                    # remove gen data (label)
+                    col.remove(w0)
+                    col.remove(w1)
+                    col.remove(w2)
 
-                # add gen result (label)
-                col_gen.append(s1)
-                next_col_gen.append(c1)
-
-                # add computed result to list
-                col.append(s_FA)
-                next_col.append(c_FA)
+                    # add gen result (label)
+                    col.append(s1)
+                    next_col.append(c1)
 
             elif diff == 1:
-                #print("Adding an HA in col", column, '\tHA inputs: pp[0][', column, ']', ' pp[1][', column, ']')
+                if test:
 
-                # data
-                A_HA = col[0]
-                B_HA = col[1]
+                    # data
+                    A_HA = col[0]
+                    B_HA = col[1]
 
-                # gen data (label)
-                w0 = col_gen[0]
-                w1 = col_gen[1]
+                    # operation: HA
+                    s_HA, c_HA = HA(A_HA, B_HA)
 
-                # result (label)
-                s1 = 's1[' + str(level) + '][' + str(column) + ']'
-                c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
+                    # remove used data from list
+                    col.remove(A_HA)
+                    col.remove(B_HA)
 
-                # operation: HA
-                s_HA, c_HA = HA(A_HA, B_HA)
+                    # add computed result to list
+                    col.append(s_HA)
+                    next_col.append(c_HA)
 
-                # portmap
-                HA_gen(w0, w1, s1, c1, str(level), str(column))
+                else:
 
-                # remove used data from list
-                col.remove(A_HA)
-                col.remove(B_HA)
+                    # gen data (label)
+                    w0 = col[0]
+                    w1 = col[1]
 
-                # remove gen data (label)
-                col_gen.remove(w0)
-                col_gen.remove(w1)
+                    # result (label)
+                    s1 = 's1[' + str(level) + '][' + str(column) + ']'
+                    c1 = 'c1[' + str(level) + '][' + str(next_column) + ']'
 
-                # add gen result (label)
-                col_gen.append(s1)
-                next_col_gen.append(c1)
+                    # portmap
+                    HA_gen(w0, w1, s1, c1, str(level), str(column), printout)
 
-                # add computed result to list
-                col.append(s_HA)
-                next_col.append(c_HA)
+                    # remove gen data (label)
+                    col.remove(w0)
+                    col.remove(w1)
+
+                    # add gen result (label)
+                    col.append(s1)
+                    next_col.append(c1)
 
                 # print("Cin =", c_in, "A =", A, "B =", A, "\nS =", s, "C =", c)
 
-    for i in range(goal):
-        for col in vertical_table:
-            if i < len(col):
-                if col[i] == 1:
-                    print('1', end='')
+    if printout and test:
+        for i in range(goal):
+            for col in vertical_table:
+                if i < len(col):
+                    if col[i] == 1:
+                        print('1', end='')
+                    else:
+                        print('0', end='')
                 else:
-                    print('0', end='')
-            else:
-                print(' ', end='')
-        print()
+                    print(' ', end='')
+            print()
 
-    return vertical_table, vt_gen
+    if printout and not test:
+        for i in range(goal):
+            for col in vertical_table:
+                if i < len(col):
+                    print(col[i], ' ', end='')
+                else:
+                    print('          ', end='')
+            print()
 
+    return vertical_table
 
 # Binary to decimal function
 def dec_to_bin(dec_num, length):
     return str(format(dec_num, f'0{length}b'))
 
+def pm_gen(printout, Npp, Nbit):
 
-# INIT VALUES
+    # Partial products generic
+    pp_gen = [[0] * Nbit for _ in range(Npp)]
+    # Signs generic
+    signs_gen = ['b[0]', 'b[1]', 'b[2]', 'b[3]', 'b[4]']
+    #signs_gen = ['b9', 'b7', 'b5', 'b3', 'b1']
 
-Npp = 6
-Nbit = 11
-
-# Partial products generic
-pp_gen = [[0] * Nbit for _ in range(Npp)]
-
-# Partial products
-partial_products = [[0] * Nbit for _ in range(Npp)]
-
-# Signs generic
-signs_gen = ['b9', 'b7', 'b5', 'b3', 'b1']
-
-# Signs
-signs = (sys.argv[-1])
-
-pp_dec = sys.argv
-if len(pp_dec) != Npp + 2:
-    print("Error: ", Npp, "partial products are required")
-    exit(-1)
-
-# partial product generic assignment (label)
-for pp in range(Npp):
-    for pbit in range(Nbit):
-        if pp == Npp - 1:
-            pp_gen[pp][pbit] = ' pp' + '[' + str(pp + 1) + '][' + str(Nbit - pbit - 2) + ']'
-        else:
-            if pbit == 0:
-                pp_gen[pp][pbit] = 'pp' + '[' + str(pp + 1) + '][' + str(Nbit - pbit - 1) + ']'
+    # partial product generic assignment (label)
+    for pp in range(Npp):
+        for pbit in range(Nbit):
+            if pp == Npp - 1:
+                pp_gen[pp][pbit] = ' pp' + str(pp + 1) + '[' + str(Nbit - pbit - 2) + ']'
             else:
-                pp_gen[pp][pbit] = ' pp' + '[' + str(pp + 1) + '][' + str(Nbit - pbit - 1) + ']'
+                if pbit == 0:
+                    pp_gen[pp][pbit] = 'pp' + str(pp + 1) + '[' + str(Nbit - pbit - 1) + ']'
+                else:
+                    pp_gen[pp][pbit] = ' pp' + str(pp + 1) + '[' + str(Nbit - pbit - 1) + ']'
 
-for row in pp_gen:
-    print(row)
+    if printout:
+        print("Partial Products:")
+        for row in pp_gen:
+            print(row)
 
-# partial product assignment (binary)
-for pp in range(Npp):
-    partial_products[pp] = [int(digit) for digit in dec_to_bin(int(pp_dec[pp + 1]), 11)]
-
-# partial product generic sign extension
-for pp in range(Npp - 1):
-    if pp == Npp - 2:
-        pp_gen[pp] = ['      !' + signs_gen[0]] + pp_gen[pp]
-    elif pp == 0:
-        pp_gen[0] = ['      !' + signs_gen[-1]] + ['       ' + signs_gen[-1]] + ['       ' + signs_gen[-1]] + pp_gen[0]
-    else:
-        pp_gen[pp] = ['        1'] + ['      !' + signs_gen[Npp - pp - 2]] + pp_gen[pp]
-
-# partial products sign extension
-for pp in range(Npp - 1):
-    if pp == Npp - 2:
-        partial_products[pp] = [1 - int(signs[Npp - pp - 2])] + partial_products[pp]
-    elif pp == 0:
-        partial_products[pp] = [(1 - int(signs[Npp - pp - 2]))] + [signs[Npp - pp - 2]] + [signs[Npp - pp - 2]] + \
-                               partial_products[pp]
-    else:
-        partial_products[pp] = [1] + [1 - int(signs[Npp - pp - 2])] + partial_products[pp]
-
-# TREE GENERATION, WEIGHT POSITIONS
-
-# diagonal disposition in matrix (binary)
-matrix = [['x'] * (2 * (Nbit - 1)) for _ in range(Npp)]
-
-# x x x x x x x x x x x x x x
-# - x x x x x x x x x x x x x
-# - x x x x x x x x x x x x x
-# - x x x x x x x x x x x x x
-# - - x x x x x x x x x x x x
-# - - - x x x x x x x x x x x
-#
-# to
-#
-# - - - - - - x x x x x x x x x x x x x x
-# - - - - - x x x x x x x x x x x x x
-# - - - x x x x x x x x x x x x x
-# - x x x x x x x x x x x x x
-# x x x x x x x x x x x x
-# x x x x x x x x x x
-#
-
-partial_products[-1].remove(partial_products[-1][0])
-offset = Npp
-for row in range(Npp):
-    if row == 0:
-        bits = Nbit + 3
-    elif row == Npp - 1:
-        bits = Nbit - 1
-    elif row == Npp - 2:
-        bits = Nbit + 1
-    else:
-        bits = Nbit + 2
-
-    for col in range(bits):
-        index = offset + col
-        matrix[row][index] = int(partial_products[row][col])
-    # if the next row is the last one or the second one, decrement offset by one
-    if ((row + 1) == Npp - 2) or ((row + 1) == 1):
-        offset -= 1
-    elif (row + 1) == Npp - 1:
-        offset = offset
-    else:
-        offset -= 2
-
-for row in matrix:
-    for elem in row:
-        print(elem, end=' ')
-    print()
-
-# diagonal disposition in matrix (label)
-matrix_gen = [['ooooooooo'] * (2 * (Nbit - 1)) for _ in range(Npp)]
-
-offset = Npp
-
-for row in range(Npp):
-    if row == 0:
-        bits = Nbit + 3
-    elif row == Npp - 1:
-        bits = Nbit - 1
-    elif row == Npp - 2:
-        bits = Nbit + 1
-    else:
-        bits = Nbit + 2
-    for col in range(bits):
-        index = offset + col
-        matrix_gen[row][index] = pp_gen[row][col]
-    # if the next row is the last one or the second one, decrement offset by one
-    if ((row + 1) == Npp - 2) or ((row + 1) == 1):
-        offset -= 1
-    elif (row + 1) == Npp - 1:
-        offset = offset
-    else:
-        offset -= 2
-
-for row in matrix_gen:
-    print(row)
-
-# Columns generation (binary)
-vertical_table = [[Npp] for _ in range(2 * (Nbit - 1))]
-tmp_list = [0] * Npp
-
-for i in range(2 * (Nbit - 1)):
-    c = 0
-    for row in matrix:
-        tmp_list[c] = row[i]
-        c = c + 1
-    vertical_table[i] = tmp_list.copy()
-
-for col in vertical_table:
-    const_len_col = len(col)
-    len_col = const_len_col
-    i = 0
-    while i < len_col:
-        if col[i] == 'x':
-            del col[i]
-            len_col = len_col - 1
+    # partial product generic sign extension
+    for pp in range(Npp - 1):
+        if pp == Npp - 2:
+            pp_gen[pp] = ['      !' + signs_gen[0]] + pp_gen[pp]
+        elif pp == 0:
+            pp_gen[0] = ['      !' + signs_gen[-1]] + ['       ' + signs_gen[-1]] + ['       ' + signs_gen[-1]] + pp_gen[0]
         else:
-            i = i + 1
+            pp_gen[pp] = ['        1'] + ['      !' + signs_gen[Npp - pp - 2]] + pp_gen[pp]
 
-for i in range(len(signs)):
-    vertical_table[-(i * 2) - 1].append(int(signs[-i - 1]))
+    ##############################  TREE GENERATION, WEIGHT POSITIONS
+    #
+    # from
+    #
+    # x x x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x
+    # - - x x x x x x x x x x x x
+    # - - - x x x x x x x x x x x
+    #
+    # to
+    #
+    # - - - - - - x x x x x x x x x x x x x x
+    # - - - - - x x x x x x x x x x x x x
+    # - - - x x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x
+    # x x x x x x x x x x x x
+    # x x x x x x x x x x
 
-for i in range(Npp + 1):
-    for col in vertical_table:
-        if i < len(col):
-            if col[i] == 1:
-                print('1', end='')
-            else:
-                print('0', end='')
+    # diagonal disposition in matrix (label)
+    matrix_gen = [['         '] * (2 * (Nbit - 1)) for _ in range(Npp)]
+
+    offset = Npp
+
+    for row in range(Npp):
+        if row == 0:
+            bits = Nbit + 3
+        elif row == Npp - 1:
+            bits = Nbit - 1
+        elif row == Npp - 2:
+            bits = Nbit + 1
         else:
-            print(' ', end='')
-    print()
-
-# Generic columns generation (label)
-vt_gen = [[Npp] for _ in range(2 * (Nbit - 1))]
-tmp_list_gen = [0] * Npp
-
-for i in range(2 * (Nbit - 1)):
-    c = 0
-    for row in matrix_gen:
-        tmp_list_gen[c] = row[i]
-        c = c + 1
-    vt_gen[i] = tmp_list_gen.copy()
-
-for col in vt_gen:
-    const_len_col = len(col)
-    len_col = const_len_col
-    i = 0
-    while i < len_col:
-        if col[i] == 'ooooooooo':
-            del col[i]
-            len_col = len_col - 1
+            bits = Nbit + 2
+        for col in range(bits):
+            index = offset + col
+            matrix_gen[row][index] = pp_gen[row][col]
+        # if the next row is the last one or the second one, decrement offset by one
+        if ((row + 1) == Npp - 2) or ((row + 1) == 1):
+            offset -= 1
+        elif (row + 1) == Npp - 1:
+            offset = offset
         else:
-            i = i + 1
+            offset -= 2
 
-for i in range(len(signs_gen)):
-    vt_gen[-(i*2) - 1].append('         ' + signs_gen[-i -1])
+    if printout:
+        for row in matrix_gen:
+            print(row)
 
-for i in range(Npp + 1):
+    # Generic columns generation (label)
+    vt_gen = [[Npp] for _ in range(2 * (Nbit - 1))]
+    tmp_list_gen = [0] * Npp
+
+    for i in range(2 * (Nbit - 1)):
+        c = 0
+        for row in matrix_gen:
+            tmp_list_gen[c] = row[i]
+            c = c + 1
+        vt_gen[i] = tmp_list_gen.copy()
+
     for col in vt_gen:
-        # This is only for graphic representation
-        if i < len(col):
-            print(col[i], ' ', end='')
+        const_len_col = len(col)
+        len_col = const_len_col
+        i = 0
+        while i < len_col:
+            if col[i] == '         ':
+                del col[i]
+                len_col = len_col - 1
+            else:
+                i = i + 1
+
+    for i in range(len(signs_gen)):
+        vt_gen[-(i*2) - 1].append('         ' + signs_gen[-i -1])
+
+    if printout:
+        for i in range(Npp + 1):
+            for col in vt_gen:
+                if i < len(col):
+                    print(col[i], ' ', end='')
+                else:
+                    print('          ', end='')
+            print()
+
+    return vt_gen
+
+def test_mode(printout, Npp, Nbit, test):
+
+    # Partial products
+    partial_products = [[0] * Nbit for _ in range(Npp)]
+    pp_dec = test[0:Npp]
+    signs = [0]*Npp
+
+    if len(pp_dec) != Npp:
+        print("Error: ", Npp, "partial products are required (e.g. 1 2 3 4 5 6)")
+        exit(-1)
+
+    for i in range(Npp):
+        if pp_dec[i] < 0:
+            pp_dec[i] = abs(pp_dec[i])
+            signs[i] = 1
         else:
-            print('          ', end='')
-    print()
+            signs[i] = 0
 
-levels = [2]
-while levels[-1] < Npp:
-    levels.append(int((levels[-1] * 3 / 2) // 1))
-levels.remove(levels[-1])
+    # partial product assignment (binary)
+    for pp in range(Npp):
+        partial_products[pp] = [int(digit) for digit in dec_to_bin(int(pp_dec[pp]), 11)]
 
-with open('portmap.txt', 'w') as pm:
-    original_stdout = sys.stdout
-    for level, goal in enumerate(reversed(levels)):
-        print(f"\nITERATION: {level} Goal: {goal}")
-        with open('portmap.txt', 'a') as pm:
-            sys.stdout = pm
-            print(f"\n//ITERATION: {level} Goal: {goal}\n")
-            sys.stdout = original_stdout
-        vertical_table, vt_gen = dadda_fun(vertical_table, vt_gen, goal, level)
+    for i in range(Npp):
+        if signs[i] == 1:
+            for j in range(Nbit):
+                partial_products[i][j] = 1 - partial_products[i][j]
+    if printout:
+        print("PARTIAL PRODUCTS:")
+        print()
+        for row in partial_products:
+            print(row)
+        print()
 
-print('\n\n')
-res = 0
-c_in = 0
-n = len(vertical_table)
-for i in range(n - 1):
-    if not (len(vertical_table[-i - 1]) == 0):
-        a = int(vertical_table[-i - 1][0])
-        if len(vertical_table[-i - 1]) == 1:
-            b = 0
+    # partial products sign extension
+    for pp in range(Npp - 1):
+        if pp == Npp - 2:
+            partial_products[pp] = [1 - int(signs[pp])] + partial_products[pp]
+        elif pp == 0:
+            partial_products[pp] = [(1 - int(signs[pp]))] + [signs[pp]] + [signs[pp]] + \
+                                   partial_products[pp]
         else:
-            b = int(vertical_table[-i - 1][1])
-        print(i, ')', a, '+', b, "+", c_in, "= ", end='')
-        s, c_in = FA(a, b, c_in)
-        print(s, '(s);', c_in, '(c_out)', end='\t')
-        if i == (n - 2):
-            res -= s * (2 ** i)
-            print('\t-', s, "* 2^", i, "=", -(2 ** i), "res =", res)
-        else:
-            res += s * (2 ** i)
-            print('\t', s, "* 2^", i, "=", (2 ** i), "res =", res)
-    #    res += (el1 + el2) << (n - 1)
+            partial_products[pp] = [1] + [1 - int(signs[pp])] + partial_products[pp]
 
-print(res)
+    # TREE GENERATION, WEIGHT POSITIONS
+
+    # diagonal disposition in matrix (binary)
+    matrix = [['x'] * (2 * (Nbit - 1)) for _ in range(Npp)]
+
+    partial_products[-1].remove(partial_products[-1][0])
+    offset = Npp
+    for row in range(Npp):
+        if row == 0:
+            bits = Nbit + 3
+        elif row == Npp - 1:
+            bits = Nbit - 1
+        elif row == Npp - 2:
+            bits = Nbit + 1
+        else:
+            bits = Nbit + 2
+
+        for col in range(bits):
+            index = offset + col
+            matrix[row][index] = int(partial_products[row][col])
+        # if the next row is the last one or the second one, decrement offset by one
+        if ((row + 1) == Npp - 2) or ((row + 1) == 1):
+            offset -= 1
+        elif (row + 1) == Npp - 1:
+            offset = offset
+        else:
+            offset -= 2
+
+    if printout:
+        print("WEIGHTED PARTIAL PRODUCTS:")
+        print()
+        for row in matrix:
+            for elem in row:
+                print(elem, end=' ')
+            print()
+        print()
+
+    # Columns generation (binary)
+    vertical_table = [[Npp] for _ in range(2 * (Nbit - 1))]
+    tmp_list = [0] * Npp
+
+    for i in range(2 * (Nbit - 1)):
+        c = 0
+        for row in matrix:
+            tmp_list[c] = row[i]
+            c = c + 1
+        vertical_table[i] = tmp_list.copy()
+
+    for col in vertical_table:
+        const_len_col = len(col)
+        len_col = const_len_col
+        i = 0
+        while i < len_col:
+            if col[i] == 'x':
+                del col[i]
+                len_col = len_col - 1
+            else:
+                i = i + 1
+
+    #for i in range(len(signs)):
+    #    vertical_table[-(i * 2) - 1].append(int(signs[-i - 1]))
+    for i in range(len(signs)):
+        vertical_table[-(i * 2) - 1].append(int(signs[i]))
+
+    if printout:
+        print("STARTING DADDA TREE:")
+        print()
+        for i in range(Npp + 1):
+            for col in vertical_table:
+                if i < len(col):
+                    if col[i] == 1:
+                        print('1', end='')
+                    else:
+                        print('0', end='')
+                else:
+                    print(' ', end='')
+            print()
+
+    return vertical_table
+
+def result(vertical_table):
+    print('\n\n')
+    res = 0
+    c_in = 0
+    n = len(vertical_table)
+    for i in range(n - 1):
+        if not (len(vertical_table[-i - 1]) == 0):
+            a = int(vertical_table[-i - 1][0])
+            if len(vertical_table[-i - 1]) == 1:
+                b = 0
+            else:
+                b = int(vertical_table[-i - 1][1])
+            print(i, ')', a, '+', b, "+", c_in, "= ", end='')
+            s, c_in = FA(a, b, c_in)
+            print(s, '(s);', c_in, '(c_out)', end='\t')
+            if i == (n - 2):
+                res -= s * (2 ** i)
+                print('\t-', s, "* 2^", i, "=", -(2 ** i), "res =", res)
+            else:
+                res += s * (2 ** i)
+                print('\t', s, "* 2^", i, "=", (2 ** i), "res =", res)
+        #    res += (el1 + el2) << (n - 1)
+
+    print(res)
+
+
+def main(test, printout):
+
+    Npp = 6
+    Nbit = 11
+
+    if test:
+    ############################### TEST
+        vertical_table = test_mode(printout,Npp,Nbit,test)
+    else:
+    ############################### PORTMAP
+        vt_gen = pm_gen(printout,Npp,Nbit)
+
+    ############################## DADDA ALLOCATION ALGORITHM
+    levels = [2]
+    while levels[-1] < Npp:
+        levels.append(int((levels[-1] * 3 / 2) // 1))
+    levels.remove(levels[-1])
+
+    ############################## GENERATION
+    with open('portmap.txt', 'w') as pm:
+        original_stdout = sys.stdout
+        for level, goal in enumerate(reversed(levels)):
+            if printout:
+                print(f"\nITERATION: {level} Goal: {goal}")
+            with open('portmap.txt', 'a') as pm:
+                if test:
+                    vertical_table = dadda_fun(vertical_table, goal, level, printout, test)
+                else:
+                    sys.stdout = pm
+                    print(f"\n//ITERATION: {level} Goal: {goal}\n")
+                    sys.stdout = original_stdout
+                    vt_gen = dadda_fun(vt_gen, goal, level, printout, test)
+
+    if test and printout:
+        result(vertical_table)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Generate a dadda tree from 6 partial products of 11 bits')
+    parser.add_argument('-t','--par', nargs=6, type=int, help='Dadda tree test: insert 6 partial products')
+    parser.add_argument('-p','--print', type=bool, default=False, help='Dadda tree print: portmap or test mode [True | False]')
+    args = parser.parse_args()
+    main(args.par, args.print)
