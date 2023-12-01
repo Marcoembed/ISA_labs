@@ -14,14 +14,24 @@ Description:    Dadda algorithm implementation,
 """
 
 import sys
-import numpy as np
+from colorama import Fore
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 def FA_gen(w0, w1, w2, s, c, lev, col):
-    print('FA FA' + str(lev) + '_' + str(col) + ' ' + '(' + w0.replace(" ","") + ', ' + w1.replace(" ","") + ', ' + w2.replace(" ","") + ', ' + s.replace(" ","") + ', ' + c + ')' + ';')
+    print('FA FA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w2.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + s.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
 
 def HA_gen(w0, w1, s, c, lev, col):
-    print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + w0.replace(" ","") + ', ' + w1.replace(" ","") + ', ' + s.replace(" ","") + ', ' + c.replace(" ","") + ')' + ';')
+    print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ","") + ', ' + bcolors.FAIL + s.replace(" ","") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
 
 # Full Adder
 def FA(A, B, c_in):
