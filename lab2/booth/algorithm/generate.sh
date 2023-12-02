@@ -1,6 +1,8 @@
 #!/bin/bash
 
-sv_file="../dadda/dadda.sv"
+python3 dadda 
+
+sv_file="../src/dadda.sv"
 pm_file="./portmap.txt"
 
 # check if systemverilog file exists
@@ -15,21 +17,31 @@ if [ ! -f $pm_file ]; then
 	exit 1
 fi
 
-pmline=$(grep -n '// portmap' $sv_file | head -n 1 | sed 's/:.*//')
+pm_start=$(grep -n '/\*------------------------------ START PORTMAP\*/' $sv_file | sed 's/:.*//')
+pm_end=$(grep -n '/\*------------------------------ END PORTMAP\*/' $sv_file | sed 's/:.*//')
 
-if [ -z $pmline ]; then
-	echo "error: pattern '// portmap' not found"
+#start_line=$(echo "$rm_lines" | awk '{print $1}')
+#end_line=$(echo "$rm_lines" | awk '{print $2}')
+#
+#awk -v from_line="$start_line" -v to_line="$end_line" 'from_line < NR &&  NR < to_line {next} {print}' $sv_file > tmp_file.txt && mv tmp_file.txt $sv_file
+#
+#cat $sv_file
+
+if [ -z $pm_start ] || [ -z $pm_end ]; then
+	echo "error: pattern not found:"
+	echo "	pattern1: /*------------------------------ START PORTMAP*/"
+	echo "	pattern2: /*------------------------------ END PORTMAP*/"
 	exit 1
 fi
 
-head -n "$pmline" "$sv_file" > sv_tmp_head.txt
-tail -n +"$pmline" "$sv_file" > sv_tmp_tail.txt
+head -n "$pm_start" "$sv_file" > sv_tmp_head.txt
+tail -n +"$pm_end" "$sv_file" > sv_tmp_tail.txt
 
-cat sv_tmp_head.txt "$pm_file" sv_tmp_tail.txt > $sv_file
+cat sv_tmp_head.txt <(echo) "$pm_file" sv_tmp_tail.txt > $sv_file
 
 rm sv_tmp_head.txt sv_tmp_tail.txt
 
-echo "Done! Dadda generated. Check in $sv_file file"
+echo "Done! Dadda tree generated. Check in $sv_file file"
 
 
 
