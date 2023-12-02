@@ -27,7 +27,7 @@ EXCLUDE_FILE="fpnew_fma.sv"
 COMPILE_VHDL_FILE_PATH_LIST=("$HDL_DIR/compile_VHDL.f" "$TB_DIR/compile_VHDL.f")
 COMPILE_VLOG_FILE_PATH_LIST=("$HDL_DIR/compile_VLOG.f" "$TB_DIR/compile_VLOG.f")
 # SIMULATION TOP level entity name
-SIM_TOP_LVL_ENTITY="tb_iir"
+SIM_TOP_LVL_ENTITY="tb"
 # SIMULATION work directory
 SIM_WORK_DIR="$SIM_DIR/work"
 # SIMULATION variables
@@ -258,7 +258,8 @@ remote_cmd_sim() {
     echo "#########################################"
 
     # Simulate the $SIM_TOP_LVL_ENTITY entity deisng using sim.do tcl script
-    vsim -work "$SIM_WORK_DIR" -c -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
+    vsim -work "$SIM_WORK_DIR" -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
+    #vsim -work "$SIM_WORK_DIR" -c -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
 
     # return simulation code
     return $?
