@@ -1,6 +1,6 @@
 /*------------------------------ HALF ADDER*/
 
-module ha(a,b,sum,cout);
+module HA(a,b,sum,cout);
 
 	/*------------------------------ PORT*/
 	input logic a,b;
@@ -12,4 +12,4 @@ module ha(a,b,sum,cout);
 		cout = a & b; 
 	end
   
-endmodule : ha
+endmodule : HA

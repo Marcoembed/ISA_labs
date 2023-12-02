@@ -1,9 +1,6 @@
-`include "fa.sv"
-`include "ha.sv"
+module dadda (pp1, pp2, pp3, pp4, pp5, pp6, signs, outA, outB);
 
 import booth_pkg::*;
-
-module dadda (pp1, pp2, pp3, pp4, pp5, pp6, signs, sum);
 
 	/*------------------------------ PORT*/
 	input [pp_width-1:0] pp1;		// 11 bits
@@ -12,8 +9,9 @@ module dadda (pp1, pp2, pp3, pp4, pp5, pp6, signs, sum);
 	input [pp_width-1:0] pp4;		// 11 bits
 	input [pp_width-1:0] pp5;		// 11 bits
 	input [pp_width-2:0] pp6;		// 10 bits
-	input [pp_deep-2:0] signs;		// 5 bits
-	output [2*(pp_width)-1:0]sum;	// 21 bits
+	input [pp_deep-2:0] signs;		// 6 bits
+	output [2*(pp_width)-1:0] outA;	// 21 bits
+	output [2*(pp_width)-1:0] outB;	// 21 bits
 	
 	/*------------------------------ CONNECTIONS*/
 	wire [level:0][2*(pp_width)-1:0] s1;
@@ -38,10 +36,10 @@ FA FA1_0_12 (signs[0], pp2[10], pp3[8], s1[0][12], c1[0][13]);
 FA FA2_0_12 (pp4[6], pp5[4], pp6[2], s2[0][12], c2[0][13]);
 FA FA1_0_13 (~signs[0], ~signs[1], pp3[9], s1[0][13], c1[0][14]);
 FA FA2_0_13 (pp4[7], pp5[5], pp6[3], s2[0][13], c2[0][14]);
-FA FA0_14 (1, pp3[10], pp4[8], s1[0][14], c1[0][15]);
+FA FA0_14 (1'b1, pp3[10], pp4[8], s1[0][14], c1[0][15]);
 HA HA0_14 (pp5[6], pp6[4], s2[0][14], c2[0][15]);
 FA FA0_15 (~signs[2], pp4[9], pp5[7], s1[0][15], c1[0][16]);
-HA HA0_16 (1, pp4[10], s1[0][16], c1[0][17]);
+HA HA0_16 (1'b1, pp4[10], s1[0][16], c1[0][17]);
 
 //ITERATION: 0 Goal: 4
 
@@ -59,7 +57,7 @@ FA FA1_14 (c1[0][14], c2[0][14], s1[0][14], s1[1][14], c1[1][15]);
 FA FA1_15 (pp6[5], c1[0][15], c2[0][15], s1[1][15], c1[1][16]);
 FA FA1_16 (pp5[8], pp6[6], c1[0][16], s1[1][16], c1[1][17]);
 FA FA1_17 (~signs[3], pp5[9], pp6[7], s1[1][17], c1[1][18]);
-HA HA1_18 (1, pp5[10], s1[1][18], c1[1][19]);
+HA HA1_18 (1'b1, pp5[10], s1[1][18], c1[1][19]);
 
 //ITERATION: 1 Goal: 3
 
@@ -85,5 +83,8 @@ FA FA2_19 (~signs[4], pp6[9], c1[1][19], s1[2][19], c1[2][20]);
 //ITERATION: 2 Goal: 2
 
 	/*------------------------------ END PORTMAP*/
+
+assign outA = {c1[2][19:3], signs[1], pp1[1:0]};
+assign outB = {s1[2][19:2], 1'b0, signs[0]};
 
 endmodule

@@ -1,15 +1,19 @@
-module booth(
-	input [9:0] A,
-	input [9:0] B,
+module booth(A, B, PP1, PP2, PP3, PP4, PP5, PP6, signs);
 
-	output logic [10:0] PP1,
-	output logic [10:0] PP2,
-	output logic [10:0] PP3,
-	output logic [10:0] PP4,
-	output logic [10:0] PP5,
-	output logic [ 9:0] PP6,
-	output [ 4:0] signs
-);
+import booth_pkg::*;
+
+	/*------------------------------ PORT*/
+	input [9:0] A;
+	input [9:0] B;
+
+	/*------------------------------ CONNECTIONS*/
+	output logic [10:0] PP1;
+	output logic [10:0] PP2;
+	output logic [10:0] PP3;
+	output logic [10:0] PP4;
+	output logic [10:0] PP5;
+	output logic [ 9:0] PP6;
+	output [ 4:0] signs;
 	
 	logic [11:-1] B_int;
 
@@ -43,7 +47,7 @@ module booth(
 			3'b100 : PP1 = ~{A, 1'b0};
 			3'b101 : PP1 = ~{1'b0, A};
 			3'b110 : PP1 = ~{1'b0, A};
-			3'b111 : PP1 =  11'b0;
+			3'b111 : PP1 = ~11'b0;
 		endcase
 
 		case (B_int[3:1])
@@ -54,7 +58,7 @@ module booth(
 			3'b100 : PP2 = ~{A, 1'b0};
 			3'b101 : PP2 = ~{1'b0, A};
 			3'b110 : PP2 = ~{1'b0, A};
-			3'b111 : PP2 =  11'b0;
+			3'b111 : PP2 = ~11'b0;
 		endcase
 
 		case (B_int[5:3])
@@ -65,7 +69,7 @@ module booth(
 			3'b100 : PP3 = ~{A, 1'b0};
 			3'b101 : PP3 = ~{1'b0, A};
 			3'b110 : PP3 = ~{1'b0, A};
-			3'b111 : PP3 =  11'b0;
+			3'b111 : PP3 = ~11'b0;
 		endcase
 
 		case (B_int[7:5])
@@ -76,7 +80,7 @@ module booth(
 			3'b100 : PP4 = ~{A, 1'b0};
 			3'b101 : PP4 = ~{1'b0, A};
 			3'b110 : PP4 = ~{1'b0, A};
-			3'b111 : PP4 =  11'b0;
+			3'b111 : PP4 = ~11'b0;
 		endcase
 
 		case (B_int[9:7])
@@ -87,7 +91,7 @@ module booth(
 			3'b100 : PP5 = ~{A, 1'b0};
 			3'b101 : PP5 = ~{1'b0, A};
 			3'b110 : PP5 = ~{1'b0, A};
-			3'b111 : PP5 =  11'b0;
+			3'b111 : PP5 = ~11'b0;
 		endcase
 
 		case (B_int[11:9])
