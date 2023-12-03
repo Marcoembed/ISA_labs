@@ -343,7 +343,7 @@ def pm_gen(printout, Npp, Nbit):
         elif pp == 0:
             pp_gen[0] = ['~' + signs_gen[-1]] + [' ' + signs_gen[-1]] + [' ' + signs_gen[-1]] + pp_gen[0]
         else:
-            pp_gen[pp] = ['        1'] + ['~' + signs_gen[Npp - pp - 2]] + pp_gen[pp]
+            pp_gen[pp] = ["     1'b1"] + ['~' + signs_gen[Npp - pp - 2]] + pp_gen[pp]
 
     ##############################  TREE GENERATION, WEIGHT POSITIONS
     #
@@ -620,7 +620,6 @@ def main(test, printout):
 
     if test and printout:
         result(vertical_table)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate a dadda tree from 6 partial products of 11 bits')

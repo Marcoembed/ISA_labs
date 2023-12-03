@@ -1,0 +1,296 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/marco/Documents/emb_sys_material/isa/labs/lab2/dadda
+vbooth
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 DXx4 work 9 booth_pkg 0 22 BQo1QILP;M6[lF^]jJnB@3
+!s110 1701538946
+!i10b 1
+!s100 ojGnm`^;>0Mk9?llCdmf<0
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+I3NG^LzRT^X9gW45BNe1NH3
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+Z5 d/home/marco/Documents/emb_sys_material/isa/labs/lab2/booth/src
+w1701538946
+8/tmp/vb90Lie/8/booth.sv
+F/tmp/vb90Lie/8/booth.sv
+!i122 361
+L0 1 105
+Z6 OV;L;2020.1;71
+r1
+!s85 0
+31
+!s108 1701538946.000000
+!s107 /tmp/vb90Lie/8/booth.sv|
+!s90 -quiet|-lint|/tmp/vb90Lie/8/booth.sv|
+!i113 1
+Z7 o-quiet -lint
+Z8 tCvgOpt 0
+Xbooth_pkg
+R1
+!s110 1701538943
+!i10b 1
+!s100 U>3R78OaNTmVa0bSKElAB2
+R3
+IBQo1QILP;M6[lF^]jJnB@3
+VBQo1QILP;M6[lF^]jJnB@3
+S1
+R5
+w1701538331
+8booth_pkg.sv
+Z9 Fbooth_pkg.sv
+!i122 358
+Z10 L0 1 0
+R6
+r1
+!s85 0
+31
+!s108 1701538943.000000
+!s107 booth_pkg.sv|/tmp/vb90Lie/5/booth.sv|
+!s90 -quiet|-lint|/tmp/vb90Lie/5/booth.sv|
+!i113 1
+R7
+R8
+Xbooth_sv_unit
+R1
+R2
+!s110 1701538907
+VBK9dRN_6DXQLjLJkhCnGn1
+r1
+!s85 0
+!i10b 1
+!s100 >m]0>ck:n80>;8kfXjm>b2
+IBK9dRN_6DXQLjLJkhCnGn1
+!i103 1
+S1
+R5
+w1701538906
+8/tmp/vceleAB/14/booth.sv
+F/tmp/vceleAB/14/booth.sv
+!i122 345
+R10
+R6
+31
+!s108 1701538907.000000
+!s107 /tmp/vceleAB/14/booth.sv|
+!s90 -quiet|-lint|/tmp/vceleAB/14/booth.sv|
+!i113 1
+R7
+R8
+vdadda
+R1
+R2
+!s110 1701539330
+!i10b 1
+!s100 VVQ49Ia5fl>@RQHn;fmNY2
+R3
+I?AzXAQ;jk@Y970XWB7Hbl0
+R4
+S1
+R5
+w1701539329
+8/tmp/vWAuFrX/39/dadda.sv
+F/tmp/vWAuFrX/39/dadda.sv
+!i122 367
+L0 1 90
+R6
+r1
+!s85 0
+31
+!s108 1701539329.000000
+!s107 /tmp/vWAuFrX/39/dadda.sv|
+!s90 -quiet|-lint|/tmp/vWAuFrX/39/dadda.sv|
+!i113 1
+R7
+R8
+Xdadda_sv_unit
+R1
+R2
+!s110 1701538858
+V>jhQzOWk2BK;lhmM]iijj3
+r1
+!s85 0
+!i10b 1
+!s100 g;]aJV8_3932QlQDiz3Om1
+I>jhQzOWk2BK;lhmM]iijj3
+!i103 1
+S1
+R5
+w1701538858
+8/tmp/vceleAB/8/dadda.sv
+F/tmp/vceleAB/8/dadda.sv
+R9
+!i122 339
+L0 3 0
+R6
+31
+!s108 1701538858.000000
+!s107 booth_pkg.sv|/tmp/vceleAB/8/dadda.sv|
+!s90 -quiet|-lint|/tmp/vceleAB/8/dadda.sv|
+!i113 1
+R7
+R8
+vf
+R1
+!s110 1700859983
+!i10b 1
+!s100 ea;k?ER_BCU_Z49eYgE>Q1
+R3
+IFGVJJHg?Rj:RK6RfO4N3m3
+R4
+S1
+R0
+w1700859983
+8/tmp/vid5ISr/65/fa.sv
+F/tmp/vid5ISr/65/fa.sv
+!i122 100
+Z11 L0 3 9
+R6
+r1
+!s85 0
+31
+!s108 1700859983.000000
+!s107 /tmp/vid5ISr/65/fa.sv|
+!s90 -quiet|-lint|/tmp/vid5ISr/65/fa.sv|
+!i113 1
+R7
+R8
+vfa
+Z12 !s105 dadda_sv_unit
+Z13 DXx4 work 13 dadda_sv_unit 0 22 ZH0VFZ_gD?UmUL5j>4NKJ3
+R1
+Z14 !s110 1701537681
+!i10b 1
+!s100 Q3Bo`eaf_7_@@7:<A_Bk90
+R3
+IE49nNnIg4zF]n;`RRFQ8@2
+R4
+S1
+R5
+w1701518344
+8fa.sv
+Ffa.sv
+!i122 317
+Z15 L0 3 13
+R6
+r1
+!s85 0
+31
+Z16 !s108 1701537681.000000
+Z17 !s107 ha.sv|fa.sv|/tmp/viRQATZ/2/dadda.sv|
+Z18 !s90 -quiet|-lint|/tmp/viRQATZ/2/dadda.sv|
+!i113 1
+R7
+R8
+vfull_add
+R1
+!s110 1700859901
+!i10b 1
+!s100 ?OZG:k?^>0`AIRRW1dnUz3
+R3
+I]ogejSK=:XEQ3CfD>m53R1
+R4
+S1
+R0
+w1700859901
+8/tmp/vid5ISr/47/fa.sv
+F/tmp/vid5ISr/47/fa.sv
+!i122 88
+R11
+R6
+r1
+!s85 0
+31
+!s108 1700859901.000000
+!s107 /tmp/vid5ISr/47/fa.sv|
+!s90 -quiet|-lint|/tmp/vid5ISr/47/fa.sv|
+!i113 1
+R7
+R8
+vha
+R12
+R13
+R1
+R14
+!i10b 1
+!s100 2BHcfFGQYX7[:_CjGh7G:3
+R3
+IeAJVJ?6hZ@]1YEmC;326T1
+R4
+S1
+R5
+w1701518343
+8ha.sv
+Fha.sv
+!i122 317
+R15
+R6
+r1
+!s85 0
+31
+R16
+R17
+R18
+!i113 1
+R7
+R8
+vhalf_add
+R1
+!s110 1700859960
+!i10b 1
+!s100 J0LcV8IM>K[OmMz?RRBjn0
+R3
+I64;glTCIj]EHH0R>F38[n3
+R4
+S1
+R0
+w1700859959
+8/tmp/vid5ISr/61/ha.sv
+F/tmp/vid5ISr/61/ha.sv
+!i122 96
+L0 2 7
+R6
+r1
+!s85 0
+31
+!s108 1700859959.000000
+!s107 /tmp/vid5ISr/61/ha.sv|
+!s90 -quiet|-lint|/tmp/vid5ISr/61/ha.sv|
+!i113 1
+R7
+R8
+vmultiplier
+R1
+R2
+!s110 1701540045
+!i10b 1
+!s100 FaOPU4G`Ue6AWS59XLThZ2
+R3
+I036kV1O0YHNfDAOOhC3VZ1
+R4
+S1
+R5
+w1701540045
+8/tmp/vWAuFrX/192/multiplier.sv
+F/tmp/vWAuFrX/192/multiplier.sv
+!i122 392
+L0 1 41
+R6
+r1
+!s85 0
+31
+!s108 1701540045.000000
+!s107 /tmp/vWAuFrX/192/multiplier.sv|
+!s90 -quiet|-lint|/tmp/vWAuFrX/192/multiplier.sv|
+!i113 1
+R7
+R8

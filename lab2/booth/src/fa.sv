@@ -1,6 +1,6 @@
 /*------------------------------ FULL ADDER*/
 
-module fa(a,b,cin,sum,cout);
+module FA(a,b,cin,sum,cout);
 
 	/*------------------------------ PORT*/
 	input logic a,b,cin;
@@ -12,5 +12,5 @@ module fa(a,b,cin,sum,cout);
 		cout = (a & b) ^ (cin & (a ^ b)); 
 	end
   
-endmodule : fa
+endmodule : FA
 
