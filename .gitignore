@@ -4,3 +4,5 @@ work/
 reports/
 timingReports/
 *.*log*
+.idea
+.DS_Store
