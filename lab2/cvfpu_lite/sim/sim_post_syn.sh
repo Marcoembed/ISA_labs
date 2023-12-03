@@ -16,5 +16,6 @@ vcom -work work ../tb/clk_gen.vhd
 vcom -work work ../tb/data_gen16.vhd
 vlog -work work ../tb/tb_fpnew_top_rtl.sv
 
-vsim -c -L /eda/dk/nangate45/verilog/qsim2020.4  work.tb_fpnew_top  -voptargs=+acc
+vsim -c -L /eda/dk/nangate45/verilog/qsim2020.4  work.tb_fpnew_top  -voptargs=+acc -do script.tcl
+
 
