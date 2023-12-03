@@ -50,6 +50,6 @@ sim:
 	@echo "Starting simulation ..."
 	#$(VSIM) $(NOGUI) $(WORK_LIB).$(TB) $(VSIM_FLAGS) $(TCL) ### NO GUI ###
 	#$(VSIM) $(NOGUI) $(WORK_LIB).tb_fpnew_top 
-	$(VSIM) $(WORK_LIB).tb_fpnew_top $(VSIM) $(TCL) 
+	$(VSIM) $(WORK_LIB).tb_fpnew_top $(VSIM_FLAGS) $(TCL) 
 
 .PHONY: all comp sim

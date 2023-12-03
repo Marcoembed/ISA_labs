@@ -18,14 +18,18 @@ architecture beh of data_gen16 is
 
   constant tco : time := 1 ns;
 
-  type tval_t is array (0 to 5) of std_logic_vector(15 downto 0);
+  type tval_t is array (0 to 9) of std_logic_vector(15 downto 0);
   constant ctvalA : tval_t := (
     ('0' & conv_std_logic_vector(15+3, 5) & conv_std_logic_vector(7, 3) & conv_std_logic_vector(0, 10-3)),  --15
     ('0' & conv_std_logic_vector(15+7, 5) & conv_std_logic_vector(19, 5) & conv_std_logic_vector(0, 10-5)),  --204
     ('0' & conv_std_logic_vector(15+10, 5) & conv_std_logic_vector(0, 10)),  --1024
     ('1' & conv_std_logic_vector(15+3, 5) & conv_std_logic_vector(7, 3) & conv_std_logic_vector(0, 10-3)),  -- -15
     ('1' & conv_std_logic_vector(15+7, 5) & conv_std_logic_vector(19, 5) & conv_std_logic_vector(0, 10-5)),  -- -204
-    ('1' & conv_std_logic_vector(15+10, 5) & conv_std_logic_vector(0, 10))   -- -1024
+    ('1' & conv_std_logic_vector(15+10, 5) & conv_std_logic_vector(0, 10)),   -- -1024
+    ('0' & conv_std_logic_vector(15-1, 5) & conv_std_logic_vector(0, 10)), -- 0.5
+    ('0' & conv_std_logic_vector(15-2, 5) & conv_std_logic_vector(0, 10)), -- 0.25
+    ('0' & conv_std_logic_vector(15-3, 5) & conv_std_logic_vector(0, 10)), -- 0.125
+    ('0' & conv_std_logic_vector(15-4, 5) & conv_std_logic_vector(0, 10)) -- 0.0625
     );  
 
   constant ctvalB : tval_t := (
@@ -34,13 +38,17 @@ architecture beh of data_gen16 is
     ('1' & conv_std_logic_vector(15+3, 5) & conv_std_logic_vector(7, 3) & conv_std_logic_vector(0, 10-3)),  -- -15
     ('1' & conv_std_logic_vector(15+7, 5) & conv_std_logic_vector(19, 5) & conv_std_logic_vector(0, 10-5)),  -- -204
     ('1' & conv_std_logic_vector(15+10, 5) & conv_std_logic_vector(0, 10)),   -- -1024
-    ('0' & conv_std_logic_vector(15+3, 5) & conv_std_logic_vector(7, 3) & conv_std_logic_vector(0, 10-3))   --15    
+    ('0' & conv_std_logic_vector(15+3, 5) & conv_std_logic_vector(7, 3) & conv_std_logic_vector(0, 10-3)),   --15    
+    ('1' & conv_std_logic_vector(15+1, 5) & conv_std_logic_vector(0, 10)), -- -2
+    ('1' & conv_std_logic_vector(15+2, 5) & conv_std_logic_vector(0, 10)), -- -4
+    ('1' & conv_std_logic_vector(15+3, 5) & conv_std_logic_vector(0, 10)), -- -8
+    ('1' & conv_std_logic_vector(15+4, 5) & conv_std_logic_vector(0, 10)) --  -16
     );  
   
   signal cnt : integer := 0;
   signal sEnd_sim : std_logic;
 
-  signal sEnd_sim_pipe : std_logic_vector(5 downto 0);
+  signal sEnd_sim_pipe : std_logic_vector(9 downto 0);
   
 begin  -- architecture beh
 
@@ -54,7 +62,7 @@ begin  -- architecture beh
       VOUT <= '0';
       sEnd_sim <= '0';
     elsif CLK'event and CLK = '1' then  -- rising clock edge
-      if (cnt < 6) then
+      if (cnt < 10) then
         cnt <= cnt + 1 after tco;
         D0 <= ctvalA(cnt) after tco;
         D1 <= ctvalB(cnt) after tco;
@@ -73,10 +81,10 @@ begin  -- architecture beh
       sEnd_sim_pipe <= (others => '0');
     elsif CLK'event and CLK = '1' then  -- rising clock edge
       sEnd_sim_pipe(0) <= sEnd_sim after tco;
-      sEnd_sim_pipe(5 downto 1) <= sEnd_sim_pipe(4 downto 0) after tco;
+      sEnd_sim_pipe(9 downto 1) <= sEnd_sim_pipe(8 downto 0) after tco;
     end if;
   end process;
 
-  END_SIM <= sEnd_sim_pipe(5);
+  END_SIM <= sEnd_sim_pipe(9);
 
 end beh;
