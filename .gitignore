@@ -1,0 +1,6 @@
+# Ignore temp directory
+logs/
+work/
+reports/
+timingReports/
+*.*log*
