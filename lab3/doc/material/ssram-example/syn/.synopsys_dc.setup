@@ -1,0 +1,5 @@
+define_design_lib WORK -path ./work
+set search_path [list . /eda/synopsys/2021-22/RHELx86/SYN_2021.06-SP4/libraries/syn /eda/dk/nangate45/synopsys ../sram_32_1024_freepdk45 ]
+set link_library [list "*" "NangateOpenCellLibrary_typical_ecsm_nowlm.db" "dw_foundation.sldb" "sram_32_1024_freepdk45_TT_1p0V_25C.db" ]
+set target_library [list "NangateOpenCellLibrary_typical_ecsm_nowlm.db" "sram_32_1024_freepdk45_TT_1p0V_25C.db" ]
+set synthetic_library [list "dw_foundation.sldb" ]
