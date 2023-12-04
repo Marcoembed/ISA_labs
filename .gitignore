@@ -2,6 +2,7 @@
 logs/
 work/
 reports/
+lab2/booth/algorithm/portmap.txt
 timingReports/
 *.*log*
 .idea
