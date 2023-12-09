@@ -94,8 +94,8 @@ compile
 
 change_names -hierarchy -rules verilog
 
-report_area > ../reports/fpnew_area.txt
-report_timing > ../reports/fpnew_timing.txt
+report_area > ../reports/fpnew_basic_area.txt
+report_timing > ../reports/fpnew_basic_timing.txt
 
 write_sdf ../netlist/fpnew.sdf 
 write_sdc ../netlist/fpnew.sdc 
