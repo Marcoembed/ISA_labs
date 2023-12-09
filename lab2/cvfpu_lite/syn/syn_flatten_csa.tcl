@@ -83,7 +83,7 @@ set_load $OUTPUT_LOAD [all_outputs]
 ungroup -all -flatten
 
 set mult [find cell *mult*]
-set_implementation DW02_mult/pparch [find cell *mult*]
+set_implementation DW02_mult/csa [find cell *mult*]
 #
 ##  Checks the current design for consistency. TODO: check what it does
 #check_design
@@ -101,9 +101,9 @@ optimize_register
 
 change_names -hierarchy -rules verilog
 
-report_area > ../reports/fpnew_area_flatten_pparch.txt
-report_timing > ../reports/fpnew_timing_flatten_pparch.txt
-report_resources > ../reports/fpnew_resources_flatten_pparch.txt
+report_area > ../reports/fpnew_area_flatten_csa.txt
+report_timing > ../reports/fpnew_timing_flatten_csa.txt
+report_resources > ../reports/fpnew_resources_flatten_csa.txt
 
 write_sdf ../netlist/fpnew.sdf 
 write_sdc ../netlist/fpnew.sdc 
