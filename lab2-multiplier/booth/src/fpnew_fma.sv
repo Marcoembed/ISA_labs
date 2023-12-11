@@ -323,8 +323,16 @@ module fpnew_fma #(
   assign mantissa_b = {info_b.is_normal, operand_b.mantissa};
   assign mantissa_c = {info_c.is_normal, operand_c.mantissa};
 
+  // ISA LAB PART --------------------------------//
   // Mantissa multiplier (a*b) TODO
-  assign product = mantissa_a * mantissa_b;
+  // assign product = mantissa_a * mantissa_b;
+  // new computation
+  multiplier boot_dadda_mult (
+      .a(mantissa_a),
+      .b(mantissa_b),
+      .out(product)
+    );
+  // ISA LAB PART --------------------------------//
 
   // Product is placed into a 3p+4 bit wide vector, padded with 2 bits for round and sticky:
   // | 000...000 | product | RS |
