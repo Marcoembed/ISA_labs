@@ -323,7 +323,6 @@ module fpnew_fma #(
 
   // Mantissa BOOTH multiplier (a*b)
   //assign product = mantissa_a * mantissa_b;
-  // TODO
   multiplier dut (
       .a(mantissa_a),
       .b(mantissa_b),
