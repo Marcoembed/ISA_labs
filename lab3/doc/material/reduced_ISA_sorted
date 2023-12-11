@@ -1,0 +1,15 @@
+add
+addi
+auipc
+ble
+bltu
+j
+jal
+li
+lui
+lw
+mv
+nop
+ret
+sub
+sw
