@@ -62,7 +62,7 @@ link
 #
 
 #TEST clock = 0 TODO
-create_clock -name MY_CLK -period 3.5 clk_i
+create_clock -name MY_CLK -period 2.3 clk_i
 
 # SLACK MET
 #
@@ -79,23 +79,31 @@ set_load $OUTPUT_LOAD [all_outputs]
 # Removes a level of hierarchy TODO: check what it does
 #-all   Indicates that all  cells  in  the  current  design  or  current instance  are  to be ungrouped.  You must specify either -all or cell_list but not both.
 #-flatten Indicates that the specified cell and all of its subcells are to be  exploded  recursively  until  all  levels  of  hierarchy are removed.
-#ungroup -all -flatten
 
-#  Checks the current design for consistency. TODO: check what it does
-check_design
+ungroup -all -flatten
 
-################################################################################
-# 3 Start synthesis
-################################################################################
+set mult [find cell *mult*]
+set_implementation DW02_mult/pparch [find cell *mult*]
+#
+##  Checks the current design for consistency. TODO: check what it does
+#check_design
+#
+#################################################################################
+## 3 Start synthesis
+#################################################################################
 compile
+
+# Optimize registers
+optimize_register
 
 # apply clock gating on FLIP-FLOPS with enable signal
 #compile -gate_clock
 
 change_names -hierarchy -rules verilog
 
-report_area > ../reports/fpnew_area.txt
-report_timing > ../reports/fpnew_timing.txt
+report_area > ../reports/fpnew_area_flatten_pparch.txt
+report_timing > ../reports/fpnew_timing_flatten_pparch.txt
+report_resources > ../reports/fpnew_resources_flatten_pparch.txt
 
 write_sdf ../netlist/fpnew.sdf 
 write_sdc ../netlist/fpnew.sdc 
