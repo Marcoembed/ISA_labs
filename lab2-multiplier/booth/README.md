@@ -26,7 +26,8 @@ for these operations (sim, syn).
 
 The *dadda* python script in the algorithm directory allows to test the reduction tree taking in
 input 6 partial products (positive or negative). A representation of the reduction tree and the
-final result of the sum is printed on the terminal for a better comprehension of the reduction process.
+final result of the sum is printed on the terminal for a better comprehension of the reduction process
+if `-p True` option is used (e.g `./dadda -t 10 2 -5 6 -2 1 -p True`).
 
 To visualize a more general reduction tree with also the **FAs** and **HAs** allocation you can use
 the option `-p True` without any partial products in the script inputs (e.g. `./dadda -p True`). 
