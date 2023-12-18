@@ -1,16 +1,35 @@
+/*-------------------------------------------------------------------------------------------------*/
+// Engineer: Simone Ruffini 	[simone.ruffini@studenti.polito.it],
+//			 Marco Crisolgo 	[s305673@studenti.polito.it],
+//			 Matteo Lago 		[s319914@studenti.polito.it],
+//			 Renato Belmonte 	[s316792@studenti.polito.it],
+//
+// Module Name:		Multiplier (Modified radix 4 Booth encoder + Dadda Tree adder)
+// Project Name:	BOOTH
+// Description:		The multiplier module can be seen as the top level entity that
+//					performs an unsigned multiplicaton on two operands A and B 
+//					providing a double-sized product OUT.
+//					From an high level perspective, it forwards A and B to the 
+//					encoder, connecting its partial products with the Dadda Tree adder.
+//					Its outputs are collected and summed (here with a behavioural description),
+//					but a third module as well could be used for the final sum.
+//					
+/*-------------------------------------------------------------------------------------------------*/
+
+
 module multiplier (a, b, out);
 
 	import booth_pkg::*;
 
-	input [pp_width-2:0] a;
-	input [pp_width-2:0] b;
-	output [2*(pp_width-1)-1:0] out;
+	input [numbit-1:0]		a;
+	input [numbit-1:0]		b;
+	output [2*numbit-1:0]	out;
 
 	/*------------------------------ SIGNALS*/
-	wire [pp_width-1:0] pp1, pp2, pp3, pp4, pp5;
-	wire [pp_width-2:0] pp6;
+	wire [numbit:0] pp1, pp2, pp3, pp4, pp5;
+	wire [numbit-1:0] pp6;
 	wire [pp_deep-2:0] signs;
-	wire [2*(pp_width-1)-1:0] dadda_A, dadda_B;
+	wire [2*numbit-1:0] dadda_A, dadda_B;
 
 	booth booth(
 		.A(a),

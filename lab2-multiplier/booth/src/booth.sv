@@ -1,21 +1,38 @@
+/*----------------------------------------------------------------------------------------------------*/
+// Engineer: Simone Ruffini 	[simone.ruffini@studenti.polito.it],
+//			 Marco Crisolgo 	[s305673@studenti.polito.it],
+//			 Matteo Lago 		[s319914@studenti.polito.it],
+//			 Renato Belmonte 	[s316792@studenti.polito.it],
+//
+// Module Name:		Booth (Modified radix 4 Booth Encoder)
+// Project Name:	BOOTH
+// Description:		This module works on triplets of bits of multiplicand B
+//					so that each partial product for the multiplication is selected
+//					in a multiplexer fashion and sent to the following stage (a Dadda Treee adder).
+//					Another output "signs" forwards the MSB of each triplet to indicate when
+//					a subtraction must be performed at the Dadda Tree level.
+//					
+/*----------------------------------------------------------------------------------------------------*/
+
+
 module booth(A, B, PP1, PP2, PP3, PP4, PP5, PP6, signs);
 
 import booth_pkg::*;
 
 	/*------------------------------ PORT*/
-	input [9:0] A;
-	input [9:0] B;
+	input [numbit-1:0] A;
+	input [numbit-1:0] B;
 
 	/*------------------------------ CONNECTIONS*/
-	output logic [10:0] PP1;
-	output logic [10:0] PP2;
-	output logic [10:0] PP3;
-	output logic [10:0] PP4;
-	output logic [10:0] PP5;
-	output logic [ 9:0] PP6;
+	output logic [numbit:0]		PP1;
+	output logic [numbit:0]		PP2;
+	output logic [numbit:0]		PP3;
+	output logic [numbit:0]		PP4;
+	output logic [numbit:0]		PP5;
+	output logic [numbit-1:0]	PP6;
 	output [ 4:0] signs;
 	
-	logic [11:-1] B_int;
+	logic [numbit:-1] B_int;
 
 	// B MSB is extended: B[11] and B[10]
 	// B LSB is extended: B[-1]

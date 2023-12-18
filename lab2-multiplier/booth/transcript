@@ -1,0 +1,7 @@
+# vsim -work ./sim/work -c -sv_seed random -onfinish stop -voptargs="+acc" -do "./sim/sim.do" tb 
+# Start time: 18:43:47 on Dec 18,2023
+# ** Error (suppressible): (vsim-19) Failed to access library './sim/work' at "./sim/work".
+# No such file or directory. (errno = ENOENT)
+# Error loading design
+# End time: 18:43:47 on Dec 18,2023, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
