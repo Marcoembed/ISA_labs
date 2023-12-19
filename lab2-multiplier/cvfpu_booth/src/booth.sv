@@ -32,7 +32,7 @@ import booth_pkg::*;
 	output logic [numbit-1:0]	PP6;
 	output [ 4:0] signs;
 	
-	logic [numbit:-1] B_int;
+	logic [numbit+1:-1] B_int;
 
 	// B MSB is extended: B[11] and B[10]
 	// B LSB is extended: B[-1]
