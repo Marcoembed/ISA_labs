@@ -10,7 +10,7 @@
 //					multiplier entity. For this project an exaustive approach was
 //					chosen since the total number of combinations to test was still
 //					manageable. Thus, the TestBench creates every possible combination
-//					for inputs A and B and chechs the output product against the 
+//					for inputs A and B and checks the output product against the 
 //					software-computed value, collecting the number of occurring divergences.
 //					At the end a scoreboard is prompted to have a quick check of
 //					the correctness of the multiplier.
@@ -19,6 +19,9 @@
 
 
 module tb;
+
+	import booth_pkg::*;
+
 	// Declare signals
 	logic [ 9:0] TB_A, TB_B;
 	logic [19:0] TB_out;
@@ -31,8 +34,7 @@ module tb;
 	);
 	
 	int z, errors = 0;
-	//const int MAXINT = 2**3-1;
-	const int MAXINT = 2**10-1;
+	const int MAXINT = 2**numbit-1;
 
 	// Generate stimuli
 	initial begin
