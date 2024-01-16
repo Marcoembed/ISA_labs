@@ -1,4 +1,27 @@
+/*----------------------------------------------------------------------------------------------*/
+// Engineer: Simone Ruffini 	[simone.ruffini@studenti.polito.it],
+//			 Marco Crisolgo 	[s305673@studenti.polito.it],
+//			 Matteo Lago 		[s319914@studenti.polito.it],
+//			 Renato Belmonte 	[s316792@studenti.polito.it],
+//
+// Module Name:		TestBench
+// Project Name:	BOOTH
+// Description:		The TestBench serves as a verification tool for the standalone
+//					multiplier entity. For this project an exaustive approach was
+//					chosen since the total number of combinations to test was still
+//					manageable. Thus, the TestBench creates every possible combination
+//					for inputs A and B and checks the output product against the 
+//					software-computed value, collecting the number of occurring divergences.
+//					At the end a scoreboard is prompted to have a quick check of
+//					the correctness of the multiplier.
+//					
+/*----------------------------------------------------------------------------------------------*/
+
+
 module tb;
+
+	import booth_pkg::*;
+
 	// Declare signals
 	logic [ 9:0] TB_A, TB_B;
 	logic [19:0] TB_out;
@@ -10,31 +33,42 @@ module tb;
 		.out(TB_out)
 	);
 	
+	int z, errors = 0;
+	const int MAXINT = 2**numbit-1;
 
-	// Generate stimulus
+	// Generate stimuli
 	initial begin
-		// Initial values
-		TB_A = 10'b0000000000;
-		TB_B = 10'b1111111111;
-		
-		// Simulate for 500ns = 50 * 10ns
-		repeat (50) begin
 
-			// Wait for 10ns
-			#10ns;
+		// Exaustive loops for all possible cases
+		for(int x=0; x<=MAXINT; x++) begin
+			for(int y=0; y<=MAXINT; y++) begin
 
-			// Assert values
-			$display("################################");
-			$display("Time =  %0t ns:", ($time-10ns)/1000);
-			$display("A =     %20b  (%0d)", TB_A, TB_A);
-			$display("B =     %20b  (%0d)", TB_B, TB_B);
-			$display("OUT =   %20b  (%0d)", TB_out, TB_out);
+				// Drive input signals
+				TB_A = x;
+				TB_B = y;
+				z = x*y;
 
-			// Drive random values to the signals
-			TB_A = $random;
-			TB_B = $random;
+				// Wait for 10ns
+				#10ns;
 
+				// Assert values
+				//$display("################################");
+				//$display("A =              %7d", TB_A);
+				//$display("B =              %7d", TB_B);
+				//$display("OUT (HW) =       %7d", TB_out);
+				//$display("OUT (expected) = %7d", z);
+
+				if(TB_out != z) begin
+					errors ++;
+				end
+
+			end
 		end
+
+		$display("\n\n################################\n");
+		$display("Operations checked: %7d", (MAXINT+1)**2);
+		$display("Mismatches found:   %7d", errors);
+		$display("\n################################\n\n");
 		
 		// Stop simulation
 		$stop;
