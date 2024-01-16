@@ -1,0 +1,13 @@
+./src/fet/fet.sv
+./src/exe/alu.sv
+./src/exe/exe.sv
+./src/cu/cu.sv
+./src/dec/dec.sv
+./src/dec/imm_ext.sv
+./src/dec/reg_file.sv
+./src/hu/hu.sv
+./src/fu/fu.sv
+./src/preg/mem_wrb.sv
+./src/preg/exe_mem.sv
+./src/preg/dec_exe.sv
+./src/preg/fet_dec.sv

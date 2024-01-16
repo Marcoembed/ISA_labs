@@ -10,4 +10,19 @@
 //
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
+import riscv_pkg::*;
+
+module cu (
+	input 	t_opcode opcode_i,
+   	output 	EX_ctrl EX,	
+   	output 	MEM_ctrl MEM,	
+   	output 	WB_ctrl WB:	
+);
+
+always_comb begin 
+
+end
+
+endmodule
+
 
