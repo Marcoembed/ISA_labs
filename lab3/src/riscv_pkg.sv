@@ -54,9 +54,15 @@ package riscv_pkg;
 	//------------------------------ ALU Operations
 	typedef enum logic [6:0] {
     	// Arithmetics
-    	FUNC_ADD = 7'b0000000,
-    	FUNC_SUB = 7'b0100000
-	} func7;
+    	ADD = 7'b0000000,
+    	SUB = 7'b0100000
+	} funct7;
+
+	typedef enum logic [6:0] {
+    	// Arithmetics
+    	ADD = 7'b0000000,
+    	SUB = 7'b0100000
+	} funct3;
 
 	typedef enum logic {
 		ALU_ADD = 1'b0,
@@ -64,8 +70,10 @@ package riscv_pkg;
 	}ALU_ctrl;
 
 	typedef enum logic {
-		OPB = 1'b0,
-		IMM = 1'b1
+		PC,
+		RS1, 
+		RS2, 
+		IMM 
 	}ALU_src;
 	
 	/*------------------------------*/
@@ -76,17 +84,11 @@ package riscv_pkg;
 	//	EXE
 	/*------------------------------*/
 
-
 	typedef struct packed {
 		ALU_ctrl ALUopr;
-		ALU_src ALUsrc;
-		inst_type is_RTYPE;
+		ALU_src ALUsrcA;
+		ALU_src ALUsrcB;
 	}EX_ctrl;
-
-	typedef enum logic{
-		NORTYPE = 1'b0,
-		RTYPE = 1'b1
-	}inst_type;
 
 	/*------------------------------*/
 	//	MEM
