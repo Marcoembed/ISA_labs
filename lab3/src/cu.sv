@@ -13,24 +13,42 @@
 import riscv_pkg::*;
 
 module cu (
-	input 	t_opcode opcode_i,
+	input 	[31:0] instr,
    	output 	EX_ctrl EX,	
    	output 	MEM_ctrl MEM,	
    	output 	WB_ctrl WB	
 );
 
-always_comb begin
+// Unpacking instruction control bits 
 
-	case(opcode_i) 
-		OP_RTYPE		: begin EX.is_RTYPE = RTYPE; EX.ALUsrc = OPB; WB.SRCtoRF = ALUtoRF; end
-		OP_ADDI 		: begin EX.alu_opr = ALU_ADD; end
-		OP_AUIPC		: begin end
+logic opcode = [6:0] instr;
+logic funct3 = [14:12] instr;
+logic funct7 = [31:25] instr;
+
+always_comb begin
+	EX.is_RTYPE = NORTYPE;
+	EX.ALUopr  	= ALU_ADD;
+	EX.ALUsrc	= OPB;
+	MEM.obi
+
+	case(opcode)
+		OP_RTYPE		: begin
+						  	case(funct7)
+						  		ADD	: begin EX.ALUsrcA = RS1; EX.ALUsrcB = RS2; EX.ALUopr = ALU_ADD; end
+						  		SUB	: begin EX.ALUsrcA = RS1; EX.ALUsrcB = RS2; EX.ALUopr = ALU_SUB; end
+							endcase
+						  end
+						
+		OP_ADDI 		: begin EX.ALUopr = ALU_ADD; EX.ALUsrc = IMM; end
+		OP_AUIPC		: begin EX.ALUopr = ALU_ADD; EX.ALUsrc = IMM; end
 		OP_BRANCH		: begin end
 		OP_JMP			: begin end
 		OP_LUI 			: begin end
 		OP_LW  			: begin end
 		OP_SW  			: begin end
 		OP_RET 			: begin end
+	endcase
+
 end
 
 endmodule
