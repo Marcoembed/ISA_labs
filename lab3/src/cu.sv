@@ -16,11 +16,21 @@ module cu (
 	input 	t_opcode opcode_i,
    	output 	EX_ctrl EX,	
    	output 	MEM_ctrl MEM,	
-   	output 	WB_ctrl WB:	
+   	output 	WB_ctrl WB	
 );
 
-always_comb begin 
+always_comb begin
 
+	case(opcode_i) 
+		OP_RTYPE		: begin EX.is_RTYPE = RTYPE; EX.ALUsrc = OPB; WB.SRCtoRF = ALUtoRF; end
+		OP_ADDI 		: begin EX.alu_opr = ALU_ADD; end
+		OP_AUIPC		: begin end
+		OP_BRANCH		: begin end
+		OP_JMP			: begin end
+		OP_LUI 			: begin end
+		OP_LW  			: begin end
+		OP_SW  			: begin end
+		OP_RET 			: begin end
 end
 
 endmodule

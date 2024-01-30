@@ -34,6 +34,9 @@ all:	## Build all: init, ela, sim, syn
 	@${SCRIPT} ${SIM_GUI}
 	@${SCRIPT} ${SYN}
 
+clean:	## clean repo
+	@${SCRIPT} ${CLEAN}
+
 init:	## directory file initialization: creation of "do" files and "compile" files
 	@echo "File initialization..."
 	@${SCRIPT} ${INIT}
