@@ -62,6 +62,11 @@ package riscv_pkg;
 		ALU_ADD = 1'b0,
 		ALU_SUB = 1'b1
 	}ALU_ctrl;
+
+	typedef enum logic {
+		OPB = 1'b0,
+		IMM = 1'b1
+	}ALU_src;
 	
 	/*------------------------------*/
 	//	DEC
@@ -73,9 +78,15 @@ package riscv_pkg;
 
 
 	typedef struct packed {
-		ALU_ctrl alu_opr;
-		logic	 ALUsrc;
+		ALU_ctrl ALUopr;
+		ALU_src ALUsrc;
+		inst_type is_RTYPE;
 	}EX_ctrl;
+
+	typedef enum logic{
+		NORTYPE = 1'b0,
+		RTYPE = 1'b1
+	}inst_type;
 
 	/*------------------------------*/
 	//	MEM
@@ -89,8 +100,13 @@ package riscv_pkg;
 	//	WB
 	/*------------------------------*/
 	typedef struct packed {
-		logic mux_sel;
+		logic SRCtoRF;
 	}WB_ctrl;
+
+	typedef enum logic{
+		MEMtoRF,
+		ALUtoRF
+	}WB_mux;
 
 	//------------------------------ WB
 	
