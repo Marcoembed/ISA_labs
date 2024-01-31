@@ -10,9 +10,10 @@
 //
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
-import riscv_pkg::*;
 
-module imm_gen (
+
+module imm_gen import riscv_pkg::*; 
+#(
     input   logic[31:0]  instruction_i, 
     output  logic[31:0]  immediate_o
 );

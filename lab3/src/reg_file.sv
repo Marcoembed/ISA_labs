@@ -11,8 +11,8 @@
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
 
-module register_file 
-(
+module register_file import riscv_pkg::*;
+#(
 	input logic [4:0] rs1, // The register number from instruction is always 5 bits
 	input logic [4:0] rs2,
 	input logic [4:0] rd,

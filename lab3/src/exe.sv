@@ -11,8 +11,9 @@
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
 
-import riscv_pkg::*;
-module exe (
+
+module exe import riscv_pkg::*;
+#(
 	//input CLK, EN, RSTn,
 
     // input control signals
