@@ -12,32 +12,18 @@ package riscv_pkg;
 		OP_RET		= 7'b1100111
 	} t_opcode;
 
-	//------------------------------ INSTRUCTIONS
-	
-	typedef enum logic [31:0] {
-		ADD,
-		ADDI,
-		AUIPC,
-		BLE,
-		BLTU,
-		J,
-		JAL,
-		LI,
-		LUI,
-		LW,
-		MV,
-		NOP,
-		RET,
-		SUB,
-		SW
-	} inst_enum;
 
 	//------------------------------ FORWARD
 	typedef enum logic [2:0] {
 		FORWARD_alu,
 		FORWARD_wb,
 		NOFORWARD
-	} fu_ctrl;	
+	} FU_ctrl;	
+
+	typedef struct packed {
+		FU_ctrl FRWD_A;
+		FU_ctrl FRWD_B; 
+	} FU_mux;
 
 	//------------------------------ HAZARD
 
@@ -45,7 +31,7 @@ package riscv_pkg;
 		BRANCH,
 		JMP,
 		NOBRANCH
-	} branch_ctrl;
+	} BRANCH_ctrl;
 
 
 	//------------------------------ OBI interface
@@ -54,7 +40,7 @@ package riscv_pkg;
 		logic mem_rdy;
 		logic valid;
 		logic we;		// write / (read')
-	} obi_ctrl;
+	} OBI_ctrl;
 
 	
 	//------------------------------ ALU Operations
@@ -90,7 +76,7 @@ package riscv_pkg;
 	/*------------------------------*/
 
 	typedef struct packed {
-		branch_ctrl branch;
+		BRANCH_ctrl branch;
 	}DEC_ctrl;
 
 	/*------------------------------*/
@@ -108,21 +94,22 @@ package riscv_pkg;
 	/*------------------------------*/
 
 	typedef struct packed {
-		obi_ctrl obi;
+		OBI_ctrl obi;
 	}MEM_ctrl;
 	
 	/*------------------------------*/
 	//	WB
 	/*------------------------------*/
+	typedef enum logic [1:0]{
+		MEMtoRF,
+		ALUtoRF,
+		IMMtoRF
+	}WB_mux;
+
 	typedef struct packed {
 		WB_mux SRCtoRF;
 	}WB_ctrl;
 
-	typedef enum logic{
-		MEMtoRF,
-		ALUtoRF,
-		LUItoRF
-	}WB_mux;
 
 	//------------------------------ WB
 	

@@ -4,7 +4,7 @@
 //			 Matteo Lago 		[s319914@studenti.polito.it],
 //			 Renato Belmonte 	[s316792@studenti.polito.it],
 //
-// Module Name: Immediate Extension
+// Module Name: Immediate Generator
 // Project Name: risc-v 
 // Description: 
 //
