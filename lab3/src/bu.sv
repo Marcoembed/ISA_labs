@@ -13,16 +13,16 @@
 
 module bu import riscv_pkg::*; 
 (
-    input DEC_ctrl DECctrl_in,
-    input [31:0] RS1,
-    input [31:0] RS2,
-    input t_funct3 funct3,
+   input DEC_ctrl      DECctrl_in,
+   input logic[31:0]   RS1_in,
+   input logic[31:0]   RS2_in,
+   input t_funct3      funct3,
     
     output logic bu_o
 );
 
 always_comb begin
-    case (DECctrl_in)
+    case (DECctrl_in.branch)
         BRANCH: begin
             case (funct3)
                 BLE: begin
