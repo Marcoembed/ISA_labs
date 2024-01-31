@@ -13,10 +13,10 @@
 
 module bu import riscv_pkg::*; 
 (
-   input DEC_ctrl      DECctrl_in,
-   input logic[31:0]   RS1_in,
-   input logic[31:0]   RS2_in,
-   input t_funct3      funct3,
+    input DEC_ctrl      DECctrl_in,
+    input logic[31:0]   RS1_in,
+    input logic[31:0]   RS2_in,
+    input t_funct3      funct3,
     
     output logic bu_o
 );
