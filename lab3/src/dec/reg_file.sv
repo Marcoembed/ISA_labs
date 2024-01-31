@@ -13,59 +13,39 @@
 
 module register_file 
 (
-	input wire [4:0] rs1, // The register number from instruction is always 5 bits
-	input wire [4:0] rs2,
-	input wire [4:0] rd,
-	input wire [31:0] write_data,
-	input wire RegWrite,
-	input wire RSTn, // this is needed to reset all the register
-	input wire clk,
-	input wire en,	
+	input logic [4:0] rs1, // The register number from instruction is always 5 bits
+	input logic [4:0] rs2,
+	input logic [4:0] rd,
+	input logic [31:0] write_data,
+	input logic RegWrite,
+	input logic RSTn, // this is needed to reset all the register
+	input logic clk,
+	input logic en,	
 	
-	output reg [31:0] read_data1,
-	output reg [31:0] read_data2
+	output logic [31:0] read_data1,
+	output logic [31:0] read_data2
 );
 
 // The number of register is equal to 32. So we need at least 32 flip flops.
 // This register file is asynchronous
-	reg EN_i[32];
-	reg [31:0] Q_o[32];
-	genvar gen;
-	integer i;
 
-	generate
-		for (gen = 1; gen < 32; gen = gen + 1) begin
-			flip_flop ff0 (
-				.d(write_data), 
-				.rstn(RSTn), 
-				.clk(clk),
-				.en(EN_i[gen] & en),	
-				.q(Q_o[gen]));
-		end
-	endgenerate
-	
-	/* MUX IN WRITE */
-	always_comb begin
-		for (i = 1; i < 32; i = i+1) begin
-			if (i == rd) begin
-				EN_i[i] = RegWrite;
+	logic [31:0] regs[32];
+
+	always_ff @(posedge clk) begin
+		if (RSTn == 0)begin
+			for (i = 0; i < 32; i = i + 1) begin
+				regs[i] = 32'b0
 			end
+		end
+		if (EN_i) begin
+			if (writeAddr == 5'b00000)
+				regs[writeAddr] = 32'b0
 			else
-				EN_i[i] = 1'b0;
-		end	
+				regs[writeAddr] <= writeData;
+		end
 	end
-	
-	always_comb begin
-		if (rs1 == 5'b00000)
-			read_data1 = 32'b0;
-		else
-			read_data1 = Q_o[rs1];
-	end
-	
-	always_comb begin
-		if (rs2 == 5'b00000)
-			read_data2 = 32'b0;
-		else
-			read_data2 = Q_o[rs2];
-	end
+
+	assign readData1 = regs[readAddr1];
+	assign readData2 = regs[readAddr2];
+
 endmodule
