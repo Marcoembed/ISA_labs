@@ -44,7 +44,7 @@ always_comb begin
         end
 
         JMP: begin
-            bu_o = 1:
+            bu_o = 1;
         end
 
         NOBRANCH: begin
