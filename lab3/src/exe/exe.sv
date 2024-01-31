@@ -11,80 +11,105 @@
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
 
-import my_pkg::*;
+import riscv_pkg::*;
 module exe (
 	//input CLK, EN, RSTn,
 
-    input EX_ctrl 	EX_in_EX,
-	input FU_ctrl_o Forward_o,
-	input HAZARD_ctrl_o HAZARD_BP_o,
-	
-	input logic [31:0]	EX_in_PC_add,
-	input logic [31:0] 	EX_in_imm,
-	input logic [31:0] 	EX_in_reg_data_2,
-    input logic [31:0] 	EX_in_reg_data_1,
-    input ALU_ctrl 	EX_in_ALU_ctrl,
+    // input control signals
+    input   EX_ctrl 	    EXctrl_in,
+	input   FU_mux          FUctrl_in,
+    input   ALU_ctrl 	    ALUctrl_in,
 
-	output [31:0] 	EX_ALUResult,
+    // input data signals
+    input   logic [31:0]    EXdata_FRWDALU_in,
+    input   logic [31:0]    EXdata_FRWDWB_in,
+	input   logic [31:0]	EXdata_PC_in,
+	input   logic [31:0] 	EXdata_IMM_in,
+	input   logic [31:0] 	EXdata_RS1_in,
+	input   logic [31:0] 	EXdata_RS2_in,
+
+    // output data signals
+	output  logic [31:0] 	EXdata_ALU_out,
+    output  logic [31:0]    EXdata_IMM_out,
+
 );
 
-//---------------------- Execution Stage VAR ------------------------//
-	ALUControl_Enum	EX_ALUControl;
-    
-	//assign EXECUTE_INSTRUCTION = Instruction_Enum'(EX_in_instr);
+// signals
+    logic [31:0] MUXA_out;
+    logic [31:0] MUXB_out;
+    logic [31:0] OP1;
+    logic [31:0] OP2;
 
-// END	
 
-	// ALU Unit for Arithmetic operations
+// PORTMAP
+
+// ALU Unit for Arithmetic operations
     alu alu_unit (
-        .op1        (op1),
-        .op2        (op2),
-        .ALUopr     (EX_ctrl.ALUopr),
-        .ALUResult  (EX_ALUResult)
+        .op1        (OP1),
+        .op2        (OP2),
+        .ALUopr     (EXctrl_in.ALUopr),
+        .ALUResult  (EXdata_ALU_out)
     );
 
-    //Mux to feed ALU    
+    always_comb begin
+        EXdata_IMM_out = EXdata_IMM_in;
+    end
 
+// MUX to feed ALU    
 	always_comb begin
-        case (FWD_A)
-            FWD: begin
-                RS1 = Forward_o_A
+
+        // first MUXA
+        case (FUctrl_in.FRWD_A)
+            FORWARD_alu: begin
+                MUXA_out = EXdata_FRWDALU_in;
             end
 
-            NO_FWD: begin
-                RS1 = EX_in_reg_data_1
-            end
-        endcase
-
-        case (FWD_B)
-            FWD: begin
-                RS2 = Forward_o_B
+            FORWARD_wb: begin
+                MUXA_out = EXdata_FRWDWB_in;
             end
 
-            NO_FWD: begin
-                RS2 = EX_in_reg_data_2
+            NOFORWARD: begin
+                MUXA_out = EXdata_RS1_in;
             end
         endcase
 
-		case (ALUsrcA)
-			PC: begin
-				op1 =  EX_in_PC_add;
-			end
-			
-			RS1: begin
-				op1 = RS1;
-			end
-		endcase
+        // first MUXB
+        case (FUctrl_in.FRWD_B)
+            FORWARD_alu: begin
+                MUXB_out = EXdata_FRWDALU_in;
+            end
 
-       case (ALUsrcB)
-			IMM: begin
-				op2 =  EX_in_imm;
-			end
-			
-			RS2: begin
-				op2 = RS2;
-			end
-		endcase 
+            FORWARD_wb: begin
+                MUXB_out = EXdata_FRWDWB_in;
+            end
+
+            NOFORWARD: begin
+                MUXB_out = EXdata_RS2_in;
+            end
+        endcase
+
+        // second MUXA
+        case (EXctrl_in.ALUsrcA)
+            RS1: begin
+                OP1 = MUXA_out;
+            end
+
+            PC: begin
+                OP1 = EXdata_PC_in;
+            end
+        endcase
+
+        // second MUXB
+        case (EXctrl_in.ALUsrcB)
+            RS2: begin
+                OP2 = MUXB_out;
+            end
+
+            IMM: begin
+                OP2 = EXdata_IMM_in;
+            end
+        endcase
+
 	end
 
 endmodule
