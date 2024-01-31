@@ -11,16 +11,17 @@
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
 
-import my_pkg::*;
 
-module alu (input logic [31:0] op1, 
+module alu import riscv_pkg::*;
+(  
+            input logic [31:0] op1, 
 			input logic [31:0] op2,
-			input ALU_ctrl ALUopr,
-			output reg [31:0] ALUResult, 
+			input ALU_ctrl ALUop,
+			output logic [31:0] ALUResult 
 );
 	
 	always_comb begin
-		case (ALUControl)
+		case (ALUop)
 			ALU_ADD: begin
 				ALUResult = op1 + op2; 
 			end
@@ -30,7 +31,7 @@ module alu (input logic [31:0] op1,
 			end
 			
 			default : begin
-				ALUResult = ADD_Result;
+				ALUResult = op1 + op2;
 			end
 		endcase
 	end

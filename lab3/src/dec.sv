@@ -12,3 +12,13 @@
 /*--------------------------------------------------------------------------------*/
 
 // TARGET = PC + IMM ESTESO
+//
+//module dec import riscv_pkg::*;
+//#(
+//    input   DEC_ctrl    DECctrl_in,
+//
+//
+//    output EX   
+//);
+//    
+//endmodule
