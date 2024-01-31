@@ -14,6 +14,7 @@ import riscv_pkg::*;
 
 module cu (
 	input 	[31:0] instr,
+   	output 	DEC_ctrl DEC,	
    	output 	EX_ctrl EX,	
    	output 	MEM_ctrl MEM,	
    	output 	WB_ctrl WB	
@@ -22,31 +23,33 @@ module cu (
 // Unpacking instruction control bits 
 
 logic opcode = [6:0] instr;
-logic funct3 = [14:12] instr;
 logic funct7 = [31:25] instr;
 
 always_comb begin
-	EX.is_RTYPE = NORTYPE;
-	EX.ALUopr  	= ALU_ADD;
-	EX.ALUsrc	= OPB;
-	MEM.obi
 
-	case(opcode)
+	// default op ADD immediate
+	DEC.branch 		= NOBRANCH;
+	EX.ALUopr  		= ALU_ADD;
+	EX.ALUsrcA		= RS1;
+	EX.ALUsrcB		= IMM;
+	MEM.obi			= NOT_EN;
+	WB.SRCtoRF 		= ALUtoRF;
+
+	unique case (opcode)
 		OP_RTYPE		: begin
-						  	case(funct7)
-						  		ADD	: begin EX.ALUsrcA = RS1; EX.ALUsrcB = RS2; EX.ALUopr = ALU_ADD; end
-						  		SUB	: begin EX.ALUsrcA = RS1; EX.ALUsrcB = RS2; EX.ALUopr = ALU_SUB; end
+						  	unique case (funct7)
+						  		ADD	: begin EX.ALUopr = ALU_ADD; end
+						  		SUB	: begin EX.ALUsrc = RS2; EX.ALUopr = ALU_SUB; end
 							endcase
 						  end
-						
 		OP_ADDI 		: begin EX.ALUopr = ALU_ADD; EX.ALUsrc = IMM; end
 		OP_AUIPC		: begin EX.ALUopr = ALU_ADD; EX.ALUsrc = IMM; end
-		OP_BRANCH		: begin end
-		OP_JMP			: begin end
-		OP_LUI 			: begin end
-		OP_LW  			: begin end
-		OP_SW  			: begin end
-		OP_RET 			: begin end
+		OP_BRANCH		: begin DEC.branch = BRANCH; end
+		OP_JMP			: begin DEC.branch = JMP; end
+		OP_LUI 			: begin WB.SRCtoRF = LUItoRF; end
+		OP_LW  			: begin MEM.obi; WB.SRCtoRF = MEMtoRF; end
+		OP_SW  			: begin MEM.obi; end
+		OP_RET 			: begin DEC.branch = JMP; end
 	endcase
 
 end
