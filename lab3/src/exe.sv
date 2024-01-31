@@ -11,27 +11,29 @@
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
 
+
 module exe import riscv_pkg::*;
-    #(
-	    //input CLK, EN, RSTn,
+#(
+	//input CLK, EN, RSTn,
 
-        // input control signals
-        input   EX_ctrl 	    EXctrl_in,
-	    input   FU_mux          FUctrl_in,
-        input   ALU_ctrl 	    ALUctrl_in,
+    // input control signals
+    input   EX_ctrl 	    EXctrl_in,
+	input   FU_mux          FUctrl_in,
+    input   ALU_ctrl 	    ALUctrl_in,
 
-        // input data signals
-        input   logic [31:0]    EXdata_FRWDALU_in,
-        input   logic [31:0]    EXdata_FRWDWB_in,
-	    input   logic [31:0]	EXdata_PC_in,
-	    input   logic [31:0] 	EXdata_IMM_in,
-	    input   logic [31:0] 	EXdata_RS1_in,
-	    input   logic [31:0] 	EXdata_RS2_in,
+    // input data signals
+    input   logic [31:0]    EXdata_FRWDALU_in,
+    input   logic [31:0]    EXdata_FRWDWB_in,
+	input   logic [31:0]	EXdata_PC_in,
+	input   logic [31:0] 	EXdata_IMM_in,
+	input   logic [31:0] 	EXdata_RS1_in,
+	input   logic [31:0] 	EXdata_RS2_in,
 
-        // output data signals
-	    output  logic [31:0] 	EXdata_ALU_out,
-        output  logic [31:0]    EXdata_IMM_out,
-    );
+    // output data signals
+	output  logic [31:0] 	EXdata_ALU_out,
+    output  logic [31:0]    EXdata_IMM_out,
+
+);
 
 // signals
     logic [31:0] MUXA_out;
