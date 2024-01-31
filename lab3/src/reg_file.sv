@@ -42,7 +42,7 @@ module register_file import riscv_pkg::*;
 			if (rd == 5'b0)
 				regs[rd] = 32'b0;
 			else
-				regs[rd] <= write_data;
+				regs[rd] = write_data;
 		end
 	end
 

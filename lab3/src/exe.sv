@@ -19,7 +19,7 @@ module exe import riscv_pkg::*;
     // input control signals
 
     input   EX_ctrl 	    EXctrl_in,
-	input   FU_mux          FUctrl_in,
+    input   FU_mux          FUctrl_in,
     input   ALU_ctrl 	    ALUctrl_in,
 
     // input data signals
