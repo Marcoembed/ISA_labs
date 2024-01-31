@@ -41,6 +41,12 @@ package riscv_pkg;
 
 	//------------------------------ HAZARD
 
+	typedef enum logic[1:0] {
+		BRANCH,
+		JMP,
+		NOBRANCH
+	} branch_ctrl;
+
 
 	//------------------------------ OBI interface
 	typedef struct packed {
@@ -58,10 +64,10 @@ package riscv_pkg;
     	SUB = 7'b0100000
 	} funct7;
 
-	typedef enum logic [6:0] {
+	typedef enum logic [2:0] {
     	// Arithmetics
-    	ADD = 7'b0000000,
-    	SUB = 7'b0100000
+    	BLE  = 3'b101,
+    	BLTU = 3'b110
 	} funct3;
 
 	typedef enum logic {
@@ -70,15 +76,22 @@ package riscv_pkg;
 	}ALU_ctrl;
 
 	typedef enum logic {
-		PC,
 		RS1, 
+		PC
+	}ALU_srcA;
+
+	typedef enum logic {
 		RS2, 
 		IMM 
-	}ALU_src;
+	}ALU_srcB;
 	
 	/*------------------------------*/
 	//	DEC
 	/*------------------------------*/
+
+	typedef struct packed {
+		branch_ctrl branch;
+	}DEC_ctrl;
 
 	/*------------------------------*/
 	//	EXE
@@ -86,8 +99,8 @@ package riscv_pkg;
 
 	typedef struct packed {
 		ALU_ctrl ALUopr;
-		ALU_src ALUsrcA;
-		ALU_src ALUsrcB;
+		ALU_srcA ALUsrcA;
+		ALU_srcB ALUsrcB;
 	}EX_ctrl;
 
 	/*------------------------------*/
@@ -102,12 +115,13 @@ package riscv_pkg;
 	//	WB
 	/*------------------------------*/
 	typedef struct packed {
-		logic SRCtoRF;
+		WB_mux SRCtoRF;
 	}WB_ctrl;
 
 	typedef enum logic{
 		MEMtoRF,
-		ALUtoRF
+		ALUtoRF,
+		LUItoRF
 	}WB_mux;
 
 	//------------------------------ WB
