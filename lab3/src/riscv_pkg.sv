@@ -48,13 +48,13 @@ package riscv_pkg;
     	// Arithmetics
     	ADD = 7'b0000000,
     	SUB = 7'b0100000
-	} funct7;
+	} t_funct7;
 
 	typedef enum logic [2:0] {
     	// Arithmetics
     	BLE  = 3'b101,
     	BLTU = 3'b110
-	} funct3;
+	} t_funct3;
 
 	typedef enum logic {
 		ALU_ADD = 1'b0,

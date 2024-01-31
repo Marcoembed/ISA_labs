@@ -10,9 +10,9 @@
 //
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
-import riscv_pkg::*;
 
-module cu (
+module cu import riscv_pkg::*; 
+(
 	input 	[31:0] instr,
    	output 	DEC_ctrl DEC,	
    	output 	EX_ctrl EX,	
@@ -22,8 +22,11 @@ module cu (
 
 // Unpacking instruction control bits 
 
-logic opcode = [6:0] instr;
-logic funct7 = [31:25] instr;
+t_opcode  op_code;
+assign op_code = t_opcode'(instr[6:0]);
+
+t_funct7 funct7;
+assign funct7 = t_funct7'(instr[31:25]);
 
 always_comb begin
 
@@ -55,5 +58,3 @@ always_comb begin
 end
 
 endmodule
-
-
