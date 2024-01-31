@@ -35,23 +35,22 @@ always_comb begin
 	EX.ALUopr  		= ALU_ADD;
 	EX.ALUsrcA		= RS1;
 	EX.ALUsrcB		= IMM;
-	MEM.obi			= NOT_EN;
 	WB.SRCtoRF 		= ALUtoRF;
 
-	unique case (opcode)
+	unique case (op_code)
 		OP_RTYPE		: begin
 						  	unique case (funct7)
 						  		ADD	: begin EX.ALUopr = ALU_ADD; end
-						  		SUB	: begin EX.ALUsrc = RS2; EX.ALUopr = ALU_SUB; end
+						  		SUB	: begin EX.ALUsrcB = RS2; EX.ALUopr = ALU_SUB; end
 							endcase
 						  end
-		OP_ADDI 		: begin EX.ALUopr = ALU_ADD; EX.ALUsrc = IMM; end
-		OP_AUIPC		: begin EX.ALUopr = ALU_ADD; EX.ALUsrc = IMM; end
+		OP_ADDI 		: begin EX.ALUopr = ALU_ADD; EX.ALUsrcB = IMM; end
+		OP_AUIPC		: begin EX.ALUopr = ALU_ADD; EX.ALUsrcB = IMM; end
 		OP_BRANCH		: begin DEC.branch = BRANCH; end
 		OP_JMP			: begin DEC.branch = JMP; end
-		OP_LUI 			: begin WB.SRCtoRF = LUItoRF; end
-		OP_LW  			: begin MEM.obi; WB.SRCtoRF = MEMtoRF; end
-		OP_SW  			: begin MEM.obi; end
+		OP_LUI 			: begin WB.SRCtoRF = IMMtoRF; end
+		OP_LW  			: begin WB.SRCtoRF = MEMtoRF; end
+		OP_SW  			: begin end
 		OP_RET 			: begin DEC.branch = JMP; end
 	endcase
 

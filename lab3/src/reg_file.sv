@@ -12,7 +12,7 @@
 /*--------------------------------------------------------------------------------*/
 
 module register_file import riscv_pkg::*;
-#(
+(
 	input logic [4:0] rs1, // The register number from instruction is always 5 bits
 	input logic [4:0] rs2,
 	input logic [4:0] rd,
@@ -30,22 +30,23 @@ module register_file import riscv_pkg::*;
 // This register file is asynchronous
 
 	logic [31:0] regs[32];
+	integer i;
 
 	always_ff @(posedge clk) begin
-		if (RSTn == 0)begin
+		if (RSTn == 0) begin
 			for (i = 0; i < 32; i = i + 1) begin
-				regs[i] = 32'b0
+				regs[i] = 32'b0;
 			end
 		end
-		if (EN_i) begin
-			if (writeAddr == 5'b00000)
-				regs[writeAddr] = 32'b0
+		if (en) begin
+			if (rd == 5'b0)
+				regs[rd] = 32'b0;
 			else
-				regs[writeAddr] <= writeData;
+				regs[rd] <= write_data;
 		end
 	end
 
-	assign readData1 = regs[readAddr1];
-	assign readData2 = regs[readAddr2];
+	assign read_data1 = regs[rs1];
+	assign read_data2 = regs[rs2];
 
 endmodule

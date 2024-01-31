@@ -13,7 +13,7 @@
 
 
 module exe import riscv_pkg::*;
-#(
+(
 	//input CLK, EN, RSTn,
 
     // input control signals
@@ -31,7 +31,7 @@ module exe import riscv_pkg::*;
 
     // output data signals
 	output  logic [31:0] 	EXdata_ALU_out,
-    output  logic [31:0]    EXdata_IMM_out,
+    output  logic [31:0]    EXdata_IMM_out
 
 );
 

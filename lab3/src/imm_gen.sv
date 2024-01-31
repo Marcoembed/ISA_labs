@@ -62,9 +62,11 @@ always_comb begin
 
         default: begin
                 immediate_o = 32'b0;
-            end
+        end
      
         
     endcase
 
-    end
+end
+
+endmodule
