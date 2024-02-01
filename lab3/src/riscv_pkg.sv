@@ -1,4 +1,9 @@
 package riscv_pkg;
+	// param
+	localparam width = 32;
+	localparam reg_width = 5;
+	localparam opcode_width = 5;
+
 	//------------------------------ OPCODE
 	typedef enum logic [6:0] {
 		OP_RTYPE 	= 7'b0110011,
@@ -21,7 +26,21 @@ package riscv_pkg;
 	} t_instr;
 
 	//------------------------------ FORWARD
-	typedef enum logic [1:0]{
+	typedef struct packed {
+		logic [4:0] 	Mem_rd;
+		logic [4:0] 	WB_rd;
+		logic [4:0] 	EX_rs1;
+		logic [4:0] 	EX_rs2;
+		logic			Mem_RegWrite;
+		logic			WB_RegWrite;
+		logic			ALU_srcA;
+		logic			ALU_srcB;
+//		logic			MEM_in_Rd_EQ0;
+//		logic			WB_in_Rd_EQ0;
+	} FU_ctrl_i;
+
+
+	typedef enum logic [1:0] {
 		FORWARD_alu,
 		FORWARD_wb,
 		NOFORWARD

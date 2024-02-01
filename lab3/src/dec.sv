@@ -51,13 +51,13 @@ module dec import riscv_pkg::*;
 
     imm_gen imm_gen_unit (
         .instruction_i(IDdata_INSTRUCTION_in),
-        .immediate_o(MEMdata_IMM_out)
+        .immediate_o(EXdata_IMM_out)
     );
 
     bu bu_unit (
         .DECctrl_in(DECctrl_in),
         .RS1(RS1),
-        .RS2(RS2),
+        .RS2(RS2)
          
     );
 
