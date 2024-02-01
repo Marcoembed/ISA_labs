@@ -14,6 +14,20 @@ package riscv_pkg;
 
 
 	//------------------------------ FORWARD
+	typedef struct packed {
+		logic [4:0] 	Mem_rd;
+		logic [4:0] 	WB_rd;
+		logic [4:0] 	EX_rs1;
+		logic [4:0] 	EX_rs2;
+		logic			Mem_RegWrite;
+		logic			WB_RegWrite;
+		logic			ALU_srcA;
+		logic			ALU_srcB;
+//		logic			MEM_in_Rd_EQ0;
+//		logic			WB_in_Rd_EQ0;
+	} FU_ctrl_i;
+
+
 	typedef enum logic [2:0] {
 		FORWARD_alu,
 		FORWARD_wb,

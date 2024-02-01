@@ -12,7 +12,7 @@
 /*--------------------------------------------------------------------------------*/
 
 
-module preg_dex_ex import riscv_pkg::*;
+module preg_dec_ex import riscv_pkg::*;
 (
     // control input signals
 	input EX_ctrl EXctrl_in,
