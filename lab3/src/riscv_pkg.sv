@@ -96,6 +96,14 @@ package riscv_pkg;
 		IMM, 
 		RS2 
 	}ALU_srcB;
+
+	/*------------------------------*/
+	//	FET
+	/*------------------------------*/
+	typedef struct packed {
+		logic	PC_sel;
+	  
+	}IF_ctrl;
 	
 	/*------------------------------*/
 	//	DEC
