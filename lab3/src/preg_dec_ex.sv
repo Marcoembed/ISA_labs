@@ -13,12 +13,11 @@
 
 
 module preg_dex_ex import riscv_pkg::*;
-	(
-
+(
     // control input signals
 	input EX_ctrl EXctrl_in,
 	input MEM_ctrl MEMctrl_in,
-	input DEC_ctrl DECctrl_in, 
+	input DEC_ctrl DECctrl_in
 
 	// control output signals
 
