@@ -12,10 +12,10 @@
 /*--------------------------------------------------------------------------------*/
 
 
-module fu import my_pkg::*;
+module fu import riscv_pkg::*;
 ( 
-    input   FU_i    FU_in,
-    input   FU_mux  FU_out
+    input   FU_ctrl_i    FU_in,
+    output   FU_mux  FU_out
 );
 
 always_comb begin
