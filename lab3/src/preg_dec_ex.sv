@@ -60,8 +60,7 @@ always_ff @( posedge CLK ) begin : dex_ex
 	if (RSTn == 0) begin
 
 		// Control signals
-		EXctrl_out 	<= '0; 		// '0 takes care about size based on context
-		MEMctrl_out <= '0; 		
+		MEMctrl_out <= '0;  		// '0 takes care about size based on context		
 		WBctrl_out 	<= '0;
 
 		// Data signals
