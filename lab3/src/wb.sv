@@ -15,7 +15,7 @@
 module wb import riscv_pkg::*;
     (
     // Control input signals
-    input WB_ctrl WBctrl_in
+    input WB_ctrl WBctrl_in,
 
     // Data input signals
     input [31:0] MEMdata_ALU_in,
@@ -44,3 +44,5 @@ always_comb begin
         
     endcase
 end
+
+endmodule;
