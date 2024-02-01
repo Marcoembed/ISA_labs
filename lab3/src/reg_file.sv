@@ -38,10 +38,12 @@ module register_file import riscv_pkg::*;
 			end
 		end
 		if (en) begin
-			if (rd == 5'b0)
-				regs[rd] <= 32'b0;
-			else 
+			if (rd == 5'b0) begin
+			  regs[rd] <= 32'b0;
+			end else begin
 				regs[rd] <= write_data;
+			end
+
 		end
 	end
 
