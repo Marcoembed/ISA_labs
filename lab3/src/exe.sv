@@ -17,6 +17,7 @@ module exe import riscv_pkg::*;
 	//input CLK, EN, RSTn,
 
     // input control signals
+
     input   EX_ctrl 	    EXctrl_in,
     input   FU_mux          FUctrl_in,
     input   ALU_ctrl 	    ALUctrl_in,
@@ -32,7 +33,7 @@ module exe import riscv_pkg::*;
     // output data signals
 	output  logic [31:0] 	EXdata_ALU_out,
     output  logic [31:0]    EXdata_IMM_out
-
+sfsdfsfasf
 );
 
 // signals
@@ -72,6 +73,7 @@ module exe import riscv_pkg::*;
             NOFORWARD: begin
                 MUXA_out = EXdata_RS1_in;
             end
+
         endcase
 
         // first MUXB
