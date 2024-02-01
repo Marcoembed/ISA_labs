@@ -1,6 +1,7 @@
 [rules]
 blocking_assignment_in_always_ff = true
 case_default = false
+operator_case_equality = true
 default_nettype_none = false
 enum_with_type = true
 for_with_begin = true
@@ -12,7 +13,7 @@ generate_keyword_forbidden = true
 generate_keyword_required = true
 genvar_declaration_in_loop = true
 genvar_declaration_out_loop = true
-if_with_begin = true
+if_with_begin = false
 inout_with_tri = false
 input_with_var = false
 interface_port_with_modport = true

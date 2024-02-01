@@ -15,11 +15,10 @@
 module exe import riscv_pkg::*;
 (
 	//input CLK, EN, RSTn,
-
     // input control signals
 
     input   EX_ctrl 	    EXctrl_in,
-    input   FU_mux          FUctrl_in,
+	input   FU_mux          FUctrl_in,
     input   ALU_ctrl 	    ALUctrl_in,
 
     // input data signals
@@ -33,7 +32,7 @@ module exe import riscv_pkg::*;
     // output data signals
 	output  logic [31:0] 	EXdata_ALU_out,
     output  logic [31:0]    EXdata_IMM_out
-sfsdfsfasf
+
 );
 
 // signals
@@ -78,6 +77,7 @@ sfsdfsfasf
 
         // first MUXB
         case (FUctrl_in.FRWD_B)
+
             FORWARD_alu: begin
                 MUXB_out = EXdata_FRWDALU_in;
             end
