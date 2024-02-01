@@ -12,9 +12,16 @@ package riscv_pkg;
 		OP_RET		= 7'b1100111
 	} t_opcode;
 
+	//------------------------------ INSTRUCTIONS
+	typedef struct packed{
+		logic [6:0] opcode;
+		logic [4:0] rd;
+		logic [4:0] rs1;
+		logic [4:0] rs2;
+	} t_instr;
 
 	//------------------------------ FORWARD
-	typedef enum logic [2:0] {
+	typedef enum logic [1:0]{
 		FORWARD_alu,
 		FORWARD_wb,
 		NOFORWARD
@@ -67,8 +74,8 @@ package riscv_pkg;
 	}ALU_srcA;
 
 	typedef enum logic {
-		RS2, 
-		IMM 
+		IMM, 
+		RS2 
 	}ALU_srcB;
 	
 	/*------------------------------*/
@@ -101,8 +108,8 @@ package riscv_pkg;
 	//	WB
 	/*------------------------------*/
 	typedef enum logic [1:0]{
-		MEMtoRF,
 		ALUtoRF,
+		MEMtoRF,
 		IMMtoRF
 	}WB_mux;
 
