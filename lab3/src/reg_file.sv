@@ -30,19 +30,18 @@ module register_file import riscv_pkg::*;
 // This register file is asynchronous
 
 	logic [31:0] regs[32];
-	integer i;
 
 	always_ff @(posedge clk) begin
 		if (RSTn == 0) begin
-			for (i = 0; i < 32; i = i + 1) begin
-				regs[i] = 32'b0;
+			for (int i = 0; i < 32; i = i + 1) begin
+				regs[i] <= 32'b0;
 			end
 		end
 		if (en) begin
 			if (rd == 5'b0)
-				regs[rd] = 32'b0;
-			else
-				regs[rd] = write_data;
+				regs[rd] <= 32'b0;
+			else 
+				regs[rd] <= write_data;
 		end
 	end
 
