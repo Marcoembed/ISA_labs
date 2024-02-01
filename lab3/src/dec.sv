@@ -57,7 +57,7 @@ module dec import riscv_pkg::*;
     bu bu_unit (
         .DECctrl_in(DECctrl_in),
         .RS1(RS1),
-        .RS2(RS2),
+        .RS2(RS2)
          
     );
 
