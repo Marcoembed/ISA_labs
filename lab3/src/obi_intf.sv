@@ -1,21 +1,14 @@
-interface obi (input CLK);
-    logic EN;
-    logic proc_req;
+interface obi_intf import riscv_pkg::*;;
+    MEM_ctrl MEM;
     logic mem_rdy;
     logic valid;
-    logic we;
     logic [31:0] dataBus_in;
     logic [31:0] dataBus_out;
     logic [31:0] addressBus;
 
-    modport PtoM (
-        input EN, mem_rdy, valid, dataBus_out,
-        output proc_req, we, dataBus_in, addressBus
-    );
-
-    modport MtoP (
-        input proc_req, we, dataBus_in, addressBus,
-        output mem_rdy, valid, dataBus_out
+    modport PtoM ( // processor to memory
+        input mem_rdy, valid, dataBus_out,
+        output MEM, dataBus_in, addressBus
     );
 
 endinterface //obi (input CLK)
