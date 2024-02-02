@@ -26,8 +26,8 @@ module hu import riscv_pkg::*;
     
     // Control output signals
     output logic STALL,
-    output logic FLASH_dec,
-    output logic FLASH_exe
+    output logic FLUSH_dec,
+    output logic FLUSH_exe
 
 );
 
@@ -35,8 +35,8 @@ always_comb begin : weili
 
     // default hu output
     STALL = 0;
-    FLASH_dec = 0;
-    FLASH_exe = 0;
+    FLUSH_dec = 0;
+    FLUSH_exe = 0;
 
     // branch condition
     if (branch_cond_in) begin
