@@ -14,7 +14,7 @@
 module cu import riscv_pkg::*; 
 (
 	input 	[31:0] instr,
-	input 	logic FLUSH_IFID,
+	input 	HAZARD_ctrl FLUSH_IF_DEC,
    	output 	DEC_ctrl DEC,	
    	output 	EX_ctrl EX,	
 	output	MEM_ctrl MEM,
@@ -31,7 +31,7 @@ assign funct7 = t_funct7'(instr[31:25]);
 
 always_comb begin
 
-	if (FLUSH_IFID) begin
+	if (FLUSH_IF_DEC == FLUSH) begin
 		opcode = OP_ADDI; // NOP operation
 	end
 

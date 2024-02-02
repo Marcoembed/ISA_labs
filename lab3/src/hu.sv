@@ -25,40 +25,48 @@ module hu import riscv_pkg::*;
     input logic [4:0] DECdata_RS2_in, 
     
     // Control output signals
-    output logic STALL,
-    output logic FLUSH_dec,
-    output logic FLUSH_exe
+    output HAZARD_ctrl PC_reg_out,
+    output HAZARD_ctrl IF_DEC_out,
+    output HAZARD_ctrl DEC_EX_out,
+    output HAZARD_ctrl EX_MEM_out,
+    output HAZARD_ctrl MEM_WB_out
 
 );
 
 always_comb begin : weili
 
     // default hu output
-    STALL = 0;
-    FLUSH_dec = 0;
-    FLUSH_exe = 0;
+    PC_reg_out = NOP;
+    IF_DEC_out = NOP;
+    DEC_EX_out = NOP;
+    EX_MEM_out = NOP;
+    MEM_WB_out = NOP;
 
     // branch condition
     if (branch_cond_in) begin
-        FLUSH_dec = 1;
+        IF_DEC_out = FLUSH;  // <-- branch delay slot (NOP insertion)
     end
 
     // load-use data hazard
     if (MEMctrl_in.proc_req == REQUEST && MEM.we == READ) begin // load operation
         if (EXdata_RD_in == DECdata_RS1_in || EXdata_RD_in == DECdata_RS2_in) begin
-            FLUSH_exe = 1;
+            PC_reg_out = STALL;
+            IF_DEC_out = STALL;
+            DEC_EX_out = FLUSH;
         end
     end
 
     // instruction memory not ready
-    if (instr_mem_busy_in) begin
-        STALL = 1;
+    // or
+    // data memory not ready
+    if (instr_mem_busy_in || data_mem_busy_in) begin
+        PC_reg_out = STALL;
+        IF_DEC_out = STALL;
+        DEC_EX_out = STALL;
+        EX_MEM_out = STALL;
+        MEM_WB_out = STALL;
     end
 
-    // data memory not ready
-    if (data_mem_busy_in) begin
-        STALL = 1;
-    end
   
 end
   
