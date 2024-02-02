@@ -44,8 +44,10 @@ always_comb begin : weili
     end
 
     // load-use data hazard
-    if (EXdata_RD_in == DECdata_RS1_in || EXdata_RD_in == DECdata_RS2_in) begin
-        FLUSH_exe = 1;
+    if (MEMctrl_in.proc_req == REQUEST && MEM.we == WRITE) begin // load operation
+        if (EXdata_RD_in == DECdata_RS1_in || EXdata_RD_in == DECdata_RS2_in) begin
+            FLUSH_exe = 1;
+        end
     end
 
     // instruction memory not ready
@@ -71,7 +73,7 @@ endmodule
 //fet dec exe mem
 //add ld  --  --
 //jmp add ld  --   load-use
-//jmp add rst ld
+//jmp add nop ld
 //add jmp add ld 
 //sub nop jmp add
 //    
