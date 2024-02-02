@@ -145,7 +145,10 @@ package riscv_pkg;
 		IMMtoRF
 	}WB_mux;
 
+	typedef enum logic { WRITE, NOWRITE } RF_wr;
+
 	typedef struct packed {
+		RF_wr RF_we;
 		WB_mux SRCtoRF;
 	}WB_ctrl;
 

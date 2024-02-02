@@ -44,7 +44,7 @@ always_comb begin : weili
     end
 
     // load-use data hazard
-    if (MEMctrl_in.proc_req == REQUEST && MEM.we == WRITE) begin // load operation
+    if (MEMctrl_in.proc_req == REQUEST && MEM.we == READ) begin // load operation
         if (EXdata_RD_in == DECdata_RS1_in || EXdata_RD_in == DECdata_RS2_in) begin
             FLUSH_exe = 1;
         end
