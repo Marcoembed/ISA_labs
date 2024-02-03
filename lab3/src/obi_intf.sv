@@ -11,7 +11,7 @@ interface obi_intf;
     );
 
     modport MtoIntf ( // memory to interface
-        input addressBus, // in memory 
+        input addressBus_out, // in memory 
         output mem_rdy, valid, dataBus_in // from memory
     );
 

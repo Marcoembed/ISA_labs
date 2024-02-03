@@ -31,6 +31,8 @@ module preg_dex_ex import riscv_pkg::*;
 	// control output signals
 	output MEM_ctrl MEMctrl_out,
 	output WB_ctrl 	WBctrl_out,
+	output EX_ctrl	EXctrl_out,
+
 
     // data input signals
 	input logic [width-1:0] pc_in, 
@@ -65,7 +67,7 @@ always_comb begin
 end
   
 
-always_ff @( posedge CLK ) begin : dex_ex
+always_ff @( posedge CLK, posedge RSTn) begin : dex_ex
 
 	if (RSTn == 0 || HZctrl_in == FLUSH) begin
 

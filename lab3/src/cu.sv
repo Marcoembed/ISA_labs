@@ -43,21 +43,21 @@ always_comb begin
 	MEM.proc_req	= NOREQUEST;
 	MEM.we			= READ;
 	WB.SRCtoRF 		= ALUtoRF;
-	WB.RF_we		= NOWRITE;
+	WB.RF_we		= NOWR;
 
 	case (opcode)
 		OP_RTYPE		: begin
 						  	case (funct7)
-						  		ADD	: begin EX.ALUopr = ALU_ADD; WB.RF_we = WRITE; end
-						  		SUB	: begin EX.ALUsrcB = RS2; EX.ALUopr = ALU_SUB; WB.RF_we = WRITE; end
+						  		ADD	: begin EX.ALUopr = ALU_ADD; WB.RF_we = WR; end
+						  		SUB	: begin EX.ALUsrcB = RS2; EX.ALUopr = ALU_SUB; WB.RF_we = WR; end
 							endcase
 						  end
-		OP_ADDI 		: begin EX.ALUopr = ALU_ADD; EX.ALUsrcB = IMM; WB.RF_we = WRITE; end
-		OP_AUIPC		: begin EX.ALUopr = ALU_ADD; EX.ALUsrcB = IMM; WB.RF_we = WRITE; end
+		OP_ADDI 		: begin EX.ALUopr = ALU_ADD; EX.ALUsrcB = IMM; WB.RF_we = WR; end
+		OP_AUIPC		: begin EX.ALUopr = ALU_ADD; EX.ALUsrcB = IMM; WB.RF_we = WR; end
 		OP_BRANCH		: begin DEC.branch = BRANCH; end
 		OP_JMP			: begin DEC.branch = JMP; end
-		OP_LUI 			: begin WB.RF_we = WRITE; WB.SRCtoRF = IMMtoRF; end
-		OP_LW  			: begin MEM.proc_req = REQUEST; WB.RF_we = WRITE; WB.SRCtoRF = MEMtoRF; end
+		OP_LUI 			: begin WB.RF_we = WR; WB.SRCtoRF = IMMtoRF; end
+		OP_LW  			: begin MEM.proc_req = REQUEST; WB.RF_we = WR; WB.SRCtoRF = MEMtoRF; end
 		OP_SW  			: begin MEM.proc_req = REQUEST; MEM.we = WRITE; end
 		OP_RET 			: begin DEC.branch = JMP; end
 	endcase

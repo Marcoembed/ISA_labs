@@ -40,7 +40,7 @@ always_comb begin
 	end
 end
 
-always_ff @( posedge CLK , RSTn) begin : if_dec
+always_ff @( posedge CLK , posedge RSTn) begin : if_dec
 
 	if (RSTn == 0 || HZctrl_in == FLUSH) begin
 

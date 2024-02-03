@@ -50,7 +50,7 @@ always_comb begin : fetch
   
 end
 
-always_ff @( posedge CLK, RSTn ) begin : PC_reg
+always_ff @( posedge CLK, posedge RSTn ) begin : PC_reg
     if (RSTn == 0 || HZctrl_in == FLUSH) begin
        PC_out <= 0; 
     end

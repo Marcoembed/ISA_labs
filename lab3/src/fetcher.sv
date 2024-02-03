@@ -31,7 +31,7 @@ always_comb begin : fetcher_fsm_control
         end
         idle: begin
             // always new request (new instruction) if instruction memory is ready
-            if (fetcher.mem_rdy) begin
+            if (fetcher_intf.mem_rdy) begin
                 next_state = busy;
             end
             else begin

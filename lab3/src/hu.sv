@@ -33,7 +33,7 @@ module hu import riscv_pkg::*;
 
 );
 
-always_comb begin : weili
+always_comb begin : WEILI 
 
     // default hu output
     PC_reg_out = HZ_NOP;
@@ -48,7 +48,7 @@ always_comb begin : weili
     end
 
     // load-use data hazard
-    if (MEMctrl_in.proc_req == REQUEST && MEM.we == READ) begin // load operation
+    if (MEMctrl_in.proc_req == REQUEST && MEMctrl_in.we == READ) begin // load operation
         if (EXdata_RD_in == DECdata_RS1_in || EXdata_RD_in == DECdata_RS2_in) begin
             PC_reg_out = STALL;
             IF_DEC_out = STALL;

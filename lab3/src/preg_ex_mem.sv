@@ -52,7 +52,7 @@ always_comb begin
 	end
 end
 
-always_ff @( posedge CLK , RSTn) begin : ex_mem
+always_ff @( posedge CLK , posedge RSTn) begin : ex_mem
 
 	if (RSTn == 0 || HZctrl_in == FLUSH) begin
 
