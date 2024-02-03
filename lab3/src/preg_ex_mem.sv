@@ -24,6 +24,7 @@ module preg_ex_mem import riscv_pkg::*;
     // control input signals
 	input MEM_ctrl 	MEMctrl_in,
 	input WB_ctrl 	WBctrl_in,
+	input HAZARD_ctrl HZctrl_in,
 
 	// control output signals
     output MEM_ctrl MEMctrl_out,
@@ -39,13 +40,21 @@ module preg_ex_mem import riscv_pkg::*;
 	output logic [width-1:0] imm_out,
 	output logic [width-1:0] resALU_out,
 	output logic [width-1:0] rs2_data_out,
-	output logic [reg_width-1:0] rd_out,
+	output logic [reg_width-1:0] rd_out
 
 );
 
+logic HZ_en;
+
+always_comb begin 
+	if (HZctrl_in == STALL) begin
+		HZ_en = 0;
+	end
+end
+
 always_ff @( posedge CLK , RSTn) begin : ex_mem
 
-	if (RSTn == 0) begin
+	if (RSTn == 0 || HZctrl_in == FLUSH) begin
 
 		// Control signals
 		MEMctrl_out <= '0; 		// '0 takes care about size based on context
@@ -57,7 +66,7 @@ always_ff @( posedge CLK , RSTn) begin : ex_mem
 		rs2_data_out <= '0; 
 		rd_out       <= '0; 
                        	   
-	end	else if (EN) begin
+	end	else if (EN && HZ_en) begin
 		// Control signals
 		MEMctrl_out <= MEMctrl_in;
 		WBctrl_out 	<= WBctrl_in;

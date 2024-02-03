@@ -14,9 +14,9 @@
 module hu import riscv_pkg::*;
 ( 
     // Control input signals
-    input logic branch_cond_in,
-    input logic instr_mem_busy_in, 
-    input logic data_mem_busy_in, 
+    input logic BRANCH_cond_in,
+    input logic INSTR_mem_busy_in, 
+    input logic DATA_mem_busy_in, 
     input MEM_ctrl MEMctrl_in,
 
     // Data input signals
@@ -36,14 +36,14 @@ module hu import riscv_pkg::*;
 always_comb begin : weili
 
     // default hu output
-    PC_reg_out = NOP;
-    IF_DEC_out = NOP;
-    DEC_EX_out = NOP;
-    EX_MEM_out = NOP;
-    MEM_WB_out = NOP;
+    PC_reg_out = HZ_NOP;
+    IF_DEC_out = HZ_NOP;
+    DEC_EX_out = HZ_NOP;
+    EX_MEM_out = HZ_NOP;
+    MEM_WB_out = HZ_NOP;
 
     // branch condition
-    if (branch_cond_in) begin
+    if (BRANCH_cond_in) begin
         IF_DEC_out = FLUSH;  // <-- branch delay slot (NOP insertion)
     end
 
@@ -59,7 +59,7 @@ always_comb begin : weili
     // instruction memory not ready
     // or
     // data memory not ready
-    if (instr_mem_busy_in || data_mem_busy_in) begin
+    if (INSTR_mem_busy_in || DATA_mem_busy_in) begin
         PC_reg_out = STALL;
         IF_DEC_out = STALL;
         DEC_EX_out = STALL;
