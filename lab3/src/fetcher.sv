@@ -6,12 +6,20 @@ module fetcher
     input logic CLK,
     input logic RSTn,
 
+    // from processor
+    input logic [31:0] PC_in,
+
     // from memory
+    input logic [31:0] DATA_in,
     input logic mem_rdy,
     input logic valid,
 
     // to memory
     output logic proc_req,
+    output logic [31:0] PC_out,
+
+    // to processor
+    output logic [31:0] DATA_out,
 
     // to hazard unit
     output logic busy_out
@@ -70,11 +78,14 @@ always_comb begin : fetcher_fsm_data
 
     busy_out = '1;
     proc_req = '0;
+    DATA_out = 'x;
+    PC_out   = PC_in;
 
     case (current_state)
         idle: begin
             if (valid) begin
                 busy_out = '0;
+                DATA_out = DATA_in;
             end
             else begin
                 busy_out = '1;
@@ -83,6 +94,7 @@ always_comb begin : fetcher_fsm_data
         req_off: begin
             if (valid) begin
                 busy_out = '0;
+                DATA_out = DATA_in;
             end
             else begin
                 busy_out = '1;
