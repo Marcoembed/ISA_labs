@@ -20,7 +20,7 @@ module register_file import riscv_pkg::*;
 //	input logic RegWrite,
 	input logic RSTn, // this is needed to reset all the register
 	input logic clk,
-	input logic en,	
+	input logic WE,	
 	
 	output logic [31:0] read_data1,
 	output logic [31:0] read_data2
@@ -30,16 +30,15 @@ module register_file import riscv_pkg::*;
 // This register file is asynchronous
 
 	logic [31:0] regs[32];
+	assign regs[0] = 32'b0;
 
 	always_ff @(posedge clk) begin
 		if (RSTn == 0) begin
-			for (int i = 0; i < 32; i = i + 1) begin
+			for (int i = 1; i < 32; i = i + 1) begin
 				regs[i] <= 32'b0;
 			end
-		end else if (en) begin
-			if (rd == 0) begin
-			  regs[rd] <= 32'b0;
-			end else begin
+		end else if (WE) begin
+			if (rd != 0) begin
 				regs[rd] <= write_data;
 			end
 
