@@ -18,7 +18,7 @@ module bu import riscv_pkg::*;
     input logic[31:0]   RS2_in,
     input t_funct3      funct3,
     
-    output logic bu_o
+    output logic BRANCH_cond_out
 );
 
 always_comb begin
@@ -27,32 +27,32 @@ always_comb begin
             case (funct3)
                 BLE: begin
                     if (signed'(RS1) <= signed'(RS2))
-                        bu_o = 1;
+                        BRANCH_cond_out = 1;
                 end
 
                 BLTU: begin
                     if (unsigned'(RS1) < unsigned'(RS2))
-                        bu_o = 1;
+                        BRANCH_cond_out = 1;
 
                 end
                     
                 default: begin
-                    bu_o = 0;
+                    BRANCH_cond_out = 0;
                 end    
                 
             endcase
         end
 
         JMP: begin
-            bu_o = 1;
+            BRANCH_cond_out = 1;
         end
 
         NOBRANCH: begin
-            bu_o = 0;
+            BRANCH_cond_out = 0;
         end
 
         default: begin
-            bu_o = 0;
+            BRANCH_cond_out = 0;
         end
     endcase
 end

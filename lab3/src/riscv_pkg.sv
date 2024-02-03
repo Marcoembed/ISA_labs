@@ -53,6 +53,12 @@ package riscv_pkg;
 
 	//------------------------------ HAZARD
 
+	typedef enum logic[1:0] { 
+		HZ_NOP,
+		FLUSH, 
+		STALL
+	} HAZARD_ctrl;
+
 	typedef enum logic[1:0] {
 		BRANCH,
 		JMP,
