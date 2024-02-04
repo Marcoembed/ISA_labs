@@ -19,7 +19,7 @@ module tb_mem_wrap_fake ();
    localparam cRG_FAST = 0;
    localparam cIS_CODE = 0;
    localparam cIS_DATA = 1;   
-   localparam cCONTENT_TYPE = cIS_CODE; 
+   localparam cCONTENT_TYPE = cIS_CODE;
 
    reg [31:0] PC_in;
    
@@ -33,7 +33,7 @@ module tb_mem_wrap_fake ();
       end
    end
     
-
+   
    clk_gen #(
 	     .T( Ts )
    ) CG (
@@ -59,6 +59,7 @@ module tb_mem_wrap_fake ();
    end // block: RGF1
 
    if (cRG_FAST == 0) begin : RGF0
+
 
       fetcher fetcher_unit
       (

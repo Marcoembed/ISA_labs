@@ -24,7 +24,7 @@ module fetcher
     // to hazard unit
     output logic busy_out,
 
-    //TEST TODO 
+    // test
     output logic WE
 );
 
