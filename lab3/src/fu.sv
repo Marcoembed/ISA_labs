@@ -14,8 +14,8 @@
 
 module fu import riscv_pkg::*;
 ( 
-    input   FU_ctrl_i    FU_in,
-    output   FU_mux  FU_out
+    input   FU_data FU_in,
+    output  FU_mux  FU_out
 );
 
 always_comb begin

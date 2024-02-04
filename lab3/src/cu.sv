@@ -13,7 +13,7 @@
 
 module cu import riscv_pkg::*; 
 (
-	input 	[31:0] instr,
+	input 	[31:0] INSTR,
 	input 	HAZARD_ctrl FLUSH_IF_DEC,
    	output 	DEC_ctrl DEC,	
    	output 	EX_ctrl EX,	
@@ -24,10 +24,10 @@ module cu import riscv_pkg::*;
 // Unpacking instruction control bits 
 
 t_opcode  opcode;
-assign opcode = t_opcode'(instr[6:0]);
+assign opcode = t_opcode'(INSTR[6:0]);
 
 t_funct7 funct7;
-assign funct7 = t_funct7'(instr[31:25]);
+assign funct7 = t_funct7'(INSTR[31:25]);
 
 always_comb begin
 

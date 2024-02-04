@@ -14,18 +14,19 @@
 module hu import riscv_pkg::*;
 ( 
     // Control input signals
+    input logic EN,
     input logic BRANCH_cond_in,
     input logic INSTR_mem_busy_in, 
     input logic DATA_mem_busy_in, 
     input MEM_ctrl MEMctrl_in,
 
     // Data input signals
-    input logic [4:0] EXdata_RD_in,
-    input logic [4:0] DECdata_RS1_in, 
-    input logic [4:0] DECdata_RS2_in, 
+    input logic [4:0] EX_MEM_RD_in,
+    input logic [4:0] DEC_EX_RS1_in, 
+    input logic [4:0] DEC_EX_RS2_in, 
     
     // Control output signals
-    output HAZARD_ctrl PC_reg_out,
+    output HAZARD_ctrl PC_REG_out,
     output HAZARD_ctrl IF_DEC_out,
     output HAZARD_ctrl DEC_EX_out,
     output HAZARD_ctrl EX_MEM_out,
@@ -36,35 +37,37 @@ module hu import riscv_pkg::*;
 always_comb begin : WEILI 
 
     // default hu output
-    PC_reg_out = HZ_NOP;
-    IF_DEC_out = HZ_NOP;
-    DEC_EX_out = HZ_NOP;
-    EX_MEM_out = HZ_NOP;
-    MEM_WB_out = HZ_NOP;
+    PC_REG_out = ENABLE;
+    IF_DEC_out = ENABLE;
+    DEC_EX_out = ENABLE;
+    EX_MEM_out = ENABLE;
+    MEM_WB_out = ENABLE;
 
     // branch condition
-    if (BRANCH_cond_in) begin
-        IF_DEC_out = FLUSH;  // <-- branch delay slot (NOP insertion)
-    end
-
-    // load-use data hazard
-    if (MEMctrl_in.proc_req == REQUEST && MEMctrl_in.we == READ) begin // load operation
-        if (EXdata_RD_in == DECdata_RS1_in || EXdata_RD_in == DECdata_RS2_in) begin
-            PC_reg_out = STALL;
-            IF_DEC_out = STALL;
-            DEC_EX_out = FLUSH;
+    if (EN) begin
+        if (BRANCH_cond_in) begin
+            IF_DEC_out = FLUSH;  // <-- branch delay slot (NOP insertion)
         end
-    end
 
-    // instruction memory not ready
-    // or
-    // data memory not ready
-    if (INSTR_mem_busy_in || DATA_mem_busy_in) begin
-        PC_reg_out = STALL;
-        IF_DEC_out = STALL;
-        DEC_EX_out = STALL;
-        EX_MEM_out = STALL;
-        MEM_WB_out = STALL;
+        // load-use data hazard
+        if (MEMctrl_in.proc_req == REQUEST && MEMctrl_in.we == READ) begin // load operation
+            if (EX_MEM_RD_in == DEC_EX_RS1_in || EX_MEM_RD_in == DEC_EX_RS2_in) begin
+                PC_REG_out = STALL;
+                IF_DEC_out = STALL;
+                DEC_EX_out = FLUSH;
+            end
+        end
+
+        // instruction memory not ready
+        // or
+        // data memory not ready
+        if (INSTR_mem_busy_in || DATA_mem_busy_in) begin
+            PC_REG_out = STALL;
+            IF_DEC_out = STALL;
+            DEC_EX_out = STALL;
+            EX_MEM_out = STALL;
+            MEM_WB_out = STALL;
+        end
     end
 
   
