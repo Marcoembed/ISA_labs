@@ -12,6 +12,7 @@ tres="ps"
 
 vcom -work work ../tb/req_gen.vhd
 vcom -work work ../tb/req_gen_fast.vhd
+vlog -work work ../tb/fetcher.v
 
 vcom -work work ../tb/clk_gen.vhd
 vcom -work work ../tb/data_dumper.vhd

@@ -11,6 +11,7 @@ module tb_mem_wrap_fake ();
    wire [31:0] WDATA;
    wire [31:0] RDATA;
    wire        VALID;
+   wire        BUSY;
 
    localparam Ts = 10000;
    localparam tco = 1;
@@ -19,7 +20,20 @@ module tb_mem_wrap_fake ();
    localparam cIS_CODE = 0;
    localparam cIS_DATA = 1;   
    localparam cCONTENT_TYPE = cIS_CODE; 
+
+   reg [31:0] PC_in;
    
+    initial begin 
+    PC_in = 32'h00400000;
+    end
+
+   always @(posedge CLK) begin
+      if (VALID) begin
+        PC_in = PC_in + 32'h4;
+      end
+   end
+    
+
    clk_gen #(
 	     .T( Ts )
    ) CG (
@@ -46,19 +60,33 @@ module tb_mem_wrap_fake ();
 
    if (cRG_FAST == 0) begin : RGF0
 
-      req_gen #(
-		.CONTENT_TYPE( cCONTENT_TYPE ),
-		.tco( tco ),
-		.tpd( tpd )
-      ) rg (
-            .CLK( CLK ),
-            .RSTn( RSTn ),
-            .PROC_REQ( PROC_REQ ),
-            .MEM_RDY( MEM_RDY ),
-            .WE( WE ),
-            .ADDR( ADDR ),
-            .WDATA( WDATA )
-      );      
+      fetcher fetcher_unit
+      (
+         .CLK(CLK),
+         .RSTn(RSTn),
+         .PC_in(PC_in),
+         .mem_rdy(MEM_RDY),
+         .valid(VALID),
+         .proc_req(PROC_REQ), 
+         .PC_out(ADDR), 
+         .DATA_out(WDATA),
+         .busy_out(BUSY), 
+         .WE(WE)
+      );
+
+//      req_gen #(
+//		.CONTENT_TYPE( cCONTENT_TYPE ),
+//		.tco( tco ),
+//		.tpd( tpd )
+//      ) rg (
+//            .CLK( CLK ),
+//            .RSTn( RSTn ),
+//            .PROC_REQ( PROC_REQ ),
+//            .MEM_RDY( MEM_RDY ),
+//            .WE( WE ),
+//            .ADDR( ADDR ),
+//            .WDATA( WDATA )
+//      );      
    end // block: RGF0
 
    mem_wrap_fake #(
