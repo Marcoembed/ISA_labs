@@ -4,6 +4,31 @@ package riscv_pkg;
 	localparam reg_width = 5;
 	localparam opcode_width = 5;
 
+	//------------------------------ PIPE REGISTERS
+	typedef struct {
+		
+    // control input signals
+		EX_ctrl 	EXctrl_in;
+		MEM_ctrl 	MEMctrl_in;
+		WB_ctrl 	WBctrl_in;
+		HAZARD_ctrl HZctrl_in;
+
+	// control output signals
+		MEM_ctrl MEMctrl_out;
+		WB_ctrl  WBctrl_out;
+		EX_ctrl	 EXctrl_out;
+
+    // data input signals
+		logic [width-1:0] PC_in, INSTR_in, IMM_in, RS1_data_in, RS2_data_in, RES_alu_in, BU_target_in, DATA_mem_in;
+		logic [reg_width-1:0] RD_in, RS1_in, RS2_in; 
+		logic BU_cond_in;
+
+    // data output signals
+		logic [width-1:0] PC_out, INSTR_out, IMM_out, RS1_data_out, RS2_data_out, RES_alu_out, BU_target_out, DATA_mem_out;
+		logic [reg_width-1:0] RD_out, RS1_out, RS2_out; 
+		logic BU_cond_out;
+	} PREG;
+
 	//------------------------------ OPCODE
 	typedef enum logic [6:0] {
 		OP_RTYPE 	= 7'b0110011,
@@ -37,7 +62,7 @@ package riscv_pkg;
 		logic			ALU_srcB;
 //		logic			MEM_in_Rd_EQ0;
 //		logic			WB_in_Rd_EQ0;
-	} FU_ctrl_i;
+	} FU_data;
 
 
 	typedef enum logic [1:0] {
@@ -54,7 +79,7 @@ package riscv_pkg;
 	//------------------------------ HAZARD
 
 	typedef enum logic[1:0] { 
-		HZ_NOP,
+		ENABLE,
 		FLUSH, 
 		STALL
 	} HAZARD_ctrl;
