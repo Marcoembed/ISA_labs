@@ -29,6 +29,7 @@ module fet import riscv_pkg::*;
 
 logic HZ_en;
 logic [31:0] NPC;
+logic [31:0] PC;
 logic [31:0] MUX_out;
 
 always_comb begin 
@@ -39,7 +40,7 @@ end
 
 always_comb begin : fetch 
 
-    NPC = PC_in + 4;
+    NPC = PC + 4;
 
     if (BRANCH_cond_in) begin
         MUX_out = BRANCH_in;
@@ -52,11 +53,13 @@ end
 
 always_ff @( posedge CLK, posedge RSTn ) begin : PC_reg
     if (RSTn == 0 || HZctrl_in == FLUSH) begin
-       PC_out <= 0; 
+       PC <= 0; 
     end
     else if (EN && HZ_en) begin
-       PC_out <= MUX_out; 
+       PC <= MUX_out; 
     end
 end
+
+assign PC_out = PC;
   
 endmodule
