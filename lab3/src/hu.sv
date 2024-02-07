@@ -11,13 +11,15 @@
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
 
+typedef enum logic[1:0] {issue_req, data_valid, instr_valid, idle} state;
+
 module hu import riscv_pkg::*;
 ( 
     // Control input signals
     input logic EN,
     input logic BRANCH_cond_in,
-    input logic INSTR_mem_busy_in, 
-    input logic DATA_mem_busy_in, 
+    input logic INSTR_mem_busy_in,  // request complete
+    input logic DATA_mem_busy_in, // request complete
     input MEM_ctrl MEMctrl_in,
 
     // Data input signals
@@ -26,6 +28,7 @@ module hu import riscv_pkg::*;
     input logic [4:0] DEC_EX_RS2_in, 
     
     // Control output signals
+    output logic HZ_req, // request fired
     output HAZARD_ctrl PC_REG_out,
     output HAZARD_ctrl IF_DEC_out,
     output HAZARD_ctrl DEC_EX_out,
@@ -34,7 +37,67 @@ module hu import riscv_pkg::*;
 
 );
 
-always_comb begin : WEILI 
+state current_state, next_state;
+
+always_ff @(posedge CLK) begin
+    if (!RSTn) begin
+        current_state <= issue_req;
+    end
+    else begin
+        current_state <= next_state;
+    end
+end
+
+always_comb begin : hu_fsm_control
+    case(current_state)
+        issue_req: begin
+            if(instr_valid && data_valid) begin
+                next_state = issue_req;
+            end
+            else if (instr_valid) begin
+                next_state = instr_valid;
+            end
+            else if (data_valid) begin
+                next_state = data_valid;
+            end
+            else begin
+                next_state = idle;
+            end
+        end
+        instr_valid: begin
+            if (data_valid) begin
+                next_state = issue_req;
+            end
+            else begin
+                next_state = instr_valid;
+            end
+        end
+        data_valid: begin
+            if (instr_valid) begin
+                next_state = issue_req;
+            end
+            else begin
+                next_state = data_valid;
+            end
+        end
+        idle: begin
+            if(instr_valid && data_valid) begin
+                next_state = issue_req;
+            end
+            else if (instr_valid) begin
+                next_state = instr_valid;
+            end
+            else if (data_valid) begin
+                next_state = data_valid;
+            end
+            else begin
+                next_state = idle;
+            end
+        end
+    endcase
+end
+
+always_comb begin : hu_data_control
 
     // default hu output
     PC_REG_out = ENABLE;
@@ -43,36 +106,46 @@ always_comb begin : WEILI
     EX_MEM_out = ENABLE;
     MEM_WB_out = ENABLE;
 
-    // branch condition
-    if (EN) begin
-        if (BRANCH_cond_in) begin
-            IF_DEC_out = FLUSH;  // <-- branch delay slot (NOP insertion)
-        end
-
-        // load-use data hazard
-        if (MEMctrl_in.proc_req == REQUEST && MEMctrl_in.we == READ) begin // load operation
-            if (EX_MEM_RD_in == DEC_EX_RS1_in || EX_MEM_RD_in == DEC_EX_RS2_in) begin
+    case(current_state)
+        issue_req: begin
+            if (BRANCH_cond_in) begin
                 PC_REG_out = STALL;
-                IF_DEC_out = STALL;
-                DEC_EX_out = FLUSH;
+                IF_DEC_out = FLUSH;  // <-- branch delay slot (NOP insertion)
+            end
+
+            // load-use data hazard
+            if (MEMctrl_in.proc_req == REQUEST && MEMctrl_in.we == READ) begin // load operation
+                if (EX_MEM_RD_in == DEC_EX_RS1_in || EX_MEM_RD_in == DEC_EX_RS2_in) begin
+                    PC_REG_out = STALL;
+                    IF_DEC_out = STALL;
+                    DEC_EX_out = FLUSH;
+                end
             end
         end
-
-        // instruction memory not ready
-        // or
-        // data memory not ready
-        if (INSTR_mem_busy_in || DATA_mem_busy_in) begin
+        instr_valid: begin
             PC_REG_out = STALL;
             IF_DEC_out = STALL;
             DEC_EX_out = STALL;
             EX_MEM_out = STALL;
             MEM_WB_out = STALL;
         end
-    end
-
-  
+        data_valid: begin
+            PC_REG_out = STALL;
+            IF_DEC_out = STALL;
+            DEC_EX_out = STALL;
+            EX_MEM_out = STALL;
+            MEM_WB_out = STALL;
+        end
+        idle: begin
+            PC_REG_out = STALL;
+            IF_DEC_out = STALL;
+            DEC_EX_out = STALL;
+            EX_MEM_out = STALL;
+            MEM_WB_out = STALL;
+        end
+    endcase
 end
-  
+
 endmodule
 
 
