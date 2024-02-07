@@ -1,20 +1,41 @@
-typedef enum logic { busy, idle } state;
+typedef enum logic[1:0] {wait_req, wait_valid, wait_req} state;
 
-module lsu import riscv_pkg::*;
+module lsu
 ( 
+    // control signals
     input logic CLK,
     input logic RSTn,
     input MEM_ctrl MEMctrl_in,
-    obi_intf.PtoIntf lsu_intf,
-    output logic [31:0] dataBus_out,
+    input logic HZ_data_req,
+
+    // from datapath
+    input logic [31:0] addr_in,
+    input logic [31:0] data_in,
+
+    // to datapath
+    output logic [31:0] data_out,
+
+    // to obi interface
+    output logic [31:0] OBI_addr,
+    output logic [31:0] OBI_data_out, // data to be sent on obi interface
+    output logic OBI_proc_req,
+    output logic OBI_we, //we-nRE
+
+    // from obi interface 
+    input logic [31:0] OBI_data_in, // data sampled from the obi interface
+    input logic OBI_mem_rdy,
+    input logic OBI_valid,
+
+    // to hazard unit
     output logic busy_out
 );
 
+
 state current_state, next_state;
 
-always_ff @(posedge CLK or negedge RSTn) begin
+always_ff @(posedge CLK) begin
     if (!RSTn) begin
-        current_state <= idle;
+        current_state <= req_on;
     end
     else begin
         current_state <= next_state;
@@ -22,45 +43,64 @@ always_ff @(posedge CLK or negedge RSTn) begin
 end
 
 always_comb begin : lsu_fsm_control
+    next_state = current_state;
     case (current_state)
-        busy: begin
-            if (lsu_intf.valid) begin
-                next_state = idle;
-            end
-            else  begin
-                next_state = busy;
+        wait_req: begin
+            if (MEM_ctrl_in.proc_req == REQUEST && HZ_data_req) begin
+                if (OBI_mem_rdy == '1) begin
+                    next_state = wait_valid;
+                end else begin
+                    next_state = wait_ready;
+                end
             end
         end
-        idle: begin
-            if (MEMctrl_in.proc_req == REQUEST && lsu_intf.mem_rdy) begin
-                next_state = busy;
+        wait_valid: begin
+            if (OBI_valid == '1) begin
+                next_state = wait_req;
             end
-            else begin
-                next_state = idle;
+        end
+        wait_ready: begin
+            if (OBI_mem_rdy == '1) begin
+                next_state = wait_valid;
             end
+        end
+        default: begin
+            next_state = current_state;
         end
     endcase
 
 end      
 
-always_comb begin : lsu_fsm_data
+// this outputs are latched by stalling the pipeline registers
+// with busy_out
+assign OBI_addr = addr_in;
+assign OBI_data_in = data_in;
+assign OBI_we = MEM_ctrl_in.we;
 
-    // default value
-    busy_out = '1;
-    dataBus_out = 'z;
-    lsu_intf.addressBus_out = 'z;
+always_comb begin : lsu_fsm_output
+
+    OBI_proc_req = '0;
+    busy_out = '0;
 
     case (current_state)
-        busy: begin
-            if(MEMctrl_in.we == READ) begin // LOAD
-                dataBus_out = lsu_intf.dataBus_in;
-            end
-            else if (MEMctrl_in.we == WRITE) begin // STORE
-                lsu_intf.addressBus_out = lsu_intf.addressBus_in;
-            end
-        end 
-        idle: begin
+        wait_req: begin
             busy_out = '0;
+            OBI_proc_req = '0;
+            if (MEM_ctrl_in.proc_req==REQUEST && HZ_data_req) begin
+                busy_out = '1;
+                OBI_proc_req = '1;
+            end 
+        end
+        wait_valid: begin
+            busy_out = '1;
+            OBI_proc_req = '0;
+            if(OBI_valid == '1) begin
+                busy_out = '0;
+            end
+        end
+        wait_ready: begin
+            proc_req = '1;
+            busy_out = '1;
         end
     endcase
   

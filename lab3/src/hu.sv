@@ -11,15 +11,15 @@
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
 
-typedef enum logic[1:0] {issue_req, data_valid, instr_valid, idle} state;
+typedef enum logic[1:0] {issue_req, data_busy, instr_busy, idle} state;
 
 module hu import riscv_pkg::*;
 ( 
     // Control input signals
     input logic EN,
     input logic BRANCH_cond_in,
-    input logic INSTR_mem_busy_in,  // request complete
-    input logic DATA_mem_busy_in, // request complete
+    input logic INSTR_mem_busy_in, 
+    input logic DATA_mem_busy_in, 
     input MEM_ctrl MEMctrl_in,
 
     // Data input signals
@@ -28,7 +28,9 @@ module hu import riscv_pkg::*;
     input logic [4:0] DEC_EX_RS2_in, 
     
     // Control output signals
-    output logic HZ_req, // request fired
+    output logic HZ_instr_req, // request fired
+    output logic HZ_data_req, // request fired
+    output logic instr_mux_sel,
     output HAZARD_ctrl PC_REG_out,
     output HAZARD_ctrl IF_DEC_out,
     output HAZARD_ctrl DEC_EX_out,
@@ -51,44 +53,44 @@ end
 always_comb begin : hu_fsm_control
     case(current_state)
         issue_req: begin
-            if(instr_valid && data_valid) begin
+            if(!(INSTR_mem_busy_in || DATA_mem_busy_in)) begin
                 next_state = issue_req;
             end
-            else if (instr_valid) begin
-                next_state = instr_valid;
+            else if (INSTR_mem_busy_in) begin
+                next_state = instr_busy;
             end
-            else if (data_valid) begin
-                next_state = data_valid;
+            else if (DATA_mem_busy_in) begin
+                next_state = data_busy;
             end
             else begin
                 next_state = idle;
             end
         end
-        instr_valid: begin
-            if (data_valid) begin
-                next_state = issue_req;
+        data_busy: begin
+            if (DATA_mem_busy_in) begin
+                next_state = data_busy;
             end
             else begin
-                next_state = instr_valid;
+                next_state = issue_req;
             end
         end
-        data_valid: begin
-            if (instr_valid) begin
-                next_state = issue_req;
+        instr_busy: begin
+            if (INSTR_mem_busy_in) begin
+                next_state = instr_busy;
             end
             else begin
-                next_state = data_valid;
+                next_state = issue_req;
             end
         end
         idle: begin
-            if(instr_valid && data_valid) begin
+            if(!(INSTR_mem_busy_in || DATA_mem_busy_in)) begin
                 next_state = issue_req;
             end
-            else if (instr_valid) begin
-                next_state = instr_valid;
+            else if (INSTR_mem_busy_in) begin
+                next_state = instr_busy;
             end
-            else if (data_valid) begin
-                next_state = data_valid;
+            else if (DATA_mem_busy_in) begin
+                next_state = data_busy;
             end
             else begin
                 next_state = idle;
@@ -105,6 +107,8 @@ always_comb begin : hu_data_control
     DEC_EX_out = ENABLE;
     EX_MEM_out = ENABLE;
     MEM_WB_out = ENABLE;
+    HZ_data_req = '1;
+    HZ_instr_req = '1;
 
     case(current_state)
         issue_req: begin
@@ -122,14 +126,24 @@ always_comb begin : hu_data_control
                 end
             end
         end
-        instr_valid: begin
+        instr_busy: begin
+            if (!INSTR_mem_busy_in) begin
+                instr_mux_sel = '1;
+            end
+            HZ_data_req = '0;
+            HZ_instr_req = '0;
             PC_REG_out = STALL;
             IF_DEC_out = STALL;
             DEC_EX_out = STALL;
             EX_MEM_out = STALL;
             MEM_WB_out = STALL;
         end
-        data_valid: begin
+        data_busy: begin
+            if (!DATA_mem_busy_in) begin
+                instr_mux_sel = '0;
+            end
+            HZ_data_req = '0;
+            HZ_instr_req = '0;
             PC_REG_out = STALL;
             IF_DEC_out = STALL;
             DEC_EX_out = STALL;
@@ -137,6 +151,8 @@ always_comb begin : hu_data_control
             MEM_WB_out = STALL;
         end
         idle: begin
+            HZ_data_req = '0;
+            HZ_instr_req = '0;
             PC_REG_out = STALL;
             IF_DEC_out = STALL;
             DEC_EX_out = STALL;

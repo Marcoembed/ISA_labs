@@ -1,10 +1,11 @@
-typedef enum logic[1:0] {wait_rdy, req_off, req_on, idle} state;
+typedef enum logic[1:0] {req_off, req_on, idle} state;
 
 module fetcher
 ( 
     // control signals
     input logic CLK,
     input logic RSTn,
+    input logic HZ_instr_req,
 
     // from processor
     input logic [31:0] PC_in,
@@ -106,10 +107,12 @@ always_comb begin : fetcher_fsm_data
             end
         end
         req_on: begin
-            proc_req = '1;
+            //TODO: rivedere
+            proc_req = HZ_data_req;
         end
         wait_rdy: begin
-            proc_req = '1;
+            //TODO: rivedere
+            proc_req = HZ_data_req;
         end
     endcase
   
