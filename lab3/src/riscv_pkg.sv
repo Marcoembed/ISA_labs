@@ -135,9 +135,9 @@ package riscv_pkg;
 	/*------------------------------*/
 	//	FET
 	/*------------------------------*/
-	typedef struct packed {
-		logic	PC_sel;
-	  
+	typedef enum logic {
+		JUMP,
+		NOJUMP
 	}IF_ctrl;
 	
 	/*------------------------------*/

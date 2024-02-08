@@ -36,7 +36,7 @@ FU_data FUdata_core;
 FU_mux  FUmux_core;
 
 // ------------------------------ BRANCH signals
-logic BRANCH_COND_core;
+IF_ctrl BRANCH_COND_core;
 logic [width-1:0] BRANCH_DATA_core;
 
 // ------------------------------ FETCH signals
@@ -48,7 +48,6 @@ logic INSTR_valid_core;
 
 // ------------------------------ DECODE signals
 DEC_ctrl BRANCH_op_core;
-
 // ------------------------------ EXECUTE signals
 
 
@@ -183,10 +182,10 @@ always_ff @( posedge CLK ) begin : ex_mem
 		EX_MEM.WBctrl_out  <= EX_MEM.WBctrl_in;
 
 		// Data signals
-		EX_MEM.IMM_out      <= IMM_in;      
-		EX_MEM.RES_alu_out  <= RES_alu_in;  
-		EX_MEM.RS2_data_out <= RS2_data_in; // TODO dove sono questi segnali
-		EX_MEM.RD_out       <= RD_in;       // (DEC_reg out?? )
+		EX_MEM.IMM_out      <= EX_MEM.IMM_in;      
+		EX_MEM.RES_alu_out  <= EX_MEM.RES_alu_in;  
+		EX_MEM.RS2_data_out <= EX_MEM.RS2_data_in; 
+		EX_MEM.RD_out       <= EX_MEM.RD_in;       // (DEC_reg out?? )
 	end
 	
 end
@@ -256,7 +255,7 @@ dec decode (
 	.EXdata_RS1_out(DEC_EX.RS1_data_out),
 	.EXdata_RS2_out(DEC_EX.RS2_data_out),
 	.EXdata_RD_out(DEC_EX.RD_out),
-	.IFctrl_out() // TODO
+	.IFctrl_out(BRANCH_COND_core) 
 
 
 );

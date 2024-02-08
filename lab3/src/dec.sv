@@ -29,7 +29,7 @@ module dec import riscv_pkg::*;
     output  logic [31:0]    EXdata_RS2_out,
     output  logic [4:0]     EXdata_RD_out,
 
-    output  IF_ctrl         IFctrl_out //TODO
+    output  IF_ctrl         IFctrl_out
 
 );
 
@@ -61,7 +61,7 @@ module dec import riscv_pkg::*;
         .RS1_in(DECdata_RS1),
         .RS2_in(DECdata_RS2),
         .funct3(DECdata_funct3),
-        .bu_o(IFctrl_out.PC_sel)
+        .bu_o(IFctrl_out)
     );
 
     register_file register_file_unit (

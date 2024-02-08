@@ -17,7 +17,7 @@ module hu import riscv_pkg::*;
 ( 
     // Control input signals
     input logic EN,
-    input logic BRANCH_cond_in,
+    input IF_ctrl BRANCH_cond_in,
     input logic INSTR_mem_busy_in, 
     input logic DATA_mem_busy_in, 
     input MEM_ctrl MEMctrl_in,
@@ -112,7 +112,7 @@ always_comb begin : hu_data_control
 
     case(current_state)
         issue_req: begin
-            if (BRANCH_cond_in) begin
+            if (BRANCH_cond_in == JUMP) begin
                 PC_REG_out = STALL;
                 IF_DEC_out = FLUSH;  // <-- branch delay slot (NOP insertion)
             end
