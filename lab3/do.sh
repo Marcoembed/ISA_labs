@@ -30,7 +30,7 @@ COMPILE_VLOG_FILE_PATH_LIST=("$HDL_DIR/compile_VLOG.f" "$TB_DIR/compile_VLOG.f")
 # SIMULATION TOP level entity name
 SIM_TOP_LVL_ENTITY="tb"
 # SIMULATION work directory
-SIM_WORK_DIR="$SIM_DIR/work"
+SIM_WORK_DIR="work"
 # SIMULATION variables
 SIM_TIME="40us"
 # SIMULATION tcl script file path
@@ -185,6 +185,7 @@ cmd_init(){
 # NOTE: must be in project root
 cmd_vlog_elaborate() {
     # Check compile_VLOG file existance
+	
     for i in "${COMPILE_VLOG_FILE_PATH_LIST[@]}"; do
         if ! [ -f "$i" ]; then 
             echo "Error: Cannot find $i file" 
@@ -211,11 +212,13 @@ cmd_vlog_elaborate() {
         # if file is not empty
         if [ -s "$i" ]; then
             # compile verilog and verilog files
-            vlog -work "$SIM_WORK_DIR" -F "$i"
+            vlog -svinputport=relaxed -work "$SIM_WORK_DIR" -F "$i"
         fi
     done
 
     # return compilation code
+	cd -
+
     return $ret
 
 }
@@ -258,6 +261,7 @@ cmd_vhdl_elaborate() {
     done
 
     # return compilation code
+
     return $ret
 
 }
