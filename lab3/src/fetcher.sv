@@ -63,13 +63,11 @@ end
 
 always_comb begin : fetcher_fsm_data
 
-    fetch_intf.proc_req = NOREQUEST;
     busy_out = '0;
+    fetch_intf.proc_req = NOREQUEST;
 
     case (current_state)
         wait_req: begin
-            busy_out = '0;
-            fetch_intf.proc_req = NOREQUEST;
             if (HZ_instr_req) begin
                 busy_out = '1;
                 fetch_intf.proc_req = REQUEST;
@@ -77,13 +75,12 @@ always_comb begin : fetcher_fsm_data
         end
 
         wait_ready: begin
-            fetch_intf.proc_req = REQUEST;
             busy_out = '1;
+            fetch_intf.proc_req = REQUEST;
         end
 
         wait_valid: begin
             busy_out = '1;
-            fetch_intf.proc_req = NOREQUEST;
             if(fetch_intf.valid == '1) begin
                 busy_out = '0;
             end
@@ -96,5 +93,12 @@ end
 assign fetch_intf.addr = PC_in;
 assign fetch_intf.we = READ;
 assign fetch_intf.wdata = '0;
+
+// RDATA kept stable
+always_latch begin : rdata_latch
+    if (fetch_intf.valid) begin
+        INSTR_out <= fetch_intf.rdata;  
+    end
+end
 
 endmodule
