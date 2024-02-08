@@ -12,4 +12,4 @@ transcript
 *.zip
 .jpeg
 .png
-lab3/src/*.f
+*.f
