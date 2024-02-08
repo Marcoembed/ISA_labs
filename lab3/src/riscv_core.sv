@@ -42,6 +42,13 @@ logic [width-1:0] PC_core;
 logic [width-1:0] INSTR_core;
 logic INSTR_valid_core;
 
+// ------------------------------ DECODE signals
+DEC_ctrl BRANCH_op_core;
+
+// ------------------------------ EXECUTE signals
+
+
+
 /*------------------------------*/
 //	HAZARD
 /*------------------------------*/
@@ -171,8 +178,8 @@ always_ff @( posedge CLK ) begin : ex_mem
 		// Data signals
 		EX_MEM.IMM_out      <= IMM_in;      
 		EX_MEM.RES_alu_out  <= RES_alu_in;  
-		EX_MEM.RS2_data_out <= RS2_data_in; 
-		EX_MEM.RD_out       <= RD_in;       
+		EX_MEM.RS2_data_out <= RS2_data_in; // TODO dove sono questi segnali
+		EX_MEM.RD_out       <= RD_in;       // (DEC_reg out?? )
 	end
 	
 end
@@ -224,15 +231,85 @@ fet fetch (
 /*------------------------------*/
 //	DECODE
 /*------------------------------*/
+dec decode (
+	.CLK(CLK),
+    .RSTn(RSTn),
+    .EN(EN),
 
+	//input
+	.DECctrl_in(BRANCH_op_core), 
+	.IDdata_INSTRUCTION_in(IF_DEC.INSTR_out),
+	.IDdata_PC_in(IF_DEC.PC_out),
+	.WBdata_RD_in(), //TODO
+	.WBdata_WriteData_in(), //TODO
+
+	//output
+	.EXdata_PC_out(DEC_EX.PC_out),
+	.EXdata_IMM_out(DEC_EX.IMM_out),
+	.EXdata_RS1_out(DEC_EX.RS1_data_out),
+	.EXdata_RS2_out(DEC_EX.RS2_data_out),
+	.EXdata_RD_out(DEC_EX.RD_out),
+	.IFctrl_out() // TODO
+
+
+);
 /*------------------------------*/
 //	EXECUTE
 /*------------------------------*/
+exe execute(
 
+    .EXctrl_in(DEC_EX.EXctrl_out),
+	.FUctrl_in(FUmux_core),
+    
+	// TODO non dovrebbe servire perchè è in EX_ctrl
+	.ALUctrl_in(),
+
+	//input
+    .EXdata_FRWDALU_in(EX_MEM.RES_alu_out), //TODO controllare se sono giusti
+    .EXdata_FRWDWB_in(), //TODO
+	.EXdata_PC_in(DEC_EX.PC_out),
+ 	.EXdata_IMM_in(DEC_EX.IMM_out),
+ 	.EXdata_RS1_in(DEC_EX.RS1_out),
+ 	.EXdata_RS2_in(DEC_EX.RS2_out),
+
+	//output
+ 	.EXdata_ALU_out(RES_alu_in),
+    .EXdata_IMM_out(IMM_in)
+
+
+);
 /*------------------------------*/
 //  MEMORY
 /*------------------------------*/
+lsu load_store_unit(
+    // control signals
+    input logic CLK,
+    input logic RSTn,
+    input MEM_ctrl MEMctrl_in,
+    input logic HZ_data_req,
 
+    // from datapath
+    input logic [31:0] addr_in,
+    input logic [31:0] data_in,
+
+    // to datapath
+    output logic [31:0] data_out,
+
+    // to obi interface
+    output logic [31:0] OBI_addr,
+    output logic [31:0] OBI_data_out, // data to be sent on obi interface
+    output logic OBI_proc_req,
+    output logic OBI_we, //we-nRE
+
+    // from obi interface 
+    input logic [31:0] OBI_data_in, // data sampled from the obi interface
+    input logic OBI_mem_rdy,
+    input logic OBI_valid,
+
+    // to hazard unit
+    output logic busy_out
+)
+);
 /*------------------------------*/
 //	WRITEBACK
 /*------------------------------*/

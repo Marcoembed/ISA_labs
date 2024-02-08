@@ -19,6 +19,8 @@ module exe import riscv_pkg::*;
 
     input   EX_ctrl 	    EXctrl_in,
 	input   FU_mux          FUctrl_in,
+   
+   // TODO non dovrebbe servire
     input   ALU_ctrl 	    ALUctrl_in,
 
     // input data signals

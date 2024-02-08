@@ -15,7 +15,7 @@
 
 module dec import riscv_pkg::*;
 (
-    input   logic RSTn, CLK, EN, //TODO controllare da dove viene EN
+    input   logic RSTn, CLK, EN, 
     input   DEC_ctrl        DECctrl_in,
     input   logic [31:0]    IDdata_INSTRUCTION_in,
     input   logic [31:0]    IDdata_PC_in,
@@ -29,7 +29,7 @@ module dec import riscv_pkg::*;
     output  logic [31:0]    EXdata_RS2_out,
     output  logic [4:0]     EXdata_RD_out,
 
-    output  IF_ctrl         IFctrl_out
+    output  IF_ctrl         IFctrl_out //TODO
 
 );
 
