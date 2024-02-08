@@ -1,1 +1,3 @@
 - Controllare i segnali di EN, se usarli e come
+- Aggiustare CU
+- Segnali contrllo fetcher e hu 

@@ -16,7 +16,7 @@ typedef enum logic[1:0] {issue_req, data_busy, instr_busy, idle} state;
 module hu import riscv_pkg::*;
 ( 
     // Control input signals
-    input logic EN,
+    input logic CLK, RSTn, EN,
     input IF_ctrl BRANCH_cond_in,
     input logic INSTR_mem_busy_in, 
     input logic DATA_mem_busy_in, 
