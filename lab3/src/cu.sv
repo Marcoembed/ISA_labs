@@ -59,7 +59,7 @@ always_comb begin
 		OP_JMP			: begin DEC.branch = JMP; end
 		OP_LUI 			: begin WB.RF_we = WR; WB.SRCtoRF = IMMtoRF; end
 		OP_LW  			: begin MEM.mem_en = 1; WB.RF_we = WR; WB.SRCtoRF = MEMtoRF; end
-		OP_SW  			: begin MEM.mem_en = 1; MEM.we = WRITE; end
+		OP_SW  			: begin MEM.mem_en = 1; MEM.wr = WRITE; end
 		OP_RET 			: begin DEC.branch = JMP; end
 	endcase
 
