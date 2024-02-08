@@ -137,13 +137,13 @@ always_ff @( posedge CLK ) begin : dex_ex
 		// Data signals
 		DEC_EX.PC_out		 <= '0; 
 		DEC_EX.IMM_out		 <= '0; 
-		DEC_EX.RS1_DATA_out <= '0; 
-		DEC_EX.RS2_DATA_out <= '0; 
+		DEC_EX.RS1_data_out <= '0; 
+		DEC_EX.RS2_data_out <= '0; 
 		DEC_EX.RD_out		 <= '0; 
 		DEC_EX.RS1_out		 <= '0; 
 		DEC_EX.RS2_out		 <= '0; 
-		DEC_EX.BU_COND_out	 <= '0; 
-		DEC_EX.BU_TARGET_out<= '0; 
+		DEC_EX.BU_cond_out	 <= '0; 
+		DEC_EX.BU_target_out <= '0; 
         
                        	   
 	end
