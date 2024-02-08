@@ -67,19 +67,19 @@ end
 always_comb begin : lsu_fsm_output
 
     busy_out = '0;
-    lsu_intf.proc_req == NOREQUEST;
+    lsu_intf.proc_req = NOREQUEST;
 
     case (current_state)
         wait_req: begin
             if (MEM_ctrl_in.mem_en == '1 && HZ_data_req) begin
                 busy_out = '1;
-                lsu_intf.proc_req == REQUEST;
+                lsu_intf.proc_req = REQUEST;
             end 
         end
 
         wait_ready: begin
             busy_out = '1;
-            lsu_intf.proc_req == REQUEST;
+            lsu_intf.proc_req = REQUEST;
         end
 
         wait_valid: begin
