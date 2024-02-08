@@ -1,6 +1,6 @@
 typedef enum logic[1:0] {wait_req, wait_valid, wait_ready} state;
 
-module lsu
+module lsu import riscv_pkg::*;
 ( 
     // control signals
     input logic CLK,
