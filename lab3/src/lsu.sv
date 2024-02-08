@@ -43,7 +43,6 @@ always_ff @(posedge CLK) begin
 end
 
 always_comb begin : lsu_fsm_control
-    next_state = current_state;
     case (current_state)
         wait_req: begin
             if (MEM_ctrl_in.proc_req == REQUEST && HZ_data_req) begin

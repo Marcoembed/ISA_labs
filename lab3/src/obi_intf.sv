@@ -13,4 +13,4 @@ interface obi_intf import riscv_pkg::*;;
         input mem_rdy, valid, rdata  // from memory
     );
 
-endinterface //obi (input CLK)
+endinterface //obi (input CLK)w
