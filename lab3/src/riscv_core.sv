@@ -27,6 +27,10 @@ module riscv_core import riscv_pkg::*;
 HAZARD_ctrl PC_REG;
 PREG IF_DEC, DEC_EX, EX_MEM, MEM_WB;
 
+// ------------------------------ HAZARD signals TODO: check if use a struct
+logic HZ_instr_req_core; // request fired
+logic HZ_data_req_core; // request fired
+logic instr_mux_sel_core;
 // ------------------------------ FORWARDING signals
 FU_data FUdata_core;
 FU_mux  FUmux_core;
@@ -55,20 +59,23 @@ DEC_ctrl BRANCH_op_core;
 
 hu hazard_unit (
     // input
-   .EN(EN),
-   .BRANCH_cond_in(BRANCH_COND_core),
-   .INSTR_mem_busy_in(INSTR_valid_core),
-   .DATA_mem_bus_in(DATA_valid_core),
-   .MEMctrl_in(EX_MEM.MEMctrl_out),
-   .EX_MEM_RD_in(EX_MEM.RD_out),
-   .DEC_EX_RS1_in(DEC_EX.RS1_out),
-   .DEC_EX_RS2_in(DEC_EX.RS2_out),
-   // output
-   .PC_REG_out(PC_REG),
-   .IF_DEC_out(IF_DEC.HZctrl_in),
-   .DEC_EX_out(DEC_EX.HZctrl_in),
-   .EX_MEM_out(EX_MEM.HZctrl_in),
-   .MEM_WB_out(MEM_WB.HZctrl_in)
+	.EN(EN),
+	.BRANCH_cond_in(BRANCH_COND_core),
+	.INSTR_mem_busy_in(INSTR_valid_core),
+	.DATA_mem_bus_in(DATA_valid_core),
+	.MEMctrl_in(EX_MEM.MEMctrl_out),
+	.EX_MEM_RD_in(EX_MEM.RD_out),
+	.DEC_EX_RS1_in(DEC_EX.RS1_out),
+	.DEC_EX_RS2_in(DEC_EX.RS2_out),
+	// output
+	.PC_REG_out(PC_REG),
+	.IF_DEC_out(IF_DEC.HZctrl_in),
+	.DEC_EX_out(DEC_EX.HZctrl_in),
+	.EX_MEM_out(EX_MEM.HZctrl_in),
+	.MEM_WB_out(MEM_WB.HZctrl_in),
+	.HZ_instr_req(HZ_instr_req_core), // request fired
+	.HZ_data_req(HZ_data_req_core), // request fired
+	.instr_mux_sel(instr_mux_sel_core)
 
 );
 
@@ -283,32 +290,32 @@ exe execute(
 /*------------------------------*/
 lsu load_store_unit(
     // control signals
-    input logic CLK,
-    input logic RSTn,
-    input MEM_ctrl MEMctrl_in,
-    input logic HZ_data_req,
+    .CLK(CLK),
+    .RSTn(RSTn),
+    .MEMctrl_in(EX_MEM.MEMctrl_out),
+    .HZ_data_req(HZ_data_req_core),
 
     // from datapath
-    input logic [31:0] addr_in,
-    input logic [31:0] data_in,
+    .addr_in(EX_MEM.RES_alu_out),
+    .data_in(EX_MEM.IMM_out),
 
     // to datapath
-    output logic [31:0] data_out,
+   .data_out(MEM_WB.DATA_mem_out),
 
     // to obi interface
-    output logic [31:0] OBI_addr,
-    output logic [31:0] OBI_data_out, // data to be sent on obi interface
-    output logic OBI_proc_req,
-    output logic OBI_we, //we-nRE
+    .OBI_addr(),
+    .OBI_data_out(),  // data to be sent on obi interface
+    .OBI_proc_req(),
+    .OBI_we(), //we-nRE
 
     // from obi interface 
-    input logic [31:0] OBI_data_in, // data sampled from the obi interface
-    input logic OBI_mem_rdy,
-    input logic OBI_valid,
+    .OBI_data_in(), // data sampled from the obi interface
+    .OBI_mem_rdy(),
+    .OBI_valid(),
 
     // to hazard unit
-    output logic busy_out
-)
+    .busy_out()
+
 );
 /*------------------------------*/
 //	WRITEBACK
