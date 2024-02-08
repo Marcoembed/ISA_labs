@@ -118,7 +118,7 @@ always_comb begin : hu_data_control
             end
 
             // load-use data hazard
-            if (MEMctrl_in.proc_req == REQUEST && MEMctrl_in.we == READ) begin // load operation
+            if (MEMctrl_in.mem_en == 1 && MEMctrl_in.we == READ) begin // load operation
                 if (EX_MEM_RD_in == DEC_EX_RS1_in || EX_MEM_RD_in == DEC_EX_RS2_in) begin
                     PC_REG_out = STALL;
                     IF_DEC_out = STALL;

@@ -21,15 +21,16 @@ module cu import riscv_pkg::*;
    	output 	WB_ctrl WB	
 );
 
+
 // Unpacking instruction control bits 
-
 t_opcode  opcode;
-assign opcode = t_opcode'(INSTR[6:0]);
-
 t_funct7 funct7;
+
 assign funct7 = t_funct7'(INSTR[31:25]);
 
 always_comb begin
+
+	opcode = t_opcode'(INSTR[6:0]);
 
 	if (FLUSH_IF_DEC == FLUSH) begin
 		opcode = OP_ADDI; // NOP operation
@@ -40,8 +41,8 @@ always_comb begin
 	EX.ALUopr  		= ALU_ADD;
 	EX.ALUsrcA		= RS1;
 	EX.ALUsrcB		= IMM;
-	MEM.proc_req	= NOREQUEST;
-	MEM.we			= READ;
+	MEM.mem_en		= 0;
+	MEM.wr			= READ;
 	WB.SRCtoRF 		= ALUtoRF;
 	WB.RF_we		= NOWR;
 
@@ -57,8 +58,8 @@ always_comb begin
 		OP_BRANCH		: begin DEC.branch = BRANCH; end
 		OP_JMP			: begin DEC.branch = JMP; end
 		OP_LUI 			: begin WB.RF_we = WR; WB.SRCtoRF = IMMtoRF; end
-		OP_LW  			: begin MEM.proc_req = REQUEST; WB.RF_we = WR; WB.SRCtoRF = MEMtoRF; end
-		OP_SW  			: begin MEM.proc_req = REQUEST; MEM.we = WRITE; end
+		OP_LW  			: begin MEM.mem_en = 1; WB.RF_we = WR; WB.SRCtoRF = MEMtoRF; end
+		OP_SW  			: begin MEM.mem_en = 1; MEM.we = WRITE; end
 		OP_RET 			: begin DEC.branch = JMP; end
 	endcase
 
