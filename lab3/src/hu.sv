@@ -11,7 +11,6 @@
 // Additional Comments: 
 /*--------------------------------------------------------------------------------*/
 
-typedef enum logic[1:0] {issue_req, data_busy, instr_busy, idle} state;
 
 module hu import riscv_pkg::*;
 ( 
@@ -39,6 +38,7 @@ module hu import riscv_pkg::*;
 
 );
 
+typedef enum logic[1:0] {issue_req, data_busy, instr_busy, idle} state;
 state current_state, next_state;
 
 always_ff @(posedge CLK) begin

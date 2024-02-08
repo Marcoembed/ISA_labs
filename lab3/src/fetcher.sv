@@ -1,5 +1,3 @@
-typedef enum logic[1:0] {wait_req, wait_valid, wait_ready} state;
-
 module fetcher import riscv_pkg::*;
 (  
     input logic CLK,
@@ -19,6 +17,7 @@ module fetcher import riscv_pkg::*;
 );
 
 
+typedef enum logic[1:0] {wait_req, wait_valid, wait_ready} state;
 state current_state, next_state;
 
 always_ff @(posedge CLK) begin
