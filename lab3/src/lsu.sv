@@ -1,4 +1,4 @@
-typedef enum logic[1:0] {wait_req, wait_valid, wait_req} state;
+typedef enum logic[1:0] {wait_req, wait_valid, wait_ready} state;
 
 module lsu
 ( 
@@ -35,7 +35,7 @@ state current_state, next_state;
 
 always_ff @(posedge CLK) begin
     if (!RSTn) begin
-        current_state <= req_on;
+        current_state <= wait_req;
     end
     else begin
         current_state <= next_state;
@@ -54,14 +54,14 @@ always_comb begin : lsu_fsm_control
                 end
             end
         end
-        wait_valid: begin
-            if (OBI_valid == '1) begin
-                next_state = wait_req;
-            end
-        end
         wait_ready: begin
             if (OBI_mem_rdy == '1) begin
                 next_state = wait_valid;
+            end
+        end
+        wait_valid: begin
+            if (OBI_valid == '1) begin
+                next_state = wait_req;
             end
         end
         default: begin
@@ -91,16 +91,16 @@ always_comb begin : lsu_fsm_output
                 OBI_proc_req = '1;
             end 
         end
+        wait_ready: begin
+            proc_req = '1;
+            busy_out = '1;
+        end
         wait_valid: begin
             busy_out = '1;
             OBI_proc_req = '0;
             if(OBI_valid == '1) begin
                 busy_out = '0;
             end
-        end
-        wait_ready: begin
-            proc_req = '1;
-            busy_out = '1;
         end
     endcase
   
