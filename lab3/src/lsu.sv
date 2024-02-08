@@ -34,7 +34,7 @@ end
 always_comb begin : lsu_fsm_control
     case (current_state)
         wait_req: begin
-            if (MEM_ctrl_in.mem_en == '1 && HZ_data_req) begin
+            if (MEMctrl_in.mem_en == '1 && HZ_data_req) begin
                 if (lsu_intf.mem_rdy == '1) begin
                     next_state = wait_valid;
                 end else begin
@@ -70,7 +70,7 @@ always_comb begin : lsu_fsm_output
 
     case (current_state)
         wait_req: begin
-            if (MEM_ctrl_in.mem_en == '1 && HZ_data_req) begin
+            if (MEMctrl_in.mem_en == '1 && HZ_data_req) begin
                 busy_out = '1;
                 lsu_intf.proc_req = REQUEST;
             end 
@@ -93,7 +93,7 @@ end
 
 // direct connections
 assign lsu_intf.addr = addr_in;
-assign lsu_intf.we = MEM_ctrl_in.wr;
+assign lsu_intf.we = MEMctrl_in.wr;
 assign lsu_intf.wdata = data_in;
 
 // RDATA kept stable

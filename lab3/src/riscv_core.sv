@@ -27,10 +27,13 @@ module riscv_core import riscv_pkg::*;
 HAZARD_ctrl PC_REG;
 PREG IF_DEC, DEC_EX, EX_MEM, MEM_WB;
 
-// ------------------------------ HAZARD signals TODO: check if use a struct
+// ------------------------------ HAZARD signals
 logic HZ_instr_req_core; // request fired
 logic HZ_data_req_core; // request fired
 logic instr_mux_sel_core;
+logic INSTR_busy_core;
+logic DATA_busy_core;
+
 // ------------------------------ FORWARDING signals
 FU_data FUdata_core;
 FU_mux  FUmux_core;
@@ -44,7 +47,6 @@ logic [width-1:0] PC_core;
 
 // ------------------------------ FETCHER signals
 logic [width-1:0] INSTR_core;
-logic INSTR_valid_core;
 
 // ------------------------------ DECODE signals
 DEC_ctrl BRANCH_op_core;
@@ -67,8 +69,8 @@ hu hazard_unit (
     // input
 	.EN(EN),
 	.BRANCH_cond_in(BRANCH_COND_core),
-	.INSTR_mem_busy_in(INSTR_valid_core),
-	.DATA_mem_bus_in(DATA_valid_core),
+	.INSTR_mem_busy_in(INSTR_busy_core),
+	.DATA_mem_bus_in(DATA_busy_core),
 	.MEMctrl_in(EX_MEM.MEMctrl_out),
 	.EX_MEM_RD_in(EX_MEM.RD_out),
 	.DEC_EX_RS1_in(DEC_EX.RS1_out),
@@ -98,7 +100,7 @@ cu control_unit (
 
 fu forwarding_unit (
     // input
-    .FU_in(FUctrl_core),
+    .FU_in(FUdata_core),
     // output
     .FU_out(FUmux_core)
 );
@@ -233,7 +235,7 @@ fet fetch (
     .CLK(CLK),
     .RSTn(RSTn),
     .EN(EN),
-    .HZctrl_in(HZ_PC_REG_core),
+    .HZctrl_in(PC_REG),
     .BRANCH_cond_in(BRANCH_COND_core),
     .BRANCH_in(BRANCH_DATA_core),
     .PC_in(PC_core),
