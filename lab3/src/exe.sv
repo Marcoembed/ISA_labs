@@ -57,6 +57,10 @@ module exe import riscv_pkg::*;
 
 // MUX to feed ALU    
 	always_comb begin
+        MUXA_out = EXdata_RS1_in;
+        MUXB_out = EXdata_RS2_in;
+        OP1 = MUXA_out;
+        OP2 = EXdata_IMM_in;
 
         // first MUXA
         case (FUctrl_in.FRWD_A)

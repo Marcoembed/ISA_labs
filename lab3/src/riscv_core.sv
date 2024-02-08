@@ -70,7 +70,7 @@ hu hazard_unit (
 	.EN(EN),
 	.BRANCH_cond_in(BRANCH_COND_core),
 	.INSTR_mem_busy_in(INSTR_busy_core),
-	.DATA_mem_bus_in(DATA_busy_core),
+	.DATA_mem_busy_in(DATA_busy_core),
 	.MEMctrl_in(EX_MEM.MEMctrl_out),
 	.EX_MEM_RD_in(EX_MEM.RD_out),
 	.DEC_EX_RS1_in(DEC_EX.RS1_out),
@@ -89,7 +89,7 @@ hu hazard_unit (
 
 cu control_unit (
     // input
-    .instr(INSTR_core), 
+    .INSTR(INSTR_core), 
     .FLUSH_IF_DEC(IF_DEC.HZctrl_in),
     // output
     .DEC(BRANCH_op_core),

@@ -29,7 +29,6 @@ module hu import riscv_pkg::*;
     // Control output signals
     output logic HZ_instr_req, // request fired
     output logic HZ_data_req, // request fired
-    output logic instr_mux_sel,
     output HAZARD_ctrl PC_REG_out,
     output HAZARD_ctrl IF_DEC_out,
     output HAZARD_ctrl DEC_EX_out,
@@ -127,9 +126,6 @@ always_comb begin : hu_data_control
             end
         end
         instr_busy: begin
-            if (!INSTR_mem_busy_in) begin
-                instr_mux_sel = '1;
-            end
             HZ_data_req = '0;
             HZ_instr_req = '0;
             PC_REG_out = STALL;
@@ -139,9 +135,6 @@ always_comb begin : hu_data_control
             MEM_WB_out = STALL;
         end
         data_busy: begin
-            if (!DATA_mem_busy_in) begin
-                instr_mux_sel = '0;
-            end
             HZ_data_req = '0;
             HZ_instr_req = '0;
             PC_REG_out = STALL;
