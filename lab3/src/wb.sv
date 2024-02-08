@@ -18,12 +18,12 @@ module wb import riscv_pkg::*;
     input WB_ctrl WBctrl_in,
 
     // Data input signals
-    input logic[31:0] MEMdata_ALU_in,
-    input logic[31:0] MEMdata_IMM_in,
-    input logic[31:0] MEMdata_MEM_in,
+    input logic[31:0] WBdata_ALU_in,
+    input logic[31:0] WBdata_IMM_in,
+    input logic[31:0] WBdata_MEM_in,
 
     // Data output signals
-    output logic[31:0] MEMdata_MUX_out
+    output logic[31:0] WBdata_MUX_out
 );
 
 
@@ -31,15 +31,15 @@ module wb import riscv_pkg::*;
 always_comb begin
     case (WBctrl_in.SRCtoRF)
         ALUtoRF: begin
-            MEMdata_MUX_out = MEMdata_ALU_in;
+            WBdata_MUX_out = WBdata_ALU_in;
         end
 
         MEMtoRF: begin
-            MEMdata_MUX_out = MEMdata_MEM_in;
+            WBdata_MUX_out = WBdata_MEM_in;
         end
 
         IMMtoRF: begin
-            MEMdata_MUX_out = MEMdata_IMM_in;
+            WBdata_MUX_out = WBdata_IMM_in;
         end
         
     endcase
