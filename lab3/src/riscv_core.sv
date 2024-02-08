@@ -282,8 +282,8 @@ exe execute(
     .EXdata_FRWDWB_in(WBdata_MUX_core), 
 	.EXdata_PC_in(DEC_EX.PC_out),
  	.EXdata_IMM_in(DEC_EX.IMM_out),
- 	.EXdata_RS1_in(DEC_EX.RS1_out),
- 	.EXdata_RS2_in(DEC_EX.RS2_out),
+ 	.EXdata_RS1_in(DEC_EX.RS1_data_out),
+ 	.EXdata_RS2_in(DEC_EX.RS2_data_out),
 
 	//output
  	.EXdata_ALU_out(EX_MEM.RES_alu_in),
