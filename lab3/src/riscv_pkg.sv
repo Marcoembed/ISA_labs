@@ -93,15 +93,26 @@ package riscv_pkg;
 
 	//------------------------------ OBI interface
 
+
 	typedef enum logic { 
 		READ,
 		WRITE
-	} obi_wr;
+	} rdwr;
 
 	typedef enum logic { 
 		REQUEST,
 		NOREQUEST
 	} obi_req;
+
+	typedef struct {
+		rdwr we;
+		obi_req proc_req;
+		logic valid;
+		logic mem_rdy;
+		logic [width-1:0] wdata;
+		logic [width-1:0] rdata;
+		logic [reg_width-1:0] addr;
+	} obi;
 
 	
 	//------------------------------ ALU Operations
@@ -163,8 +174,8 @@ package riscv_pkg;
 	/*------------------------------*/
 
 	typedef struct packed {
-		obi_req proc_req;
-		obi_wr we;
+		logic mem_en;
+		rdwr wr;
 	}MEM_ctrl;
 	
 	/*------------------------------*/
