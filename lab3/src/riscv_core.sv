@@ -259,11 +259,11 @@ dec decode (
 	.WBdata_WriteData_in(WBdata_MUX_core), 
 
 	//output
-	.EXdata_PC_out(DEC_EX.PC_out),
-	.EXdata_IMM_out(DEC_EX.IMM_out),
-	.EXdata_RS1_out(DEC_EX.RS1_data_out),
-	.EXdata_RS2_out(DEC_EX.RS2_data_out),
-	.EXdata_RD_out(DEC_EX.RD_out),
+	.EXdata_PC_out(DEC_EX.PC_in),
+	.EXdata_IMM_out(DEC_EX.IMM_in),
+	.EXdata_RS1_out(DEC_EX.RS1_data_in),
+	.EXdata_RS2_out(DEC_EX.RS2_data_in),
+	.EXdata_RD_out(DEC_EX.RD_in),
 	.IFctrl_out(BRANCH_COND_core) 
 
 );
