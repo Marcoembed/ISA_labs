@@ -27,6 +27,10 @@ module riscv_core import riscv_pkg::*;
 HAZARD_ctrl PC_REG;
 PREG IF_DEC, DEC_EX, EX_MEM, MEM_WB;
 
+// ------------------------------ INTERFACE 
+obi_intf fetch_intf_core;
+obi_intf lsu_intf_core;
+
 // ------------------------------ HAZARD signals
 logic HZ_instr_req_core; // request fired
 logic HZ_data_req_core; // request fired
@@ -231,6 +235,23 @@ end
 //	FETCH
 /*------------------------------*/
 
+fetcher fetcher_unit (
+
+    .CLK(CLK),
+    .RSTn(RSTn),
+
+    // control signals
+    .HZ_instr_req(HZ_instr_req_core),
+    .busy_out(INSTR_busy_core),
+
+    // processor signals
+    .PC_in(PC_core),
+    .INSTR_out(),
+
+    // memory signals
+    .fetch_intf(fetch_intf_core)
+);
+
 fet fetch (
     .CLK(CLK),
     .RSTn(RSTn),
@@ -301,27 +322,11 @@ lsu load_store_unit(
     .RSTn(RSTn),
     .MEMctrl_in(EX_MEM.MEMctrl_out),
     .HZ_data_req(HZ_data_req_core),
-
-    // from datapath
-    .addr_in(EX_MEM.RES_alu_out),
-    .data_in(EX_MEM.IMM_out),
-
-    // to datapath
-   .data_out(MEM_WB.DATA_mem_out),
-
-    // to obi interface
-    .OBI_addr(),
-    .OBI_data_out(),  // data to be sent on obi interface
-    .OBI_proc_req(),
-    .OBI_we(), //we-nRE
-
-    // from obi interface 
-    .OBI_data_in(), // data sampled from the obi interface
-    .OBI_mem_rdy(),
-    .OBI_valid(),
-
-    // to hazard unit
-    .busy_out()
+    .busy_out(DATA_busy_core),
+    .addr_in(),
+    .data_in(),
+    .data_out(),
+	.lsu_intf(lsu_intf_core)	
 
 );
 
