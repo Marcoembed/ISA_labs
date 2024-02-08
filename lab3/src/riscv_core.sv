@@ -48,7 +48,14 @@ logic INSTR_valid_core;
 
 // ------------------------------ DECODE signals
 DEC_ctrl BRANCH_op_core;
+
 // ------------------------------ EXECUTE signals
+logic [width-1:0] RS2_core;
+logic [width-1:0] RD_core;
+
+// ------------------------------ WRITE BACK signals
+logic [width-1:0] WBdata_MUX_core;
+
 
 
 
@@ -184,8 +191,8 @@ always_ff @( posedge CLK ) begin : ex_mem
 		// Data signals
 		EX_MEM.IMM_out      <= EX_MEM.IMM_in;      
 		EX_MEM.RES_alu_out  <= EX_MEM.RES_alu_in;  
-		EX_MEM.RS2_data_out <= EX_MEM.RS2_data_in; 
-		EX_MEM.RD_out       <= EX_MEM.RD_in;       // (DEC_reg out?? )
+		EX_MEM.RS2_data_out <= DEC_EX.RS2_data_out;  // direct wire
+		EX_MEM.RD_out       <= DEC_EX.RD_out;  // direct wire
 	end
 	
 end
@@ -210,18 +217,17 @@ always_ff @( posedge CLK ) begin : mem_wb
 		MEM_WB.WBctrl_out 	<= MEM_WB.WBctrl_in;
 
 		// Data signals
-		MEM_WB.IMM_out		 <= MEM_WB.IMM_in; 
-		MEM_WB.RES_alu_out	 <= MEM_WB.RES_alu_out; 
-		MEM_WB.DATA_mem_out	 <= MEM_WB.DATA_mem_out; 
-		MEM_WB.RD_out        <= MEM_WB.RD_out; 
+		MEM_WB.IMM_out		 <= EX_MEM.IMM_out; // direct wire 
+		MEM_WB.RES_alu_out	 <= EX_MEM.RES_alu_out; 
+		MEM_WB.DATA_mem_out	 <= MEM_WB.DATA_mem_in; 
+		MEM_WB.RD_out        <= EX_MEM.RD_out; 
 	end
-
 	
 end
+
 /*------------------------------*/
 //	FETCH
 /*------------------------------*/
-
 
 fet fetch (
     .CLK(CLK),
@@ -237,6 +243,7 @@ fet fetch (
 /*------------------------------*/
 //	DECODE
 /*------------------------------*/
+
 dec decode (
 	.CLK(CLK),
     .RSTn(RSTn),
@@ -246,8 +253,8 @@ dec decode (
 	.DECctrl_in(BRANCH_op_core), 
 	.IDdata_INSTRUCTION_in(IF_DEC.INSTR_out),
 	.IDdata_PC_in(IF_DEC.PC_out),
-	.WBdata_RD_in(), //TODO
-	.WBdata_WriteData_in(), //TODO
+	.WBdata_RD_in(MEM_WB.RD_out), 
+	.WBdata_WriteData_in(WBdata_MUX_core), 
 
 	//output
 	.EXdata_PC_out(DEC_EX.PC_out),
@@ -257,36 +264,35 @@ dec decode (
 	.EXdata_RD_out(DEC_EX.RD_out),
 	.IFctrl_out(BRANCH_COND_core) 
 
-
 );
+
 /*------------------------------*/
 //	EXECUTE
 /*------------------------------*/
+
 exe execute(
 
     .EXctrl_in(DEC_EX.EXctrl_out),
 	.FUctrl_in(FUmux_core),
     
-	// TODO non dovrebbe servire perchè è in EX_ctrl
-	.ALUctrl_in(),
-
 	//input
-    .EXdata_FRWDALU_in(EX_MEM.RES_alu_out), //TODO controllare se sono giusti
-    .EXdata_FRWDWB_in(), //TODO
+    .EXdata_FRWDALU_in(EX_MEM.RES_alu_out), 
+    .EXdata_FRWDWB_in(WBdata_MUX_core), 
 	.EXdata_PC_in(DEC_EX.PC_out),
  	.EXdata_IMM_in(DEC_EX.IMM_out),
  	.EXdata_RS1_in(DEC_EX.RS1_out),
  	.EXdata_RS2_in(DEC_EX.RS2_out),
 
 	//output
- 	.EXdata_ALU_out(RES_alu_in),
-    .EXdata_IMM_out(IMM_in)
-
+ 	.EXdata_ALU_out(EX_MEM.RES_alu_in),
+    .EXdata_IMM_out(EX_MEM.IMM_in)
 
 );
+
 /*------------------------------*/
 //  MEMORY
 /*------------------------------*/
+
 lsu load_store_unit(
     // control signals
     .CLK(CLK),
@@ -316,9 +322,25 @@ lsu load_store_unit(
     .busy_out()
 
 );
+
 /*------------------------------*/
 //	WRITEBACK
 /*------------------------------*/
+
+wb write_back(
+
+    .WBctrl_in(MEM_WB.WBctrl_in) ,
+
+    // Data input signals
+    .WBdata_ALU_in(MEM_WB.RES_alu_out),
+    .WBdata_IMM_in(MEM_WB.IMM_out),
+    .WBdata_MEM_in(MEM_WB.DATA_mem_out),
+
+    // Data output signals
+    .WBdata_MUX_out(WBdata_MUX_core)
+
+);
+
 
 endmodule
 
