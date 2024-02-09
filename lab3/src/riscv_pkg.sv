@@ -66,8 +66,8 @@ package riscv_pkg;
 	} rdwr;
 
 	typedef enum logic { 
-		REQUEST,
-		NOREQUEST
+		NOREQUEST,
+		REQUEST
 	} obi_req;
 
 	typedef struct {

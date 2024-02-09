@@ -2,59 +2,58 @@
 
 module tb import riscv_pkg::*; ();
 
-	obi_intf fetch_intf();
+	obi_intf fetcher_intf();
 
 	logic CLK, RSTn;
-	logic[31:0] PC_in_tb; // FAI IL PROCESS +4
-	logic[31:0] INSTR_tb;
-	logic BUSY;
-	logic VALID_tb;
+	logic[31:0] tb_PC_in; // FAI IL PROCESS +4
+	logic[31:0] tb_instr;
+	logic tb_busy;
 
-	obi_req tb_proc_req;
+	logic tb_proc_req;
     logic tb_mem_rdy;
-	rdwr tb_we;
-    logic [reg_width-1:0] tb_addr;
-    logic [width-1:0] tb_wdata;
-    logic [width-1:0] tb_rdata;
+	logic tb_we;
+    logic [31:0] tb_addr;
+    logic [31:0] tb_wdata;
+    logic [31:0] tb_rdata;
     logic tb_valid;
 
-	
 
-    assign fetch_intf.proc_req = tb_proc_req;
-    assign fetch_intf.mem_rdy = tb_mem_rdy;
-    assign fetch_intf.we = tb_we;
-    assign fetch_intf.addr = tb_addr;
-    assign fetch_intf.wdata = tb_wdata;
-    assign fetch_intf.rdata = tb_rdata;
-    assign fetch_intf.valid = tb_valid;
+	// parameters
+	localparam Ts = 10000;
+	localparam tco = 1;
+	localparam tpd = 1;
+	//localparam cRG_FAST = 0;
+	localparam cIS_CODE = 0;
+	localparam cIS_DATA = 1;   
+	localparam cCONTENT_TYPE = cIS_CODE; 
 
-	assign tb_valid = 1 - BUSY;
+	// Interface unpacking
+	always_comb begin
+    	tb_proc_req = logic'(fetcher_intf.proc_req);
+    	tb_we = logic'(fetcher_intf.we);
+    	tb_addr = fetcher_intf.addr;
+    	tb_wdata = fetcher_intf.wdata;
 
-
-	//parameters
-   localparam Ts = 10000;
-   localparam tco = 1;
-   localparam tpd = 1;
-   //localparam cRG_FAST = 0;
-   localparam cIS_CODE = 0;
-   localparam cIS_DATA = 1;   
-   localparam cCONTENT_TYPE = cIS_CODE; 
-
-
-   always_ff @(posedge CLK) begin
-	if (!RSTn) begin
-		PC_in_tb <= 32'h00400000;
-	end else
-	if (VALID_tb) begin
-	  PC_in_tb <= PC_in_tb + 32'h4;
+    	fetcher_intf.mem_rdy = tb_mem_rdy;
+    	fetcher_intf.rdata = tb_rdata;
+    	fetcher_intf.valid = tb_valid;
 	end
+
+
+	always_ff @(posedge CLK) begin
+		if (!RSTn) begin
+			tb_PC_in <= 32'h00400000;
+		end else
+		if (!tb_busy) begin
+		  tb_PC_in <= tb_PC_in + 32'h4;
+		end
    end
 
 	clk_gen #(
-	     .T( Ts )
+		.T(Ts)
    ) CG (
-  	 .CLK( CLK ),
-	 .RSTn( RSTn )
+  	 .CLK(CLK),
+	 .RSTn(RSTn)
    );
 
 	fetcher fetcher_unit
@@ -64,9 +63,9 @@ module tb import riscv_pkg::*; ();
 		.RSTn(RSTn),
 
 		.HZ_instr_req('1),
-		.busy_out(BUSY),
-		.PC_in(PC_in_tb),
-		.INSTR_out(INSTR_tb),
+		.busy_out(tb_busy),
+		.PC_in(tb_PC_in),
+		.INSTR_out(tb_instr),
 
 		.fetch_intf(fetcher_intf.to_mem)
 		
@@ -75,26 +74,26 @@ module tb import riscv_pkg::*; ();
 
 
 	mem_wrap_fake #(
-			.CONTENT_TYPE( cCONTENT_TYPE ),
-			.tco( tco ),
-			.tpd( tpd )
+			.CONTENT_TYPE(cCONTENT_TYPE),
+			.tco(tco),
+			.tpd(tpd)
 	) UUT (
-		.CLK( CLK ),
-		.RSTn( RSTn ),
-		.PROC_REQ(tb_proc_req ),
+		.CLK(CLK),
+		.RSTn(RSTn),
+		.PROC_REQ(tb_proc_req),
 		.MEM_RDY(tb_mem_rdy),
-		.ADDR(tb_addr ),
-		.WE(tb_we ),
-		.WDATA(tb_wdata ),
-		.RDATA(tb_rdata ),
-		.VALID(tb_valid )
+		.ADDR(tb_PC_in),
+		.WE(tb_we),
+		.WDATA(tb_wdata),
+		.RDATA(tb_rdata),
+		.VALID(tb_valid)
 	);
 
 	data_dumper dd (
-		.CLK( CLK ),
-		.RSTn( RSTn ),
-		.RDATA( INSTR_tb ),
-		.VALID( tb_valid )
+		.CLK(CLK),
+		.RSTn(RSTn),
+		.RDATA(tb_instr),
+		.VALID(tb_valid)
 		);
 
 	
