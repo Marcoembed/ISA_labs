@@ -16,14 +16,6 @@ package riscv_pkg;
 		OP_RET		= 7'b1100111
 	} t_opcode;
 
-	//------------------------------ INSTRUCTIONS
-	typedef struct packed{
-		logic [6:0] opcode;
-		logic [4:0] rd;
-		logic [4:0] rs1;
-		logic [4:0] rs2;
-	} t_instr;
-
 	//------------------------------ FORWARD
 	typedef struct packed {
 		logic [4:0] 	Mem_rd;
