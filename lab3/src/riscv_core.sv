@@ -14,6 +14,8 @@
 
 module riscv_core import riscv_pkg::*;
 ( 
+	obi_intf.to_mem fetch_intf_core,
+	obi_intf.to_mem lsu_intf_core,
     input logic CLK,
     input logic EN,
     input logic RSTn
@@ -26,10 +28,6 @@ module riscv_core import riscv_pkg::*;
 // ------------------------------ PIPE REGISTERS
 HAZARD_ctrl PC_REG;
 PREG IF_DEC, DEC_EX, EX_MEM, MEM_WB;
-
-// ------------------------------ INTERFACE 
-obi_intf fetch_intf_core;
-obi_intf lsu_intf_core;
 
 // ------------------------------ HAZARD signals
 logic HZ_instr_req_core; // request fired

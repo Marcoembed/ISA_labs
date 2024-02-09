@@ -27,17 +27,9 @@ module fet import riscv_pkg::*;
     output logic [31:0] PC_out
 );
 
-logic HZ_en;
 logic [31:0] NPC;
 logic [31:0] PC;
 logic [31:0] MUX_out;
-
-always_comb begin 
-	if (HZctrl_in == STALL) begin
-		HZ_en = 0;
-    end else begin
-        HZ_en = 1;
-end
 
 always_comb begin : fetch 
 
@@ -52,15 +44,13 @@ always_comb begin : fetch
   
 end
 
-always_ff @(posedge CLK) begin : PC_reg
+always_ff @( posedge CLK, posedge RSTn ) begin : PC_reg
     if (RSTn == 0 || HZctrl_in == FLUSH) begin
        PC <= 0; 
     end
-    else if (EN && HZ_en) begin
+    else if (HZctrl_in == ENABLE) begin
        PC <= MUX_out; 
     end
 end
-
-assign PC_out = PC;
   
 endmodule

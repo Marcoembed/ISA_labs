@@ -20,7 +20,7 @@ module register_file import riscv_pkg::*;
 //	input logic RegWrite,
 	input logic RSTn, // this is needed to reset all the register
 	input logic clk,
-	input logic WE,	
+	input RF_wr WE,	
 	
 	output logic [31:0] read_data1,
 	output logic [31:0] read_data2
@@ -36,7 +36,7 @@ module register_file import riscv_pkg::*;
 			for (int i = 0; i < 32; i = i + 1) begin
 				regs[i] <= 32'b0;
 			end
-		end else if (WE) begin
+		end else if (WE == WR) begin
 			if (rd != 0) begin
 				regs[rd] <= write_data;
 			end

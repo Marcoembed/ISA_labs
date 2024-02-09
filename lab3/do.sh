@@ -24,7 +24,7 @@ SYN_DIR="./syn"
  
 ##########################################
 # HDL .f files path
-EXCLUDE_FILE="fpnew_fma.sv"
+EXCLUDE_FILE="ssram_wrap.sv"
 COMPILE_VHDL_FILE_PATH_LIST=("$HDL_DIR/compile_VHDL.f" "$TB_DIR/compile_VHDL.f")
 COMPILE_VLOG_FILE_PATH_LIST=("$HDL_DIR/compile_VLOG.f" "$TB_DIR/compile_VLOG.f")
 # SIMULATION TOP level entity name
