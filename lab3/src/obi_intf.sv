@@ -10,6 +10,7 @@ interface obi_intf;
     logic valid;
 
 
+
     modport to_mem ( // processor to interface
         output proc_req, we, addr, wdata, // to memory
         input mem_rdy, valid, rdata  // from memory
