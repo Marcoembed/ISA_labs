@@ -2,7 +2,7 @@
 
 module tb import riscv_pkg::*; ();
 
-	obi_intf fetcher_intf;
+	obi_intf fetch_intf();
 
 	logic CLK, RSTn;
 	logic[31:0] PC_in_tb; // FAI IL PROCESS +4
@@ -10,7 +10,25 @@ module tb import riscv_pkg::*; ();
 	logic BUSY;
 	logic VALID_tb;
 
-	assign valid = 1 - BUSY;
+	obi_req tb_proc_req;
+    logic tb_mem_rdy;
+	rdwr tb_we;
+    logic [reg_width-1:0] tb_addr;
+    logic [width-1:0] tb_wdata;
+    logic [width-1:0] tb_rdata;
+    logic tb_valid;
+
+	
+
+    assign fetch_intf.proc_req = tb_proc_req;
+    assign fetch_intf.mem_rdy = tb_mem_rdy;
+    assign fetch_intf.we = tb_we;
+    assign fetch_intf.addr = tb_addr;
+    assign fetch_intf.wdata = tb_wdata;
+    assign fetch_intf.rdata = tb_rdata;
+    assign fetch_intf.valid = tb_valid;
+
+	assign tb_valid = 1 - BUSY;
 
 
 	//parameters
@@ -45,12 +63,12 @@ module tb import riscv_pkg::*; ();
 		.CLK(CLK),
 		.RSTn(RSTn),
 
-		.HZ_instr_req(),
+		.HZ_instr_req('1),
 		.busy_out(BUSY),
 		.PC_in(PC_in_tb),
 		.INSTR_out(INSTR_tb),
 
-		.fetch_intf(fetcher_intf)
+		.fetch_intf(fetcher_intf.to_mem)
 		
 	);
 
@@ -63,20 +81,20 @@ module tb import riscv_pkg::*; ();
 	) UUT (
 		.CLK( CLK ),
 		.RSTn( RSTn ),
-		.PROC_REQ( fetcher_intf.proc_req ),
-		.MEM_RDY( fetcher_intf.mem_rdy),
-		.ADDR( fetcher_intf.addr ),
-		.WE( fetcher_intf.we ),
-		.WDATA( fetcher_intf.wdata ),
-		.RDATA( fetcher_intf.rdata ),
-		.VALID( fetcher_intf.valid )
+		.PROC_REQ(tb_proc_req ),
+		.MEM_RDY(tb_mem_rdy),
+		.ADDR(tb_addr ),
+		.WE(tb_we ),
+		.WDATA(tb_wdata ),
+		.RDATA(tb_rdata ),
+		.VALID(tb_valid )
 	);
 
 	data_dumper dd (
 		.CLK( CLK ),
 		.RSTn( RSTn ),
 		.RDATA( INSTR_tb ),
-		.VALID( VALID_tb )
+		.VALID( tb_valid )
 		);
 
 	
