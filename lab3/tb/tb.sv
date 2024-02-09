@@ -50,10 +50,10 @@ module tb import riscv_pkg::*; ();
    end
 
 	clk_gen #(
-	     .T( Ts )
+		.T(Ts)
    ) CG (
-  	 .CLK( CLK ),
-	 .RSTn( RSTn )
+  	 .CLK(CLK),
+	 .RSTn(RSTn)
    );
 
 	fetcher fetcher_unit
@@ -82,7 +82,7 @@ module tb import riscv_pkg::*; ();
 		.RSTn(RSTn),
 		.PROC_REQ(tb_proc_req),
 		.MEM_RDY(tb_mem_rdy),
-		.ADDR(tb_addr),
+		.ADDR(tb_PC_in),
 		.WE(tb_we),
 		.WDATA(tb_wdata),
 		.RDATA(tb_rdata),
