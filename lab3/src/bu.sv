@@ -18,44 +18,44 @@ module bu import riscv_pkg::*;
     input logic[31:0]   RS2_in,
     input t_funct3      funct3,
     
-    output logic BRANCH_cond_out
+    output IF_ctrl BRANCH_cond_out
 );
 
 always_comb begin
 
-    BRANCH_cond_out = 0;
+    BRANCH_cond_out = NOJUMP;
 
     case (DECctrl_in.branch)
         BRANCH: begin
             case (funct3)
                 BLE: begin
                     if (signed'(RS1) <= signed'(RS2))
-                        BRANCH_cond_out = 1;
+                        BRANCH_cond_out = JUMP;
                 end
 
                 BLTU: begin
                     if (unsigned'(RS1) < unsigned'(RS2))
-                        BRANCH_cond_out = 1;
+                        BRANCH_cond_out = JUMP;
 
                 end
                     
                 default: begin
-                    BRANCH_cond_out = 0;
+                    BRANCH_cond_out = NOJUMP;
                 end    
                 
             endcase
         end
 
         JMP: begin
-            BRANCH_cond_out = 1;
+            BRANCH_cond_out = JUMP;
         end
 
         NOBRANCH: begin
-            BRANCH_cond_out = 0;
+            BRANCH_cond_out = NOJUMP;
         end
 
         default: begin
-            BRANCH_cond_out = 0;
+            BRANCH_cond_out = NOJUMP;
         end
     endcase
 end
