@@ -42,23 +42,26 @@ module tb import riscv_pkg::*; ();
 	// Interface unpacking
 
 	always_comb begin
-    	tb_proc_req = logic'(tb_fetch_intf_core.proc_req);
-    	tb_we = logic'(tb_fetch_intf_core.we);
-    	tb_addr = tb_fetch_intf_core.addr;
-    	tb_wdata = tb_fetch_intf_core.wdata;
+		//INSTR
+    	tb_instr_proc_req = logic'(tb_fetch_intf_core.proc_req);
+    	tb_instr_we = logic'(tb_fetch_intf_core.we);
+    	tb_instr_addr = tb_fetch_intf_core.addr;
+    	tb_instr_wdata = tb_fetch_intf_core.wdata;
 
-    	tb_fetch_intf_core.mem_rdy = tb_mem_rdy;
-    	tb_fetch_intf_core.rdata = tb_rdata;
-    	tb_fetch_intf_core.valid = tb_valid;
+    	tb_fetch_intf_core.mem_rdy = tb_instr_mem_rdy;
+    	tb_fetch_intf_core.rdata = tb_instr_rdata;
+    	tb_fetch_intf_core.valid = tb_instr_valid;
 
-    	tb_proc_req = logic'(tb_lsu_intf_core.proc_req);
-    	tb_we = logic'(tb_lsu_intf_core.we);
-    	tb_addr = tb_lsu_intf_core.addr;
-    	tb_wdata = tb_lsu_intf_core.wdata;
 
-    	tb_lsu_intf_core.mem_rdy = tb_mem_rdy;
-    	tb_lsu_intf_core.rdata = tb_rdata;
-    	tb_lsu_intf_core.valid = tb_valid;
+		//DATA
+    	tb_data_proc_req = logic'(tb_lsu_intf_core.proc_req);
+    	tb_data_we = logic'(tb_lsu_intf_core.we);
+    	tb_data_addr = tb_lsu_intf_core.addr;
+    	tb_data_wdata = tb_lsu_intf_core.wdata;
+
+    	tb_lsu_intf_core.mem_rdy = tb_data_mem_rdy;
+    	tb_lsu_intf_core.rdata = tb_data_rdata;
+    	tb_lsu_intf_core.valid = tb_data_valid;
 
 	end
 
