@@ -29,6 +29,8 @@ module wb import riscv_pkg::*;
 
 
 always_comb begin
+    WBdata_MUX_out = WBdata_ALU_in;
+
     case (WBctrl_in.SRCtoRF)
         ALUtoRF: begin
             WBdata_MUX_out = WBdata_ALU_in;

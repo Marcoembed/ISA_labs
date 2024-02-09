@@ -44,7 +44,7 @@ always_comb begin : fetch
   
 end
 
-always_ff @( posedge CLK, posedge RSTn ) begin : PC_reg
+always_ff @(posedge CLK) begin : PC_reg
     if (RSTn == 0 || HZctrl_in == FLUSH) begin
        PC <= 0; 
     end
@@ -52,5 +52,7 @@ always_ff @( posedge CLK, posedge RSTn ) begin : PC_reg
        PC <= MUX_out; 
     end
 end
-  
+
+assign PC_out = PC;
+
 endmodule

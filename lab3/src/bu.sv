@@ -22,6 +22,9 @@ module bu import riscv_pkg::*;
 );
 
 always_comb begin
+
+    BRANCH_cond_out = 0;
+
     case (DECctrl_in.branch)
         BRANCH: begin
             case (funct3)

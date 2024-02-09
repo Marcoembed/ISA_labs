@@ -21,6 +21,8 @@ module alu import riscv_pkg::*;
 );
 	
 	always_comb begin
+		ALUResult = op1 + op2;
+
 		case (ALUop)
 			ALU_ADD: begin
 				ALUResult = op1 + op2; 
@@ -30,9 +32,6 @@ module alu import riscv_pkg::*;
 				ALUResult = op1 - op2;
 			end
 			
-			default : begin
-				ALUResult = op1 + op2;
-			end
 		endcase
 	end
 endmodule

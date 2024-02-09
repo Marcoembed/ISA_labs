@@ -29,7 +29,7 @@ always_comb begin
             immediate_o = 32'b0;
         end
         OP_ADDI: begin
-            immediate_o = 32'(signed'(instruction_i[31:20]));
+            immediate_o = {20'(signed'(instruction_i[31])), instruction_i[31:20]};
         end
 
         OP_AUIPC: begin

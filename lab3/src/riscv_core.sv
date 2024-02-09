@@ -260,7 +260,6 @@ fet fetch (
     .HZctrl_in(PC_REG),
     .BRANCH_cond_in(BRANCH_COND_core),
     .BRANCH_in(BRANCH_DATA_core),
-    .PC_in(PC_core),
     .PC_out(PC_core)
 );
 

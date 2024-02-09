@@ -47,7 +47,7 @@ module exe import riscv_pkg::*;
     alu alu_unit (
         .op1        (OP1),
         .op2        (OP2),
-        .ALUopr     (EXctrl_in.ALUopr),
+        .ALUop      (EXctrl_in.ALUopr),
         .ALUResult  (EXdata_ALU_out)
     );
 

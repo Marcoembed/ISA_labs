@@ -58,10 +58,10 @@ module dec import riscv_pkg::*;
 
     bu bu_unit (
         .DECctrl_in(DECctrl_in),
-        .RS1_in(DECdata_RS1),
-        .RS2_in(DECdata_RS2),
+        .RS1_in(EXdata_RS1_out),
+        .RS2_in(EXdata_RS2_out),
         .funct3(DECdata_funct3),
-        .bu_o(IFctrl_out)
+        .BRANCH_cond_out(IFctrl_out)
     );
 
     register_file register_file_unit (
@@ -71,7 +71,7 @@ module dec import riscv_pkg::*;
         .write_data(WBdata_WriteData_in),
         .RSTn(RSTn),
         .clk(CLK),
-        .en(EN),
+        .WE(EN),
         .read_data1(EXdata_RS1_out),
         .read_data2(EXdata_RS2_out)
 
