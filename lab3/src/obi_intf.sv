@@ -4,9 +4,9 @@ interface obi_intf;
 	obi_req proc_req;
     logic mem_rdy;
 	rdwr we;
-    logic [reg_width-1:0] addr;
-    logic [width-1:0] wdata;
-    logic [width-1:0] rdata;
+    logic [31:0] addr;
+    logic [31:0] wdata;
+    logic [31:0] rdata;
     logic valid;
 
 
