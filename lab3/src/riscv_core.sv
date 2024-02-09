@@ -32,7 +32,6 @@ PREG IF_DEC, DEC_EX, EX_MEM, MEM_WB;
 // ------------------------------ HAZARD signals
 logic HZ_instr_req_core; // request fired
 logic HZ_data_req_core; // request fired
-logic instr_mux_sel_core;
 logic INSTR_busy_core;
 logic DATA_busy_core;
 
@@ -68,24 +67,28 @@ logic [width-1:0] WBdata_MUX_core;
 /*------------------------------*/
 
 hu hazard_unit (
-    // input
+    // Control input signals
+	.CLK(CLK),
+	.RSTn(RSTn),
 	.EN(EN),
 	.BRANCH_cond_in(BRANCH_COND_core),
 	.INSTR_mem_busy_in(INSTR_busy_core),
 	.DATA_mem_busy_in(DATA_busy_core),
 	.MEMctrl_in(EX_MEM.MEMctrl_out),
+
+    // Data input signals
 	.EX_MEM_RD_in(EX_MEM.RD_out),
 	.DEC_EX_RS1_in(DEC_EX.RS1_out),
 	.DEC_EX_RS2_in(DEC_EX.RS2_out),
-	// output
+
+    // Control output signals
+	.HZ_instr_req(HZ_instr_req_core), // request fired
+	.HZ_data_req(HZ_data_req_core), // request fired
 	.PC_REG_out(PC_REG),
 	.IF_DEC_out(IF_DEC.HZctrl_in),
 	.DEC_EX_out(DEC_EX.HZctrl_in),
 	.EX_MEM_out(EX_MEM.HZctrl_in),
-	.MEM_WB_out(MEM_WB.HZctrl_in),
-	.HZ_instr_req(HZ_instr_req_core), // request fired
-	.HZ_data_req(HZ_data_req_core), // request fired
-	.instr_mux_sel(instr_mux_sel_core)
+	.MEM_WB_out(MEM_WB.HZctrl_in)
 
 );
 

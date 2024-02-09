@@ -30,6 +30,8 @@ always_ff @(posedge CLK) begin
 end
 
 always_comb begin : fetcher_fsm_control
+    next_state = current_state;
+    
     case (current_state)
         wait_req: begin
             if (HZ_instr_req) begin
