@@ -30,8 +30,8 @@ always_comb begin
 end
 
 
-always_ff @(posedge CLK) begin
-    if (!RSTn) begin
+always_ff @(posedge CLK_in) begin
+    if (!RSTn_in) begin
         obi_intf_in.valid  <= '0;
     end
     else begin

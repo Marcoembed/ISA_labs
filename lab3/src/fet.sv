@@ -21,7 +21,6 @@ module fet import riscv_pkg::*;
     input logic BRANCH_cond_in,
 
     // data input signals
-    input logic [31:0] PC_in,
     input logic [31:0] BRANCH_in,
 
     output logic [31:0] PC_out
