@@ -2,20 +2,32 @@
 
 module tb import riscv_pkg::*; ();
 
-	obi_intf fetcher_intf();
+	obi_intf tb_fetch_intf_core();
+	obi_intf tb_lsu_intf_core();
+	logic tb_CLK;
+	logic tb_EN;
+	logic tb_RSTn;
 
-	logic CLK, RSTn;
-	logic[31:0] tb_PC_in; // FAI IL PROCESS +4
-	logic[31:0] tb_instr;
-	logic tb_busy;
 
-	logic tb_proc_req;
-    logic tb_mem_rdy;
-	logic tb_we;
-    logic [31:0] tb_addr;
-    logic [31:0] tb_wdata;
-    logic [31:0] tb_rdata;
-    logic tb_valid;
+	//DATA MEMORY
+	logic tb_data_proc_req;
+	logic tb_data_mem_rdy;
+	logic tb_data_we;
+	logic [31:0] tb_data_addr;
+	logic [31:0] tb_data_wdata;
+	logic [31:0] tb_data_rdata;
+	logic tb_data_valid;
+
+	//INSTRUCTION MEMORY
+	logic tb_instr_proc_req;
+	logic tb_instr_mem_rdy;
+	logic tb_instr_we;
+	logic [31:0] tb_instr_addr;
+	logic [31:0] tb_instr_wdata;
+	logic [31:0] tb_instr_rdata;
+	logic tb_instr_valid;
+
+	//CORE signals 
 
 
 	// parameters
@@ -25,76 +37,78 @@ module tb import riscv_pkg::*; ();
 	//localparam cRG_FAST = 0;
 	localparam cIS_CODE = 0;
 	localparam cIS_DATA = 1;   
-	localparam cCONTENT_TYPE = cIS_CODE; 
+	
 
 	// Interface unpacking
-	always_comb begin
-    	tb_proc_req = logic'(fetcher_intf.proc_req);
-    	tb_we = logic'(fetcher_intf.we);
-    	tb_addr = fetcher_intf.addr;
-    	tb_wdata = fetcher_intf.wdata;
 
-    	fetcher_intf.mem_rdy = tb_mem_rdy;
-    	fetcher_intf.rdata = tb_rdata;
-    	fetcher_intf.valid = tb_valid;
+	always_comb begin
+    	tb_proc_req = logic'(tb_fetch_intf_core.proc_req);
+    	tb_we = logic'(tb_fetch_intf_core.we);
+    	tb_addr = tb_fetch_intf_core.addr;
+    	tb_wdata = tb_fetch_intf_core.wdata;
+
+    	tb_fetch_intf_core.mem_rdy = tb_mem_rdy;
+    	tb_fetch_intf_core.rdata = tb_rdata;
+    	tb_fetch_intf_core.valid = tb_valid;
+
+    	tb_proc_req = logic'(tb_lsu_intf_core.proc_req);
+    	tb_we = logic'(tb_lsu_intf_core.we);
+    	tb_addr = tb_lsu_intf_core.addr;
+    	tb_wdata = tb_lsu_intf_core.wdata;
+
+    	tb_lsu_intf_core.mem_rdy = tb_mem_rdy;
+    	tb_lsu_intf_core.rdata = tb_rdata;
+    	tb_lsu_intf_core.valid = tb_valid;
+
 	end
 
-
-	always_ff @(posedge CLK) begin
-		if (!RSTn) begin
-			tb_PC_in <= 32'h00400000;
-		end else
-		if (!tb_busy) begin
-		  tb_PC_in <= tb_PC_in + 32'h4;
-		end
-   end
+   riscv_core core 
+   (
+		.fetch_intf_core(tb_fetch_intf_core),
+		.lsu_intf_core(tb_lsu_intf_core),
+		.CLK(tb_CLK),
+		.EN(tb_EN),
+		.RSTn(tb_RSTn)
+   );
 
 	clk_gen #(
 		.T(Ts)
    ) CG (
-  	 .CLK(CLK),
-	 .RSTn(RSTn)
+  	 .CLK(tb_CLK),
+	 .RSTn(tb_RSTn)
    );
 
-	fetcher fetcher_unit
-	( 
-		// control signals
-		.CLK(CLK),
-		.RSTn(RSTn),
-
-		.HZ_instr_req('1),
-		.busy_out(tb_busy),
-		.PC_in(tb_PC_in),
-		.INSTR_out(tb_instr),
-
-		.fetch_intf(fetcher_intf.to_mem)
-		
-	);
-
-
-
 	mem_wrap_fake #(
-			.CONTENT_TYPE(cCONTENT_TYPE),
+			.CONTENT_TYPE(cIS_DATA),
 			.tco(tco),
 			.tpd(tpd)
-	) UUT (
-		.CLK(CLK),
-		.RSTn(RSTn),
-		.PROC_REQ(tb_proc_req),
-		.MEM_RDY(tb_mem_rdy),
-		.ADDR(tb_PC_in),
-		.WE(tb_we),
-		.WDATA(tb_wdata),
-		.RDATA(tb_rdata),
-		.VALID(tb_valid)
+	) DATA_MEM (
+		.CLK(tb_CLK),
+		.RSTn(tb_RSTn),
+		.PROC_REQ(tb_data_proc_req),
+		.MEM_RDY(tb_data_mem_rdy),
+		.ADDR(tb_data_PC_in),
+		.WE(tb_data_we),
+		.WDATA(tb_data_wdata),
+		.RDATA(tb_data_rdata),
+		.VALID(tb_data_valid)
 	);
 
-	data_dumper dd (
-		.CLK(CLK),
-		.RSTn(RSTn),
-		.RDATA(tb_instr),
-		.VALID(tb_valid)
-		);
+	mem_wrap_fake #(
+			.CONTENT_TYPE(cIS_CODE),
+			.tco(tco),
+			.tpd(tpd)
+	) INSTR_MEM (
+		.CLK(tb_CLK),
+		.RSTn(tb_RSTn),
+		.PROC_REQ(tb_instr_proc_req),
+		.MEM_RDY(tb_instr_mem_rdy),
+		.ADDR(tb_instr_PC_in),
+		.WE(tb_instr_we),
+		.WDATA(tb_instr_wdata),
+		.RDATA(tb_instr_rdata),
+		.VALID(tb_instr_valid)
+	);
 
 	
 endmodule
