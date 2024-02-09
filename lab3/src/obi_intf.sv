@@ -11,9 +11,14 @@ interface obi_intf;
 
 
 
-    modport to_mem ( // processor to interface
+    modport to_mem ( // processor to memory
         output proc_req, we, addr, wdata, // to memory
         input mem_rdy, valid, rdata  // from memory
+    );
+
+    modport to_proc ( // memory to processor
+        input proc_req, we, addr, wdata, // to memory
+        output mem_rdy, valid, rdata  // from memory
     );
 
 endinterface
