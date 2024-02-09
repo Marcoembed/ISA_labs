@@ -26,7 +26,7 @@ module tb import riscv_pkg::*; ();
    always_ff @(posedge CLK) begin
 	if (!RSTn) begin
 		PC_in_tb <= 32'h00400000;
-	end
+	end else
 	if (VALID_tb) begin
 	  PC_in_tb <= PC_in_tb + 32'h4;
 	end
