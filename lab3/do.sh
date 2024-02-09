@@ -36,7 +36,7 @@ SIM_TIME="40us"
 # SIMULATION tcl script file path
 SIM_SCRIPT_FILE="$SIM_DIR/sim.do"
 # SYNTHESIS TOP level entity name
-SYN_TOP_LVL_ENTITY="IIR"
+SYN_TOP_LVL_ENTITY="riscv_core"
 # SYNTHESIS work directory
 SYN_WORK_DIR="$SYN_DIR/work"
 # SYNTHESIS tcl script file path
@@ -194,10 +194,10 @@ cmd_vlog_elaborate() {
     done
 
 	# Check if compile_VLOG.f is empty
-    if ! [ -s "$COMPILE_VLOG_FILE_PATH_LIST" ]; then 
-        echo "Warning: file $COMPILE_VLOG_FILE_PATH_LIST is empty" 
-        return $ret
-    fi
+    #if ! [ -s "$COMPILE_VLOG_FILE_PATH_LIST" ]; then 
+    #    echo "Warning: file $COMPILE_VLOG_FILE_PATH_LIST is empty" 
+    #    return $ret
+    #fi
 
     # create the work folder if doesn't exists otherwise throw out the error
     vlib "$SIM_WORK_DIR" >/dev/null 2>&1
@@ -236,10 +236,11 @@ cmd_vhdl_elaborate() {
     done
 
 	# Check if compile_VHDL.f is empty
-    if ! [ -s "$COMPILE_VHDL_FILE_PATH_LIST" ]; then 
-        echo "Warning: file $COMPILE_VHDL_FILE_PATH_LIST is empty" 
-        return $ret
-    fi
+    #if ! [ -s "$COMPILE_VHDL_FILE_PATH_LIST[@]" ]; then 
+	#	echo "$COMPILE_VHDL_FILE_PATH_LIST";
+    #    echo "Warning: file $COMPILE_VHDL_FILE_PATH_LIST is empty" 
+    #    return $ret
+    #fi
 
 
     # create the work folder if doesn't exists otherwise throw out the error
