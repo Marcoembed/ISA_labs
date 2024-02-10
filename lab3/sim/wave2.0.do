@@ -1,5 +1,6 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
+restart
 add wave -position end  sim:/tb/core/CLK
 add wave -position end  sim:/tb/core/fetcher_unit/RSTn
 add wave -position end  sim:/tb/core/fetcher_unit/current_state
@@ -11,5 +12,4 @@ add wave -position end  sim:/tb/core/control_unit/INSTR
 add wave -position end  sim:/tb/core/control_unit/opcode
 add wave -position end  sim:/tb/core/control_unit/WB
 add wave -position end  sim:/tb/core/control_unit/funct7
-restart 
-run 100 ns
+run 500 ns
