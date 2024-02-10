@@ -30,7 +30,7 @@ COMPILE_VLOG_FILE_PATH_LIST=("$HDL_DIR/compile_VLOG.f" "$TB_DIR/compile_VLOG.f")
 # SIMULATION TOP level entity name
 SIM_TOP_LVL_ENTITY="tb"
 # SIMULATION work directory
-SIM_WORK_DIR="work"
+SIM_WORK_DIR="$SIM_DIR/work"
 # SIMULATION variables
 SIM_TIME="40us"
 # SIMULATION tcl script file path
@@ -177,6 +177,15 @@ cmd_init(){
 	find "$HDL_DIR" -name "*.vhdl" -not -name "$EXCLUDE_FILE" -or -name "*.vhd" -not -name "$EXCLUDE_FILE"  > "$HDL_DIR"/compile_VHDL.f
 	find "$TB_DIR" -name "*.v" -not -name "$EXCLUDE_FILE" -or -name "*.sv" -not -name "$EXCLUDE_FILE"   > "$TB_DIR"/compile_VLOG.f
 	find "$TB_DIR" -name "*.vhdl" -not -name "$EXCLUDE_FILE" -or -name "*.vhd" -not -name "$EXCLUDE_FILE"  > "$TB_DIR"/compile_VHDL.f
+
+	for i in "${COMPILE_VLOG_FILE_PATH_LIST[@]}"; do
+		if grep -q "pkg" "$i"; then
+			line=$(grep "pkg" "$i")
+			sed -i '/pkg/d' "$i"
+			sed -i "1i\\$line" "$i"
+		fi	
+	done
+
 	return $ret
 }
 
@@ -289,7 +298,8 @@ cmd_sim() {
 
     # Simulate the $SIM_TOP_LVL_ENTITY entity design using sim.do tcl script
 	if [ $GUI == nogui ]; then
-    	vsim -work "$SIM_WORK_DIR" -c -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
+		vsim -t ps -work "$SIM_DIR/mem_wrap" -c "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -voptargs=+acc 
+    	#vsim -work "$SIM_WORK_DIR" -c -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
 	elif [ $GUI == gui ]; then
     	vsim -work "$SIM_WORK_DIR" -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
 	else
