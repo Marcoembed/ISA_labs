@@ -247,7 +247,7 @@ fetcher fetcher_unit (
 
     // processor signals
     .PC_in(PC_core),
-    .INSTR_out(),
+    .INSTR_out(INSTR_core),
 
     // memory signals
     .fetch_intf(fetch_intf_core)
