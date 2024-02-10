@@ -113,8 +113,8 @@ package riscv_pkg;
 	//	FET
 	/*------------------------------*/
 	typedef enum logic {
-		NOJUMP
-		JUMP,
+		NOJUMP,
+		JUMP
 	}IF_ctrl;
 	
 	/*------------------------------*/

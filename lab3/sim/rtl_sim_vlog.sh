@@ -10,12 +10,12 @@ tres="ps"
 
 #vcom -work mem_wrap -nodebug ../src/mem_wrap_fake2.0.vhd
 
-vlog -work work ../tb/riscv_pkg.sv
-vlog -work work ../tb/fetcher.sv
-vlog -work work ../tb/obi_intf.sv
+ls ../src/*.sv > compile_VLOG.f
+ls ../tb/*.sv >> compile_VLOG.f
+ls ../tb/*.vhd > compile_VHDL.f
 
-vcom -work work ../tb/clk_gen.vhd
-vcom -work work ../tb/data_dumper.vhd
-vlog -work work ../tb/tb.sv
+vlog -work work -svinputport=relaxed ../src/riscv_pkg.sv
+vlog -work work -svinputport=relaxed -F compile_VLOG.f
+vcom -work work  -F compile_VHDL.f
 
 vsim -t ${tres} -L ./mem_wrap -do wave2.0.do work.tb -voptargs=+acc
