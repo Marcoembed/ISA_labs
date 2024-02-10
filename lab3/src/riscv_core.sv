@@ -284,8 +284,11 @@ dec decode (
 	.EXdata_IMM_out(DEC_EX.IMM_in),
 	.EXdata_RS1_out(DEC_EX.RS1_data_in),
 	.EXdata_RS2_out(DEC_EX.RS2_data_in),
-	.EXdata_RD_out(DEC_EX.RD_in),
-	.IFctrl_out(BRANCH_COND_core) 
+	.EX_RD_out(DEC_EX.RD_in),
+	.EX_RS1_out(DEC_EX.RS1_in),
+	.EX_RS2_out(DEC_EX.RS2_in),
+	.BRANCH_cond_out(BRANCH_COND_core), 
+	.BRANCH_out(BRANCH_DATA_core)
 
 );
 

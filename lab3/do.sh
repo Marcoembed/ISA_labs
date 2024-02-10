@@ -384,7 +384,7 @@ cmd_remote() {
 
 	else
     	if [ -n "$2" ]; then 
-			$GUI = "$2"
+			GUI="$2"
 		fi 
         case "$1" in 
             "cln")

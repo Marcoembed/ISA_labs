@@ -14,16 +14,24 @@
 module bu import riscv_pkg::*; 
 (
     input DEC_ctrl      DECctrl_in,
-    input logic[31:0]   RS1_in,
-    input logic[31:0]   RS2_in,
+    input logic [31:0]  PC_in,
+    input logic [31:0]  IMM_in,
+    input logic [31:0]  RS1_in,
+    input logic [31:0]  RS2_in,
     input t_funct3      funct3,
     
-    output IF_ctrl BRANCH_cond_out
+    output IF_ctrl BRANCH_cond_out,
+    output logic [31:0] TARGET_out
 );
 
 always_comb begin
 
+end
+
+always_comb begin
+
     BRANCH_cond_out = NOJUMP;
+    TARGET_out = PC_in + IMM_in;
 
     case (DECctrl_in.branch)
         BRANCH: begin
