@@ -33,7 +33,7 @@ always_comb begin
         end
 
         OP_AUIPC: begin
-            immediate_o = {instruction_i[31:21], 12'b0};
+            immediate_o = {instruction_i[31:12], 12'b0};
         end
 
         OP_BRANCH: begin

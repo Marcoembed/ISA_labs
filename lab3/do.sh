@@ -300,10 +300,11 @@ cmd_sim() {
 
     # Simulate the $SIM_TOP_LVL_ENTITY entity design using sim.do tcl script
 	if [ $GUI == nogui ]; then
-		vsim -t ps -work "$SIM_DIR/mem_wrap" -c "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -voptargs=+acc 
+		vsim -t ps -work "$SIM_DIR/mem_wrap" -c "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
     	#vsim -work "$SIM_WORK_DIR" -c -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
 	elif [ $GUI == gui ]; then
-    	vsim -work "$SIM_WORK_DIR" -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
+    	#vsim -work "$SIM_WORK_DIR" -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
+		vsim -t ps -work "$SIM_DIR/mem_wrap"  "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE"  -voptargs=+acc 
 	else
 		echo "Error: $2 is a wrong parameter"; usage; exit 1;
 	fi
