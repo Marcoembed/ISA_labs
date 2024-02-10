@@ -71,7 +71,7 @@ module dec import riscv_pkg::*;
         .write_data(WBdata_WriteData_in),
         .RSTn(RSTn),
         .clk(CLK),
-        .WE(rdwr'(EN)),
+        .WE(RF_wr'(EN)),
         .read_data1(EXdata_RS1_out),
         .read_data2(EXdata_RS2_out)
 
