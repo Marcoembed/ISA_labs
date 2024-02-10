@@ -276,6 +276,7 @@ cmd_vhdl_elaborate() {
 
 }
 cmd_hdl_elaborate() {
+    source /eda/scripts/init_questa_core_prime
     cmd_vlog_elaborate && cmd_vhdl_elaborate 
     return $ret
 }
@@ -284,6 +285,7 @@ cmd_hdl_elaborate() {
 # @ret $? simulation return code or error (1)
 # NOTE: must be already in the prj root folder
 cmd_sim() {
+    source /eda/scripts/init_questa_core_prime
 
     if ! [ -f "$SIM_SCRIPT_FILE" ]; then 
         echo "Error: Cannot find file $SIM_SCRIPT_FILE" 
