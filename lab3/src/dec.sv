@@ -15,7 +15,8 @@
 
 module dec import riscv_pkg::*;
 (
-    input   logic RSTn, CLK, EN, 
+    input   logic RSTn, CLK,
+    input   RF_wr           WB_EN,  
     input   DEC_ctrl        DECctrl_in,
     input   logic [31:0]    IDdata_INSTRUCTION_in,
     input   logic [31:0]    IDdata_PC_in,
@@ -81,7 +82,7 @@ module dec import riscv_pkg::*;
         .write_data(WBdata_WriteData_in),
         .RSTn(RSTn),
         .clk(CLK),
-        .WE(RF_wr'(EN)),
+        .WE(WB_EN),
         .read_data1(EXdata_RS1_out),
         .read_data2(EXdata_RS2_out)
 

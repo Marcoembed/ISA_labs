@@ -94,7 +94,7 @@ hu hazard_unit (
 
 cu control_unit (
     // input
-    .INSTR(INSTR_core), 
+    .INSTR(IF_DEC.INSTR_out), 
     .FLUSH_IF_DEC(IF_DEC.HZctrl_in),
     // output
     .DEC(BRANCH_op_core),
@@ -192,8 +192,8 @@ always_ff @( posedge CLK ) begin : ex_mem
 	end	else if (EX_MEM.HZctrl_in == ENABLE) begin
 
 		// Control signals
-		EX_MEM.MEMctrl_out <= EX_MEM.MEMctrl_in;
-		EX_MEM.WBctrl_out  <= EX_MEM.WBctrl_in;
+		EX_MEM.MEMctrl_out <= DEC_EX.MEMctrl_out;
+		EX_MEM.WBctrl_out  <= DEC_EX.WBctrl_out;
 
 		// Data signals
 		EX_MEM.IMM_out      <= EX_MEM.IMM_in;      
@@ -221,7 +221,7 @@ always_ff @( posedge CLK ) begin : mem_wb
 	end	else if (MEM_WB.HZctrl_in == ENABLE) begin
 
 		// Control signals
-		MEM_WB.WBctrl_out 	<= MEM_WB.WBctrl_in;
+		MEM_WB.WBctrl_out 	<= EX_MEM.WBctrl_out;
 
 		// Data signals
 		MEM_WB.IMM_out		 <= EX_MEM.IMM_out; // direct wire 
@@ -270,7 +270,7 @@ fet fetch (
 dec decode (
 	.CLK(CLK),
     .RSTn(RSTn),
-    .EN(EN),
+    .WB_EN(MEM_WB.WBctrl_out.RF_we),
 
 	//input
 	.DECctrl_in(BRANCH_op_core), 
