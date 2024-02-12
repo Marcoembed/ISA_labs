@@ -111,6 +111,18 @@ fu forwarding_unit (
 );
 
 /*------------------------------*/
+//	FORWARDING UNIT	
+/*------------------------------*/
+assign FUdata_core.Mem_rd		=	EX_MEM.RD_out;
+assign FUdata_core.WB_rd		=	MEM_WB.RD_out;
+assign FUdata_core.EX_rs1		=	DEC_EX.RS1_out;
+assign FUdata_core.EX_rs2		=	DEC_EX.RS2_out;
+assign FUdata_core.Mem_RegWrite	=	EX_MEM.WBctrl_out.RF_we;
+assign FUdata_core.WB_RegWrite	=	MEM_WB.WBctrl_out.RF_we;
+assign FUdata_core.ALU_srcA		=	DEC_EX.EXctrl_out.ALUsrcA;
+assign FUdata_core.ALU_srcB		=	DEC_EX.EXctrl_out.ALUsrcB;
+
+/*------------------------------*/
 //	PIPE REGISTERS
 /*------------------------------*/
 
