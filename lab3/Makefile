@@ -8,6 +8,7 @@ SIM_GUI= sim gui
 SIM= sim
 SYN= syn
 SSH= shell
+SSH_GUI= shell_gui
 USAGE= usage
 
 # If the first argument is "push"...
@@ -62,5 +63,9 @@ shell:	## SSH server connection
 	@echo
 	${SCRIPT} ${SSH} 
 
-.PHONY: help usage all ela sim sim_gui syn push shell
+shell_gui:	## SSH server connection 
+	@echo
+	${SCRIPT} ${SSH_GUI} 
+
+.PHONY: help usage all ela sim sim_gui syn push shell shell_gui
 

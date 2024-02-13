@@ -2,16 +2,18 @@
 
 # IMPORTANT! This file must remain in the project directory root
 
+
 # SSH 
-SSH_HOSTNAME="led-x3850-2.polito.it"
 SSH_USER="isa01_2023_2024"
 SSH_PORT="10038"
 SSH_PRIV_KEY_PATH="$HOME/.ssh/${USER}_isa_ed25519"
+SSH_HOSTNAME="led-x3850-2.polito.it"
 
 # Remote storage paths
 LOCAL_PRJ_ROOT_PATH="$(dirname "$(readlink -f "$0")")"
 LOCAL_PRJ_ROOT_NAME="$(basename "$LOCAL_PRJ_ROOT_PATH")"
 SERVER_PRJ_ROOT_PATH="$USER/$LOCAL_PRJ_ROOT_NAME"
+
 
 DBG_ON=0 # if 1 enables debug for this script
 GUI="nogui"
@@ -129,7 +131,12 @@ cmd_push(){
 #@brief open a shell on the server
 #@note ssh connection must be available
 cmd_shell(){
-    ssh "$SSH_USER@$SSH_HOSTNAME" -p "$SSH_PORT" -i "$SSH_PRIV_KEY_PATH"
+    ssh -t "$SSH_USER@$SSH_HOSTNAME" -p "$SSH_PORT" -i "$SSH_PRIV_KEY_PATH" "cd ~/$SERVER_PRJ_ROOT_PATH && exec bash -l"; 
+    exit $?
+}
+
+cmd_shell_gui(){
+    ssh -t "$SSH_USER@$SSH_HOSTNAME" -X -p "$SSH_PORT" -i "$SSH_PRIV_KEY_PATH" "cd ~/$SERVER_PRJ_ROOT_PATH && exec bash -l"; 
     exit $?
 }
 
@@ -343,7 +350,7 @@ cmd_syn() {
 # @param $1 remote: are we asking to running in the remote
 # @param $2 cmd: command to deploy|execute
 cmd_remote() {
-    shell="ssh $SSH_USER@$SSH_HOSTNAME -p $SSH_PORT -i $SSH_PRIV_KEY_PATH "
+    shell="ssh $SSH_USER@$SSH_HOSTNAME -p $SSH_PORT -X -i $SSH_PRIV_KEY_PATH "
 
     cd_prj_cmd="cd ~/$SERVER_PRJ_ROOT_PATH"
 
@@ -413,40 +420,6 @@ cmd_remote() {
                 ;;
         esac
 	fi
-    #elif [ "$1" = "is_remote" ]; then
-    #    # Here we are executing commands on the server
-    #    # 1) Add questasim to path
-    #    #add_to_path_questa
-    #    # 2) Add design compiler to path
-    #    #add_to_path_dvc
-    #    # 3) Check what to do
-    #    case "$2" in 
-    #        "cln")
-    #            cmd_clean 
-    #            ;;
-    #        "init")
-	#			cmd_init
-    #            ;;
-    #        "ela_vhdl")
-    #            cmd_vhdl_elaborate
-    #            ;;
-    #        "ela_vlog")
-    #            cmd_vlog_elaborate
-    #            ;;
-    #        "ela")
-    #            cmd_hdl_elaborate
-    #            ;;
-    #        "sim")
-    #            cmd_sim
-    #            ;;
-    #        "syn")
-    #            cmd_syn
-    #            ;;
-    #        *)
-    #            echo "$1 is not a cmd"; usage; exit 1
-    #            ;;
-    #    esac
-    #fi
 }
 
 ## if first parameter is empty then exit
@@ -465,7 +438,11 @@ if [ -n "$1" ] && [ "$1" = "push" ] ; then cmd_push; fi
 ################################################################################
 # SHELL
 ################################################################################
-if [ -n "$1" ] && [ "$1" = "shell" ] ; then  cmd_shell; fi 
+if [ -n "$1" ] && [ "$1" = "shell" ] ; then cmd_shell; fi  
+################################################################################
+# SHELL
+################################################################################
+if [ -n "$1" ] && [ "$1" = "shell_gui" ] ; then  cmd_shell_gui; fi 
 
 ################################################################################
 # PULL
