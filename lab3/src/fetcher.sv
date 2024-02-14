@@ -82,7 +82,7 @@ always_comb begin : fetcher_fsm_data
 
         wait_valid: begin
             busy_out = '1;
-            if(fetch_intf.valid && fetch_intf.mem_rdy ) begin
+            if(fetch_intf.valid ) begin
                 busy_out = '0;
             end
         end
