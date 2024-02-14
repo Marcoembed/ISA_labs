@@ -169,7 +169,7 @@ always_ff @( posedge CLK ) begin : dex_ex
 		DEC_EX.RD_out		 <= '0; 
 		DEC_EX.RS1_out		 <= '0; 
 		DEC_EX.RS2_out		 <= '0; 
-		DEC_EX.BU_cond_out	 <= '0; 
+		DEC_EX.BU_cond_out	 <= NOJUMP; 
 		DEC_EX.BU_target_out <= '0; 
         
                        	   
