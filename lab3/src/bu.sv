@@ -26,10 +26,6 @@ module bu import riscv_pkg::*;
 
 always_comb begin
 
-end
-
-always_comb begin
-
     BRANCH_cond_out = NOJUMP;
     TARGET_out = PC_in + IMM_in;
 

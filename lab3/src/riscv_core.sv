@@ -71,7 +71,7 @@ hu hazard_unit (
 	.CLK(CLK),
 	.RSTn(RSTn),
 	.EN(EN),
-	.BRANCH_cond_in(BRANCH_COND_core),
+	.BRANCH_cond_in(DEC_EX.BU_cond_out),
 	.INSTR_mem_busy_in(INSTR_busy_core),
 	.DATA_mem_busy_in(DATA_busy_core),
 	.MEMctrl_in(EX_MEM.MEMctrl_out),
@@ -123,6 +123,14 @@ assign FUdata_core.ALU_srcA		=	DEC_EX.EXctrl_out.ALUsrcA;
 assign FUdata_core.ALU_srcB		=	DEC_EX.EXctrl_out.ALUsrcB;
 
 /*------------------------------*/
+//	BRANCH UNIT	
+/*------------------------------*/
+
+assign BRANCH_COND_core = DEC_EX.BU_cond_out;
+assign BRANCH_DATA_core = DEC_EX.BU_target_out;
+
+
+/*------------------------------*/
 //	PIPE REGISTERS
 /*------------------------------*/
 
@@ -132,13 +140,13 @@ always_ff @( posedge CLK ) begin : if_dec
 	if (RSTn == 0 || IF_DEC.HZctrl_in == FLUSH) begin
 
 		// Data signals
-		IF_DEC.PC_out    <= '0; 
-        IF_DEC.INSTR_out <= '0;
+		IF_DEC.PC_out			<= '0; 
+        IF_DEC.INSTR_out		<= '0;
 
 	end	else if (IF_DEC.HZctrl_in == ENABLE) begin
 		// Data signals
-		IF_DEC.PC_out    <= PC_core; 
-        IF_DEC.INSTR_out <= INSTR_core;
+		IF_DEC.PC_out			<= PC_core; 
+        IF_DEC.INSTR_out		<= INSTR_core;
 	end
 
 end
@@ -299,8 +307,8 @@ dec decode (
 	.EX_RD_out(DEC_EX.RD_in),
 	.EX_RS1_out(DEC_EX.RS1_in),
 	.EX_RS2_out(DEC_EX.RS2_in),
-	.BRANCH_cond_out(BRANCH_COND_core), 
-	.BRANCH_out(BRANCH_DATA_core)
+	.BRANCH_cond_out(DEC_EX.BU_cond_in), 
+	.BRANCH_out(DEC_EX.BU_target_in)
 
 );
 
