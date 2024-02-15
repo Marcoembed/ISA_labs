@@ -55,15 +55,16 @@ always_comb begin : hu_fsm_control
             if(!(INSTR_mem_busy_in || DATA_mem_busy_in)) begin
                 next_state = issue_req;
             end
+            else if (INSTR_mem_busy_in && DATA_mem_busy_in) begin
+                next_state = idle;
+            end
             else if (INSTR_mem_busy_in) begin
                 next_state = instr_busy;
             end
             else if (DATA_mem_busy_in) begin
                 next_state = data_busy;
             end
-            else begin
-                next_state = idle;
-            end
+
         end
         data_busy: begin
             if (DATA_mem_busy_in) begin
@@ -124,33 +125,50 @@ always_comb begin : hu_data_control
                     DEC_EX_out = FLUSH;
                 end
             end
+
+            if(INSTR_mem_busy_in) begin
+
+                PC_REG_out = STALL;
+                IF_DEC_out = STALL;
+                DEC_EX_out = STALL;
+                EX_MEM_out = STALL;
+                MEM_WB_out = STALL;
+            end
+ 
         end
         instr_busy: begin
-            HZ_data_req = '0;
-            HZ_instr_req = '0;
-            PC_REG_out = STALL;
-            IF_DEC_out = STALL;
-            DEC_EX_out = STALL;
-            EX_MEM_out = STALL;
-            MEM_WB_out = STALL;
+            if(INSTR_mem_busy_in) begin
+                HZ_data_req = '0;
+                HZ_instr_req = '0;
+                PC_REG_out = STALL;
+                IF_DEC_out = STALL;
+                DEC_EX_out = STALL;
+                EX_MEM_out = STALL;
+                MEM_WB_out = STALL;
+            end
+
         end
         data_busy: begin
-            HZ_data_req = '0;
-            HZ_instr_req = '0;
-            PC_REG_out = STALL;
-            IF_DEC_out = STALL;
-            DEC_EX_out = STALL;
-            EX_MEM_out = STALL;
-            MEM_WB_out = STALL;
+            if (DATA_mem_busy_in) begin
+                HZ_data_req = '0;
+                HZ_instr_req = '0;
+                PC_REG_out = STALL;
+                IF_DEC_out = STALL;
+                DEC_EX_out = STALL;
+                EX_MEM_out = STALL;
+                MEM_WB_out = STALL;
+            end
         end
         idle: begin
-            HZ_data_req = '0;
-            HZ_instr_req = '0;
-            PC_REG_out = STALL;
-            IF_DEC_out = STALL;
-            DEC_EX_out = STALL;
-            EX_MEM_out = STALL;
-            MEM_WB_out = STALL;
+            if(INSTR_mem_busy_in || DATA_mem_busy_in) begin
+                HZ_data_req = '0;
+                HZ_instr_req = '0;
+                PC_REG_out = STALL;
+                IF_DEC_out = STALL;
+                DEC_EX_out = STALL;
+                EX_MEM_out = STALL;
+                MEM_WB_out = STALL;
+            end
         end
     endcase
 end
