@@ -58,6 +58,11 @@ always_comb begin
             BRANCH_cond_out = NOJUMP;
         end
 
+        RET: begin
+            BRANCH_cond_out = JUMP;
+            TARGET_out = RS1_in;
+        end
+
         default: begin
             BRANCH_cond_out = NOJUMP;
         end

@@ -31,6 +31,10 @@ module alu import riscv_pkg::*;
 			ALU_SUB: begin
 				ALUResult = op1 - op2;
 			end
+
+			ALU_NOP: begin
+				ALUResult = op2;
+			end	
 			
 		endcase
 	end
