@@ -51,7 +51,7 @@ always_comb begin
 		OP_ADDI 		: begin WB.RF_we = WR; end
 		OP_AUIPC		: begin EX.ALUsrcA = PC; WB.RF_we = WR; end
 		OP_BRANCH		: begin DEC.branch = BRANCH; end
-		OP_JMP			: begin DEC.branch = JMP; WB.SRCtoRF = NPCtoRF; end
+		OP_JMP			: begin DEC.branch = JMP; WB.SRCtoRF = NPCtoRF; WB.RF_we = WR; end
 		OP_LUI 			: begin WB.RF_we = WR; WB.SRCtoRF = IMMtoRF; end
 		OP_LW  			: begin MEM.mem_en = '1; WB.RF_we = WR; WB.SRCtoRF = MEMtoRF; end
 		OP_SW  			: begin MEM.mem_en = '1; MEM.wr = WRITE; end

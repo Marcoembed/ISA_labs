@@ -242,7 +242,7 @@ always_ff @( posedge CLK ) begin : mem_wb
 	end	else if (MEM_WB.HZctrl_in == ENABLE) begin
 
 		// Control signals
-		MEM_WB.WBctrl_in 	<= EX_MEM.WBctrl_out;
+		MEM_WB.WBctrl_out 	<= EX_MEM.WBctrl_out;
 
 		// Data signals
 		MEM_WB.NPC_out		<= EX_MEM.NPC_out;
