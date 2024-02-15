@@ -112,7 +112,15 @@ always_comb begin : hu_data_control
 
     case(current_state)
         issue_req: begin
-            if (BRANCH_cond_in == JUMP) begin
+            if(INSTR_mem_busy_in) begin
+
+                PC_REG_out = STALL;
+                IF_DEC_out = STALL;
+                DEC_EX_out = STALL;
+                EX_MEM_out = STALL;
+                MEM_WB_out = STALL;
+
+            end else if (BRANCH_cond_in == JUMP) begin
                 PC_REG_out = STALL;
                 IF_DEC_out = FLUSH;  // <-- branch delay slot (NOP insertion)
             end
@@ -126,15 +134,6 @@ always_comb begin : hu_data_control
                 end
             end
 
-            if(INSTR_mem_busy_in) begin
-
-                PC_REG_out = STALL;
-                IF_DEC_out = STALL;
-                DEC_EX_out = STALL;
-                EX_MEM_out = STALL;
-                MEM_WB_out = STALL;
-            end
- 
         end
         instr_busy: begin
             if(INSTR_mem_busy_in) begin
@@ -145,7 +144,11 @@ always_comb begin : hu_data_control
                 DEC_EX_out = STALL;
                 EX_MEM_out = STALL;
                 MEM_WB_out = STALL;
+            end else if (BRANCH_cond_in == JUMP) begin
+                PC_REG_out = STALL;
+                IF_DEC_out = FLUSH;
             end
+
 
         end
         data_busy: begin
