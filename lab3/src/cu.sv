@@ -14,7 +14,6 @@
 module cu import riscv_pkg::*; 
 (
 	input 	[31:0] INSTR,
-	input 	HAZARD_ctrl FLUSH_IF_DEC,
    	output 	DEC_ctrl DEC,	
    	output 	EX_ctrl EX,	
 	output	MEM_ctrl MEM,
@@ -30,12 +29,7 @@ assign funct7 = t_funct7'(INSTR[31:25]);
 
 always_comb begin
 
-	if (FLUSH_IF_DEC == FLUSH) begin
-		opcode = OP_ADDI; // NOP operation
-	end
-	else begin
-		opcode = t_opcode'(INSTR[6:0]);
-	end
+	opcode = t_opcode'(INSTR[6:0]);
 
 	// default op ADD immediate
 	DEC.branch 		= NOBRANCH;

@@ -71,7 +71,7 @@ hu hazard_unit (
 	.CLK(CLK),
 	.RSTn(RSTn),
 	.EN(EN),
-	.BRANCH_cond_in(DEC_EX.BU_cond_out),
+	.BRANCH_cond_in(BRANCH_COND_core),
 	.INSTR_mem_busy_in(INSTR_busy_core),
 	.DATA_mem_busy_in(DATA_busy_core),
 	.MEMctrl_in(EX_MEM.MEMctrl_out),
@@ -95,7 +95,6 @@ hu hazard_unit (
 cu control_unit (
     // input
     .INSTR(IF_DEC.INSTR_out), 
-    .FLUSH_IF_DEC(IF_DEC.HZctrl_in),
     // output
     .DEC(BRANCH_op_core),
     .EX(DEC_EX.EXctrl_in),
@@ -121,14 +120,6 @@ assign FUdata_core.Mem_RegWrite	=	EX_MEM.WBctrl_out.RF_we;
 assign FUdata_core.WB_RegWrite	=	MEM_WB.WBctrl_out.RF_we;
 assign FUdata_core.ALU_srcA		=	DEC_EX.EXctrl_out.ALUsrcA;
 assign FUdata_core.ALU_srcB		=	DEC_EX.EXctrl_out.ALUsrcB;
-
-/*------------------------------*/
-//	BRANCH UNIT	
-/*------------------------------*/
-
-assign BRANCH_COND_core = DEC_EX.BU_cond_out;
-assign BRANCH_DATA_core = DEC_EX.BU_target_out;
-
 
 /*------------------------------*/
 //	PIPE REGISTERS
@@ -220,6 +211,7 @@ always_ff @( posedge CLK ) begin : ex_mem
 		EX_MEM.RES_alu_out  <= EX_MEM.RES_alu_in;  
 		EX_MEM.RS2_data_out <= DEC_EX.RS2_data_out;  // direct wire
 		EX_MEM.RD_out       <= DEC_EX.RD_out;  // direct wire
+		EX_MEM.DATA_mem_out <= DEC_EX.RS2_data_out;
 	end
 	
 end
@@ -241,12 +233,12 @@ always_ff @( posedge CLK ) begin : mem_wb
 	end	else if (MEM_WB.HZctrl_in == ENABLE) begin
 
 		// Control signals
-		MEM_WB.WBctrl_out 	<= EX_MEM.WBctrl_out;
+		MEM_WB.WBctrl_in 	<= EX_MEM.WBctrl_out;
 
 		// Data signals
 		MEM_WB.IMM_out		 <= EX_MEM.IMM_out; // direct wire 
 		MEM_WB.RES_alu_out	 <= EX_MEM.RES_alu_out; 
-		MEM_WB.DATA_mem_out	 <= MEM_WB.DATA_mem_in; 
+		MEM_WB.DATA_mem_out	 <= EX_MEM.DATA_mem_out; 
 		MEM_WB.RD_out        <= EX_MEM.RD_out; 
 	end
 	
@@ -307,8 +299,8 @@ dec decode (
 	.EX_RD_out(DEC_EX.RD_in),
 	.EX_RS1_out(DEC_EX.RS1_in),
 	.EX_RS2_out(DEC_EX.RS2_in),
-	.BRANCH_cond_out(DEC_EX.BU_cond_in), 
-	.BRANCH_out(DEC_EX.BU_target_in)
+	.BRANCH_cond_out(BRANCH_COND_core),
+	.BRANCH_out(BRANCH_DATA_core)
 
 );
 
@@ -346,9 +338,13 @@ lsu load_store_unit(
     .MEMctrl_in(EX_MEM.MEMctrl_out),
     .HZ_data_req(HZ_data_req_core),
     .busy_out(DATA_busy_core),
-    .addr_in(),
-    .data_in(),
-    .data_out(),
+
+	// data input
+    .addr_in(EX_MEM.RES_alu_out),
+    .data_in(EX_MEM.RS2_data_out),
+	
+	// data output
+    .data_out(MEM_WB.DATA_mem_in),
 	.lsu_intf(lsu_intf_core)	
 
 );

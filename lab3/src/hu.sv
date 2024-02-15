@@ -121,7 +121,6 @@ always_comb begin : hu_data_control
                 MEM_WB_out = STALL;
 
             end else if (BRANCH_cond_in == JUMP) begin
-                PC_REG_out = STALL;
                 IF_DEC_out = FLUSH;  // <-- branch delay slot (NOP insertion)
             end
 
@@ -179,15 +178,3 @@ end
 endmodule
 
 
-//ld r1, r2, imm -- execute
-//nop
-//add r3, r1, r5 -- decode
-//jmp r7, imm -- fetch
-//
-//fet dec exe mem
-//add ld  --  --
-//jmp add ld  --   load-use
-//jmp add nop ld
-//add jmp add ld 
-//sub nop jmp add
-//    
