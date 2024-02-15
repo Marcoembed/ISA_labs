@@ -23,7 +23,8 @@ module fet import riscv_pkg::*;
     // data input signals
     input logic [31:0] BRANCH_in,
 
-    output logic [31:0] PC_out
+    output logic [31:0] PC_out,
+    output logic [31:0] NPC_out
 );
 
 logic [31:0] NPC;
@@ -53,5 +54,6 @@ always_ff @(posedge CLK) begin : PC_reg
 end
 
 assign PC_out = PC;
+assign NPC_out= NPC;
 
 endmodule

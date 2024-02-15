@@ -21,6 +21,7 @@ module wb import riscv_pkg::*;
     input logic[31:0] WBdata_ALU_in,
     input logic[31:0] WBdata_IMM_in,
     input logic[31:0] WBdata_MEM_in,
+    input logic[31:0] WBdata_NPC_in,
 
     // Data output signals
     output logic[31:0] WBdata_MUX_out
@@ -42,6 +43,10 @@ always_comb begin
 
         IMMtoRF: begin
             WBdata_MUX_out = WBdata_IMM_in;
+        end
+
+        NPCtoRF: begin
+            WBdata_MUX_out = WBdata_NPC_in;
         end
         
     endcase

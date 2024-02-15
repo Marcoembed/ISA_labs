@@ -150,12 +150,13 @@ package riscv_pkg;
 	typedef enum logic [1:0]{
 		ALUtoRF,
 		MEMtoRF,
-		IMMtoRF
+		IMMtoRF,
+		NPCtoRF
 	}WB_mux;
 
 	typedef enum logic {
-		 WR, 
-		 NOWR 
+		 NOWR, 
+		 WR 
 	} RF_wr;
 
 	typedef struct packed {
@@ -181,12 +182,12 @@ package riscv_pkg;
 		EX_ctrl	 EXctrl_out;
 
     // data input signals
-		logic [width-1:0] PC_in, INSTR_in, IMM_in, RS1_data_in, RS2_data_in, RES_alu_in, BU_target_in, DATA_mem_in;
+		logic [width-1:0] NPC_in, PC_in, INSTR_in, IMM_in, RS1_data_in, RS2_data_in, RES_alu_in, BU_target_in, DATA_mem_in;
 		logic [reg_width-1:0] RD_in, RS1_in, RS2_in; 
 		IF_ctrl BU_cond_in;
 
     // data output signals
-		logic [width-1:0] PC_out, INSTR_out, IMM_out, RS1_data_out, RS2_data_out, RES_alu_out, BU_target_out, DATA_mem_out;
+		logic [width-1:0] NPC_out, PC_out, INSTR_out, IMM_out, RS1_data_out, RS2_data_out, RES_alu_out, BU_target_out, DATA_mem_out;
 		logic [reg_width-1:0] RD_out, RS1_out, RS2_out; 
 		IF_ctrl BU_cond_out;
 	} PREG;

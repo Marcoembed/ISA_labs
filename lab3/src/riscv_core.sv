@@ -45,6 +45,7 @@ logic [width-1:0] BRANCH_DATA_core;
 
 // ------------------------------ FETCH signals
 logic [width-1:0] PC_core;
+logic [width-1:0] NPC_core;
 
 // ------------------------------ FETCHER signals
 logic [width-1:0] INSTR_core;
@@ -132,11 +133,13 @@ always_ff @( posedge CLK ) begin : if_dec
 
 		// Data signals
 		IF_DEC.PC_out			<= '0; 
+		IF_DEC.NPC_out			<= '0; 
         IF_DEC.INSTR_out		<= '0;
 
 	end	else if (IF_DEC.HZctrl_in == ENABLE) begin
 		// Data signals
 		IF_DEC.PC_out			<= PC_core; 
+		IF_DEC.NPC_out			<= NPC_core; 
         IF_DEC.INSTR_out		<= INSTR_core;
 	end
 
@@ -154,6 +157,7 @@ always_ff @( posedge CLK ) begin : dex_ex
 
 		// Data signals
 		DEC_EX.PC_out		 <= '0; 
+		DEC_EX.NPC_out		 <= '0; 
 		DEC_EX.IMM_out		 <= '0; 
 		DEC_EX.RS1_data_out <= '0; 
 		DEC_EX.RS2_data_out <= '0; 
@@ -173,6 +177,7 @@ always_ff @( posedge CLK ) begin : dex_ex
 
 		// Data signals
 		DEC_EX.PC_out        <= DEC_EX.PC_in;        
+		DEC_EX.NPC_out       <= IF_DEC.NPC_out;        
 		DEC_EX.IMM_out       <= DEC_EX.IMM_in;       
 		DEC_EX.RS1_data_out  <= DEC_EX.RS1_data_in;  
 		DEC_EX.RS2_data_out  <= DEC_EX.RS2_data_in;  
@@ -199,6 +204,7 @@ always_ff @( posedge CLK ) begin : ex_mem
 		EX_MEM.RES_alu_out  <= '0; 
 		EX_MEM.RS2_data_out <= '0; 
 		EX_MEM.RD_out       <= '0; 
+		EX_MEM.NPC_out		<= '0;
                        	   
 	end	else if (EX_MEM.HZctrl_in == ENABLE) begin
 
@@ -207,6 +213,8 @@ always_ff @( posedge CLK ) begin : ex_mem
 		EX_MEM.WBctrl_out  <= DEC_EX.WBctrl_out;
 
 		// Data signals
+
+		EX_MEM.NPC_out		<= DEC_EX.NPC_out;
 		EX_MEM.IMM_out      <= EX_MEM.IMM_in;      
 		EX_MEM.RES_alu_out  <= EX_MEM.RES_alu_in;  
 		EX_MEM.RS2_data_out <= DEC_EX.RS2_data_out;  // direct wire
@@ -225,9 +233,10 @@ always_ff @( posedge CLK ) begin : mem_wb
 		MEM_WB.WBctrl_out 	<= '0;
 
 		// Data signals
-		MEM_WB.IMM_out		 <= '0; 
-		MEM_WB.RES_alu_out	 <= '0; 
-		MEM_WB.DATA_mem_out	 <= '0; 
+		MEM_WB.NPC_out		<= '0;
+		MEM_WB.IMM_out		<= '0; 
+		MEM_WB.RES_alu_out	<= '0; 
+		MEM_WB.DATA_mem_out	<= '0; 
 		MEM_WB.RD_out       <= '0; 
                        	   
 	end	else if (MEM_WB.HZctrl_in == ENABLE) begin
@@ -236,6 +245,7 @@ always_ff @( posedge CLK ) begin : mem_wb
 		MEM_WB.WBctrl_in 	<= EX_MEM.WBctrl_out;
 
 		// Data signals
+		MEM_WB.NPC_out		<= EX_MEM.NPC_out;
 		MEM_WB.IMM_out		 <= EX_MEM.IMM_out; // direct wire 
 		MEM_WB.RES_alu_out	 <= EX_MEM.RES_alu_out; 
 		MEM_WB.DATA_mem_out	 <= EX_MEM.DATA_mem_out; 
@@ -272,7 +282,8 @@ fet fetch (
     .HZctrl_in(PC_REG),
     .BRANCH_cond_in(BRANCH_COND_core),
     .BRANCH_in(BRANCH_DATA_core),
-    .PC_out(PC_core)
+    .PC_out(PC_core),
+	.NPC_out(NPC_core)
 );
 
 /*------------------------------*/
@@ -361,6 +372,7 @@ wb write_back(
     .WBdata_ALU_in(MEM_WB.RES_alu_out),
     .WBdata_IMM_in(MEM_WB.IMM_out),
     .WBdata_MEM_in(MEM_WB.DATA_mem_out),
+	.WBdata_NPC_in(MEM_WB.NPC_out),
 
     // Data output signals
     .WBdata_MUX_out(WBdata_MUX_core)
