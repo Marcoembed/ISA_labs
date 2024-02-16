@@ -219,7 +219,7 @@ always_ff @( posedge CLK ) begin : ex_mem
 		EX_MEM.RES_alu_out  <= EX_MEM.RES_alu_in;  
 	//	EX_MEM.RS2_data_out <= DEC_EX.RS2_data_out;  // direct wire
 		EX_MEM.RD_out       <= DEC_EX.RD_out;  // direct wire
-		EX_MEM.RS1_data_out <= EX_MEM.RS2_data_in;
+		EX_MEM.RS2_data_out <= EX_MEM.RS2_data_in;
 	end
 	
 end

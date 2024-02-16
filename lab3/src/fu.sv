@@ -27,35 +27,27 @@ FU_out.FRWD_B = NOFORWARD;
 
     if (FU_in.Mem_RegWrite == WR|| FU_in.WB_RegWrite == WR) begin
         if (FU_in.Mem_rd != 0 || FU_in.WB_rd != 0) begin
-            if (FU_in.ALU_srcA == RS1) begin
             // FORWARD A 
-                if (FU_in.EX_rs1 == FU_in.Mem_rd) begin
-                    FU_out.FRWD_A = FORWARD_alu;
+            if (FU_in.EX_rs1 == FU_in.Mem_rd) begin
+                FU_out.FRWD_A = FORWARD_alu;
                 
-                end else if (FU_in.EX_rs1 == FU_in.WB_rd) begin
-                    FU_out.FRWD_A = FORWARD_wb;
-                end else begin
-                FU_out.FRWD_A = NOFORWARD; 
-                end
-                
+            end else if (FU_in.EX_rs1 == FU_in.WB_rd) begin
+                FU_out.FRWD_A = FORWARD_wb;
             end else begin
-                FU_out.FRWD_A = NOFORWARD; 
+            FU_out.FRWD_A = NOFORWARD; 
+            end
+                
+
+            // FORWARD B
+            if (FU_in.EX_rs2 == FU_in.Mem_rd) begin
+                FU_out.FRWD_B = FORWARD_alu;
+                
+            end else if (FU_in.EX_rs2 == FU_in.WB_rd) begin
+                FU_out.FRWD_B = FORWARD_wb;
+            end else begin
+                FU_out.FRWD_B = NOFORWARD; 
             end
 
-
-            if (FU_in.ALU_srcB == RS2) begin
-            // FORWARD B
-                if (FU_in.EX_rs2 == FU_in.Mem_rd) begin
-                    FU_out.FRWD_B = FORWARD_alu;
-                
-                end else if (FU_in.EX_rs2 == FU_in.WB_rd) begin
-                    FU_out.FRWD_B = FORWARD_wb;
-                end else begin
-                    FU_out.FRWD_B = NOFORWARD; 
-                end
-            end else begin
-                    FU_out.FRWD_B = NOFORWARD; 
-                end
     
         end else begin
                 FU_out.FRWD_A = NOFORWARD;
