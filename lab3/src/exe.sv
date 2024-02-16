@@ -30,7 +30,10 @@ module exe import riscv_pkg::*;
 
     // output data signals
 	output  logic [31:0] 	EXdata_ALU_out,
-    output  logic [31:0]    EXdata_IMM_out
+    output  logic [31:0]    EXdata_IMM_out,
+
+    // output data 
+    output  logic [31:0]    EXdata_RS2_out
 
 );
 
@@ -117,5 +120,10 @@ module exe import riscv_pkg::*;
         endcase
 
 	end
+
+    // RS2 output
+    always_comb begin
+        EXdata_RS2_out = MUXB_out;
+    end
 
 endmodule
