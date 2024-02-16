@@ -144,7 +144,6 @@ always_comb begin : hu_data_control
                 EX_MEM_out = STALL;
                 MEM_WB_out = STALL;
             end else if (BRANCH_cond_in == JUMP) begin
-                PC_REG_out = STALL;
                 IF_DEC_out = FLUSH;
             end
 
