@@ -85,15 +85,15 @@ always_comb begin : hu_fsm_control
         idle: begin
             if(!(INSTR_mem_busy_in || DATA_mem_busy_in)) begin
                 next_state = issue_req;
+            end 
+            else if (INSTR_mem_busy_in && DATA_mem_busy_in) begin
+                next_state = idle;
             end
             else if (INSTR_mem_busy_in) begin
                 next_state = instr_busy;
             end
             else if (DATA_mem_busy_in) begin
                 next_state = data_busy;
-            end
-            else begin
-                next_state = idle;
             end
         end
     endcase
