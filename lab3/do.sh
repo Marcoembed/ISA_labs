@@ -116,13 +116,15 @@ generate_ssh_key() {
 #@brief push local prj dir to server-home/<your_usrname>/prj_dir/
 #@note ssh connection must be available
 cmd_push(){
+
+    local dir=$1
     
     # First create directory if not available
     ssh "$SSH_USER@$SSH_HOSTNAME" -p "$SSH_PORT" -i "$SSH_PRIV_KEY_PATH" "mkdir -p ~/$SERVER_PRJ_ROOT_PATH"
     # Move stuff
     [ $? -eq 0 ] && rsync -hh -a -s --info=stats1,progress2 --partial \
         -e "ssh -p $SSH_PORT -i $SSH_PRIV_KEY_PATH" \
-        "$LOCAL_PRJ_ROOT_PATH/" "$SSH_USER@$SSH_HOSTNAME":"$SERVER_PRJ_ROOT_PATH/"
+        "$LOCAL_PRJ_ROOT_PATH/$dir" "$SSH_USER@$SSH_HOSTNAME":"$SERVER_PRJ_ROOT_PATH/"
     # In rsync the "/" at the end of paths are important, it means copy the
     # content not the folder itself (the same applies for the destination)
     exit $?
@@ -433,7 +435,7 @@ if [ -n "$1" ] && ( [ "$1" = "--help" ] || [ "$1" == "-h" ] ); then help; fi
 ################################################################################
 # PUSH
 ################################################################################
-if [ -n "$1" ] && [ "$1" = "push" ] ; then cmd_push; fi 
+if [ -n "$1" ] && [ "$1" = "push" ] ; then  cmd_push "$2"; fi 
 
 ################################################################################
 # SHELL
