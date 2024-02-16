@@ -124,7 +124,7 @@ cmd_push(){
     # Move stuff
     [ $? -eq 0 ] && rsync -hh -a -s --info=stats1,progress2 --partial \
         -e "ssh -p $SSH_PORT -i $SSH_PRIV_KEY_PATH" \
-        "$LOCAL_PRJ_ROOT_PATH/$dir" "$SSH_USER@$SSH_HOSTNAME":"$SERVER_PRJ_ROOT_PATH/"
+        "$LOCAL_PRJ_ROOT_PATH/$dir" "$SSH_USER@$SSH_HOSTNAME":"$SERVER_PRJ_ROOT_PATH/$dir"
     # In rsync the "/" at the end of paths are important, it means copy the
     # content not the folder itself (the same applies for the destination)
     exit $?
