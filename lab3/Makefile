@@ -9,6 +9,7 @@ SIM= sim
 SYN= syn
 SSH= shell
 SSH_GUI= shell_gui
+PUSH= push
 USAGE= usage
 
 # If the first argument is "push"...
@@ -57,7 +58,7 @@ syn:	## Synthetize the design with design vision
 
 push:	## Push files/directories to the server, you can specify the file/directory (e.g. make push file.txt)
 	@echo
-	@${SCRIPT} ${PUSH} $(PUSH_ARGS)
+	@${SCRIPT} ${PUSH} ${PUSH_ARGS}
 
 shell:	## SSH server connection 
 	@echo
