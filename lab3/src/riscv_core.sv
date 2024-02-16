@@ -248,7 +248,7 @@ always_ff @( posedge CLK ) begin : mem_wb
 		MEM_WB.NPC_out		<= EX_MEM.NPC_out;
 		MEM_WB.IMM_out		 <= EX_MEM.IMM_out; // direct wire 
 		MEM_WB.RES_alu_out	 <= EX_MEM.RES_alu_out; 
-		MEM_WB.DATA_mem_out	 <= EX_MEM.DATA_mem_out; 
+		MEM_WB.DATA_mem_out	 <= MEM_WB.DATA_mem_in; 
 		MEM_WB.RD_out        <= EX_MEM.RD_out; 
 	end
 	
@@ -366,7 +366,7 @@ lsu load_store_unit(
 
 wb write_back(
 
-    .WBctrl_in(MEM_WB.WBctrl_in) ,
+    .WBctrl_in(MEM_WB.WBctrl_out) ,
 
     // Data input signals
     .WBdata_ALU_in(MEM_WB.RES_alu_out),

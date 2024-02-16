@@ -52,10 +52,10 @@ always_comb begin
 		OP_AUIPC		: begin EX.ALUsrcA = PC; WB.RF_we = WR; end
 		OP_BRANCH		: begin DEC.branch = BRANCH; end
 		OP_JMP			: begin DEC.branch = JMP; WB.SRCtoRF = NPCtoRF; WB.RF_we = WR; end
-		OP_LUI 			: begin WB.RF_we = WR; WB.SRCtoRF = IMMtoRF; end
+		OP_LUI 			: begin EX.ALUopr = ALU_NOP; WB.RF_we = WR; end
 		OP_LW  			: begin MEM.mem_en = '1; WB.RF_we = WR; WB.SRCtoRF = MEMtoRF; end
 		OP_SW  			: begin MEM.mem_en = '1; MEM.wr = WRITE; end
-		OP_RET 			: begin DEC.branch = JMP; end
+		OP_RET 			: begin DEC.branch = RET; end
 	endcase
 
 end

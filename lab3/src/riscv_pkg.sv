@@ -53,7 +53,8 @@ package riscv_pkg;
 	typedef enum logic[1:0] {
 		BRANCH,
 		JMP,
-		NOBRANCH
+		NOBRANCH,
+		RET
 	} BRANCH_ctrl;
 
 
@@ -94,9 +95,10 @@ package riscv_pkg;
     	BLTU = 3'b110
 	} t_funct3;
 
-	typedef enum logic {
-		ALU_ADD = 1'b0,
-		ALU_SUB = 1'b1
+	typedef enum logic [1:0] {
+		ALU_ADD,
+		ALU_SUB,
+		ALU_NOP
 	}ALU_ctrl;
 
 	typedef enum logic {
