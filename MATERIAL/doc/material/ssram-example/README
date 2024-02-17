@@ -1,0 +1,15 @@
+The strcture is the standard one:
+- src -> sources
+- tb -> test-bench
+- sim -> simulation
+- syn -> synthesis
+
+Scripts are provided:
+a) RTL simulation -> sim 
+-- ./rtl_sim.sh
+b) Synthesis -> syn 
+-- mkdir work
+-- mkdir mem_test_rep
+-- dc_shell-xg-t -f ./synfile.tcl > dc_shell.log
+c) netlist simulation -> sim
+-- ./netlist_sim.sh
