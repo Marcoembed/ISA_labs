@@ -2,6 +2,9 @@
 
 module tb_mem_reals import riscv_pkg::*; ();
 
+    parameter IMEM_LENGTH = 12;
+    parameter DMEM_LENGTH = 79;
+
 	obi_intf tb_fetch_intf_core();
 	obi_intf tb_lsu_intf_core();
 	logic tb_CLK;
@@ -95,6 +98,16 @@ module tb_mem_reals import riscv_pkg::*; ();
 
 	end
 
+    reg [10-1:0] tmp_imem [32-1:0];
+    reg [10-1:0] tmp_dmem [32-1:0];
+    int imem_itr;
+    int dmem_itr;
+
+    initial begin
+        $readmemh("../sim/imem.txt", tmp_imem);
+        $readmemh("../sim/dmem.txt", tmp_dmem);
+    end
+
    riscv_core core 
    (
 		.fetch_intf_core(tb_fetch_intf_core),
@@ -169,24 +182,39 @@ module tb_mem_reals import riscv_pkg::*; ();
     );
 
 
-    
+
+
+always_ff @(posedge CLK) begin
+    if(!RSTn) begin
+    instr_csb0 <= 0;
+    instr_web0 <= 0;
+    data_csb0 <= 0;
+    data_web0 <= 0;
+
+        if(imem_itr < IMEM_LENGTH) begin
+            instr_csb0 <= 1;
+            instr_web0 <= 1;
+        end
+
+        if(dmem_itr < DMEM_LENGTH) begin
+            data_csb0 <= 1;
+            data_web0 <= 1;
+        end
+
+        instr_addr0 <= tmp_imem[imem_itr];
+        data_addr0 <= tmp_dmem[dmem_itr];
+
+        imem_itr <= imem_itr + 1;
+        dmem_itr <= dmem_itr + 1;
+
+    end else begin
+        instr_csb0 <= 0;
+        instr_web0 <= 0;
+        data_csb0 <= 0;
+        data_web0 <= 0;
+    end
+end
 	
 endmodule
 
 //TODO mettere il reset
-// 
-// reg [5-1:0] tb_tmp_mem_from_file [32-1:0];
-// initial begin
-//   $readmemh("path al file.txt", tb_tmp_mem_from_file);
-// end
-// 
-// alway_ff (clk,RSTn) begin
-//   if(!RSTn) begin
-//     if(posedge clk) begin
-//        we = 1;
-//        addr = i;
-//        data = tb_tmp_mem_from_file[i];
-//        i = i+1;
-//     end
-//   end
-// end
