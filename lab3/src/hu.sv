@@ -150,6 +150,7 @@ always_comb begin : hu_data_control
 
         end
         data_busy: begin
+            HZ_instr_req = '0;
             if (DATA_mem_busy_in) begin
                 HZ_data_req = '0;
                 HZ_instr_req = '0;
