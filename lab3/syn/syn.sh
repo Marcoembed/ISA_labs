@@ -8,6 +8,7 @@ source /eda/scripts/init_questa_core_prime
 
 ls ../src/*.sv > compile_VLOG.f
 ls ../tb/*.sv >> compile_VLOG.f
+ls ../netlist/*.sv >> compile_VLOG.f
 ls ../tb/*.vhd > compile_VHDL.f
 
 
