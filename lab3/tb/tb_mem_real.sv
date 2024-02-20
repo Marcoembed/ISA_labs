@@ -1,6 +1,6 @@
 `timescale 1 ps / 1 ps
 
-module tb_mem_reals import riscv_pkg::*; ();
+module tb_mem_real import riscv_pkg::*; ();
 
 
 	// parameters
