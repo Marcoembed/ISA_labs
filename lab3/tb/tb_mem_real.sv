@@ -1,4 +1,4 @@
-`timescale 1 ps / 1 ps
+`timescale 1 ns / 1 ns
 
 module tb_mem_real import riscv_pkg::*; ();
 
@@ -11,12 +11,12 @@ module tb_mem_real import riscv_pkg::*; ();
 	localparam cIS_CODE = 0;
 	localparam cIS_DATA = 1;   
 
-	parameter IMEM_LENGTH = 12;
-	parameter DMEM_LENGTH = 79;
+	parameter DMEM_LENGTH = 12;
+	parameter IMEM_LENGTH = 79;
 
 	// TB VARIABLES TO MANAGE HEX FILES
-	logic [10-1:0] tmp_imem [32-1:0];
-	logic [10-1:0] tmp_dmem [32-1:0];
+	logic [31:0] tmp_imem [0:78];
+	logic [31:0] tmp_dmem [0:11];
 	int imem_itr = 0;
 	int dmem_itr = 0;
 
@@ -30,7 +30,7 @@ module tb_mem_real import riscv_pkg::*; ();
 	obi_intf tb_fetch_intf_core();
 	logic instr_csb;
 	logic instr_web;
-	logic [ 9:0] instr_addr;
+	logic [9:0] instr_addr;
 	logic [31:0] instr_dout;
 	logic [31:0] instr_din;
 
@@ -38,40 +38,40 @@ module tb_mem_real import riscv_pkg::*; ();
 	obi_intf tb_lsu_intf_core();
 	logic data_csb;
 	logic data_web;
-	logic [ 9:0] data_addr;
+	logic [9:0] data_addr;
 	logic [31:0] data_dout;
 	logic [31:0] data_din;
 
 	// INSTRUCTION MEMORY SIGNALS
 	logic instr_csb0;
 	logic instr_web0;
-	logic [ 9:0]  instr_addr0;
+	logic [9:0]  instr_addr0;
 	logic [31:0] instr_din0;
 	
 	// DATA MEMORY SIGNALS
 	logic data_csb0;
 	logic data_web0;
-	logic [ 9:0] data_addr0;
+	logic [9:0] data_addr0;
 	logic [31:0] data_din0;
 
 	// TB INSTRUCTION MEMORY SIGNALS
 	logic tb_instr_csb0;
 	logic tb_instr_web0;
-	logic [ 9:0]  tb_instr_addr0;
+	logic [9:0]  tb_instr_addr0;
 	logic [31:0] tb_instr_din0;
 	
 	// TB DATA MEMORY SIGNALS
 	logic tb_data_csb0;
 	logic tb_data_web0;
-	logic [ 9:0] tb_data_addr0;
+	logic [9:0] tb_data_addr0;
 	logic [31:0] tb_data_din0;
 
 
 	// At startup, the instruction and data hex files are
 	// loaded inside two TB variables
 	initial begin
-		$readmemh("../sim/imem.txt", tmp_imem);
-		$readmemh("../sim/dmem.txt", tmp_dmem);
+		$readmemh("../sim/main.txt", tmp_imem);
+		$readmemh("../sim/data.txt", tmp_dmem);
 	end
 
 
@@ -110,7 +110,7 @@ module tb_mem_real import riscv_pkg::*; ();
 	);
 
 
-	mem_test instr_mem (
+	sram_32_1024_freepdk45 instr_mem (
 		.clk0(tb_CLK),
 		.csb0(instr_csb0),
 		.web0(instr_web0),
@@ -136,7 +136,7 @@ module tb_mem_real import riscv_pkg::*; ();
 	);
 
 
-	mem_test data_mem (
+	sram_32_1024_freepdk45 data_mem (
 		.clk0(tb_CLK),
 		.csb0(data_csb0),
 		.web0(data_web0),
@@ -179,20 +179,20 @@ module tb_mem_real import riscv_pkg::*; ();
 		data_din0 = data_din;
 
 		if (imem_itr < IMEM_LENGTH) begin
-			instr_csb0 = 1;
-			instr_web0 = 1;
+			instr_csb0 = 0;
+			instr_web0 = 0;
 			instr_addr0 = imem_itr;
 			instr_din0 = tmp_imem[imem_itr];
 		end
 
 		if (dmem_itr < DMEM_LENGTH) begin
-			data_csb0 = 1;
-			data_web0 = 1;
+			data_csb0 = 0;
+			data_web0 = 0;
 			data_addr0 = dmem_itr;
 			data_din0 = tmp_dmem[dmem_itr];
 		end
 
-		if (imem_itr == IMEM_LENGTH and dmem_itr == DMEM_LENGTH) begin
+		if (imem_itr == IMEM_LENGTH && dmem_itr == DMEM_LENGTH) begin
 			tb_RSTn = 1;
 		end
 	end
