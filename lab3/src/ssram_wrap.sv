@@ -18,7 +18,7 @@ always_comb begin
 
     csb = !obi_intf_in.proc_req;
     web = !obi_intf_in.we;
-    addr = obi_intf_in.addr[9:0];
+    addr = {2'b0, obi_intf_in.addr[9:2]};
     din = obi_intf_in.wdata;
 
     obi_intf_in.mem_rdy = '1;
