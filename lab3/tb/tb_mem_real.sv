@@ -1,3 +1,22 @@
+/*--------------------------------------------------------------------------------------*/
+// Engineer: Simone Ruffini 	[simone.ruffini@studenti.polito.it],
+//			 Marco Crisolgo 	[s305673@studenti.polito.it],
+//			 Matteo Lago 		[s319914@studenti.polito.it],
+//			 Renato Belmonte 	[s316792@studenti.polito.it],
+//
+// Module Name: Testbench with REAL MEMORIES
+// Project Name: risc-v 
+//
+// Description:
+// The testbench includes the RISC-V core and two real SSRAMs (with their interfaces).
+// 
+// The test is subdivided into two phases:
+// 1 - Memories are filled with files containing instructions and data respectively.
+// 2 - The processor is then connected with the memories and the program execution starts.
+//
+/*--------------------------------------------------------------------------------------*/
+
+
 `timescale 1 ns / 1 ns
 
 module tb_mem_real import riscv_pkg::*; ();

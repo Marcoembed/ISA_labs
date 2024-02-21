@@ -1,3 +1,22 @@
+/*--------------------------------------------------------------------------------------*/
+// Engineer: Simone Ruffini 	[simone.ruffini@studenti.polito.it],
+//			 Marco Crisolgo 	[s305673@studenti.polito.it],
+//			 Matteo Lago 		[s319914@studenti.polito.it],
+//			 Renato Belmonte 	[s316792@studenti.polito.it],
+//
+// Module Name: Testbench with SIMULATED MEMORIES
+// Project Name: risc-v 
+//
+// Description:
+// The testbench includes the RISC-V core and two wrappers that simulate memories which
+// implement the OBI protocol. The delays of the two memories are randomized through the 
+// use of an LFSR and simulate response times that are independent on the processor pipeline.
+// The main task of the test is to verify the correct behaviour of the processor in this
+// fully general circumstance.
+//
+/*--------------------------------------------------------------------------------------*/
+
+
 `timescale 1 ps / 1 ps
 
 module tb import riscv_pkg::*; ();
@@ -27,7 +46,7 @@ module tb import riscv_pkg::*; ();
 	logic [31:0] tb_instr_rdata;
 	logic tb_instr_valid;
 
-	//CORE signals 
+	//CORE signals
 
 
 	// parameters
@@ -43,43 +62,43 @@ module tb import riscv_pkg::*; ();
 
 	always_comb begin
 		//INSTR
-    	tb_instr_proc_req = logic'(tb_fetch_intf_core.proc_req);
-    	tb_instr_we = logic'(tb_fetch_intf_core.we);
-    	tb_instr_addr = tb_fetch_intf_core.addr;
-    	tb_instr_wdata = tb_fetch_intf_core.wdata;
+		tb_instr_proc_req = logic'(tb_fetch_intf_core.proc_req);
+		tb_instr_we = logic'(tb_fetch_intf_core.we);
+		tb_instr_addr = tb_fetch_intf_core.addr;
+		tb_instr_wdata = tb_fetch_intf_core.wdata;
 
-    	tb_fetch_intf_core.mem_rdy = tb_instr_mem_rdy;
-    	tb_fetch_intf_core.rdata = tb_instr_rdata;
-    	tb_fetch_intf_core.valid = tb_instr_valid;
+		tb_fetch_intf_core.mem_rdy = tb_instr_mem_rdy;
+		tb_fetch_intf_core.rdata = tb_instr_rdata;
+		tb_fetch_intf_core.valid = tb_instr_valid;
 
 
 		//DATA
-    	tb_data_proc_req = logic'(tb_lsu_intf_core.proc_req);
-    	tb_data_we = logic'(tb_lsu_intf_core.we);
-    	tb_data_addr = tb_lsu_intf_core.addr;
-    	tb_data_wdata = tb_lsu_intf_core.wdata;
+		tb_data_proc_req = logic'(tb_lsu_intf_core.proc_req);
+		tb_data_we = logic'(tb_lsu_intf_core.we);
+		tb_data_addr = tb_lsu_intf_core.addr;
+		tb_data_wdata = tb_lsu_intf_core.wdata;
 
-    	tb_lsu_intf_core.mem_rdy = tb_data_mem_rdy;
-    	tb_lsu_intf_core.rdata = tb_data_rdata;
-    	tb_lsu_intf_core.valid = tb_data_valid;
+		tb_lsu_intf_core.mem_rdy = tb_data_mem_rdy;
+		tb_lsu_intf_core.rdata = tb_data_rdata;
+		tb_lsu_intf_core.valid = tb_data_valid;
 
 	end
 
-   riscv_core core 
-   (
+	riscv_core core 
+	(
 		.fetch_intf_core(tb_fetch_intf_core),
 		.lsu_intf_core(tb_lsu_intf_core),
 		.CLK(tb_CLK),
 		.EN(tb_EN),
 		.RSTn(tb_RSTn)
-   );
+	);
 
 	clk_gen #(
 		.T(Ts)
-   ) CG (
-  	 .CLK(tb_CLK),
-	 .RSTn(tb_RSTn)
-   );
+	) CG (
+		.CLK(tb_CLK),
+		.RSTn(tb_RSTn)
+	);
 
 	mem_wrap_fake #(
 			.CONTENT_TYPE(cIS_DATA),
