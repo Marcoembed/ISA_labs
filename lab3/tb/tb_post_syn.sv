@@ -1,3 +1,15 @@
+/*--------------------------------------------------------------------------------------*/
+// Engineer: Simone Ruffini 	[simone.ruffini@studenti.polito.it],
+//			 Marco Crisolgo 	[s305673@studenti.polito.it],
+//			 Matteo Lago 		[s319914@studenti.polito.it],
+//			 Renato Belmonte 	[s316792@studenti.polito.it],
+//
+// Module Name: Testbench for POST SYNTHESIS netlist
+// Project Name: risc-v 
+//
+/*--------------------------------------------------------------------------------------*/
+
+
 `timescale 1 ps / 1 ps
 
 module tb_post_syn import riscv_pkg::*; ();
@@ -43,30 +55,30 @@ module tb_post_syn import riscv_pkg::*; ();
 	( 
 		.fetch_intf_core_proc_req(tb_instr_proc_req), 
 		.fetch_intf_core_we(tb_instr_we), 
-        .fetch_intf_core_addr(tb_instr_addr), 
+		.fetch_intf_core_addr(tb_instr_addr), 
 		.fetch_intf_core_wdata(tb_instr_wdata), 
 		.fetch_intf_core_mem_rdy(tb_instr_mem_rdy), 
-        .fetch_intf_core_valid(tb_instr_valid), 
+		.fetch_intf_core_valid(tb_instr_valid), 
 		.fetch_intf_core_rdata(tb_instr_rdata), 
 		.lsu_intf_core_proc_req(tb_data_proc_req), 
-        .lsu_intf_core_we(tb_data_we), 
+		.lsu_intf_core_we(tb_data_we), 
 		.lsu_intf_core_addr(tb_data_addr), 
 		.lsu_intf_core_wdata(tb_data_wdata), 
-        .lsu_intf_core_mem_rdy(tb_data_mem_rdy), 
+		.lsu_intf_core_mem_rdy(tb_data_mem_rdy), 
 		.lsu_intf_core_valid(tb_data_valid), 
 		.lsu_intf_core_rdata(tb_data_rdata), 
 		.CLK(tb_CLK), 
-        .EN(tb_EN), 
+		.EN(tb_EN), 
 		.RSTn(tb_RSTn) 
 	);
 
 
 	clk_gen #(
 		.T(Ts)
-   ) CG (
-  	 .CLK(tb_CLK),
-	 .RSTn(tb_RSTn)
-   );
+	) CG (
+		.CLK(tb_CLK),
+		.RSTn(tb_RSTn)
+	);
 
 	mem_wrap_fake #(
 			.CONTENT_TYPE(cIS_DATA),

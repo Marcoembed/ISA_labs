@@ -1,3 +1,20 @@
+/*--------------------------------------------------------------------------------------*/
+// Engineer: Simone Ruffini 	[simone.ruffini@studenti.polito.it],
+//			 Marco Crisolgo 	[s305673@studenti.polito.it],
+//			 Matteo Lago 		[s319914@studenti.polito.it],
+//			 Renato Belmonte 	[s316792@studenti.polito.it],
+//
+// Module Name: Top Level Entity
+// Project Name: risc-v 
+//
+// Description:
+// The full system is made up by the RISC-V core and two real SSRAMs included as 
+// SystemVerilog macros. Two interfacing modules (ssram_wrap) are used to 
+// accept the OBI protocol from the processor and access the two physical memories.
+//
+/*--------------------------------------------------------------------------------------*/
+
+
 module riscv_top import riscv_pkg::*; 
 (
 	input logic CLK,
