@@ -61,8 +61,8 @@ module riscv_top import riscv_pkg::*;
 	logic [9:0] data_addr0;
 	logic [31:0] data_din0;
 
-	int imem_itr = 0;
-	int dmem_itr = 0;
+	int imem_itr;
+	int dmem_itr;
 
 
 	//-----------------------------------------------------------------
@@ -134,6 +134,10 @@ module riscv_top import riscv_pkg::*;
 	//-----------------------------------------------------------------
 
 	always_ff @(posedge CLK) begin
+		if(!RSTn) begin
+		  imem_itr <= 0;
+		  dmem_itr <= 0;
+		end
 
 		if(imem_itr < IMEM_LENGTH) begin
 			imem_itr <= imem_itr + 1;
