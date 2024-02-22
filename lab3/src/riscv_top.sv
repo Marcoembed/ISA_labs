@@ -21,13 +21,27 @@ module riscv_top import riscv_pkg::*;
 	input logic RSTn,
 	input logic EN,
 
-	// TB VARIABLES TO MANAGE HEX FILES
-	logic [31:0] tmp_imem [0:78],
-	logic [31:0] tmp_dmem [0:11]
-	
+	input	int imem_itr,
+	input 	int dmem_itr,
+	input	logic [31:0] instr_i,
+	input 	logic [31:0] data_i,
+
+	input	logic imem_end,
+	input	logic dmem_end
 );
 
-	logic top_RSTn; 
+	// INSTRUCTION MEMORY SIGNALS
+	logic instr_csb0;
+	logic instr_web0;
+	logic [9:0]  instr_addr0;
+	logic [31:0] instr_din0;
+	
+	// DATA MEMORY SIGNALS
+	logic data_csb0;
+	logic data_web0;
+	logic [9:0] data_addr0;
+	logic [31:0] data_din0;
+
 
 	parameter DMEM_LENGTH = 12;
 	parameter IMEM_LENGTH = 79;
@@ -49,22 +63,6 @@ module riscv_top import riscv_pkg::*;
 	logic [31:0] data_din;
 
 
-	// INSTRUCTION MEMORY SIGNALS
-	logic instr_csb0;
-	logic instr_web0;
-	logic [9:0]  instr_addr0;
-	logic [31:0] instr_din0;
-	
-	// DATA MEMORY SIGNALS
-	logic data_csb0;
-	logic data_web0;
-	logic [9:0] data_addr0;
-	logic [31:0] data_din0;
-
-	int imem_itr;
-	int dmem_itr;
-
-
 	//-----------------------------------------------------------------
 	//   COMPONENTS
 	//-----------------------------------------------------------------
@@ -73,13 +71,13 @@ module riscv_top import riscv_pkg::*;
 		.lsu_intf_core(lsu_intf_top),
 		.CLK(CLK),
 		.EN(EN),
-		.RSTn(top_RSTn)
+		.RSTn(RSTn)
 	);
 
 
 	ssram_wrap ssram_wrap_instr (
 		.CLK_in(CLK),
-		.RSTn_in(top_RSTn),
+		.RSTn_in(RSTn),
 
 		// SSRAM signals
 		.csb(instr_csb),
@@ -105,7 +103,7 @@ module riscv_top import riscv_pkg::*;
 
 	ssram_wrap ssram_wrap_data (   
 		.CLK_in(CLK),
-		.RSTn_in(top_RSTn),
+		.RSTn_in(RSTn),
 
 		// SSRAM signals
 		.csb(data_csb),
@@ -128,32 +126,8 @@ module riscv_top import riscv_pkg::*;
 		.dout0(data_dout)
 	);
 
-
-	//-----------------------------------------------------------------
-	//   PROCESSES TO MANAGE MEMORY FLASHING
-	//-----------------------------------------------------------------
-
-	always_ff @(posedge CLK) begin
-		if(!RSTn) begin
-		  imem_itr <= 0;
-		  dmem_itr <= 0;
-		end
-
-		if(imem_itr < IMEM_LENGTH) begin
-			imem_itr <= imem_itr + 1;
-		end
-
-		if(dmem_itr < DMEM_LENGTH) begin
-			dmem_itr <= dmem_itr + 1;
-		end
-
-	end
-
-
-	always_comb begin
-
-		top_RSTn = 0;
-
+	always_comb begin 
+		
 		instr_csb0 = instr_csb;
 		instr_web0 = instr_web;
 		instr_addr0 = instr_addr;
@@ -163,24 +137,23 @@ module riscv_top import riscv_pkg::*;
 		data_web0 = data_web;
 		data_addr0 = data_addr;
 		data_din0 = data_din;
-
-		if (imem_itr < IMEM_LENGTH) begin
+	
+		if (!imem_end) begin
 			instr_csb0 = 0;
 			instr_web0 = 0;
 			instr_addr0 = imem_itr;
-			instr_din0 = tmp_imem[imem_itr];
+			instr_din0 = instr_i;
 		end
 
-		if (dmem_itr < DMEM_LENGTH) begin
+		if (!dmem_end) begin
 			data_csb0 = 0;
 			data_web0 = 0;
 			data_addr0 = dmem_itr;
-			data_din0 = tmp_dmem[dmem_itr];
+			data_din0 = data_i;
 		end
 
-		if (imem_itr == IMEM_LENGTH && dmem_itr == DMEM_LENGTH) begin
-			top_RSTn = 1;
-		end
+
 	end
+
 		
 endmodule

@@ -25,7 +25,6 @@ module bu import riscv_pkg::*;
 	input logic [31:0]	PC_in,
 	input logic [31:0]	IMM_in,
 	input logic [31:0]	RS1_in,
-	input logic [31:0]	RS2_in,
 	input t_funct3		funct3,
 	
 	output IF_ctrl BRANCH_cond_out,

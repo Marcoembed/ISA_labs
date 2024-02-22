@@ -29,11 +29,23 @@ module tb_post_syn_real import riscv_pkg::*; ();
 	// TB VARIABLES TO MANAGE HEX FILES
 	logic [31:0] tmp_imem [0:78];
 	logic [31:0] tmp_dmem [0:11];
+
+	parameter DMEM_LENGTH = 12;
+	parameter IMEM_LENGTH = 79;
+
+	int imem_itr = 0;
+	int dmem_itr = 0;
+
+	logic [31:0] instr_din;
+	logic [31:0] data_din;
 	
 	// GLOBAL SIGNALS
 	logic tb_CLK;
 	logic tb_EN;
 	logic tb_RSTn;
+
+	logic dmem_end;
+	logic imem_end;
 
 	// At startup, the instruction and data hex files are
 	// loaded inside two TB variables
@@ -46,18 +58,58 @@ module tb_post_syn_real import riscv_pkg::*; ();
 		.CLK(tb_CLK),
 		.RSTn(tb_RSTn), 
 		.EN(tb_EN), 
-		.tmp_dmem(tmp_dmem), 
-		.tmp_imem(tmp_imem)
-	);
+		.imem_itr(imem_itr),
+		.dmem_itr(dmem_itr),
+		.instr_i(instr_din),
+		.data_i(data_din),
+		.imem_end(imem_end),
+		.dmem_end(dmem_end)
+
+);
 
 	clk_gen #(
 		.T(Ts)
 	) CG (
 		.CLK(tb_CLK),
-		.RSTn(tb_RSTn)
+		.RSTn()
 	);
 
+	
+	always_ff @(posedge tb_CLK) begin
 
+		if(imem_itr < IMEM_LENGTH) begin
+			imem_itr <= imem_itr + 1;
+		end
+
+		if(dmem_itr < DMEM_LENGTH) begin
+			dmem_itr <= dmem_itr + 1;
+		end
+
+	end
+
+	always_comb begin
+
+		if (imem_itr < IMEM_LENGTH) begin
+			instr_din = tmp_imem[imem_itr];
+			imem_end = 0;
+		end else begin
+			imem_end = 1;
+		end
+
+		if (dmem_itr < DMEM_LENGTH) begin
+			data_din = tmp_dmem[dmem_itr];
+			dmem_end = 0;
+		end else begin
+			dmem_end = 1;
+		end
+
+		if (imem_itr == IMEM_LENGTH && dmem_itr == DMEM_LENGTH) begin
+			tb_RSTn = 1;
+		end else begin
+			tb_RSTn = 0;
+		end
+
+	end
 
 		
 endmodule

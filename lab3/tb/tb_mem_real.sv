@@ -69,19 +69,6 @@ module tb_mem_real import riscv_pkg::*; ();
 	logic [9:0] data_addr0;
 	logic [31:0] data_din0;
 
-	// TB INSTRUCTION MEMORY SIGNALS
-	logic tb_instr_csb0;
-	logic tb_instr_web0;
-	logic [9:0]  tb_instr_addr0;
-	logic [31:0] tb_instr_din0;
-	
-	// TB DATA MEMORY SIGNALS
-	logic tb_data_csb0;
-	logic tb_data_web0;
-	logic [9:0] tb_data_addr0;
-	logic [31:0] tb_data_din0;
-
-
 	// At startup, the instruction and data hex files are
 	// loaded inside two TB variables
 	initial begin
