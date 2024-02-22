@@ -22,27 +22,31 @@
 
 module imm_gen import riscv_pkg::*; 
 (
-	input	logic[31:0]	instruction_i, 
-	output	logic[31:0]	immediate_o
+	input	logic[31:0]	instr, 
+	output	logic[31:0]	imm
 );
 
 	t_opcode op_code;
-	assign op_code = t_opcode'(instruction_i[6:0]);
+	assign op_code = t_opcode'(instr[6:0]);
 
 
 	always_comb begin
 
 		case (op_code)
-			OP_RTYPE:	immediate_o = 32'b0;
-			OP_ADDI:	immediate_o = {20'(signed'(instruction_i[31])), instruction_i[31:20]};
-			OP_AUIPC:	immediate_o = {instruction_i[31:12], 12'b0};
-			OP_BRANCH:	immediate_o = {19'(signed'(instruction_i[31])), instruction_i[31], instruction_i[7], instruction_i[30:25], instruction_i[11:8], 1'b0};
-			OP_JMP:		immediate_o = {12'(signed'(instruction_i[31])), instruction_i[19:12], instruction_i[20], instruction_i[30:21], 1'b0};
-			OP_LUI:		immediate_o = {instruction_i[31:12], 12'b0};
-			OP_LW:		immediate_o = {20'(signed'(instruction_i[31])), instruction_i[31:20]};
-			OP_SW:		immediate_o = {20'(signed'(instruction_i[31])), instruction_i[31:25], instruction_i[11:7]};
-			OP_RET:		immediate_o = 32'b0;
-			default:	immediate_o = 32'b0;
+			// R-type
+			OP_RTYPE:					imm = 32'b0;
+			// I-type
+			OP_ADDI, OP_LW, OP_RET:		imm = {20'(signed'(instr[31])), instr[31:20]};
+			// U-type
+			OP_AUIPC, OP_LUI:			imm = {instr[31:12], 12'b0};
+			// SB-type
+			OP_BRANCH:					imm = {19'(signed'(instr[31])), instr[31], instr[7], instr[30:25], instr[11:8], 1'b0};
+			// UJ-type
+			OP_JMP:						imm = {12'(signed'(instr[31])), instr[19:12], instr[20], instr[30:21], 1'b0};
+			// S-type
+			OP_SW:						imm = {20'(signed'(instr[31])), instr[31:25], instr[11:7]};
+
+			default:	imm = 32'b0;
 		endcase
 
 	end
