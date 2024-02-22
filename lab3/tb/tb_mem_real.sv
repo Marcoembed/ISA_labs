@@ -17,7 +17,7 @@
 /*--------------------------------------------------------------------------------------*/
 
 
-`timescale 1 ns / 1 ns
+`timescale 1 ps / 1 ps
 
 module tb_mem_real import riscv_pkg::*; ();
 
