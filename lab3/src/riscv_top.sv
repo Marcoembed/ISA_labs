@@ -19,14 +19,18 @@ module riscv_top import riscv_pkg::*;
 (
 	input logic CLK,
 	input logic RSTn,
-	input logic EN
+	input logic EN,
 
+	// TB VARIABLES TO MANAGE HEX FILES
+	logic [31:0] tmp_imem [0:78],
+	logic [31:0] tmp_dmem [0:11]
+	
 );
 
-	// GLOBAL SIGNALS
-	logic CLK;
-	logic EN;
-	logic RSTn;
+	logic top_RSTn; 
+
+	parameter DMEM_LENGTH = 12;
+	parameter IMEM_LENGTH = 79;
 
 	// INSTRUCTION MEMORY INTERFACE SIGNALS
 	obi_intf fetch_intf_top();
@@ -44,6 +48,23 @@ module riscv_top import riscv_pkg::*;
 	logic [31:0] data_dout;
 	logic [31:0] data_din;
 
+
+	// INSTRUCTION MEMORY SIGNALS
+	logic instr_csb0;
+	logic instr_web0;
+	logic [9:0]  instr_addr0;
+	logic [31:0] instr_din0;
+	
+	// DATA MEMORY SIGNALS
+	logic data_csb0;
+	logic data_web0;
+	logic [9:0] data_addr0;
+	logic [31:0] data_din0;
+
+	int imem_itr = 0;
+	int dmem_itr = 0;
+
+
 	//-----------------------------------------------------------------
 	//   COMPONENTS
 	//-----------------------------------------------------------------
@@ -52,13 +73,13 @@ module riscv_top import riscv_pkg::*;
 		.lsu_intf_core(lsu_intf_top),
 		.CLK(CLK),
 		.EN(EN),
-		.RSTn(RSTn)
+		.RSTn(top_RSTn)
 	);
 
 
 	ssram_wrap ssram_wrap_instr (
 		.CLK_in(CLK),
-		.RSTn_in(RSTn),
+		.RSTn_in(top_RSTn),
 
 		// SSRAM signals
 		.csb(instr_csb),
@@ -74,24 +95,24 @@ module riscv_top import riscv_pkg::*;
 
 	sram_32_1024_freepdk45 instr_mem (
 		.clk0(CLK),
-		.csb0(instr_csb),
-		.web0(instr_web),
-		.addr0(instr_addr),
-		.din0(instr_din),
+		.csb0(instr_csb0),
+		.web0(instr_web0),
+		.addr0(instr_addr0),
+		.din0(instr_din0),
 		.dout0(instr_dout)
 	);
 
 
 	ssram_wrap ssram_wrap_data (   
 		.CLK_in(CLK),
-		.RSTn_in(RSTn),
+		.RSTn_in(top_RSTn),
 
 		// SSRAM signals
 		.csb(data_csb),
 		.web(data_web),
 		.addr(data_addr),
-		.dout(data_dout),
 		.din(data_din),
+		.dout(data_dout),
 
 		// processor signals
 		.obi_intf_in(lsu_intf_top)
@@ -100,11 +121,62 @@ module riscv_top import riscv_pkg::*;
 
 	sram_32_1024_freepdk45 data_mem (
 		.clk0(CLK),
-		.csb0(data_csb),
-		.web0(data_web),
-		.addr0(data_addr),
-		.din0(data_din),
+		.csb0(data_csb0),
+		.web0(data_web0),
+		.addr0(data_addr0),
+		.din0(data_din0),
 		.dout0(data_dout)
 	);
+
+
+	//-----------------------------------------------------------------
+	//   PROCESSES TO MANAGE MEMORY FLASHING
+	//-----------------------------------------------------------------
+
+	always_ff @(posedge CLK) begin
+
+		if(imem_itr < IMEM_LENGTH) begin
+			imem_itr <= imem_itr + 1;
+		end
+
+		if(dmem_itr < DMEM_LENGTH) begin
+			dmem_itr <= dmem_itr + 1;
+		end
+
+	end
+
+
+	always_comb begin
+
+		top_RSTn = 0;
+
+		instr_csb0 = instr_csb;
+		instr_web0 = instr_web;
+		instr_addr0 = instr_addr;
+		instr_din0 = instr_din;
+
+		data_csb0 = data_csb;
+		data_web0 = data_web;
+		data_addr0 = data_addr;
+		data_din0 = data_din;
+
+		if (imem_itr < IMEM_LENGTH) begin
+			instr_csb0 = 0;
+			instr_web0 = 0;
+			instr_addr0 = imem_itr;
+			instr_din0 = tmp_imem[imem_itr];
+		end
+
+		if (dmem_itr < DMEM_LENGTH) begin
+			data_csb0 = 0;
+			data_web0 = 0;
+			data_addr0 = dmem_itr;
+			data_din0 = tmp_dmem[dmem_itr];
+		end
+
+		if (imem_itr == IMEM_LENGTH && dmem_itr == DMEM_LENGTH) begin
+			top_RSTn = 1;
+		end
+	end
 		
 endmodule
