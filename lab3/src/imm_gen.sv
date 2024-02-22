@@ -36,7 +36,7 @@ module imm_gen import riscv_pkg::*;
 			OP_RTYPE:	immediate_o = 32'b0;
 			OP_ADDI:	immediate_o = {20'(signed'(instruction_i[31])), instruction_i[31:20]};
 			OP_AUIPC:	immediate_o = {instruction_i[31:12], 12'b0};
-			OP_BRANCH:	immediate_o = {instruction_i[31], instruction_i[7], instruction_i[30:25], instruction_i[11:8], 1'b0};
+			OP_BRANCH:	immediate_o = {19'(signed'(instruction_i[31])), instruction_i[31], instruction_i[7], instruction_i[30:25], instruction_i[11:8], 1'b0};
 			OP_JMP:		immediate_o = {12'(signed'(instruction_i[31])), instruction_i[19:12], instruction_i[20], instruction_i[30:21], 1'b0};
 			OP_LUI:		immediate_o = {instruction_i[31:12], 12'b0};
 			OP_LW:		immediate_o = {20'(signed'(instruction_i[31])), instruction_i[31:20]};
