@@ -24,11 +24,7 @@ module tb_mem_real import riscv_pkg::*; ();
 
 	// parameters
 	localparam Ts = 10000;
-	localparam tco = 1;
-	localparam tpd = 1;
-	//localparam cRG_FAST = 0;
-	localparam cIS_CODE = 0;
-	localparam cIS_DATA = 1;   
+
 
 	parameter DMEM_LENGTH = 12;
 	parameter IMEM_LENGTH = 79;
