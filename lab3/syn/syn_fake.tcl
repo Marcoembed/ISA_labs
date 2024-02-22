@@ -18,14 +18,6 @@ set TOP_LVL_ENTITY "riscv_core"
 # -format the format of files that will be analyzed
 # -work work directory library where to put and find file
 
-set file_handle [open "compile_VHDL.f" r]
-set sources [split [read $file_handle] "\n"]
-close $file_handle
-
-foreach file_el $sources {
-    analyze -work WORK -format "VHDL" $file_el
-}
-
 set file_handle [open "compile_VLOG.f" r]
 set sources [split [read $file_handle] "\n"]
 close $file_handle
@@ -34,6 +26,7 @@ foreach file_el $sources {
     analyze -work WORK -format "SVERILOG" $file_el
 }
 
+analyze -work WORK -format "VERILOG" ../sram_32_1024_freepdk45/sram_32_1024_freepdk45.v
 
 # Preserve rtl names in the netlist to ease the procedure for power consumption estimation.
 set power_preserve_rtl_hier_names true
@@ -91,7 +84,9 @@ check_design
 ################################################################################
 # 3 Start synthesis
 ################################################################################
-compile_ultra
+compile
+
+# compile_ultra
 
 # apply clock gating on FLIP-FLOPS with enable signal
 #compile -gate_clock
@@ -101,8 +96,8 @@ change_names -hierarchy -rules verilog
 report_area > ../RISCV_rep/report_area 
 report_timing > ../RISCV_rep/report_timing
 
-write_sdf ../netlist/riscv.sdf 
-write_sdc ../netlist/riscv.sdc 
-write -f verilog -hierarchy -output ../netlist/riscv.v
+write_sdf ../netlist/riscv_core.sdf 
+write_sdc ../netlist/riscv_core.sdc 
+write -f verilog -hierarchy -output ../netlist/riscv_core.v
 
 exit
