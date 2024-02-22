@@ -65,8 +65,8 @@ module dec import riscv_pkg::*;
 
 
 	imm_gen imm_gen_unit (
-		.instruction_i(IDdata_INSTRUCTION_in),
-		.immediate_o(IMM_gen)
+		.instr(IDdata_INSTRUCTION_in),
+		.imm(IMM_gen)
 	);
 
 	bu bu_unit (
