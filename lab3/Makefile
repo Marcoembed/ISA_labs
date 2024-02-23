@@ -12,12 +12,10 @@ SSH_GUI= shell_gui
 PUSH= push
 USAGE= usage
 
-# If the first argument is "push"...
+# If the first argument is "push", "sim", or "sim_gui" takes also a second variable
 ifeq (push,$(firstword $(MAKECMDGOALS)))
-  # use the rest as arguments for "push"
-  PUSH_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # ...and turn them into do-nothing targets
-  $(eval $(PUSH_ARGS):;@:)
+  ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(ARGS):;@:)
 endif
 
 # RECIPE
@@ -44,7 +42,7 @@ init:	## directory file initialization: creation of "do" files and "compile" fil
 	@${SCRIPT} ${INIT}
 	@echo "Done"
 
-ela:	## Compile all vhdl, verilog and systemVerilog files in src/ and tb/ directories
+comp:	## Compile all vhdl, verilog and systemVerilog files in src/ and tb/ directories
 	@${SCRIPT} ${ELA}
 
 sim:	## Simulate the design with modelsim, shell interface
@@ -58,7 +56,7 @@ syn:	## Synthetize the design with design vision
 
 push:	## Push files/directories to the server, you can specify the file/directory (e.g. make push file.txt)
 	@echo
-	@${SCRIPT} ${PUSH} ${PUSH_ARGS}
+	@${SCRIPT} ${PUSH} ${ARGS}
 
 shell:	## SSH server connection 
 	@echo
@@ -68,5 +66,5 @@ shell_gui:	## SSH server connection
 	@echo
 	${SCRIPT} ${SSH_GUI} 
 
-.PHONY: help usage all ela sim sim_gui syn push shell shell_gui
+.PHONY: help usage all comp sim sim_gui syn push shell shell_gui
 

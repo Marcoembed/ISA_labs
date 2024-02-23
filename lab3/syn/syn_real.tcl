@@ -18,7 +18,7 @@ set TOP_LVL_ENTITY "riscv_top"
 # -format the format of files that will be analyzed
 # -work work directory library where to put and find file
 
-set file_handle [open "compile_VLOG.f" r]
+set file_handle [open "./syn/compile_VLOG.f" r]
 set sources [split [read $file_handle] "\n"]
 close $file_handle
 
@@ -89,11 +89,11 @@ compile_ultra
 
 change_names -hierarchy -rules verilog
 
-report_area > ../RISCV_rep/report_area_top 
-report_timing > ../RISCV_rep/report_timing_top
+report_area > ./RISCV_rep/report_area_top 
+report_timing > ./RISCV_rep/report_timing_top
 
-write_sdf ../netlist/riscv_top.sdf 
-write_sdc ../netlist/riscv_top.sdc 
-write -f verilog -hierarchy -output ../netlist/riscv_top.v
+write_sdf ./netlist/riscv_top.sdf 
+write_sdc ./netlist/riscv_top.sdc 
+write -f verilog -hierarchy -output ./netlist/riscv_top.v
 
 exit

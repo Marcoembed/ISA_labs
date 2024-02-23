@@ -2,7 +2,6 @@
 
 # IMPORTANT! This file must remain in the project directory root
 
-
 # SSH 
 SSH_USER="isa01_2023_2024"
 SSH_PORT="10038"
@@ -26,23 +25,23 @@ SYN_DIR="./syn"
  
 ##########################################
 # HDL .f files path
-EXCLUDE_FILE="ssram_wrap.sv"
+EXCLUDE_FILE=""
 COMPILE_VHDL_FILE_PATH_LIST=("$HDL_DIR/compile_VHDL.f" "$TB_DIR/compile_VHDL.f")
 COMPILE_VLOG_FILE_PATH_LIST=("$HDL_DIR/compile_VLOG.f" "$TB_DIR/compile_VLOG.f")
 # SIMULATION TOP level entity name
-SIM_TOP_LVL_ENTITY="tb"
+SIM_TOP_LVL_ENTITY="tb_real"
 # SIMULATION work directory
 SIM_WORK_DIR="$SIM_DIR/work"
 # SIMULATION variables
-SIM_TIME="40us"
+SIM_TIME="5 us"
 # SIMULATION tcl script file path
 SIM_SCRIPT_FILE="$SIM_DIR/sim.do"
 # SYNTHESIS TOP level entity name
-SYN_TOP_LVL_ENTITY="riscv_core"
+SYN_TOP_LVL_ENTITY="riscv_top"
 # SYNTHESIS work directory
 SYN_WORK_DIR="$SYN_DIR/work"
 # SYNTHESIS tcl script file path
-SYN_SCRIPT_FILE="$SYN_DIR/syn.tcl"
+SYN_SCRIPT_FILE="$SYN_DIR/syn_real.tcl"
 ##########################################
 
 
@@ -51,7 +50,7 @@ cd "$base_dir" || exit
 
 
 usage(){
-    echo "Usage: $(basename "$0") { push | shell | [OPTION] {cmd} [ATTRIBUTES] | --help | -h }"
+    echo "Usage: $(basename "$0") { push | shell | {cmd} [ATTRIBUTES] | --help | -h }"
 }
 
 help(){
@@ -65,26 +64,16 @@ help(){
     echo ""
     echo "    push"
     echo "        push local content to remote server"
-    #echo "    pull OBJECT:               pull remote objects in local directory"
-    #echo "        OBJECT = func_cover.txt  retrive the functional coverage file for"
-    #echo "        all entities in ./sim"
-    echo "    {cmd}"
-	echo "        run cmd on local or on the remote server (e.g. remote {cmd})" 
-    echo "        cmd:"
-	echo "            init:     file initialization"
-    echo "            cln:      artifacts clean"
-    echo "            ela:      elaborates design files (first verilog then vhdl)"
-    echo "            ela_vhdl: elaborates vhdl design files"
-    echo "            ela_vlog: elaborates vlog design files"
-    echo "            sim:      simaulates design files on the predefined testbench"
-    echo "            syn:      synthesize design files"
-    echo ""
-	echo "	  OPTION:"	
-	echo "            remote:   run cmd on the remote server"
+    echo "    cmd:"
+	echo "         init:         file initialization"
+    echo "         comp:         elaborates design files (first verilog then vhdl)"
+    echo "         sim:          simulates design files on the predefined testbench"
+    echo "         sim_post_syn: simulates post synthesis design on the predefined testbench"
+    echo "         syn:          synthesize design files"
     echo ""
     echo "	  ATTRIBUTES:"
-	echo "            gui:      only for {cmd}=sim, GUI mode (e.g. sim gui)"
-	echo "          nogui:      only for {cmd}=sim, shell mode, DEFAULT (e.g. sim nogui | sim)"
+	echo "            gui:      only for {cmd}=sim or sim_post_syn, GUI mode (e.g. sim gui)"
+	echo "          nogui:      only for {cmd}=sim or sim_post_syn, shell mode, DEFAULT (e.g. sim nogui | sim)"
     echo "    shell"
     echo "        open a shell on the server"
     echo "    ssh_key"
@@ -92,9 +81,9 @@ help(){
     echo ""
     echo "Examples:"
     echo "    $(basename "$0") push"
-    #echo "    $(basename "$0") pull func_cover.txt"
-    echo "    $(basename "$0") ela"
-    echo "    $(basename "$0") remote ela"
+    echo "    $(basename "$0") sim"
+    echo "    $(basename "$0") sim gui"
+    echo "    $(basename "$0") syn"
     echo ""
     echo ""
     exit 0;
@@ -133,53 +122,21 @@ cmd_push(){
 #@brief open a shell on the server
 #@note ssh connection must be available
 cmd_shell(){
-    ssh -t "$SSH_USER@$SSH_HOSTNAME" -p "$SSH_PORT" -i "$SSH_PRIV_KEY_PATH" "cd ~/$SERVER_PRJ_ROOT_PATH && exec bash -l"; 
-    exit $?
-}
-
-cmd_shell_gui(){
     ssh -t "$SSH_USER@$SSH_HOSTNAME" -X -p "$SSH_PORT" -i "$SSH_PRIV_KEY_PATH" "cd ~/$SERVER_PRJ_ROOT_PATH && exec bash -l"; 
     exit $?
-}
-
-#@brief adds questasim software into PATH on the remote
-add_to_path_questa(){
-    # Source this file to be able to run vsim,vcom,vlog etc...
-    source "/eda/scripts/init_questa_core_prime"
-}
-
-#@brief adds design vision/compiler software into PATH on the remote
-add_to_path_dvc(){
-    # Source this file to be able to run dc_shell-xg-t,pt_shell...
-    source "/eda/scripts/init_design_vision"
-}
-
-
-# @brief clean simulation objects/folders of MODULE
-# @ret $? analysis return code or error (1)
-# NOTE: must be already in the prj root folder
-cmd_clean() {
-    # clean all, if nothing to clean throw error away
-    for i in "$LOCAL_PRJ_ROOT_PATH" "$SIM_DIR" "$SYN_DIR"; do
-        pushd "$i"
-        vdel -all >/dev/null 2>&1
-        echo "Remove all modelsim dirs in $(pwd)"
-        popd
-    done
 }
 
 #@brief files initialization 
 cmd_init(){
 
 	# create file sim.do in sim/ directory
-	echo "add log -recursive *" > $SIM_SCRIPT_FILE
-	if find "$SIM_DIR" -name "wave.do" -print -quit | grep -q .; then
-    	echo "do wave.do" >> "$SIM_SCRIPT_FILE"
+	echo "set StdArithNoWarnings 1" > $SIM_SCRIPT_FILE
+	if find "$SIM_DIR" -name "wave_real.do" -print -quit | grep -q .; then
+    	echo "do wave_real.do" >> "$SIM_SCRIPT_FILE"
 	fi
 	echo 'puts "\n########## SIMULATION STARTS ##########\n"' >> $SIM_SCRIPT_FILE 
 	echo "run $SIM_TIME" >> $SIM_SCRIPT_FILE 
 	echo 'puts "\n##########  SIMULATION ENDS  ##########\n"' >> $SIM_SCRIPT_FILE 
-	echo "exit" >> $SIM_SCRIPT_FILE 
 	
 	# compilation files initialization for src\ and tb\
 	find "$HDL_DIR" -name "*.v" -not -name "$EXCLUDE_FILE" -or -name "*.sv" -not -name "$EXCLUDE_FILE" > "$HDL_DIR"/compile_VLOG.f
@@ -187,6 +144,7 @@ cmd_init(){
 	find "$TB_DIR" -name "*.v" -not -name "$EXCLUDE_FILE" -or -name "*.sv" -not -name "$EXCLUDE_FILE"   > "$TB_DIR"/compile_VLOG.f
 	find "$TB_DIR" -name "*.vhdl" -not -name "$EXCLUDE_FILE" -or -name "*.vhd" -not -name "$EXCLUDE_FILE"  > "$TB_DIR"/compile_VHDL.f
 
+    # compile pkg first
 	for i in "${COMPILE_VLOG_FILE_PATH_LIST[@]}"; do
 		if grep -q "pkg" "$i"; then
 			line=$(grep "pkg" "$i")
@@ -231,6 +189,7 @@ cmd_vlog_elaborate() {
         if [ -s "$i" ]; then
             # compile verilog and verilog files
             vlog -svinputport=relaxed -work "$SIM_WORK_DIR" -F "$i"
+            vlog -work "$SIM_WORK_DIR" sram_32_1024_freepdk45/sram_32_1024_freepdk45.v
         fi
     done
 
@@ -284,8 +243,11 @@ cmd_vhdl_elaborate() {
     return $ret
 
 }
-cmd_hdl_elaborate() {
+cmd_comp() {
     source /eda/scripts/init_questa_core_prime
+
+    cmd_init
+    rm -rf "$SIM_WORK_DIR"
     cmd_vlog_elaborate && cmd_vhdl_elaborate 
     return $ret
 }
@@ -295,6 +257,10 @@ cmd_hdl_elaborate() {
 # NOTE: must be already in the prj root folder
 cmd_sim() {
     source /eda/scripts/init_questa_core_prime
+    echo
+    echo "Compilation before simulation:"
+    echo
+    cmd_comp
 
     if [ -e "./vsim.wlf" ]; then
         rm ./vsim.wlf;
@@ -315,11 +281,59 @@ cmd_sim() {
 
     # Simulate the $SIM_TOP_LVL_ENTITY entity design using sim.do tcl script
 	if [ $GUI == nogui ]; then
-		vsim -t ps -work "$SIM_DIR/mem_wrap" -c "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
+		vsim -t ps -c -suppress 3009 -work "$SIM_DIR"/work "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
     	#vsim -work "$SIM_WORK_DIR" -c -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
 	elif [ $GUI == gui ]; then
     	#vsim -work "$SIM_WORK_DIR" -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
-		vsim -t ps -work "$SIM_DIR/mem_wrap"  "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE"  -voptargs=+acc 
+		vsim -t ps -suppress 3009 -work "$SIM_DIR"/work "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
+	else
+		echo "Error: $2 is a wrong parameter"; usage; exit 1;
+	fi
+
+    # return simulation code
+    return $?
+
+}
+
+cmd_sim_post_syn() {
+    source /eda/scripts/init_questa_core_prime
+    echo
+    echo "Compilation before simulation:"
+    echo
+    cmd_comp
+
+    echo "#########################################"
+    echo "####                                 ####"
+    echo "##       NETLIST COMPILATION           ##"
+    echo "####                                 ####"
+    echo "#########################################"
+
+    vlog -svinputport=relaxed -work "$SIM_WORK_DIR" "./netlist/riscv_top.v"
+
+    if [ -e "./vsim.wlf" ]; then
+        rm ./vsim.wlf;
+    else
+        echo "Warning: vsim.wlf cannot be removed, No such file";
+    fi
+
+    if ! [ -f "$SIM_SCRIPT_FILE" ]; then 
+        echo "Error: Cannot find file $SIM_SCRIPT_FILE" 
+        return 1 
+    fi
+
+    echo "#########################################"
+    echo "####                                 ####"
+    echo "##             SIMULATION              ##"
+    echo "####                                 ####"
+    echo "#########################################"
+
+    # Simulate the $SIM_TOP_LVL_ENTITY entity design using sim.do tcl script
+	if [ $GUI == nogui ]; then
+		vsim -t ps -c -suppress 3009 -L /eda/dk/nangate45/verilog/qsim2020.4 -work "$SIM_DIR"/work "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
+    	#vsim -work "$SIM_WORK_DIR" -c -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
+	elif [ $GUI == gui ]; then
+    	#vsim -work "$SIM_WORK_DIR" -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
+		vsim -t ps -suppress 3009 -L /eda/dk/nangate45/verilog/qsim2020.4 -work "$SIM_DIR"/work "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
 	else
 		echo "Error: $2 is a wrong parameter"; usage; exit 1;
 	fi
@@ -338,8 +352,13 @@ cmd_syn() {
         return 1 
     fi
 
+    source  /eda/scripts/init_design_vision 
+
     # Make work directory for synthesis
+    rm -rf "$SYN_WORK_DIR"
     mkdir -p "$SYN_WORK_DIR"
+    rm -rf "RISCV_rep_real"
+    mkdir -p "RISCV_rep_real"
 
     echo "#########################################"
     echo "####                                 ####"
@@ -348,7 +367,8 @@ cmd_syn() {
     echo "#########################################"
 
     #dc_shell-xg-t -F "$SYN_SCRIPT_FILE" | tee syn_dlx.log
-    dc_shell-xg-t -F "$SYN_SCRIPT_FILE" -output_log_file "$SYN_DIR/syn.log"
+    cp "$HDL_DIR/compile_VLOG.f" "$SYN_DIR"
+    dc_shell-xg-t -F "$SYN_SCRIPT_FILE"
     #rm command.log
     #rm default.svf
 
@@ -357,47 +377,7 @@ cmd_syn() {
 
 # @param $1 remote: are we asking to running in the remote
 # @param $2 cmd: command to deploy|execute
-cmd_remote() {
-    shell="ssh $SSH_USER@$SSH_HOSTNAME -p $SSH_PORT -X -i $SSH_PRIV_KEY_PATH "
-
-    cd_prj_cmd="cd ~/$SERVER_PRJ_ROOT_PATH"
-
-    if [ "$1" = "remote" ]; then
-    	if [ -z "$2" ]; then echo "No cmd provided"; usage; exit 1 ; fi 
-        case "$2" in 
-            "cln")
-                cmd="$cd_prj_cmd; ./$0 cln"
-                ;;
-            "init")
-                cmd="$cd_prj_cmd; ./$0 init"
-                ;;
-            "ela_vhdl")
-                cmd="$cd_prj_cmd; ./$0 ela_vhdl"
-                ;;
-            "ela_vlog")
-                cmd="$cd_prj_cmd; ./$0 ela_vlog"
-                ;;
-            "ela")
-                cmd="$cd_prj_cmd; ./$0 ela"
-                ;;
-            "sim")
-                cmd="$cd_prj_cmd; ./$0 sim"
-                ;;
-            "syn")
-                cmd="$cd_prj_cmd; ./$0 syn"
-                ;;
-            *)
-                echo "$1 is not a cmd"; usage; exit 1
-                ;;
-        esac
-
-        set -x
-        $shell "$cmd"
-        set +x
-
-        exit $?
-
-	else
+main() {
     	if [ -n "$2" ]; then 
 			GUI="$2"
 		fi 
@@ -408,17 +388,14 @@ cmd_remote() {
             "init")
 				cmd_init
                 ;;
-            "ela_vhdl")
-                cmd_vhdl_elaborate
-                ;;
-            "ela_vlog")
-                cmd_vlog_elaborate
-                ;;
-            "ela")
-                cmd_hdl_elaborate
+            "comp")
+                cmd_comp
                 ;;
             "sim")
                 cmd_sim
+                ;;
+            "sim_post_syn")
+                cmd_sim_post_syn
                 ;;
             "syn")
                 cmd_syn
@@ -427,7 +404,6 @@ cmd_remote() {
                 echo "$1 is not a cmd"; usage; exit 1
                 ;;
         esac
-	fi
 }
 
 ## if first parameter is empty then exit
@@ -447,36 +423,11 @@ if [ -n "$1" ] && [ "$1" = "push" ] ; then  cmd_push "$2"; fi
 # SHELL
 ################################################################################
 if [ -n "$1" ] && [ "$1" = "shell" ] ; then cmd_shell; fi  
-################################################################################
-# SHELL
-################################################################################
-if [ -n "$1" ] && [ "$1" = "shell_gui" ] ; then  cmd_shell_gui; fi 
 
 ################################################################################
-# PULL
+# MAIN COMMANDS
 ################################################################################
-#if [ -n "$1" ] && [ "$1" == "pull" ] ; then 
-#    if [ -n "$2" ] && [ "$2" == "func_cover.txt" ] ; then 
-#        ## Get Functional coverage from server
-#        for f in $(ls "$prj_dir_path"/sim); do 
-#            scp "$SERVER_SSH_CREDENTIALS":"$SERVER_PRJ_ROOT_PATH/sim/$f/func_cover.txt" "$prj_dir_path/sim/$f/"
-#        done
-#        exit 0
-#    else
-#        echo "Error on OBJECT, try" 
-#        usage 
-#        exit 1 
-#    fi 
-#else
-#    echo "Nothing to do" 
-#    usage 
-#    exit 0 
-#fi 
-
-################################################################################
-# REMOTE COMMANDS
-################################################################################
-if [ -n "$1" ]; then cmd_remote "$1" "$2"; fi 
+if [ -n "$1" ]; then main "$1" "$2"; fi 
 
 
 

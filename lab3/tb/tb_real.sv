@@ -50,8 +50,8 @@ module tb_real import riscv_pkg::*; ();
 	// At startup, the instruction and data hex files are
 	// loaded inside two TB variables
 	initial begin
-		$readmemh("../sim/main.txt", tmp_imem);
-		$readmemh("../sim/data.txt", tmp_dmem);
+		$readmemh("./sim/main.txt", tmp_imem);
+		$readmemh("./sim/data.txt", tmp_dmem);
 	end
 
 	riscv_top riscv (
