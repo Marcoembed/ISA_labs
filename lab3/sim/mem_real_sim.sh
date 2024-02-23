@@ -17,5 +17,5 @@ vlog -work ./work ../netlist/riscv_top.v
 
 vlog -work ./work ../tb/tb_real.sv
 
-vsim  -t ps -L /eda/dk/nangate45/verilog/qsim2020.4 work.tb_real -suppress 3009 -do wave.do -voptargs=+acc 
+vsim  -t ps -L /eda/dk/nangate45/verilog/qsim2020.4 work.tb_real -suppress 3009 -do wave_real.do -voptargs=+acc 
 

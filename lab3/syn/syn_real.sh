@@ -11,3 +11,4 @@ ls ../src/*.sv | grep -vE 'riscv_pkg.sv' >> compile_VLOG.f
 
 
 dc_shell-xg-t -f ./syn_real.tcl > dc_shell.log
+cat ../RISCV_rep/report_timing_top 
