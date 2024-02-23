@@ -170,21 +170,16 @@ module riscv_top import riscv_pkg::*;
 
 	always_comb begin 
 		
-		instr_csb0 = instr_csb_wrap;
-		instr_web0 = instr_web_wrap;
-		instr_addr0 = instr_addr_wrap;
-		instr_din0 = instr_din_wrap;
-
-		data_csb0 = data_csb_wrap;
-		data_web0 = data_web_wrap;
-		data_addr0 = data_addr_wrap;
-		data_din0 = data_din_wrap;
-	
 		if (!imem_end) begin
 			instr_csb0 = 0;
 			instr_web0 = 0;
 			instr_addr0 = imem_itr;
 			instr_din0 = instr_i;
+		end else begin
+			instr_csb0 = instr_csb_wrap;
+			instr_web0 = instr_web_wrap;
+			instr_addr0 = instr_addr_wrap;
+			instr_din0 = instr_din_wrap;
 		end
 
 		if (!dmem_end) begin
@@ -192,6 +187,11 @@ module riscv_top import riscv_pkg::*;
 			data_web0 = 0;
 			data_addr0 = dmem_itr;
 			data_din0 = data_i;
+		end else begin
+			data_csb0 = data_csb_wrap;
+			data_web0 = data_web_wrap;
+			data_addr0 = data_addr_wrap;
+			data_din0 = data_din_wrap;
 		end
 
 

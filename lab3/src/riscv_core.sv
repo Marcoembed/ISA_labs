@@ -161,19 +161,26 @@ assign FUdata_core.ALU_srcB		=	DEC_EX.EXctrl_out.ALUsrcB;
 // ------------------------------ FETCH-DECODE PIPE REGISTER
 always_ff @( posedge CLK ) begin : if_dec
 
-	if (RSTn == 0 || IF_DEC.HZctrl_in == FLUSH) begin
-
+	if (RSTn == 0 ) begin 
 		// Data signals
 		IF_DEC.PC_out			<= '0;
 		IF_DEC.NPC_out			<= '0;
 		IF_DEC.INSTR_out		<= '0;
-
+	end else if ( IF_DEC.HZctrl_in == FLUSH) begin
+		IF_DEC.PC_out			<= '0;
+		IF_DEC.NPC_out			<= '0;
+		IF_DEC.INSTR_out		<= '0;
 	end	else if (IF_DEC.HZctrl_in == ENABLE) begin
 		// Data signals
 		IF_DEC.PC_out			<= PC_core;
 		IF_DEC.NPC_out			<= NPC_core;
 		IF_DEC.INSTR_out		<= INSTR_core;
-	end
+	end 
+	//else begin
+	//	IF_DEC.PC_out			<= IF_DEC.PC_out;
+	//	IF_DEC.NPC_out			<= IF_DEC.NPC_out;
+	//	IF_DEC.INSTR_out		<= IF_DEC.INSTR_out;
+	//end
 
 end
 

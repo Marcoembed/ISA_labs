@@ -33,8 +33,8 @@ module tb_real import riscv_pkg::*; ();
 	parameter DMEM_LENGTH = 12;
 	parameter IMEM_LENGTH = 79;
 
-	int imem_itr = 0;
-	int dmem_itr = 0;
+	int imem_itr = -1;
+	int dmem_itr = -1;
 
 	logic [31:0] instr_din;
 	logic [31:0] data_din;
@@ -75,7 +75,7 @@ module tb_real import riscv_pkg::*; ();
 	);
 
 	
-	always_ff @(posedge tb_CLK) begin
+	always_ff @(negedge tb_CLK) begin
 
 		if(imem_itr < IMEM_LENGTH) begin
 			imem_itr <= imem_itr + 1;

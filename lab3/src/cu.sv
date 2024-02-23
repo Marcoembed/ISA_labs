@@ -62,6 +62,16 @@ always_comb begin
 		OP_LW:		begin MEM.mem_en = '1; WB.RF_we = WR; WB.SRCtoRF = MEMtoRF; end
 		OP_SW:		begin MEM.mem_en = '1; MEM.wr = WRITE; end
 		OP_RET:		begin DEC.branch = RET; end
+		default: begin
+			DEC.branch	= NOBRANCH;
+			EX.ALUopr	= ALU_ADD;
+			EX.ALUsrcA	= RS1;
+			EX.ALUsrcB	= IMM;
+			MEM.mem_en	= '0;
+			MEM.wr		= READ;
+			WB.SRCtoRF	= ALUtoRF;
+			WB.RF_we	= NOWR;
+		end
 	endcase
 
 end
