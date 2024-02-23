@@ -35,7 +35,13 @@ module lsu import riscv_pkg::*;
 	output logic [31:0] data_out,
 
 	// memory signals
-	obi_intf.to_mem lsu_intf
+	input 	logic mem_rdy,
+	input 	logic valid, 
+	input 	logic [31:0] rdata, 
+	output 	logic [31:0] addr,
+	output 	logic [31:0] wdata,
+	output 	logic proc_req, 
+	output 	logic we
 
 );
 
@@ -59,7 +65,7 @@ always_comb begin : lsu_fsm_control
 	case (current_state)
 		wait_req: begin
 			if (MEMctrl_in.mem_en == '1 && HZ_data_req) begin
-				if (lsu_intf.mem_rdy == '1) begin
+				if (mem_rdy == '1) begin
 					next_state = wait_valid;
 				end else begin
 					next_state = wait_ready;
@@ -68,13 +74,13 @@ always_comb begin : lsu_fsm_control
 		end
 
 		wait_ready: begin
-			if (lsu_intf.mem_rdy == '1) begin
+			if (mem_rdy == '1) begin
 				next_state = wait_valid;
 			end
 		end
 
 		wait_valid: begin
-			if (lsu_intf.valid == '1) begin
+			if (valid == '1) begin
 				next_state = wait_req;
 			end
 		end
@@ -90,24 +96,24 @@ end
 always_comb begin : lsu_fsm_output
 
 	busy_out = '0;
-	lsu_intf.proc_req = NOREQUEST;
+	proc_req = NOREQUEST;
 
 	case (current_state)
 		wait_req: begin
 			if (MEMctrl_in.mem_en == '1 && HZ_data_req) begin
 				busy_out = '1;
-				lsu_intf.proc_req = REQUEST;
+				proc_req = REQUEST;
 			end 
 		end
 
 		wait_ready: begin
 			busy_out = '1;
-			lsu_intf.proc_req = REQUEST;
+			proc_req = REQUEST;
 		end
 
 		wait_valid: begin
 			busy_out = '1;
-			if(lsu_intf.valid == '1) begin
+			if(valid == '1) begin
 				busy_out = '0;
 			end
 		end
@@ -116,14 +122,14 @@ always_comb begin : lsu_fsm_output
 end
 
 // direct connections
-assign lsu_intf.addr = addr_in;
-assign lsu_intf.we = MEMctrl_in.wr;
-assign lsu_intf.wdata = data_in;
+assign addr = addr_in;
+assign we = MEMctrl_in.wr;
+assign wdata = data_in;
 
 // RDATA kept stable
 always_latch begin : rdata_latch
-	if (lsu_intf.valid) begin
-		data_out <= lsu_intf.rdata;  
+	if (valid) begin
+		data_out <= rdata;  
 	end
 end
 

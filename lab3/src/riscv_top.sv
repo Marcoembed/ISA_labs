@@ -29,6 +29,24 @@ module riscv_top import riscv_pkg::*;
 	input	logic imem_end,
 	input	logic dmem_end
 );
+	
+	
+	logic data_mem_rdy_top;
+	logic data_valid_top; 
+	logic [31:0] data_rdata_top; 
+	logic [31:0] data_addr_top;
+	logic [31:0] data_wdata_top;
+	logic data_proc_req_top; 
+	logic data_we_top;
+
+	logic instr_mem_rdy_top;
+	logic instr_valid_top; 
+	logic [31:0] instr_rdata_top; 
+	logic [31:0] instr_addr_top;
+	logic [31:0] instr_wdata_top;
+	logic instr_proc_req_top; 
+	logic instr_we_top; 
+
 
 	// INSTRUCTION MEMORY SIGNALS
 	logic instr_csb0;
@@ -42,52 +60,69 @@ module riscv_top import riscv_pkg::*;
 	logic [9:0] data_addr0;
 	logic [31:0] data_din0;
 
-
 	parameter DMEM_LENGTH = 12;
 	parameter IMEM_LENGTH = 79;
 
 	// INSTRUCTION MEMORY INTERFACE SIGNALS
-	obi_intf fetch_intf_top();
-	logic instr_csb;
-	logic instr_web;
-	logic [9:0] instr_addr;
-	logic [31:0] instr_dout;
-	logic [31:0] instr_din;
+	logic instr_csb_wrap;
+	logic instr_web_wrap;
+	logic [9:0] instr_addr_wrap;
+	logic [31:0] instr_dout_wrap;
+	logic [31:0] instr_din_wrap;
 
 	// DATA MEMORY INTERFACE SIGNALS
-	obi_intf lsu_intf_top();
-	logic data_csb;
-	logic data_web;
-	logic [9:0] data_addr;
-	logic [31:0] data_dout;
-	logic [31:0] data_din;
+	logic data_csb_wrap;
+	logic data_web_wrap;
+	logic [9:0] data_addr_wrap;
+	logic [31:0] data_dout_wrap;
+	logic [31:0] data_din_wrap;
 
 
 	//-----------------------------------------------------------------
 	//   COMPONENTS
 	//-----------------------------------------------------------------
-	riscv_core core (
-		.fetch_intf_core(fetch_intf_top),
-		.lsu_intf_core(lsu_intf_top),
+		riscv_core core 
+	(
 		.CLK(CLK),
 		.EN(EN),
-		.RSTn(RSTn)
-	);
+		.RSTn(RSTn),
 
+		.data_mem_rdy(data_mem_rdy_top),
+		.data_valid(data_valid_top), 
+		.data_rdata(data_rdata_top), 
+		.data_addr(data_addr_top),
+		.data_wdata(data_wdata_top),
+		.data_proc_req(data_proc_req_top), 
+		.data_we(data_we_top),
+		.instr_mem_rdy(instr_mem_rdy_top),
+		.instr_valid(instr_valid_top), 
+		.instr_rdata(instr_rdata_top), 
+		.instr_addr(instr_addr_top),
+		.instr_wdata(instr_wdata_top),
+		.instr_proc_req(instr_proc_req_top), 
+		.instr_we(instr_we_top) 
+	);
+	
 
 	ssram_wrap ssram_wrap_instr (
 		.CLK_in(CLK),
 		.RSTn_in(RSTn),
 
 		// SSRAM signals
-		.csb(instr_csb),
-		.web(instr_web),
-		.addr(instr_addr),
-		.dout(instr_dout),
-		.din(instr_din),
+		.csb(instr_csb_wrap),
+		.web(instr_web_wrap),
+		.addr(instr_addr_wrap),
+		.dout(instr_dout_wrap),
+		.din(instr_din_wrap),
+
+		.obi_mem_rdy(instr_mem_rdy_top),
+		.obi_valid(instr_valid_top), 
+		.obi_rdata(instr_rdata_top), 
+		.obi_addr(instr_addr_top),
+		.obi_wdata(instr_wdata_top),
+		.obi_proc_req(instr_proc_req_top), 
+		.obi_we(instr_we_top)
 		
-		// processor signals
-		.obi_intf_in(fetch_intf_top)
 	);
 
 
@@ -97,7 +132,7 @@ module riscv_top import riscv_pkg::*;
 		.web0(instr_web0),
 		.addr0(instr_addr0),
 		.din0(instr_din0),
-		.dout0(instr_dout)
+		.dout0(instr_dout_wrap)
 	);
 
 
@@ -106,14 +141,21 @@ module riscv_top import riscv_pkg::*;
 		.RSTn_in(RSTn),
 
 		// SSRAM signals
-		.csb(data_csb),
-		.web(data_web),
-		.addr(data_addr),
-		.din(data_din),
-		.dout(data_dout),
+		.csb(data_csb_wrap),
+		.web(data_web_wrap),
+		.addr(data_addr_wrap),
+		.din(data_din_wrap),
+		.dout(data_dout_wrap),
 
 		// processor signals
-		.obi_intf_in(lsu_intf_top)
+
+		.obi_mem_rdy(data_mem_rdy_top),
+		.obi_valid(data_valid_top), 
+		.obi_rdata(data_rdata_top), 
+		.obi_addr(data_addr_top),
+		.obi_wdata(data_wdata_top),
+		.obi_proc_req(data_proc_req_top), 
+		.obi_we(data_we_top)
 	);
 
 
@@ -123,20 +165,20 @@ module riscv_top import riscv_pkg::*;
 		.web0(data_web0),
 		.addr0(data_addr0),
 		.din0(data_din0),
-		.dout0(data_dout)
+		.dout0(data_dout_wrap)
 	);
 
 	always_comb begin 
 		
-		instr_csb0 = instr_csb;
-		instr_web0 = instr_web;
-		instr_addr0 = instr_addr;
-		instr_din0 = instr_din;
+		instr_csb0 = instr_csb_wrap;
+		instr_web0 = instr_web_wrap;
+		instr_addr0 = instr_addr_wrap;
+		instr_din0 = instr_din_wrap;
 
-		data_csb0 = data_csb;
-		data_web0 = data_web;
-		data_addr0 = data_addr;
-		data_din0 = data_din;
+		data_csb0 = data_csb_wrap;
+		data_web0 = data_web_wrap;
+		data_addr0 = data_addr_wrap;
+		data_din0 = data_din_wrap;
 	
 		if (!imem_end) begin
 			instr_csb0 = 0;

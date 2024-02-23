@@ -30,11 +30,27 @@
 
 module riscv_core import riscv_pkg::*;
 (
-	obi_intf.to_mem fetch_intf_core,
-	obi_intf.to_mem lsu_intf_core,
+
 	input logic CLK,
 	input logic EN,
-	input logic RSTn
+	input logic RSTn, 
+
+	input 	logic data_mem_rdy,
+	input 	logic data_valid, 
+	input 	logic [31:0] data_rdata, 
+	output 	logic [31:0] data_addr,
+	output 	logic [31:0] data_wdata,
+	output 	logic data_proc_req, 
+	output 	logic data_we,
+
+	input 	logic instr_mem_rdy,
+	input 	logic instr_valid, 
+	input 	logic [31:0] instr_rdata, 
+	output 	logic [31:0] instr_addr,
+	output 	logic [31:0] instr_wdata,
+	output 	logic instr_proc_req, 
+	output 	logic instr_we 
+
 );
 
 /*------------------------------*/
@@ -286,7 +302,15 @@ fetcher fetcher_unit (
 	.INSTR_out(INSTR_core),
 
 	// memory signals
-	.fetch_intf(fetch_intf_core)
+	// memory signals
+	.mem_rdy(instr_mem_rdy),
+	.valid(instr_valid), 
+	.rdata(instr_rdata), 
+	.addr(instr_addr),
+	.wdata(instr_wdata),
+	.proc_req(instr_proc_req), 
+	.we(instr_we)
+
 );
 
 fet fetch (
@@ -372,7 +396,16 @@ lsu load_store_unit(
 	
 	// data output
 	.data_out(MEM_WB.DATA_mem_in),
-	.lsu_intf(lsu_intf_core)
+
+	// memory signals
+	.mem_rdy(data_mem_rdy),
+	.valid(data_valid), 
+	.rdata(data_rdata), 
+	.addr(data_addr),
+	.wdata(data_wdata),
+	.proc_req(data_proc_req), 
+	.we(data_we)
+
 );
 
 /*------------------------------*/

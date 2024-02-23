@@ -21,8 +21,6 @@
 
 module tb import riscv_pkg::*; ();
 
-	obi_intf tb_fetch_intf_core();
-	obi_intf tb_lsu_intf_core();
 	logic tb_CLK;
 	logic tb_EN;
 	logic tb_RSTn;
@@ -56,41 +54,27 @@ module tb import riscv_pkg::*; ();
 	//localparam cRG_FAST = 0;
 	localparam cIS_CODE = 0;
 	localparam cIS_DATA = 1;   
-	
-
-	// Interface unpacking
-
-	always_comb begin
-		//INSTR
-		tb_instr_proc_req = logic'(tb_fetch_intf_core.proc_req);
-		tb_instr_we = logic'(tb_fetch_intf_core.we);
-		tb_instr_addr = tb_fetch_intf_core.addr;
-		tb_instr_wdata = tb_fetch_intf_core.wdata;
-
-		tb_fetch_intf_core.mem_rdy = tb_instr_mem_rdy;
-		tb_fetch_intf_core.rdata = tb_instr_rdata;
-		tb_fetch_intf_core.valid = tb_instr_valid;
-
-
-		//DATA
-		tb_data_proc_req = logic'(tb_lsu_intf_core.proc_req);
-		tb_data_we = logic'(tb_lsu_intf_core.we);
-		tb_data_addr = tb_lsu_intf_core.addr;
-		tb_data_wdata = tb_lsu_intf_core.wdata;
-
-		tb_lsu_intf_core.mem_rdy = tb_data_mem_rdy;
-		tb_lsu_intf_core.rdata = tb_data_rdata;
-		tb_lsu_intf_core.valid = tb_data_valid;
-
-	end
 
 	riscv_core core 
 	(
-		.fetch_intf_core(tb_fetch_intf_core),
-		.lsu_intf_core(tb_lsu_intf_core),
 		.CLK(tb_CLK),
 		.EN(tb_EN),
-		.RSTn(tb_RSTn)
+		.RSTn(tb_RSTn),
+
+		.data_mem_rdy(tb_data_mem_rdy),
+		.data_valid(tb_data_valid), 
+		.data_rdata(tb_data_rdata), 
+		.data_addr(tb_data_addr),
+		.data_wdata(tb_data_wdata),
+		.data_proc_req(tb_data_proc_req), 
+		.data_we(tb_data_we),
+		.instr_mem_rdy(tb_instr_mem_rdy),
+		.instr_valid(tb_instr_valid), 
+		.instr_rdata(tb_instr_rdata), 
+		.instr_addr(tb_instr_addr),
+		.instr_wdata(tb_instr_wdata),
+		.instr_proc_req(tb_instr_proc_req), 
+		.instr_we(tb_instr_we) 
 	);
 
 	clk_gen #(

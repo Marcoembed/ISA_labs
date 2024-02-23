@@ -19,7 +19,7 @@
 
 `timescale 1 ps / 1 ps
 
-module tb_post_syn_real import riscv_pkg::*; ();
+module tb_real import riscv_pkg::*; ();
 
 
 	// parameters
