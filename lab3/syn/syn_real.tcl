@@ -56,7 +56,7 @@ link
 #
 
 #TEST clock = 0 TODO
-create_clock -name MY_CLK -period 1.35 CLK 
+create_clock -name MY_CLK -period 1.4 CLK 
 
 # SLACK MET
 #
