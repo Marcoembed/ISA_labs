@@ -74,7 +74,6 @@ module dec import riscv_pkg::*;
 		.IMM_in(IMM_gen),
 		.DECctrl_in(DECctrl_in),
 		.RS1_in(EXdata_RS1_out),
-		.RS2_in(EXdata_RS2_out),
 		.funct3(DECdata_funct3),
 		.BRANCH_cond_out(BRANCH_cond_out),
 		.TARGET_out(BRANCH_out)
