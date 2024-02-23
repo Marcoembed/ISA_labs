@@ -302,7 +302,6 @@ fetcher fetcher_unit (
 	.INSTR_out(INSTR_core),
 
 	// memory signals
-	// memory signals
 	.mem_rdy(instr_mem_rdy),
 	.valid(instr_valid), 
 	.rdata(instr_rdata), 
