@@ -19,7 +19,7 @@
 
 `timescale 1 ps / 1 ps
 
-module tb import riscv_pkg::*; ();
+module tb_fake import riscv_pkg::*; ();
 
 	logic tb_CLK;
 	logic tb_EN;

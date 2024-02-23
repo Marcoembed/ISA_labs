@@ -13,9 +13,9 @@ ls ../tb/*.vhd > compile_VHDL.f
 
 vcom -work work  -F compile_VHDL.f
 vlog -work work -svinputport=relaxed ../src/riscv_pkg.sv
+vlog -work work -svinputport=relaxed -F compile_VLOG.f
 
 # Uncomment to perform post-synthesis simulation
 #vlog -work work -svinputport=relaxed ../netlist/riscv_core.v
 
-vlog -work work -svinputport=relaxed -F compile_VLOG.f
-vsim -t ${tres} -L ./mem_wrap -do wave2.do work.tb_fake -voptargs=+acc -suppress 3009
+vsim -t ${tres} -L  /eda/dk/nangate45/verilog/qsim2020.4 -L ./mem_wrap -do wave.do work.tb_fake -voptargs=+acc -suppress 3009
