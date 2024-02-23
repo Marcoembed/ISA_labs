@@ -372,8 +372,7 @@ lsu load_store_unit(
 	
 	// data output
 	.data_out(MEM_WB.DATA_mem_in),
-	.lsu_intf(lsu_intf_core)	
-
+	.lsu_intf(lsu_intf_core)
 );
 
 /*------------------------------*/

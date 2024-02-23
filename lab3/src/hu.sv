@@ -68,9 +68,11 @@ always_ff @(posedge CLK) begin
 end
 
 
+
 // Nex state generation process
 always_comb begin: hu_fsm_control
 
+next_state = current_state;
 	case(current_state)
 		issue_req: begin
 			if(!(INSTR_mem_busy_in || DATA_mem_busy_in)) begin
