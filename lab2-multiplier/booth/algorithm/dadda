@@ -10,7 +10,7 @@ Author:         Marco Crisolgo,
 Email:          s305673@studenti.polito.it
 Description:    Dadda algorithm implementation,
                 portmap generator,
-                bits               --> 11 bits,
+                bits               --> 12 bits,
                 partial products   --> 6
 """
 
@@ -28,6 +28,7 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
 
 def FA_gen(w0, w1, w2, s, c, lev, col, printout):
     original_stdout = sys.stdout
@@ -47,6 +48,7 @@ def HA_gen(w0, w1, s, c, lev, col, printout):
         sys.stdout = original_stdout
     if printout:
         print('HA HA' + str(lev) + '_' + str(col) + ' ' + '(' + bcolors.OKGREEN + w0.replace(" ","") + bcolors.ENDC + ', ' + bcolors.OKGREEN + w1.replace(" ", "") + ', ' + bcolors.FAIL + s.replace(" ", "") + bcolors.ENDC + ', ' + bcolors.FAIL + c.replace(" ","") + bcolors.ENDC + ')' + ';')
+
 
 # Full Adder
 def FA(A, B, c_in):
@@ -150,7 +152,6 @@ def dadda_fun(vertical_table, goal, level, printout, test):
                     B_FA = int(col[2])
                     A_HA = int(col[3])
                     B_HA = int(col[4])
-
 
                     # operation: FA + HA
                     s_FA, c_FA = FA(A_FA, B_FA, c_in)
@@ -307,9 +308,11 @@ def dadda_fun(vertical_table, goal, level, printout, test):
 
     return vertical_table
 
+
 # Binary to decimal function
 def dec_to_bin(dec_num, length):
     return str(format(dec_num, f'0{length}b'))
+
 
 def pm_gen(printout, Npp, Nbit):
 
@@ -349,21 +352,21 @@ def pm_gen(printout, Npp, Nbit):
     #
     # from
     #
-    # x x x x x x x x x x x x x x
-    # - x x x x x x x x x x x x x
-    # - x x x x x x x x x x x x x
-    # - x x x x x x x x x x x x x
-    # - - x x x x x x x x x x x x
-    # - - - x x x x x x x x x x x
+    # x x x x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x x
+    # - - x x x x x x x x x x x x x
+    # - - - x x x x x x x x x x x x
     #
     # to
     #
-    # - - - - - - x x x x x x x x x x x x x x
-    # - - - - - x x x x x x x x x x x x x
-    # - - - x x x x x x x x x x x x x
-    # - x x x x x x x x x x x x x
-    # x x x x x x x x x x x x
-    # x x x x x x x x x x
+    # - - - - - - x x x x x x x x x x x x x x x
+    # - - - - - x x x x x x x x x x x x x x
+    # - - - x x x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x x
+    # x x x x x x x x x x x x x
+    # x x x x x x x x x x x
 
     # diagonal disposition in matrix (label)
     matrix_gen = [['         '] * (2 * (Nbit - 1)) for _ in range(Npp)]
@@ -588,7 +591,7 @@ def result(vertical_table):
 def main(test, printout):
 
     Npp = 6
-    Nbit = 11
+    Nbit = 12
 
     if test:
     ############################### TEST

@@ -12,8 +12,8 @@
 
 
 package booth_pkg;
-		parameter numbit	= 10;			// multiplier parallelism
-		parameter pp_width	= numbit+1;		// partial products parallelism
-		parameter pp_deep	= 6;			// partial prodcuts number
-		parameter level		= 2;			// number of iteration levels
+		localparam numbit	= 11;			// multiplier parallelism
+		localparam pp_width	= numbit+1;		// partial products parallelism
+		localparam pp_deep	= 6;			// partial prodcuts number
+		localparam level	= 2;			// number of iteration levels
 endpackage
