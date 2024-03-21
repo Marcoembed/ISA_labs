@@ -23,8 +23,8 @@ module tb;
 	import booth_pkg::*;
 
 	// Declare signals
-	logic [ 9:0] TB_A, TB_B;
-	logic [19:0] TB_out;
+	logic [ numbit-1:0] TB_A, TB_B;
+	logic [2*numbit-1:0] TB_out;
 	
 	// Instantiate DUT (Design Under Test)
 	multiplier dut (
@@ -34,7 +34,8 @@ module tb;
 	);
 	
 	int z, errors = 0;
-	const int MAXINT = 2**numbit-1;
+	// const int MAXINT = 2**numbit-1;
+	const int MAXINT = 10;
 
 	// Generate stimuli
 	initial begin
@@ -52,11 +53,11 @@ module tb;
 				#10ns;
 
 				// Assert values
-				//$display("################################");
-				//$display("A =              %7d", TB_A);
-				//$display("B =              %7d", TB_B);
-				//$display("OUT (HW) =       %7d", TB_out);
-				//$display("OUT (expected) = %7d", z);
+				$display("################################");
+				$display("A =              %7d", TB_A);
+				$display("B =              %7d", TB_B);
+				$display("OUT (HW) =       %7d", TB_out);
+				$display("OUT (expected) = %7d", z);
 
 				if(TB_out != z) begin
 					errors ++;

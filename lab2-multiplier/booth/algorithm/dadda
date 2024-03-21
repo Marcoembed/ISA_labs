@@ -319,18 +319,15 @@ def pm_gen(printout, Npp, Nbit):
     # Partial products generic
     pp_gen = [[0] * Nbit for _ in range(Npp)]
     # Signs generic
-    signs_gen = ['signs[4]', 'signs[3]', 'signs[2]', 'signs[1]', 'signs[0]']
+    signs_gen = ['signs[5]', 'signs[4]', 'signs[3]', 'signs[2]', 'signs[1]', 'signs[0]']
 
     # partial product generic assignment (label)
     for pp in range(Npp):
         for pbit in range(Nbit):
-            if pp == Npp - 1:
-                pp_gen[pp][pbit] = '   pp' + str(pp + 1) + '[' + str(Nbit - pbit - 2) + ']'
+            if pbit == 0:
+                pp_gen[pp][pbit] = '  pp' + str(pp + 1) + '[' + str(Nbit - pbit - 1) + ']'
             else:
-                if pbit == 0:
-                    pp_gen[pp][pbit] = '  pp' + str(pp + 1) + '[' + str(Nbit - pbit - 1) + ']'
-                else:
-                    pp_gen[pp][pbit] = '   pp' + str(pp + 1) + '[' + str(Nbit - pbit - 1) + ']'
+                pp_gen[pp][pbit] = '   pp' + str(pp + 1) + '[' + str(Nbit - pbit - 1) + ']'
 
     if printout:
         print("PARTIAL PRODUCTS:")
@@ -340,13 +337,18 @@ def pm_gen(printout, Npp, Nbit):
         print()
 
     # partial product generic sign extension
-    for pp in range(Npp - 1):
-        if pp == Npp - 2:
-            pp_gen[pp] = ['~' + signs_gen[0]] + pp_gen[pp]
-        elif pp == 0:
+    for pp in range(Npp):
+        if pp == 0:
             pp_gen[0] = ['~' + signs_gen[-1]] + [' ' + signs_gen[-1]] + [' ' + signs_gen[-1]] + pp_gen[0]
         else:
-            pp_gen[pp] = ["     1'b1"] + ['~' + signs_gen[Npp - pp - 2]] + pp_gen[pp]
+            pp_gen[pp] = ["     1'b1"] + ['~' + signs_gen[Npp - pp - 1]] + pp_gen[pp]
+
+    if printout:
+        print("EXTENDED PARTIAL PRODUCTS")
+        print()
+        for row in pp_gen:
+            print(row)
+        print()
 
     ##############################  TREE GENERATION, WEIGHT POSITIONS
     #
@@ -356,8 +358,8 @@ def pm_gen(printout, Npp, Nbit):
     # - x x x x x x x x x x x x x x
     # - x x x x x x x x x x x x x x
     # - x x x x x x x x x x x x x x
-    # - - x x x x x x x x x x x x x
-    # - - - x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x x
+    # - x x x x x x x x x x x x x x
     #
     # to
     #
@@ -369,27 +371,21 @@ def pm_gen(printout, Npp, Nbit):
     # x x x x x x x x x x x
 
     # diagonal disposition in matrix (label)
-    matrix_gen = [['         '] * (2 * (Nbit - 1)) for _ in range(Npp)]
+    matrix_gen = [['         '] * (2 * (Nbit)) for _ in range(Npp)]
 
-    offset = Npp
+    offset = Npp + 3
 
     for row in range(Npp):
         if row == 0:
             bits = Nbit + 3
-        elif row == Npp - 1:
-            bits = Nbit - 1
-        elif row == Npp - 2:
-            bits = Nbit + 1
         else:
             bits = Nbit + 2
         for col in range(bits):
             index = offset + col
             matrix_gen[row][index] = pp_gen[row][col]
         # if the next row is the last one or the second one, decrement offset by one
-        if ((row + 1) == Npp - 2) or ((row + 1) == 1):
+        if row == 0:
             offset -= 1
-        elif (row + 1) == Npp - 1:
-            offset = offset
         else:
             offset -= 2
 
@@ -401,10 +397,10 @@ def pm_gen(printout, Npp, Nbit):
         print()
 
     # Generic columns generation (label)
-    vt_gen = [[Npp] for _ in range(2 * (Nbit - 1))]
+    vt_gen = [[Npp] for _ in range(2 * (Nbit))]
     tmp_list_gen = [0] * Npp
 
-    for i in range(2 * (Nbit - 1)):
+    for i in range(2 * (Nbit)):
         c = 0
         for row in matrix_gen:
             tmp_list_gen[c] = row[i]
@@ -423,7 +419,7 @@ def pm_gen(printout, Npp, Nbit):
                 i = i + 1
 
     for i in range(len(signs_gen)):
-        vt_gen[-(i*2) - 1].append(' ' + signs_gen[-i -1])
+        vt_gen[-(i * 2) - 1].append(' ' + signs_gen[- i - 1])
 
     if printout:
         print("DADDA TREE STARTING POINT")
