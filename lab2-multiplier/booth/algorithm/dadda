@@ -421,6 +421,8 @@ def pm_gen(printout, Npp, Nbit):
     for i in range(len(signs_gen)):
         vt_gen[-(i * 2) - 1].append(' ' + signs_gen[- i - 1])
 
+    vt_gen[13].pop(6)
+
     if printout:
         print("DADDA TREE STARTING POINT")
         print()

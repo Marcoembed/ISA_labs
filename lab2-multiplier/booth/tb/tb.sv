@@ -34,8 +34,7 @@ module tb;
 	);
 	
 	int z, errors = 0;
-	// const int MAXINT = 2**numbit-1;
-	const int MAXINT = 10;
+	const int MAXINT = 2**numbit-1;
 
 	// Generate stimuli
 	initial begin
