@@ -110,7 +110,7 @@ class alu_tester #(
         // Reset driver signals
         taif.alu_a      = '0;
         taif.alu_b      = '0;
-        taif.alu_op     = ADD;
+        taif.alu_op     = MULT;
 
         // Reset the DUT
         taif.rst_dut();

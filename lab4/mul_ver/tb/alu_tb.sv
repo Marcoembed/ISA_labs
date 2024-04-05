@@ -56,23 +56,23 @@ module alu_tb;
         /* Instantiate the tester objects */
         tst = new(aif);
         vtst = new(aif);
-        optst = new(aif, ADD);
+        optst = new(aif, MULT);
 
         // Set the number of cycles to test
         if (0 != $value$plusargs("n%d", num_cycles))
             $display("[CONFIG] Number of test cycles set to %0d", num_cycles);
 
-        /* Run the quiet test */
-        $display("\nTEST #1 - Launching ALU quiet test...");
-        tst.run_test(num_cycles);
-        $display("TEST #1 - Test completed!");
-        $display("TEST #1 - Functional coverage: %.2f%%", tst.get_cov());
-
-        /* Run the verbose test */
-        $display("\nTEST #2 - Launching ALU verbose test...");
-        vtst.run_test(num_cycles);
-        $display("TEST #2 - Test completed!");
-        $display("TEST #2 - Functional coverage: %.2f%%", tst.get_cov());
+        // /* Run the quiet test */
+        // $display("\nTEST #1 - Launching ALU quiet test...");
+        // tst.run_test(num_cycles);
+        // $display("TEST #1 - Test completed!");
+        // $display("TEST #1 - Functional coverage: %.2f%%", tst.get_cov());
+        //
+        // /* Run the verbose test */
+        // $display("\nTEST #2 - Launching ALU verbose test...");
+        // vtst.run_test(num_cycles);
+        // $display("TEST #2 - Test completed!");
+        // $display("TEST #2 - Functional coverage: %.2f%%", tst.get_cov());
 
         /* Run a verbose test with only one operation */
         $display("\n### TEST #3 - Launching ALU single operation test...");

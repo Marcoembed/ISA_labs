@@ -32,6 +32,14 @@ interface alu_if #(parameter DWIDTH = 32);
 
     /* INTERFACE SIGNALS MODE MAPPING */
 
+    /* Interface port at MUL side (DUT) */
+    modport mul_port (
+        input   alu_a,
+        input   alu_b,
+        output  alu_res
+    );
+
+
     /* Interface port at ALU side (DUT) */
     modport alu_port (
         input   clk,
