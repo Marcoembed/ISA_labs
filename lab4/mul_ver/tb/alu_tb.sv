@@ -38,7 +38,10 @@ module alu_tb;
     alu_if #(DWIDTH)    aif();
 
     /* Instantiate ALU wrapper */
-    alu_wrap #(DWIDTH)  aw(aif.alu_port);
+    mul_wrap #(DWIDTH)  mw(aif.alu_port);
+
+    // /* Instantiate ALU wrapper */
+    // alu_wrap #(DWIDTH)  aw(aif.alu_port);
 
     /* Declare a quiet tester object */
     alu_tester #(DWIDTH) tst;
