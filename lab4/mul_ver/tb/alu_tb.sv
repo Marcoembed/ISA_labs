@@ -44,10 +44,10 @@ module alu_tb;
     // alu_wrap #(DWIDTH)  aw(aif.alu_port);
 
     /* Declare a quiet tester object */
-    alu_tester #(DWIDTH) tst;
+    // alu_tester #(DWIDTH) tst;
 
     /* Declare a verbose tester object */
-    alu_verbose_tester #(DWIDTH) vtst;
+    // alu_verbose_tester #(DWIDTH) vtst;
     alu_op_verbose_tester #(DWIDTH) optst;
 
     /* Number of test cycles */
@@ -57,8 +57,8 @@ module alu_tb;
     /* Run the test */
     initial begin
         /* Instantiate the tester objects */
-        tst = new(aif);
-        vtst = new(aif);
+        // tst = new(aif);
+        // vtst = new(aif);
         optst = new(aif, MULT);
 
         // Set the number of cycles to test
