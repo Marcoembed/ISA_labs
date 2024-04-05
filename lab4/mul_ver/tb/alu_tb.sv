@@ -32,7 +32,7 @@ import alu_pkg::*;
 module alu_tb;
 
     /* Define data width */
-    localparam DWIDTH   = 8;
+    localparam DWIDTH   = 11;
 
     /* Instantiate ALU interface */
     alu_if #(DWIDTH)    aif();
@@ -81,10 +81,10 @@ module alu_tb;
         $display("\n### TEST #3 - Launching ALU single operation test...");
         optst.run_test(num_cycles);
         $display("TEST #3 - Test completed!");
-        $display("TEST #3 - Functional coverage: %.2f%%", tst.get_cov());
+        $display("TEST #3 - Functional coverage: %.2f%%", optst.get_cov());
 
         // Print functional coverage
-        $display("\nTOTAL FUNCTIONAL COVERAGE: %.2f%%", tst.get_cov());
+        $display("\nTOTAL FUNCTIONAL COVERAGE: %.2f%%", optst.get_cov());
 
         // Print the number of errors
         err_num = aif.get_err_num();
