@@ -58,7 +58,7 @@ property p_result;
         /* Arithemtic operations */
         ADD:        ##1 alu_res == $past(alu_a + alu_b);
         SUB:        ##1 alu_res == $past(alu_a - alu_b);
-        MULT:       ##1 alu_res == $past(alu_a[MULT_WIDTH-1:0]) * $past(alu_b[MULT_WIDTH-1:0]);
+        MULT:       ##1 alu_res == $past(alu_a) * $past(alu_b);
         
         /* Bitwise operations */
         BITAND:     ##1 alu_res == $past(alu_a & alu_b);

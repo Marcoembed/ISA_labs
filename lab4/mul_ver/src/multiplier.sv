@@ -28,7 +28,7 @@ module multiplier (a, b, out);
 	/*------------------------------ SIGNALS*/
 	logic [numbit:0] pp1, pp2, pp3, pp4, pp5, pp6;
 	logic [pp_deep-1:0] signs;
-	logic [2*numbit:0] dadda_A, dadda_B;
+	logic [2*numbit+1:0] dadda_A, dadda_B;
 	logic [2*numbit+1:0] result;
 
 	booth booth(

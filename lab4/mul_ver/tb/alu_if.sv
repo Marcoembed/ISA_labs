@@ -28,7 +28,7 @@ interface alu_if #(parameter DWIDTH = 32);
     alu_op_t            alu_op;
     logic [DWIDTH-1:0]  alu_a;
     logic [DWIDTH-1:0]  alu_b;
-    logic [DWIDTH-1:0]  alu_res;
+    logic [2*DWIDTH-1:0]  alu_res;
 
     /* INTERFACE SIGNALS MODE MAPPING */
 
