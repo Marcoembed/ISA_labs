@@ -30,11 +30,11 @@ EXCLUDE_FILE="ssram_wrap.sv"
 COMPILE_VHDL_FILE_PATH_LIST=("$HDL_DIR/compile_VHDL.f" "$TB_DIR/compile_VHDL.f")
 COMPILE_VLOG_FILE_PATH_LIST=("$HDL_DIR/compile_VLOG.f" "$TB_DIR/compile_VLOG.f")
 # SIMULATION TOP level entity name
-SIM_TOP_LVL_ENTITY="tb"
+SIM_TOP_LVL_ENTITY="alu_tb"
 # SIMULATION work directory
 SIM_WORK_DIR="$SIM_DIR/work"
 # SIMULATION variables
-SIM_TIME="40us"
+SIM_TIME="400ns"
 # SIMULATION tcl script file path
 SIM_SCRIPT_FILE="$SIM_DIR/sim.do"
 # SYNTHESIS TOP level entity name
@@ -317,11 +317,11 @@ cmd_sim() {
 
     # Simulate the $SIM_TOP_LVL_ENTITY entity design using sim.do tcl script
 	if [ $GUI == nogui ]; then
-		vsim -t ps -work "$SIM_DIR/mem_wrap" -c "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
+		vsim -t ps -c "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
     	#vsim -work "$SIM_WORK_DIR" -c -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
 	elif [ $GUI == gui ]; then
     	#vsim -work "$SIM_WORK_DIR" -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
-		vsim -t ps -work "$SIM_DIR/mem_wrap"  "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE"  -voptargs=+acc 
+		vsim -t ps "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE"  -voptargs=+acc 
 	else
 		echo "Error: $2 is a wrong parameter"; usage; exit 1;
 	fi
