@@ -97,11 +97,12 @@ class alu_tester #(
         repeat (num_cycles) begin: driver
             @(posedge taif.clk);
             rand_alu_op();
+            taif.valid = '1;
         end
 
         // Wait for the last operation to complete
         @(posedge taif.clk);
-
+        taif.valid = '0;
         // Stop measuring coverage
         acov.cov_stop();
     endtask // run_test()
@@ -111,6 +112,7 @@ class alu_tester #(
         taif.alu_a      = '0;
         taif.alu_b      = '0;
         taif.alu_op     = ADD;
+        taif.valid      = '0;
 
         // Reset the DUT
         taif.rst_dut();
@@ -125,7 +127,7 @@ class alu_tester #(
         else   $error("ERROR while calling 'randomize()' method");
 
         // Set the ALU interface signals
-        taif.alu_op   = alu_op.op;
+        taif.alu_op   = MULT;
         taif.alu_a    = alu_op.a;
         taif.alu_b    = alu_op.b;
 

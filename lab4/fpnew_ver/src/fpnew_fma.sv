@@ -320,16 +320,14 @@ module fpnew_fma #(
   assign mantissa_a = {info_a.is_normal, operand_a.mantissa};
   assign mantissa_b = {info_b.is_normal, operand_b.mantissa};
   assign mantissa_c = {info_c.is_normal, operand_c.mantissa};
-  logic [19:0] p1;
  
   // Mantissa BOOTH multiplier (a*b)
   //assign product = mantissa_a * mantissa_b;
   multiplier dut (
-      .a(mantissa_a[10:1]),
-      .b(mantissa_b[10:1]),
-      .out(p1)
+      .a(mantissa_a),
+      .b(mantissa_b),
+      .out(product)
   );
-  assign product = {p1, 2'b0}; 
 
 
   // Product is placed into a 3p+4 bit wide vector, padded with 2 bits for round and sticky:

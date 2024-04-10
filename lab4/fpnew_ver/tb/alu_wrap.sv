@@ -77,7 +77,7 @@ module alu_wrap #(parameter DWIDTH = 32) (
         .vectorial_op_i(vectorial_op_i),
         .tag_i(tag_i),
         // Input Handshake
-        .in_valid_i(in_valid_i),
+        .in_valid_i(p.valid),
         .in_ready_o(in_ready_o),
         .flush_i(flush_i),
         // Output signals

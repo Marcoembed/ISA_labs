@@ -25,6 +25,7 @@ interface alu_if #(parameter DWIDTH = 32);
     /* INTERFACE SIGNALS */
     logic               clk;
     logic               rst_n;
+    logic               valid;
     alu_op_t            alu_op;
     logic [DWIDTH-1:0]  alu_a;
     logic [DWIDTH-1:0]  alu_b;
@@ -36,6 +37,7 @@ interface alu_if #(parameter DWIDTH = 32);
     modport alu_port (
         input   clk,
         input   rst_n,
+        input   valid, 
         input   alu_op,
         input   alu_a,
         input   alu_b,
@@ -46,6 +48,7 @@ interface alu_if #(parameter DWIDTH = 32);
     modport driver_port (
         input   clk,
         input   rst_n,
+        output   valid,
         output  alu_op,
         output  alu_a,
         output  alu_b,
