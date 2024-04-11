@@ -21,7 +21,41 @@
 
 // Print operation
 `define PRINT_OP(op, a, b, res) \
-    $sformatf("op: %-7s | a: %011b (%d) | b: %011b (%d) | res: %011b (%d)", (op), (a), (a), (b), (b), (res), (res))
+    $sformatf("op: %-7s | a: %011b (%d) | b: %011b (%d) | res: %011b (%d)", (op), $past(a, 2), $past(a, 2), $past(b, 2), $past(b, 2), res, res)
+
+//functions
+function shortreal to_shortreal(input logic [15:0] value);
+// Function to decode IEEE 754 half-precision float
+
+    shortreal result;
+    logic sign = value[15];
+    logic [5-1:0] exponent = value[14:10];
+    logic [10-1:0] fraction = value[9:0];
+    int exp = $signed(exponent) - 127;
+    logic [10:0] significand;
+
+    // Append implicit leading 1 to the fraction
+    significand = {1'b1, fraction};
+
+    // Convert significand and exponent to real
+    result = ($signed(sign) == 1) ? -1.0 : 1.0;
+    result *= 2 ** exp;
+    result *= $itor(significand) / 2 ** 10;
+
+    return result;
+endfunction
+
+function logic[15:0] to_FP16(input shortreal value);
+// Function to encode IEEE 754 half-precision float
+
+    logic[31:0] value_32;
+    logic[15:0] result;
+
+    value_32 = $shortrealtobits(value);
+    result = {value_32[31:30], value_32[26:23], value_32[22:13]};
+
+    return result;
+endfunction
 
 /* MULT and SHIFT bitwidths */
 localparam      SHIFT_WIDTH = $clog2(DWIDTH);
@@ -56,9 +90,9 @@ property p_result;
     @(negedge clk) disable iff (!rst_n)
     case (alu_op)
         /* Arithemtic operations */
-        ADD:        ##1 alu_res == (alu_a + alu_b);
-        SUB:        ##1 alu_res == (alu_a - alu_b);
-        MULT:       ##1 alu_res == $shortrealtobits($bitstoshortreal(alu_a) * $bitstoshortreal((alu_b)));
+        ADD:        ##1 alu_res == to_FP16(to_shortreal(alu_a) + to_shortreal(alu_b));
+        SUB:        ##1 alu_res == to_FP16(to_shortreal(alu_a) - to_shortreal(alu_b));
+        MULT:       ##1 alu_res == to_FP16(to_shortreal(alu_a) * to_shortreal(alu_b)); 
         
         /* Bitwise operations */
         BITAND:     ##1 alu_res == (alu_a & alu_b);
