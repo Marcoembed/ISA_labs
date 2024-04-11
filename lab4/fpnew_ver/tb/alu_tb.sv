@@ -32,7 +32,7 @@ import alu_pkg::*;
 module alu_tb;
 
     /* Define data width */
-    localparam DWIDTH   = 8;
+    localparam DWIDTH   = 16;
 
     /* Instantiate ALU interface */
     alu_if #(DWIDTH)    aif();
@@ -56,7 +56,7 @@ module alu_tb;
         /* Instantiate the tester objects */
         tst = new(aif);
         vtst = new(aif);
-        optst = new(aif, ADD);
+        optst = new(aif, MULT);
 
         // Set the number of cycles to test
         if (0 != $value$plusargs("n%d", num_cycles))

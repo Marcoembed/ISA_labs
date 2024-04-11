@@ -98,10 +98,11 @@ class alu_tester #(
             @(posedge taif.clk);
             rand_alu_op();
             taif.valid = '1;
-        end
+         end
 
         // Wait for the last operation to complete
         @(posedge taif.clk);
+
         taif.valid = '0;
         // Stop measuring coverage
         acov.cov_stop();
@@ -111,8 +112,8 @@ class alu_tester #(
         // Reset driver signals
         taif.alu_a      = '0;
         taif.alu_b      = '0;
-        taif.alu_op     = ADD;
-        taif.valid      = '0;
+        taif.alu_op     = MULT;
+        taif.valid = '0;
 
         // Reset the DUT
         taif.rst_dut();

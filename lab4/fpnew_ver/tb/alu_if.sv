@@ -37,7 +37,7 @@ interface alu_if #(parameter DWIDTH = 32);
     modport alu_port (
         input   clk,
         input   rst_n,
-        input   valid, 
+        input   valid,
         input   alu_op,
         input   alu_a,
         input   alu_b,

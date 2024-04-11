@@ -21,7 +21,7 @@
 
 // Print operation
 `define PRINT_OP(op, a, b, res) \
-    $sformatf("op: %-7s | a: %08b (%d) | b: %08b (%d) | res: %08b (%d)", $past(op), $past(a), $past(a), $past(b), $past(b), res, res)
+    $sformatf("op: %-7s | a: %011b (%d) | b: %011b (%d) | res: %011b (%d)", (op), (a), (a), (b), (b), (res), (res))
 
 /* MULT and SHIFT bitwidths */
 localparam      SHIFT_WIDTH = $clog2(DWIDTH);
@@ -56,18 +56,18 @@ property p_result;
     @(negedge clk) disable iff (!rst_n)
     case (alu_op)
         /* Arithemtic operations */
-        ADD:        ##1 alu_res == $past(alu_a + alu_b);
-        SUB:        ##1 alu_res == $past(alu_a - alu_b);
-        MULT:       ##1 alu_res == $past(alu_a[MULT_WIDTH-1:0]) * $past(alu_b[MULT_WIDTH-1:0]);
+        ADD:        ##1 alu_res == (alu_a + alu_b);
+        SUB:        ##1 alu_res == (alu_a - alu_b);
+        MULT:       ##1 alu_res == $shortrealtobits($bitstoshortreal(alu_a) * $bitstoshortreal((alu_b)));
         
         /* Bitwise operations */
-        BITAND:     ##1 alu_res == $past(alu_a & alu_b);
-        BITOR:      ##1 alu_res == $past(alu_a | alu_b);
-        BITXOR:     ##1 alu_res == $past(alu_a ^ alu_b);
+        BITAND:     ##1 alu_res == (alu_a & alu_b);
+        BITOR:      ##1 alu_res == (alu_a | alu_b);
+        BITXOR:     ##1 alu_res == (alu_a ^ alu_b);
         
         /* Logical shift operations */
-        FUNCLSL:    ##1 alu_res == $past(alu_a << alu_b[SHIFT_WIDTH-1:0]);
-        FUNCLSR:    ##1 alu_res == $past(alu_a >> alu_b[SHIFT_WIDTH-1:0]);
+        FUNCLSL:    ##1 alu_res == (alu_a << alu_b[SHIFT_WIDTH-1:0]);
+        FUNCLSR:    ##1 alu_res == (alu_a >> alu_b[SHIFT_WIDTH-1:0]);
 
         /* Rotate operations */
         FUNCRL:
