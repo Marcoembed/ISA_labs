@@ -28,11 +28,11 @@ function shortreal to_shortreal(input logic [15:0] value);
 // Function to decode IEEE 754 half-precision float
 
     shortreal result;
-    logic sign = value[15];
-    logic [5-1:0] exponent = value[14:10];
-    logic [10-1:0] fraction = value[9:0];
-    int exp = $signed(exponent) - 127;
-    logic [10:0] significand;
+    automatic logic sign = value[15];
+    automatic logic [5-1:0] exponent = value[14:10];
+    automatic logic [10-1:0] fraction = value[9:0];
+    automatic int exp = $signed(exponent) - 127;
+    automatic logic [10:0] significand;
 
     // Append implicit leading 1 to the fraction
     significand = {1'b1, fraction};
@@ -42,6 +42,7 @@ function shortreal to_shortreal(input logic [15:0] value);
     result *= 2 ** exp;
     result *= $itor(significand) / 2 ** 10;
 
+    $display("%b", value);
     return result;
 endfunction
 
