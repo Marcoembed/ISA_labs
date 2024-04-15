@@ -4,23 +4,35 @@ import uvm_pkg::*;
 `include "../src/dut_if.sv"
 `include "../src/DUT.sv"
 
-`ifdef ADD 
-  `include "../tb/add/packet_in.sv"
-  `include "../tb/add/packet_out.sv"
+// ADDER
+`ifdef ADD
+	`include "../tb/add/list.sv"
 `endif
 
-`include "../tb/common/sequence_in.sv"
-`include "../tb/common/sequencer.sv"
-`include "../tb/common/driver.sv"
-`include "../tb/common/driver_out.sv"
-`include "../tb/common/monitor.sv"
-`include "../tb/common/monitor_out.sv"
-`include "../tb/common/agent.sv"
-`include "../tb/common/agent_out.sv"
-`include "../tb/common/refmod.sv"
-`include "../tb/common/comparator.sv"
-`include "../tb/common/env.sv"
-`include "../tb/common/simple_test.sv"
+// BOOTH MULTIPLIER
+`ifdef MBE
+	`include "../tb/mbe/list.sv"
+`endif
+
+// FPU MULTIPLIER
+`ifdef FPM
+	`include "../tb/fpm/list.sv"
+`endif
+
+// `include "../tb/common/packet_in.sv"
+// `include "../tb/common/packet_out.sv"
+// `include "../tb/common/sequence_in.sv"
+// `include "../tb/common/sequencer.sv"
+// `include "../tb/common/driver.sv"
+// `include "../tb/common/driver_out.sv"
+// `include "../tb/common/monitor.sv"
+// `include "../tb/common/monitor_out.sv"
+// `include "../tb/common/agent.sv"
+// `include "../tb/common/agent_out.sv"
+// `include "../tb/common/refmod.sv"
+// `include "../tb/common/comparator.sv"
+// `include "../tb/common/env.sv"
+// `include "../tb/common/simple_test.sv"
 
 
 //Top
