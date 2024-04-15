@@ -3,8 +3,8 @@ import uvm_pkg::*;
 `include "../src/adder.sv"
 `include "../src/dut_if.sv"
 `include "../src/DUT.sv"
-`include "../tb/common/packet_in.sv"
-`include "../tb/common/packet_out.sv"
+//`include "../tb/common/packet_in.sv"
+//`include "../tb/common/packet_out.sv"
 `include "../tb/common/sequence_in.sv"
 `include "../tb/common/sequencer.sv"
 `include "../tb/common/driver.sv"
@@ -17,6 +17,11 @@ import uvm_pkg::*;
 `include "../tb/common/comparator.sv"
 `include "../tb/common/env.sv"
 `include "../tb/common/simple_test.sv"
+
+`ifdef ADD 
+  `include "../tb/add/packet_in.sv"
+  `include "../tb/add/packet_out.sv"
+`endif
 
 //Top
 module top;
