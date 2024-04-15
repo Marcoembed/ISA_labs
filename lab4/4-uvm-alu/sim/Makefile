@@ -1,9 +1,9 @@
-COMP= vlog -sv
+COMP= vlog
 SIM= vsim
 ADD= ADD
 MBE= MBE
 FPM= FPM
-TOP= ../tb/top.sv
+TOP= -sv ../tb/top.sv
 DEFINE= +define+
 RUN= run 4us
 
