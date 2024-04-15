@@ -21,15 +21,15 @@ all:	## Compile and Simulate all: add, mbe, fpm
 
 add:	## Compile and Simulate ADDER
 	@${COMP} ${DEFINE}${ADD} ${TOP}
-	@${SIM} ${TOP}
+	@${SIM} top
 	@${RUN}
 
 mbe:	## Compile and Simulate BOOTH MULTIPLIER
 	@${COMP} ${DEFINE}${MBE} ${TOP}
-	@${SIM} ${TOP}
+	@${SIM} top
 	@${RUN}
 
 fpm:	## Compile and Simulate FPU MULTIPLIER
 	@${COMP} ${DEFINE}${FPM} ${TOP}
-	@${SIM} ${TOP}
+	@${SIM} top
 	@${RUN}
