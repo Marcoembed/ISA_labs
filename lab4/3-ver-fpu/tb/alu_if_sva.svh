@@ -19,44 +19,14 @@
 `ifndef ALU_IF_SVA_SVH_
 `define ALU_IF_SVA_SVH_
 
+// Importing C functions in systemverilog using DPI-C
+import "DPI-C" context function int mul_FP16(int a, int b);
+
 // Print operation
 `define PRINT_OP(op, a, b, res) \
-    $sformatf("op: %-7s | a: %011b (%d) | b: %011b (%d) | res: %011b (%d)", (op), $past(a, 2), $past(a, 2), $past(b, 2), $past(b, 2), res, res)
+    $sformatf("op: %-7s | a: %016b (0x%04h) | b: %016b (0x%04h) | res_HW: %016b (0x%04h)\n", op, $past(a, 2), $past(a, 2), $past(b, 2), $past(b, 2), res, res)
 
-//functions
-function shortreal to_shortreal(input logic [15:0] value);
-// Function to decode IEEE 754 half-precision float
 
-    shortreal result;
-    automatic logic sign = value[15];
-    automatic logic [5-1:0] exponent = value[14:10];
-    automatic logic [10-1:0] fraction = value[9:0];
-    automatic int exp = $signed(exponent) - 127;
-    automatic logic [10:0] significand;
-
-    // Append implicit leading 1 to the fraction
-    significand = {1'b1, fraction};
-
-    // Convert significand and exponent to real
-    result = ($signed(sign) == 1) ? -1.0 : 1.0;
-    result *= 2 ** exp;
-    result *= $itor(significand) / 2 ** 10;
-
-    $display("%b", value);
-    return result;
-endfunction
-
-function logic[15:0] to_FP16(input shortreal value);
-// Function to encode IEEE 754 half-precision float
-
-    logic[31:0] value_32;
-    logic[15:0] result;
-
-    value_32 = $shortrealtobits(value);
-    result = {value_32[31:30], value_32[26:23], value_32[22:13]};
-
-    return result;
-endfunction
 
 /* MULT and SHIFT bitwidths */
 localparam      SHIFT_WIDTH = $clog2(DWIDTH);
@@ -91,29 +61,10 @@ property p_result;
     @(negedge clk) disable iff (!rst_n)
     case (alu_op)
         /* Arithemtic operations */
-        ADD:        ##1 alu_res == to_FP16(to_shortreal(alu_a) + to_shortreal(alu_b));
-        SUB:        ##1 alu_res == to_FP16(to_shortreal(alu_a) - to_shortreal(alu_b));
-        MULT:       ##1 alu_res == to_FP16(to_shortreal(alu_a) * to_shortreal(alu_b)); 
-        
-        /* Bitwise operations */
-        BITAND:     ##1 alu_res == (alu_a & alu_b);
-        BITOR:      ##1 alu_res == (alu_a | alu_b);
-        BITXOR:     ##1 alu_res == (alu_a ^ alu_b);
-        
-        /* Logical shift operations */
-        FUNCLSL:    ##1 alu_res == (alu_a << alu_b[SHIFT_WIDTH-1:0]);
-        FUNCLSR:    ##1 alu_res == (alu_a >> alu_b[SHIFT_WIDTH-1:0]);
+        ADD:        ##1 alu_res == alu_a + alu_b;
+        SUB:        ##1 alu_res == alu_a - alu_b;
+        MULT:       ##1 alu_res == mul_FP16($past(alu_a, 2), $past(alu_b, 2)); 
 
-        /* Rotate operations */
-        FUNCRL:
-            (1, res = alu_a << alu_b[SHIFT_WIDTH-1:0]) ##0
-            (1, res |= alu_a >> (DWIDTH - alu_b[SHIFT_WIDTH-1:0])) ##1
-            alu_res == res;
-
-        FUNCRR:
-            (1, res = alu_a >> alu_b[SHIFT_WIDTH-1:0]) ##0
-            (1, res |= alu_a << (DWIDTH - alu_b[SHIFT_WIDTH-1:0])) ##1
-            alu_res == res;
 
         /* With other operations, return 0 */
         default:    ##1 alu_res == 'h0;
@@ -123,6 +74,7 @@ a_result: assert property (p_result)
 else begin
     err_num++;
     $error("%s", `PRINT_OP(alu_op, alu_a, alu_b, alu_res));
+    $display("HW\t0b%016b (0x%04h)", alu_res, alu_res);
 end
 
 `endif /* ALU_IF_SVA_SVH_ */
