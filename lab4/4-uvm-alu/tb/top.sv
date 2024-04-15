@@ -17,7 +17,11 @@ import uvm_pkg::*;
 `include "../tb/common/monitor_out.sv"
 `include "../tb/common/agent.sv"
 `include "../tb/common/agent_out.sv"
-`include "../tb/common/refmod.sv"
+
+`ifdef ADD
+`include "../tb/add/refmod.sv"
+`endif
+
 `include "../tb/common/comparator.sv"
 `include "../tb/common/env.sv"
 `include "../tb/common/simple_test.sv"
