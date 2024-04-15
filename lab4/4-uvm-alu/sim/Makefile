@@ -5,6 +5,7 @@ MBE= MBE
 FPM= FPM
 TOP= -sv ../tb/top.sv
 DEFINE= +define+
+PKGS= $(shell find ../tb/ -name '*pkg*')
 
 help:   ## Show this help.
 	@echo "Makefile help"
@@ -19,13 +20,16 @@ all:	## Compile and Simulate all: add, mbe, fpm
 	fpm
 
 add:	## Compile and Simulate ADDER
+	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${ADD} ${TOP}
 	@${SIM} top
 
 mbe:	## Compile and Simulate BOOTH MULTIPLIER
+	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${MBE} ${TOP}
 	@${SIM} top
 
 fpm:	## Compile and Simulate FPU MULTIPLIER
+	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${FPM} ${TOP}
 	@${SIM} top
