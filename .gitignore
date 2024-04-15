@@ -8,7 +8,7 @@ timingReports/
 .idea
 .DS_Store
 transcript
-.pdf
+*.pdf
 *.zip
 .jpeg
 .png
