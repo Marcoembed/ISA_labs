@@ -6,7 +6,7 @@ module DUT(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t st
 `endif
 
 `ifdef MBE
-    multiplier multiplier_under_test(.A(in_inter.A[11:0]),.B(in_inter.B[11:0]),.OUT(out_inter.data));
+    multiplier multiplier_under_test(.a(in_inter.A[10:0]),.b(in_inter.B[10:0]),.out(out_inter.data));
 	fsm_mbe FSM(.in_inter(in_inter), .out_inter(out_inter), .state(state));
 `endif
 
