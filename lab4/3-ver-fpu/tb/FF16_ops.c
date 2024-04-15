@@ -2,7 +2,6 @@
 // into the simulation executable.
 
 #include <stdio.h>
-#include "/eda/mentor/2020-21/RHELx86/QUESTA-CORE-PRIME_2020.4/questasim/include/svdpi.h"
 #include "./flexfloat.h"
 #include "./flexfloat.c"
 
@@ -23,6 +22,10 @@ int mul_FP16(int a, int b){
 	flexfloat_set_bits(&FF_b, b);
 
 	ff_mul(&FF_c, &FF_a, &FF_b);
+
+	if(isnan(ff_get_double(&FF_c))) {
+		flexfloat_set_bits(&FF_c, 0x7e00);
+	}
 
 	printf("\n");
 	printf("SW\t%f*%f = %f\n", ff_get_double(&FF_a), ff_get_double(&FF_b), ff_get_double(&FF_c));
