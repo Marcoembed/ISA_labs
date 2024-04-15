@@ -2,7 +2,7 @@
 // into the simulation executable.
 
 #include <stdio.h>
-#include "/home/matteshala/questasim/include/svdpi.h"
+#include "/eda/mentor/2020-21/RHELx86/QUESTA-CORE-PRIME_2020.4/questasim/include/svdpi.h"
 #include "./flexfloat.h"
 #include "./flexfloat.c"
 
