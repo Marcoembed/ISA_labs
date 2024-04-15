@@ -1,5 +1,5 @@
-`include "../common/packet_in.sv"
-`include "../common/packet_out.sv"
+`include "../add/packet_in.sv"
+`include "../add/packet_out.sv"
 `include "../add/sequence_in.sv"
 `include "../common/sequencer.sv"
 `include "../common/driver.sv"
