@@ -1,5 +1,5 @@
 COMP= vlog
-SIM= vsim
+SIM= vsim -c
 ADD= ADD
 MBE= MBE
 FPM= FPM
