@@ -8,8 +8,9 @@ timingReports/
 .idea
 .DS_Store
 transcript
-.pdf
+*.pdf
 *.zip
 .jpeg
 .png
 *.f
+lab4/doc/es4_verification_description.pdf
