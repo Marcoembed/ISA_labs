@@ -1,6 +1,7 @@
 `include "../add/packet_in.sv"
 `include "../add/packet_out.sv"
 `include "../add/sequence_in.sv"
+`include "../add/fsm_add.sv"
 `include "../common/sequencer.sv"
 `include "../common/driver.sv"
 `include "../common/driver_out.sv"
@@ -12,3 +13,4 @@
 `include "../common/comparator.sv"
 `include "../common/env.sv"
 `include "../common/simple_test.sv"
+`include "../src/adder.sv"

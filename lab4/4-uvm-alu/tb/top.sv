@@ -1,7 +1,7 @@
 import fpnew_pkg::*;
+import dut_pkg::*;
 import uvm_pkg::*;
 `include "uvm_macros.svh"
-`include "../src/adder.sv"
 `include "../src/dut_if.sv"
 `include "../src/DUT.sv"
 
@@ -50,7 +50,7 @@ module top;
   
   always #5 clk = !clk;
   
-  logic [1:0] state;
+  state_t state;
   
   dut_if in(clk, rst);
   dut_if out(clk, rst);

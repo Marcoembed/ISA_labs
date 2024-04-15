@@ -1,4 +1,4 @@
-module fsm_add(dut_if.port_in in_inter, dut_if.port_out out_inter, output enum logic [1:0] {INITIAL,WAIT,SEND} state);
+module fsm_add(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t state);
     
     //adder adder_under_test(.A(in_inter.A),.B(in_inter.B),.OUT(out_inter.data));
 
@@ -36,4 +36,4 @@ module fsm_add(dut_if.port_in in_inter, dut_if.port_out out_inter, output enum l
                 end
         endcase
     end
-endmodule: DUT
+endmodule: fsm_add
