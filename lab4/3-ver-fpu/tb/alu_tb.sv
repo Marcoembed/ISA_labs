@@ -56,7 +56,7 @@ module alu_tb;
         /* Instantiate the tester objects */
         tst = new(aif);
         vtst = new(aif);
-        optst = new(aif, MULT);
+        optst = new(aif, MUL);
 
         // Set the number of cycles to test
         if (0 != $value$plusargs("n%d", num_cycles))

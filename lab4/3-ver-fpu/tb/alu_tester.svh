@@ -29,7 +29,7 @@ import alu_pkg::*;
 
 /* ALU tester class */
 class alu_tester #(
-    parameter DWIDTH    = 32
+    parameter DWIDTH    = 16
 );
     // PROPERTIES
     // ----------
@@ -112,7 +112,7 @@ class alu_tester #(
         // Reset driver signals
         taif.alu_a      = '0;
         taif.alu_b      = '0;
-        taif.alu_op     = MULT;
+        taif.alu_op     = MUL;
         taif.valid = '0;
 
         // Reset the DUT
@@ -128,7 +128,7 @@ class alu_tester #(
         else   $error("ERROR while calling 'randomize()' method");
 
         // Set the ALU interface signals
-        taif.alu_op   = MULT;
+        taif.alu_op   = alu_op.op;
         taif.alu_a    = alu_op.a;
         taif.alu_b    = alu_op.b;
 

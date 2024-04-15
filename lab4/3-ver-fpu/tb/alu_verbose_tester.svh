@@ -24,7 +24,7 @@
 
 /* ALU verbose tester class */
 class alu_verbose_tester #(
-    parameter DWIDTH    = 32
+    parameter DWIDTH    = 16
 ) extends alu_tester #(DWIDTH);    // inherits methods and variables from alu_tester
 
     // Operands queue
@@ -52,6 +52,7 @@ class alu_verbose_tester #(
             repeat (num_cycles) begin: driver
                 @(posedge taif.clk);
                 rand_alu_op();
+                taif.valid = '1;
                 opq.push_front({alu_op});
             end
         join
@@ -68,7 +69,7 @@ class alu_verbose_tester #(
         while (opq.size() > 0) begin
             @(negedge taif.clk); // sample on negative edge to avoid race conditions
             prev_op = opq.pop_back();
-            $display("[%07t] %-8s | a: %b (%d) | b: %b (%d) | res: %b (%d)", $time, prev_op.op, prev_op.a, prev_op.a, prev_op.b, prev_op.b, taif.alu_res, taif.alu_res);
+            $display("[%07t] %-8s | a: %b (%04x) | b: %b (%04x) | res: %b (%04x)", $time, prev_op.op, prev_op.a, prev_op.a, prev_op.b, prev_op.b, taif.alu_res, taif.alu_res);
         end
     endtask // op2str()
 

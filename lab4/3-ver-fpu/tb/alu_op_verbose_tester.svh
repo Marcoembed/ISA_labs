@@ -19,11 +19,11 @@
 
 /* ALU verbose tester class (one operation only) */
 class alu_op_verbose_tester #(
-    parameter DWIDTH    = 32
+    parameter DWIDTH    = 16
 ) extends alu_verbose_tester #(DWIDTH);    // inherits methods and variables from alu_verbose_tester
 
     // ALU operation
-    alu_op_t    req_op = ADD;
+    alu_op_t    req_op = MUL;
     
     // Use the constructor from the parent class
     function new(virtual interface alu_if #(DWIDTH) _if, alu_op_t _op);

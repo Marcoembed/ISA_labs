@@ -24,16 +24,10 @@
 /* ALU operation data type */
 package alu_pkg;
     typedef enum logic[3:0] { 
-        ADD, 
-        SUB, 
-        MULT, 
-        BITAND, 
-        BITOR, 
-        BITXOR, 
-        FUNCLSL, 
-        FUNCLSR, 
-        FUNCRL, 
-        FUNCRR
+        MUL
+        //ADD,
+        //FMADD,
+        //FNMSUB
     } alu_op_t;
 endpackage
 
