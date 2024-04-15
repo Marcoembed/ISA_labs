@@ -1,4 +1,4 @@
-module fsm_mbe(dut_if.port_in in_inter, dut_if.port_out out_inter, output enum logic [1:0] {INITIAL,WAIT,SEND} state);
+module fsm_mbe(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t state);
 
     multiplier multiplier_under_test(.A(in_inter.A),.B(in_inter.B),.OUT(out_inter.data));
 
