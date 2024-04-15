@@ -19,10 +19,10 @@ DBG_ON=0 # if 1 enables debug for this script
 GUI="nogui"
 
 # Standard dirs for the project
-HDL_DIR="./src"
-TB_DIR="./tb"
-SIM_DIR="./sim"
-SYN_DIR="./syn"
+HDL_DIR="src"
+TB_DIR="tb"
+SIM_DIR="sim"
+SYN_DIR="syn"
  
 ##########################################
 # HDL .f files path
@@ -30,11 +30,11 @@ EXCLUDE_FILE="ssram_wrap.sv"
 COMPILE_VHDL_FILE_PATH_LIST=("$HDL_DIR/compile_VHDL.f" "$TB_DIR/compile_VHDL.f")
 COMPILE_VLOG_FILE_PATH_LIST=("$HDL_DIR/compile_VLOG.f" "$TB_DIR/compile_VLOG.f")
 # SIMULATION TOP level entity name
-SIM_TOP_LVL_ENTITY="tb"
+SIM_TOP_LVL_ENTITY="alu_tb"
 # SIMULATION work directory
 SIM_WORK_DIR="$SIM_DIR/work"
 # SIMULATION variables
-SIM_TIME="40us"
+SIM_TIME="400ns"
 # SIMULATION tcl script file path
 SIM_SCRIPT_FILE="$SIM_DIR/sim.do"
 # SYNTHESIS TOP level entity name
@@ -172,14 +172,14 @@ cmd_clean() {
 cmd_init(){
 
 	# create file sim.do in sim/ directory
-	echo "add log -recursive *" > $SIM_SCRIPT_FILE
-	if find "$SIM_DIR" -name "wave.do" -print -quit | grep -q .; then
-    	echo "do wave.do" >> "$SIM_SCRIPT_FILE"
-	fi
-	echo 'puts "\n########## SIMULATION STARTS ##########\n"' >> $SIM_SCRIPT_FILE 
-	echo "run $SIM_TIME" >> $SIM_SCRIPT_FILE 
-	echo 'puts "\n##########  SIMULATION ENDS  ##########\n"' >> $SIM_SCRIPT_FILE 
-	echo "exit" >> $SIM_SCRIPT_FILE 
+	# echo "add log -recursive *" > $SIM_SCRIPT_FILE
+	# if find "$SIM_DIR" -name "sim.do" -print -quit | grep -q .; then
+ #    	echo "do wave.do" >> "$SIM_SCRIPT_FILE"
+	# fi
+	# echo 'puts "\n########## SIMULATION STARTS ##########\n"' >> $SIM_SCRIPT_FILE 
+	# echo "run $SIM_TIME" >> $SIM_SCRIPT_FILE 
+	# echo 'puts "\n##########  SIMULATION ENDS  ##########\n"' >> $SIM_SCRIPT_FILE 
+	# echo "exit" >> $SIM_SCRIPT_FILE 
 	
 	# compilation files initialization for src\ and tb\
 	find "$HDL_DIR" -name "*.v" -not -name "$EXCLUDE_FILE" -or -name "*.sv" -not -name "$EXCLUDE_FILE" > "$HDL_DIR"/compile_VLOG.f
@@ -187,13 +187,15 @@ cmd_init(){
 	find "$TB_DIR" -name "*.v" -not -name "$EXCLUDE_FILE" -or -name "*.sv" -not -name "$EXCLUDE_FILE"   > "$TB_DIR"/compile_VLOG.f
 	find "$TB_DIR" -name "*.vhdl" -not -name "$EXCLUDE_FILE" -or -name "*.vhd" -not -name "$EXCLUDE_FILE"  > "$TB_DIR"/compile_VHDL.f
 
-	for i in "${COMPILE_VLOG_FILE_PATH_LIST[@]}"; do
-		if grep -q "pkg" "$i"; then
-			line=$(grep "pkg" "$i")
-			sed -i '/pkg/d' "$i"
-			sed -i "1i\\$line" "$i"
-		fi	
-	done
+
+for i in "${COMPILE_VLOG_FILE_PATH_LIST[@]}"; do
+    if grep -q "pkg" "$i"; then
+        line=$(grep "pkg" "$i")
+        echo "$line" > tmpfile
+        grep -v "pkg" "$i" >> tmpfile
+        mv tmpfile "$i"
+    fi
+done
 
 	return $ret
 }
@@ -315,11 +317,11 @@ cmd_sim() {
 
     # Simulate the $SIM_TOP_LVL_ENTITY entity design using sim.do tcl script
 	if [ $GUI == nogui ]; then
-		vsim -t ps -work "$SIM_DIR/mem_wrap" -c "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
+		vsim -t ps -c -sv_seed random "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE" -voptargs=+acc 
     	#vsim -work "$SIM_WORK_DIR" -c -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
 	elif [ $GUI == gui ]; then
     	#vsim -work "$SIM_WORK_DIR" -sv_seed random -onfinish stop -voptargs=+acc -do "$SIM_SCRIPT_FILE" "$SIM_TOP_LVL_ENTITY"
-		vsim -t ps -work "$SIM_DIR/mem_wrap"  "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE"  -voptargs=+acc 
+		vsim -t ps -sv_seed random "$SIM_DIR"/work."$SIM_TOP_LVL_ENTITY" -do "$SIM_SCRIPT_FILE"  -voptargs=+acc 
 	else
 		echo "Error: $2 is a wrong parameter"; usage; exit 1;
 	fi
