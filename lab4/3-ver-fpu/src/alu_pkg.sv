@@ -23,12 +23,12 @@
 
 /* ALU operation data type */
 package alu_pkg;
-    typedef enum logic[3:0] { 
-        MUL
-        //ADD,
-        //FMADD,
-        //FNMSUB
-    } alu_op_t;
+	typedef enum logic[3:0] { 
+		//FMADD,
+		//FNMSUB,
+		ADD,
+		MUL
+	} alu_op_t;
 endpackage
 
 `endif /* ALU_PKG_SV_ */

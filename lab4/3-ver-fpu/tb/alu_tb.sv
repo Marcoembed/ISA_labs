@@ -31,67 +31,67 @@ import alu_pkg::*;
 /* Testbench code */
 module alu_tb;
 
-    /* Define data width */
-    localparam DWIDTH   = 16;
+	/* Define data width */
+	localparam DWIDTH   = 16;
 
-    /* Instantiate ALU interface */
-    alu_if #(DWIDTH)    aif();
+	/* Instantiate ALU interface */
+	alu_if #(DWIDTH)    aif();
 
-    /* Instantiate ALU wrapper */
-    alu_wrap #(DWIDTH)  aw(aif.alu_port);
+	/* Instantiate ALU wrapper */
+	alu_wrap #(DWIDTH)  aw(aif.alu_port);
 
-    /* Declare a quiet tester object */
-    alu_tester #(DWIDTH) tst;
+	/* Declare a quiet tester object */
+	alu_tester #(DWIDTH) tst;
 
-    /* Declare a verbose tester object */
-    alu_verbose_tester #(DWIDTH) vtst;
-    alu_op_verbose_tester #(DWIDTH) optst;
+	/* Declare a verbose tester object */
+	alu_verbose_tester #(DWIDTH) vtst;
+	alu_op_verbose_tester #(DWIDTH) optst;
 
-    /* Number of test cycles */
-    int unsigned    num_cycles = 10;
-    int unsigned    err_num = 0;
+	/* Number of test cycles */
+	int unsigned    num_cycles = 10;
+	int unsigned    err_num = 0;
 
-    /* Run the test */
-    initial begin
-        /* Instantiate the tester objects */
-        tst = new(aif);
-        vtst = new(aif);
-        optst = new(aif, MUL);
+	/* Run the test */
+	initial begin
+		/* Instantiate the tester objects */
+		tst = new(aif);
+		vtst = new(aif);
+		optst = new(aif, MUL);
 
-        // Set the number of cycles to test
-        if (0 != $value$plusargs("n%d", num_cycles))
-            $display("[CONFIG] Number of test cycles set to %0d", num_cycles);
+		// Set the number of cycles to test
+		if (0 != $value$plusargs("n%d", num_cycles))
+			$display("[CONFIG] Number of test cycles set to %0d", num_cycles);
 
-        /* Run the quiet test */
-        $display("\nTEST #1 - Launching ALU quiet test...");
-        tst.run_test(num_cycles);
-        $display("TEST #1 - Test completed!");
-        $display("TEST #1 - Functional coverage: %.2f%%", tst.get_cov());
+		/* Run the quiet test */
+		$display("\nTEST #1 - Launching ALU quiet test...");
+		tst.run_test(num_cycles);
+		$display("TEST #1 - Test completed!");
+		$display("TEST #1 - Functional coverage: %.2f%%", tst.get_cov());
 
-        /* Run the verbose test */
-        $display("\nTEST #2 - Launching ALU verbose test...");
-        vtst.run_test(num_cycles);
-        $display("TEST #2 - Test completed!");
-        $display("TEST #2 - Functional coverage: %.2f%%", tst.get_cov());
+		/* Run the verbose test */
+		$display("\nTEST #2 - Launching ALU verbose test...");
+		vtst.run_test(num_cycles);
+		$display("TEST #2 - Test completed!");
+		$display("TEST #2 - Functional coverage: %.2f%%", tst.get_cov());
 
-        /* Run a verbose test with only one operation */
-        $display("\n### TEST #3 - Launching ALU single operation test...");
-        optst.run_test(num_cycles);
-        $display("TEST #3 - Test completed!");
-        $display("TEST #3 - Functional coverage: %.2f%%", tst.get_cov());
+		/* Run a verbose test with only one operation */
+		$display("\n### TEST #3 - Launching ALU single operation test...");
+		optst.run_test(num_cycles);
+		$display("TEST #3 - Test completed!");
+		$display("TEST #3 - Functional coverage: %.2f%%", tst.get_cov());
 
-        // Print functional coverage
-        $display("\nTOTAL FUNCTIONAL COVERAGE: %.2f%%", tst.get_cov());
+		// Print functional coverage
+		$display("\nTOTAL FUNCTIONAL COVERAGE: %.2f%%", tst.get_cov());
 
-        // Print the number of errors
-        err_num = aif.get_err_num();
-        $display("");
-        if (err_num > 0) begin
-            $error("### TEST FAILED with %0d errors", err_num);
-        end else $display("### TEST PASSED!");
+		// Print the number of errors
+		err_num = aif.get_err_num();
+		$display("");
+		if (err_num > 0) begin
+			$error("### TEST FAILED with %0d errors", err_num);
+		end else $display("### TEST PASSED!");
 
-        /* Terminate the simulation */
-        $display("");
-        $stop;
-    end
+		/* Terminate the simulation */
+		$display("");
+		$stop;
+	end
 endmodule

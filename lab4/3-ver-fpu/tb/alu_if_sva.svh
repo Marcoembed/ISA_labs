@@ -21,10 +21,11 @@
 
 // Importing C functions in systemverilog using DPI-C
 import "DPI-C" context function int mul_FP16(int a, int b);
+import "DPI-C" context function int add_FP16(int b, int c);
 
 // Print operation
-`define PRINT_OP(op, a, b, res) \
-	$sformatf("op: %-7s | a: %016b (0x%04h) | b: %016b (0x%04h) | res_HW: %016b (0x%04h)\n", op, $past(a, 2), $past(a, 2), $past(b, 2), $past(b, 2), res, res)
+`define PRINT_OP(op, a, b, c, res) \
+	$sformatf("op: %-7s | a: %016b (0x%04h) | b: %016b (0x%04h)  | c: %016b (0x%04h) | res_HW: %016b (0x%04h)\n", $past(op, 2), $past(a, 2), $past(a, 2), $past(b, 2), $past(b, 2), $past(c, 2), $past(c, 2), res, res)
 
 
 
@@ -59,10 +60,10 @@ a_reset: assert property (p_reset);
 property p_result;
 	logic [DWIDTH-1:0] res;
 	@(negedge clk) disable iff (!rst_n)
-	case (alu_op)
+	case ($past(alu_op))
 		/* Arithemtic operations */
 		MUL:	##1 alu_res == mul_FP16($past(alu_a, 2), $past(alu_b, 2)); 
-		//ADD:	##1 alu_res == alu_res; // to write as above
+		ADD:	##1 alu_res == add_FP16($past(alu_b, 2), $past(alu_c, 2)); 
 		//FMADD:	##1 alu_res == alu_res; // to write as above
 		//FNMSUB:	##1 alu_res == alu_res; // to write as above
 
@@ -74,8 +75,7 @@ endproperty
 a_result: assert property (p_result) 
 else begin
 	err_num++;
-	$error("%s", `PRINT_OP(alu_op, alu_a, alu_b, alu_res));
-	$display("HW\t0b%016b (0x%04h)", alu_res, alu_res);
+	$error("%s", `PRINT_OP(alu_op, alu_a, alu_b, alu_c, alu_res));
 end
 
 `endif /* ALU_IF_SVA_SVH_ */
