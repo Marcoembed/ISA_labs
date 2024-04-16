@@ -11,7 +11,9 @@ class sequence_in extends uvm_sequence #(packet_in);
         forever begin
             tx = packet_in::type_id::create("tx");
             start_item(tx);
-            assert(tx.randomize());
+            assert(tx.randomize() with {
+				tx.op == ADD || tx.op == MUL || tx.op == FMADD || tx.op == FNMSUB;
+				});
             finish_item(tx);
         end
     endtask: body
