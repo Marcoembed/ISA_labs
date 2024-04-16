@@ -29,6 +29,8 @@ class driver extends uvm_driver #(packet_in);
             vif.valid <= '0;
             vif.A <= 'x;
             vif.B <= 'x;
+            vif.C <= 'x;
+            vif.op <= ADD;
             @(posedge vif.rst);
         end
     endtask
@@ -48,6 +50,8 @@ class driver extends uvm_driver #(packet_in);
     virtual protected task drive_transfer(packet_in tr);
         vif.A = tr.A;
         vif.B = tr.B;
+        vif.C = tr.C;
+        vif.op = tr.op;
         vif.valid = 1;
 
         @(posedge vif.clk)
