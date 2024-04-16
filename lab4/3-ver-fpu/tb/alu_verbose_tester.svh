@@ -65,13 +65,12 @@ class alu_verbose_tester #(
 	task print_op();
 		op_t   prev_op;
 
-		repeat (2) @(negedge taif.clk);    // skip the first result after reset
+		repeat (3) @(negedge taif.clk);    // skip the first result after reset
 		while (opq.size() > 0) begin
 			@(negedge taif.clk); // sample on negative edge to avoid race conditions
 			prev_op = opq.pop_back();
 
-			// TODO: prima di abilitare verbose, sincronizzare a,b,c con res
-			//$display("[%07t] %-8s | a: %b (%04x) | b: %b (%04x) | c: %b (%04x) | res: %b (%04x)", $time, prev_op.op, prev_op.a, prev_op.a, prev_op.b, prev_op.b, prev_op.c, prev_op.c, taif.alu_res, taif.alu_res);
+			$display("[%07t] %-8s | a: %b (%04x) | b: %b (%04x) | c: %b (%04x) | res: %b (%04x)", $time, prev_op.op, prev_op.a, prev_op.a, prev_op.b, prev_op.b, prev_op.c, prev_op.c, taif.alu_res, taif.alu_res);
 		end
 	endtask // op2str()
 
