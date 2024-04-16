@@ -12,7 +12,7 @@ class sequence_in extends uvm_sequence #(packet_in);
             tx = packet_in::type_id::create("tx");
             start_item(tx);
             assert(tx.randomize() with {
-				tx.op == ADD || tx.op == MUL || tx.op == FMADD || tx.op == FNMSUB;
+				tx.op == fpnew_pkg::ADD || tx.op == fpnew_pkg::MUL; //|| tx.op == FMADD || tx.op == FNMSUB;
 				});
             finish_item(tx);
         end

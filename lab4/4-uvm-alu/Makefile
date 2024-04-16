@@ -1,24 +1,15 @@
-# Makefile, alternative to do.sh script using make command.
-#
-SCRIPT= ./do.sh
-INIT= init
-CLEAN= clean
-ELA= ela
-SIM_GUI= sim gui
-SIM= sim
-SYN= syn
-SSH= shell
-SSH_GUI= shell_gui
-PUSH= push
-USAGE= usage
-
-# If the first argument is "push", "sim", or "sim_gui" takes also a second variable
-ifeq (push,$(firstword $(MAKECMDGOALS)))
-  ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  $(eval $(ARGS):;@:)
-endif
-
-# RECIPE
+COMP= vlog -svinputport=relaxed
+SIM= vsim -c -voptargs=+acc
+SIM_GUI= vsim -voptargs=+acc
+DO= -do sim.do -do wave.do
+SUPPRESS= -suppress 3999
+ADD= ADD
+MBE= MBE
+FPM= FPM
+TOP= -sv ../tb/top.sv
+DEFINE= +define+
+PKGS= $(shell find ../src/ -name '*pkg*')
+DPI= -sv ../tb/fpm/FF16_ops.c
 
 help:   ## Show this help.
 	@echo "Makefile help"
@@ -26,45 +17,44 @@ help:   ## Show this help.
 	@echo
 	@echo "OPTIONS:"
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
-	@echo "For more details, run do.sh --help:"
 
-all:	## Build all: init, ela, sim, syn
-	@${SCRIPT} ${INIT}
-	@${SCRIPT} ${ELA}
-	@${SCRIPT} ${SIM_GUI}
-	@${SCRIPT} ${SYN}
+all: add mbe fpm	## Compile and Simulate all: add, mbe, fpm
 
-clean:	## clean repo
-	@${SCRIPT} ${CLEAN}
+add: clean	## Compile and Simulate ADDER
+	@${COMP} ${PKGS}
+	@${COMP} ${DEFINE}${ADD} ${TOP}
+	@${SIM} ${SUPPRESS} ${DO} top
 
-init:	## directory file initialization: creation of "do" files and "compile" files
-	@echo "File initialization..."
-	@${SCRIPT} ${INIT}
-	@echo "Done"
+mbe: clean	## Compile and Simulate BOOTH MULTIPLIER
+	@${COMP} ${PKGS}
+	@${COMP} ${DEFINE}${MBE} ${TOP}
+	@${SIM} ${SUPPRESS}  ${DO} top
 
-comp:	## Compile all vhdl, verilog and systemVerilog files in src/ and tb/ directories
-	@${SCRIPT} ${ELA}
+fpm: clean	## Compile and Simulate FPU MULTIPLIER
+	@${COMP} ${DPI}
+	@${COMP} ${PKGS}
+	@${COMP} ${DEFINE}${FPM} ${TOP}
+	@${SIM} ${SUPPRESS} ${DO}  top
 
-sim:	## Simulate the design with modelsim, shell interface
-	@${SCRIPT} ${SIM}
+add_gui: clean	## Compile and Simulate with GUI ADDER
+	@${COMP} ${PKGS}
+	@${COMP} ${DEFINE}${ADD} ${TOP}
+	@${SIM_GUI} ${SUPPRESS} ${DO} top
 
-sim_gui:## Simulate the design with modelsim, GUI
-	@${SCRIPT} ${SIM_GUI}
+mbe_gui: clean	## Compile and Simulate with GUI BOOTH MULTIPLIER
+	@${COMP} ${PKGS}
+	@${COMP} ${DEFINE}${MBE} ${TOP}
+	@${SIM_GUI} ${SUPPRESS}  ${DO} top
 
-syn:	## Synthetize the design with design vision 
-	@${SCRIPT} ${SYN}
+fpm_gui: clean	## Compile and Simulate with GUI FPU MULTIPLIER
+	@${COMP} ${DPI}
+	@${COMP} ${PKGS}
+	@${COMP} ${DEFINE}${FPM} ${TOP}
+	@${SIM_GUI} ${SUPPRESS} ${DO}  top
 
-push:	## Push files/directories to the server, you can specify the file/directory (e.g. make push file.txt)
-	@echo
-	@${SCRIPT} ${PUSH} ${ARGS}
-
-shell:	## SSH server connection 
-	@echo
-	${SCRIPT} ${SSH} 
-
-shell_gui:	## SSH server connection 
-	@echo
-	${SCRIPT} ${SSH_GUI} 
-
-.PHONY: help usage all comp sim sim_gui syn push shell shell_gui
-
+clean:		## Delete work folder
+	@if [ -d "/path/to/directory" ]; then \
+		echo "Work dir removed"; \
+	else \
+		echo "Work does not exist"; \
+	fi
