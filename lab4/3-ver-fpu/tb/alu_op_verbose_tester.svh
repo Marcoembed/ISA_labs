@@ -23,10 +23,10 @@ class alu_op_verbose_tester #(
 ) extends alu_verbose_tester #(DWIDTH);    // inherits methods and variables from alu_verbose_tester
 
     // ALU operation
-    alu_op_t    req_op = MUL;
+    operation_e    req_op = MUL;
     
     // Use the constructor from the parent class
-    function new(virtual interface alu_if #(DWIDTH) _if, alu_op_t _op);
+    function new(virtual interface alu_if #(DWIDTH) _if, operation_e _op);
         super.new(_if);
         req_op = _op;
     endfunction // new()

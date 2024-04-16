@@ -25,7 +25,7 @@
 
 `include "alu_cov.svh"
 
-import alu_pkg::*;
+import fpnew_pkg::*;
 
 /* ALU tester class */
 class alu_tester #(
@@ -45,7 +45,7 @@ class alu_tester #(
 
 	// Random ALU operation and inputs (updated by the 'randomize()' method)
 	typedef struct packed {
-		alu_op_t            op;
+		operation_e         op;
 		logic [DWIDTH-1:0]  a;
 		logic [DWIDTH-1:0]  b;
 		logic [DWIDTH-1:0]  c;
@@ -72,6 +72,10 @@ class alu_tester #(
 			(1<<(DWIDTH-1))-1   :=10, 
 			[1:(1<<DWIDTH)-2]   :=1
 		};
+	};
+
+	constraint op_constr {
+		alu_op.op == ADD || alu_op.op == MUL;
 	};
 
 	// ALU coverage
@@ -153,3 +157,5 @@ class alu_tester #(
 endclass // alu_tester
 
 `endif /* ALU_TESTER_SVH_ */
+
+

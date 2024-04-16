@@ -20,7 +20,7 @@
 `ifndef ALU_COV_SVH_
 `define ALU_COV_SVH_
 
-import alu_pkg::*;
+import fpnew_pkg::*;
 
 class alu_cov #(
 	//parameter DWIDTH = 8

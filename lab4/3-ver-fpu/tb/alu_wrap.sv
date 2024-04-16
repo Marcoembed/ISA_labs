@@ -31,7 +31,6 @@ module alu_wrap #(parameter DWIDTH = 32) (
 	
 	wire [NUM_OPERANDS-1:0][WIDTH-1:0] operands_i;
 	var fpnew_pkg::roundmode_e rnd_mode_i;
-	var fpnew_pkg::operation_e op_i;
 	var logic op_mod_i;
 	var fpnew_pkg::fp_format_e src_fmt_i;
 	var fpnew_pkg::fp_format_e dst_fmt_i;
@@ -62,25 +61,13 @@ module alu_wrap #(parameter DWIDTH = 32) (
 	assign operands_i[1] = p.alu_b;    
 	assign operands_i[2] = p.alu_c;
 
-	always_comb begin
-		case (p.alu_op)
-			//alu_pkg::FMADD: op_i = fpnew_pkg::FMADD;
-			//alu_pkg::FNMSUB: op_i = fpnew_pkg::FNMSUB;
-			alu_pkg::ADD: op_i = fpnew_pkg::ADD;
-			alu_pkg::MUL: op_i = fpnew_pkg::MUL;
-
-			default: op_i = fpnew_pkg::MUL; // Default case
-		endcase
-	end
-
-
 	fpnew_top fpnew_top_u (
 		.clk_i(p.clk),
 		.rst_ni(p.rst_n),
 		// Input signals
 		.operands_i(operands_i),
 		.rnd_mode_i(rnd_mode_i),
-		.op_i(op_i),
+		.op_i(p.alu_op),
 		.op_mod_i(op_mod_i),
 		.src_fmt_i(src_fmt_i),
 		.dst_fmt_i(dst_fmt_i),
