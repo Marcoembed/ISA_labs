@@ -51,8 +51,8 @@ module multiplier (a, b, out);
 		.pp5(pp5),
 		.pp6(pp6),
 		.signs(signs),
-		.outA(dadda_A),
-		.outB(dadda_B)
+        .outA(dadda_A),
+        .outB(dadda_B)
 	);
 	assign result = dadda_A + dadda_B;
 	assign out = result[2*numbit-1:0];
