@@ -11,6 +11,17 @@ module DUT(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t st
 `endif
 
 `ifdef FPM
+	var fpnew_pkg::operation_e op_i;
+	always_comb begin
+		case (in_inter.op)
+			//alu_pkg::FMADD: op_i = fpnew_pkg::FMADD;
+			//alu_pkg::FNMSUB: op_i = fpnew_pkg::FNMSUB;
+			alu_pkg::ADD: op_i = fpnew_pkg::ADD;
+			alu_pkg::MUL: op_i = fpnew_pkg::MUL;
+
+			default: op_i = fpnew_pkg::MUL; // Default case
+		endcase
+	end
     //fpnew_top fpu_under_test(.A(in_inter.A),.B(in_inter.B),.OUT(out_inter.data[15:0]));
 	fpnew_top fpnew_top_u (
 		.clk_i(in_inter.clk),
@@ -18,7 +29,7 @@ module DUT(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t st
 		// Input signals
 		.operands_i({in_inter.C[31:0], in_inter.A[31:0], in_inter.B[31:0]}),
 		.rnd_mode_i(RNE),
-		.op_i(in_inter.op), 
+		.op_i(op_i), 
         .op_mod_i      (1'b0),  
         .src_fmt_i     (FP32), 
         .dst_fmt_i     (FP32), 
