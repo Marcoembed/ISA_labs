@@ -1,6 +1,7 @@
 import fpnew_pkg::*;
 import dut_pkg::*;
 import uvm_pkg::*;
+import cf_math_pgk::*;
 `include "uvm_macros.svh"
 `include "../src/dut_if.sv"
 `include "../src/DUT.sv"

@@ -11,7 +11,7 @@ module DUT(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t st
 `endif
 
 `ifdef FPM
-    fpnew_rop fpu_under_test(.A(in_inter.A),.B(in_inter.B),.OUT(out_inter.data));
+    fpnew_top fpu_under_test(.A(in_inter.A),.B(in_inter.B),.OUT(out_inter.data[15:0]));
 	fsm_fpm FSM(.in_inter(in_inter), .out_inter(out_inter), .state(state));
 `endif
 
