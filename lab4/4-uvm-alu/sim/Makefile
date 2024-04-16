@@ -1,5 +1,6 @@
 COMP= vlog -svinputport=relaxed
 SIM= vsim -c -voptargs=+acc
+SIM_GUI= vsim -voptargs=+acc
 DO= -do sim.do -do wave.do
 SUPPRESS= -suppress 3999
 ADD= ADD
@@ -35,3 +36,18 @@ fpm:	## Compile and Simulate FPU MULTIPLIER
 	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${FPM} ${TOP}
 	@${SIM} ${SUPPRESS} ${DO}  top
+
+add_gui:	## Compile and Simulate with GUI ADDER
+	@${COMP} ${PKGS}
+	@${COMP} ${DEFINE}${ADD} ${TOP}
+	@${SIM_GUI} ${SUPPRESS} ${DO} top
+
+mbe_gui:	## Compile and Simulate with GUI BOOTH MULTIPLIER
+	@${COMP} ${PKGS}
+	@${COMP} ${DEFINE}${MBE} ${TOP}
+	@${SIM_GUI} ${SUPPRESS}  ${DO} top
+
+fpm_gui:	## Compile and Simulate with GUI FPU MULTIPLIER
+	@${COMP} ${PKGS}
+	@${COMP} ${DEFINE}${FPM} ${TOP}
+	@${SIM_GUI} ${SUPPRESS} ${DO}  top
