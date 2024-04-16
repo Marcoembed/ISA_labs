@@ -1,7 +1,5 @@
 module fsm_mbe(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t state);
 
-    multiplier multiplier_under_test(.a(in_inter.A[10:0]),.b(in_inter.B[10:0]),.out(out_inter.data));
-
     always_ff @(posedge in_inter.clk)
     begin
         if(in_inter.rst) begin
