@@ -25,7 +25,7 @@ module DUT(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t st
     //fpnew_top fpu_under_test(.A(in_inter.A),.B(in_inter.B),.OUT(out_inter.data[15:0]));
 	fpnew_top fpnew_top_u (
 		.clk_i(in_inter.clk),
-		.rst_ni(!in_inter.clk),
+		.rst_ni(!in_inter.rst),
 		// Input signals
 		.operands_i    ({in_inter.C, in_inter.B, in_inter.A}), 
 		.rnd_mode_i(RNE),
