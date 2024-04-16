@@ -22,10 +22,49 @@ class refmod extends uvm_component;
         
         forever begin
             in.get(tr_in);
-            tr_out.data = tr_in.A + tr_in.B;
-            $display("refmod: input A = %d, input B = %d, output OUT = %d",tr_in.A, tr_in.B, tr_out.data);
-			$display("refmod: input A = %b, input B = %b, output OUT = %b",tr_in.A, tr_in.B, tr_out.data);
-            out.put(tr_out);
-        end
+			case (tr_in.op)
+        		ADD:	begin   
+						tr_out.data = 	$shortrealtobits($bitstoshortreal(tr_in.B) + $bitstoshortreal(tr_in.C)); 
+						$display("refmod: ADD | input A = %e | input B = %e | output OUT = %e", 
+							$bitstoshortreal(tr_in.B), $bitstoshortreal(tr_in.C), $bitstoshortreal(tr_out.data));
+						/* check if the number is NaN*/
+						$display("refmod: ADD | input A = %b | input B = %b | output OUT = %b", tr_in.B, tr_in.C, tr_out.data);
+						end
+
+				MUL:	begin    
+						tr_out.data = 	$shortrealtobits($bitstoshortreal(tr_in.A) * $bitstoshortreal(tr_in.B));
+						$display("refmod: MUL | input A = %e | input B = %e | output OUT = %e", 
+							$bitstoshortreal(tr_in.A), $bitstoshortreal(tr_in.B), $bitstoshortreal(tr_out.data));
+						/* check if the number is NaN*/
+						$display("refmod: MUL | input A = %b | input B = %b | output OUT = %b", tr_in.A, tr_in.B, tr_out.data);
+        				end
+// TODO
+//				FMADD:	begin  
+//						tr_out.data = 	$shortrealtobits($bitstoshortreal(tr_in.A) * $bitstoshortreal(tr_in.B) 
+//									+ $bitstoshortreal(tr_in.C)); 
+//						$display("refmod: FMADD | input A = %e | input B = %e | input C = %e | output OUT = %e", 
+//							$bitstoshortreal(tr_in.A), $bitstoshortreal(tr_in.B), 
+//							$bitstoshortreal(tr_in.C), $bitstoshortreal(tr_out.data));
+//						/* check if the number is NaN*/
+//						$display("refmod: FMADD | input A = %b | input B = %b | input C = %b | output OUT = %b", 
+//							tr_in.A, tr_in.B, tr_in.C, tr_out.data);
+//        				end
+//
+//        		FNMSUB: begin 
+//						tr_out.data = 	$shortrealtobits(-($bitstoshortreal(tr_in.A) * $bitstoshortreal(tr_in.B))
+//							   		+ $bitstoshortreal(tr_in.C)); 
+//						$display("refmod: FNMSUB | input A = %e | input B = %e | input C = %e | output OUT = %e", 
+//							$bitstoshortreal(tr_in.A), $bitstoshortreal(tr_in.B), 
+//							$bitstoshortreal(tr_in.C), $bitstoshortreal(tr_out.data));
+//						/* check if the number is NaN*/
+//						$display("refmod: FNMSUB | input A = %b | input B = %b | input C = %b | output OUT = %b", 
+//							tr_in.A, tr_in.B, tr_in.C, tr_out.data);
+//        				end
+
+        		/* With other operations, return 0 */
+        		default: tr_out.data = 'h0;
+        	endcase
+			out.put(tr_out);
+		end
     endtask: run_phase
 endclass: refmod

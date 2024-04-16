@@ -1,6 +1,8 @@
 class packet_in extends uvm_sequence_item;
-    rand integer A;
-    rand integer B;
+    rand logic[15:0] A;
+    rand logic[15:0] B;
+    rand logic[15:0] C;
+	rand operation_e op; 
 
     `uvm_object_utils_begin(packet_in)
         `uvm_field_int(A, UVM_ALL_ON|UVM_HEX)

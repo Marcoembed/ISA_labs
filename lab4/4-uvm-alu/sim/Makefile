@@ -1,5 +1,7 @@
-COMP= vlog
-SIM= vsim -c -do sim.do
+COMP= vlog -svinputport=relaxed
+SIM= vsim -c -voptargs=+acc
+DO= -do sim.do -do wave.do
+SUPPRESS= -suppress 3999
 ADD= ADD
 MBE= MBE
 FPM= FPM
@@ -22,14 +24,14 @@ all:	## Compile and Simulate all: add, mbe, fpm
 add:	## Compile and Simulate ADDER
 	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${ADD} ${TOP}
-	@${SIM} top
+	@${SIM} ${SUPPRESS} ${DO} top
 
 mbe:	## Compile and Simulate BOOTH MULTIPLIER
 	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${MBE} ${TOP}
-	@${SIM} top
+	@${SIM} ${SUPPRESS}  ${DO} top
 
 fpm:	## Compile and Simulate FPU MULTIPLIER
 	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${FPM} ${TOP}
-	@${SIM} top
+	@${SIM} ${SUPPRESS} ${DO}  top

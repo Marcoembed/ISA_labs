@@ -1,5 +1,5 @@
-`include "../add/packet_in.sv"
-`include "../add/packet_out.sv"
+`include "../common/packet_in.sv"
+`include "../common/packet_out.sv"
 `include "../add/sequence_in.sv"
 `include "../add/fsm_add.sv"
 `include "../common/sequencer.sv"

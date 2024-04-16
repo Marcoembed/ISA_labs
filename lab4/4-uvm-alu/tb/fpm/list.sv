@@ -14,6 +14,7 @@
 `include "../common/packet_in.sv"
 `include "../common/packet_out.sv"
 `include "../fpm/sequence_in.sv"
+`include "../fpm/fsm_fpm.sv"
 `include "../common/sequencer.sv"
 `include "../common/driver.sv"
 `include "../common/driver_out.sv"
