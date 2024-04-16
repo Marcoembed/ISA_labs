@@ -8,7 +8,7 @@ MBE= MBE
 FPM= FPM
 TOP= -sv ../tb/top.sv
 DEFINE= +define+
-PKGS= $(shell find ../tb/ -name '*pkg*')
+PKGS= $(shell find ../src/ -name '*pkg*')
 
 help:   ## Show this help.
 	@echo "Makefile help"
