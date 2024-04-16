@@ -18,8 +18,8 @@ module fsm_mbe(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_
                     if(in_inter.valid) begin
                         in_inter.ready <= 0;
                         //out_inter.data <= in_inter.A + in_inter.B;
-                        $display("adder: input A = %d, input B = %d, output OUT = %d",in_inter.A[10:0],in_inter.B[10:0],out_inter.data);
-                        $display("adder: input A = %b, input B = %b, output OUT = %b",in_inter.A[10:0],in_inter.B[10:0],out_inter.data);
+                        $display("multiplier: input A = %d, input B = %d, output OUT = %d",in_inter.A[10:0],in_inter.B[10:0],out_inter.data);
+                        $display("multiplier: input A = %b, input B = %b, output OUT = %b",in_inter.A[10:0],in_inter.B[10:0],out_inter.data);
                         out_inter.valid <= 1;
                         state <= SEND;
                     end
