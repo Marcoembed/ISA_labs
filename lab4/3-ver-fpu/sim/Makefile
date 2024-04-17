@@ -2,6 +2,7 @@ COMP= vlog -svinputport=relaxed
 SIM= vsim -c -voptargs=+acc -sv_seed random
 SIM_GUI= vsim -voptargs=+acc -sv_seed random
 DO= -do sim.do
+CYCLES=100
 TB= ../tb/compile_VLOG.f
 SRC= ../src/compile_VLOG.f
 TOP= alu_tb
