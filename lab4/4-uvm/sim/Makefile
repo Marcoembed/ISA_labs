@@ -2,8 +2,8 @@ COMP= vlog -svinputport=relaxed
 SIM= vsim -c -voptargs=+acc
 SIM_GUI= vsim -voptargs=+acc
 DO= -do sim.do -do wave.do
-COV_FPM= -do fpm.do
-COV_MBE= -do mbe.do
+COV_FPM= -do fpm.do -do report-cov-fpm.do
+COV_MBE= -do mbe.do -do report-cov-mbe.do
 SUPPRESS= -suppress 3999
 ADD= ADD
 MBE= MBE

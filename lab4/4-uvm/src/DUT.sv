@@ -17,7 +17,6 @@ module DUT(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t st
 	fpnew_top fpnew_top_u (
 		.clk_i(in_inter.clk),
 		.rst_ni(!in_inter.rst),
-		// Input signals
 		.operands_i    ({in_inter.C, in_inter.B, in_inter.A}), 
 		.rnd_mode_i(RNE),
 		.op_i(in_inter.op), 
@@ -28,17 +27,13 @@ module DUT(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_t st
         .vectorial_op_i(1'b0),
         .flush_i       (1'b0), 
         .tag_i         (1'b0), 
-		// Input Handshake
 		.in_valid_i(1'b1),
 		.in_ready_o(),
-		// Output signals
 		.result_o(out_inter.data[15:0]), 
 		.status_o(),
 		.tag_o(),
-		// Output handshake
 		.out_valid_o(),
 		.out_ready_i(1'b1),
-		// Indication of valid data in flight
 		.busy_o()
 	);
     fsm_fpm FSM(.in_inter(in_inter), .out_inter(out_inter), .state(state));

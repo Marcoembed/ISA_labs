@@ -1,3 +1,1 @@
-run -all
-do report-cov-mbe.do
-exit
+run 100 us
