@@ -6,7 +6,7 @@ module fsm_add(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_
     begin
         if(in_inter.rst) begin
             in_inter.ready <= 0;
-            out_inter.data <= 'x;
+            // out_inter.data <= 'x;
             out_inter.valid <= 0;
             state <= INITIAL;
         end
