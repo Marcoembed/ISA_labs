@@ -35,7 +35,7 @@ mbe: clean	## Compile and Simulate BOOTH MULTIPLIER
 fpm: clean	## Compile and Simulate FPU MULTIPLIER
 	@${COMP} ${DPI}
 	@${COMP} ${PKGS}
-	@${COMP} ${DEFINE}N_CYCLES=100 ${DEFINE}${FPM} ${TOP}
+	@${COMP} ${DEFINE}N_CYCLES=1000 ${DEFINE}${FPM} ${TOP}
 	@${SIM} ${SUPPRESS} ${COV_FPM} top
 
 add_gui: clean	## Compile and Simulate with GUI ADDER
@@ -51,7 +51,7 @@ mbe_gui: clean	## Compile and Simulate with GUI BOOTH MULTIPLIER
 fpm_gui: clean	## Compile and Simulate with GUI FPU MULTIPLIER
 	@${COMP} ${DPI}
 	@${COMP} ${PKGS}
-	@${COMP} ${DEFINE}N_CYCLES=100 ${DEFINE}${FPM} ${TOP}
+	@${COMP} ${DEFINE}N_CYCLES=1000 ${DEFINE}${FPM} ${TOP}
 	@${SIM_GUI} ${SUPPRESS} ${COV_FPM} top
 
 clean:		## Delete work folder
