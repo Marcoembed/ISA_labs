@@ -3,7 +3,7 @@ import dut_pkg::*;
 import uvm_pkg::*;
 import cf_math_pkg::*;
 
-`define N_CYCLES 5
+`define N_CYCLES 1000
 
 `include "uvm_macros.svh"
 `include "../src/dut_if.sv"

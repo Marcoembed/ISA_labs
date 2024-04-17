@@ -1,1 +1,1 @@
-run 4 us
+run -all 

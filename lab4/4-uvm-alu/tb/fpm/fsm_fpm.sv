@@ -17,6 +17,9 @@ module fsm_fpm(dut_if.port_in in_inter, dut_if.port_out out_inter, output state_
                 WAIT: begin
                     if(in_inter.valid) begin
                         in_inter.ready <= 0;
+						@(posedge in_inter.clk);
+						@(posedge in_inter.clk);
+						@(posedge in_inter.clk);
                         //out_inter.data <= in_inter.A + in_inter.B;
                         $display("multiplier: input A = %d, input B = %d, output OUT = %d",in_inter.A,in_inter.B,out_inter.data[15:0]);
                         $display("multiplier: input A = %b, input B = %b, output OUT = %b",in_inter.A,in_inter.B,out_inter.data[15:0]);

@@ -12,7 +12,7 @@
 `include "../src/multiplier.sv"
 `include "../src/rr_arb_tree.sv"
 `include "../common/packet_in.sv"
-`include "../common/packet_out.sv"
+`include "../fpm/packet_out.sv"
 `include "../fpm/sequence_in.sv"
 `include "../fpm/fsm_fpm.sv"
 `include "../common/sequencer.sv"
