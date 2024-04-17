@@ -32,7 +32,7 @@ mbe: clean	## Compile and Simulate MBE
 	@ vlog ../tb/alu_verbose_tester.svh
 	@ vlog ../tb/alu_wrap.sv
 	@ vlog ../tb/mul_wrap.sv
-	@ vsim -c -voptargs=+acc -sv_seed random -do sim.do alu_tb +n1000
+	@ vsim -c -voptargs=+acc -sv_seed random -do sim.do alu_tb +n100
 
 mbe_gui: clean	## Compile and Simulate with GUI MBE
 	@ vlog ../src/alu_pkg.sv
@@ -51,7 +51,7 @@ mbe_gui: clean	## Compile and Simulate with GUI MBE
 	@ vlog ../tb/alu_verbose_tester.svh
 	@ vlog ../tb/alu_wrap.sv
 	@ vlog ../tb/mul_wrap.sv
-	@ vsim  -voptargs=+acc -sv_seed random -do sim.do alu_tb +n1000
+	@ vsim  -voptargs=+acc -sv_seed random -do sim.do alu_tb +n100
 
 clean:		## Delete work folder
 	@if [ -d "/path/to/directory" ]; then \

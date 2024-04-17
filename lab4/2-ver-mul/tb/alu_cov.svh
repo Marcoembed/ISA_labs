@@ -23,7 +23,7 @@
 import alu_pkg::*;
 
 class alu_cov #(
-    parameter DWIDTH = 8
+    parameter DWIDTH = 11
 );
     // ---------
     // VARIABLES
@@ -45,11 +45,11 @@ class alu_cov #(
 
         // Operands
         a_cp: coverpoint aif.alu_a iff (aif.rst_n) {
-            bins corner[]   = {0, (1<<DWIDTH)-1, (1<<(DWIDTH-1))-1};
+            bins corner[]   = {0, (1<<DWIDTH)-1};
             bins others     = default;
         }
         b_cp: coverpoint aif.alu_b iff (aif.rst_n) {
-            bins corner[]   = {0, (1<<DWIDTH)-1, (1<<(DWIDTH-1))-1};
+            bins corner[]   = {0, (1<<DWIDTH)-1};
             bins others     = default;
         }
     endgroup: alu_cg

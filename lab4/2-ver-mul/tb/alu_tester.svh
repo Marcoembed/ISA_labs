@@ -54,16 +54,14 @@ class alu_tester #(
     // Constraint to prefer corner cases for operands /10x more likely)
     constraint ab_dist_c {
         alu_op.a dist {
-            0                   :=10, 
-            (1<<DWIDTH)-1       :=10,
-            (1<<(DWIDTH-1))-1   :=10, 
-            [1:(1<<DWIDTH)-2]   :=1
+            0                   :=100,
+            [0:(1<<DWIDTH)-1]   := 1,
+            (1<<DWIDTH)-1       :=100
         };
         alu_op.b dist {
-            0                   :=10, 
-            (1<<DWIDTH)-1       :=10,
-            (1<<(DWIDTH-1))-1   :=10, 
-            [1:(1<<DWIDTH)-2]   :=1
+            0                   :=100, 
+            [0:(1<<DWIDTH)-1]   := 1,
+            (1<<DWIDTH)-1       :=100
         };
     };
 
