@@ -5,6 +5,8 @@ class refmod extends uvm_component;
     packet_out tr_out;
     uvm_get_port #(packet_in) in;
     uvm_put_port #(packet_out) out;
+
+    logic[15:0] sum;
     
     function new(string name = "refmod", uvm_component parent);
         super.new(name, parent);
@@ -22,7 +24,8 @@ class refmod extends uvm_component;
         
         forever begin
             in.get(tr_in);
-            tr_out.data = tr_in.A + tr_in.B;
+            sum = tr_in.A + tr_in.B;
+            tr_out.data = sum;
             $display("refmod: input A = %d, input B = %d, output OUT = %d",tr_in.A, tr_in.B, tr_out.data);
 			$display("refmod: input A = %b, input B = %b, output OUT = %b",tr_in.A, tr_in.B, tr_out.data);
             out.put(tr_out);
