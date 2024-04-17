@@ -1,0 +1,17 @@
+../src/cf_math_pkg.sv
+../src/booth_pkg.sv
+../src/fpnew_pkg.sv
+../src/alu.sv
+../src/fpnew_classifier.sv
+../src/booth.sv
+../src/lzc.sv
+../src/ha.sv
+../src/fpnew_rounding.sv
+../src/multiplier.sv
+../src/fpnew_fma.sv
+../src/dadda.sv
+../src/rr_arb_tree.sv
+../src/fpnew_top.sv
+../src/fpnew_opgroup_fmt_slice.sv
+../src/fpnew_opgroup_block.sv
+../src/fa.sv

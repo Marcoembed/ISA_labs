@@ -1,12 +1,11 @@
 COMP= vlog -svinputport=relaxed
-SIM= vsim -c -voptargs=+acc
-SIM_GUI= vsim -voptargs=+acc
+SIM= vsim -c -voptargs=+acc -sv_seed random
+SIM_GUI= vsim -voptargs=+acc -sv_seed random
 DO= -do sim.do
-SUPPRESS= -suppress 3999
-TOP= -sv ../tb/alu_tb.sv
-DEFINE= +define+
-PKGS= $(shell find ../src/ -name '*pkg*')
-DPI= -sv ../tb/FF16_ops.c
+TB= ../tb/compile_VLOG.f
+SRC= ../src/compile_VLOG.f
+TOP= alu_tb
+DPI= ../tb/FF16_ops.c
 
 help:   ## Show this help.
 	@echo "Makefile help"
@@ -18,45 +17,15 @@ help:   ## Show this help.
 
 fpm: clean	## Compile and Simulate FPU
 	@${COMP} ${DPI}
-	@${COMP} ${PKGS}
-	@ vlog ../src/booth.sv
-	@ vlog ../src/dadda.sv
-	@ vlog ../src/fa.sv
-	@ vlog ../src/fpnew_classifier.sv
-	@ vlog ../src/fpnew_fma.sv
-	@ vlog ../src/fpnew_opgroup_block.sv
-	@ vlog ../src/fpnew_opgroup_fmt_slice.sv
-	@ vlog ../src/fpnew_rounding.sv
-	@ vlog ../src/fpnew_top.sv
-	@ vlog ../src/ha.sv
-	@ vlog ../src/lzc.sv
-	@ vlog ../src/multiplier.sv
-	@ vlog ../src/rr_arb_tree.sv
-	@ vlog ../tb/alu_if.sv
-	@ vlog ../tb/alu_tb.sv
-	@ vlog ../tb/alu_wrap.sv
-	@ vsim -c -voptargs=+acc -sv_seed random -do sim.do alu_tb
+	${COMP} -F ${SRC}
+	${COMP} -F ${TB}
+	${SIM} ${DO} ${TOP} +n${CYCLES}
 
 fpm_gui: clean	## Compile and Simulate with GUI FPU
 	@${COMP} ${DPI}
-	@${COMP} ${PKGS}
-	@ vlog ../src/booth.sv
-	@ vlog ../src/dadda.sv
-	@ vlog ../src/fa.sv
-	@ vlog ../src/fpnew_classifier.sv
-	@ vlog ../src/fpnew_fma.sv
-	@ vlog ../src/fpnew_opgroup_block.sv
-	@ vlog ../src/fpnew_opgroup_fmt_slice.sv
-	@ vlog ../src/fpnew_rounding.sv
-	@ vlog ../src/fpnew_top.sv
-	@ vlog ../src/ha.sv
-	@ vlog ../src/lzc.sv
-	@ vlog ../src/multiplier.sv
-	@ vlog ../src/rr_arb_tree.sv
-	@ vlog ../tb/alu_if.sv
-	@ vlog ../tb/alu_tb.sv
-	@ vlog ../tb/alu_wrap.sv
-	@ vsim  -voptargs=+acc -sv_seed random -do sim.do alu_tb
+	${COMP} -F ${SRC}
+	${COMP} -F ${TB}
+	${SIM_GUI} ${DO} ${TOP} +n${CYCLES}
 
 clean:		## Delete work folder
 	@if [ -d "/path/to/directory" ]; then \
