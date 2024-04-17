@@ -1,11 +1,11 @@
-COMP= vlog -svinputport=relaxed
-SIM= vsim -c -voptargs=+acc
-SIM_GUI= vsim -voptargs=+acc
+COMP= vlog -F 
+SIM= vsim -c -voptargs=+acc -sv_seed random
+SIM_GUI= vsim -voptargs=+acc -sv_seed random
 DO= -do sim.do
-SUPPRESS= -suppress 3999
-TOP= -sv ../tb/alu_tb.sv
-DEFINE= +define+
-PKGS= $(shell find ../src/ -name '*pkg*')
+CYCLES= 100
+TB= ../tb/compile_VLOG.f
+SRC= ../src/compile_VLOG.f
+TOP= alu_tb
 
 help:   ## Show this help.
 	@echo "Makefile help"
@@ -15,46 +15,18 @@ help:   ## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 
-mbe: clean	## Compile and Simulate MBE
-	@ vlog ../src/alu_pkg.sv
-	@ vlog ../src/alu.sv
-	@ vlog ../src/booth_pkg.sv
-	@ vlog ../src/booth.sv
-	@ vlog ../src/dadda.sv
-	@ vlog ../src/fa.sv
-	@ vlog ../src/ha.sv
-	@ vlog ../src/multiplier.sv
-	@ vlog ../tb/alu_cov.svh
-	@ vlog ../tb/alu_if.sv
-	@ vlog ../tb/alu_op_verbose_tester.svh
-	@ vlog ../tb/alu_tb.sv
-	@ vlog ../tb/alu_tester.svh
-	@ vlog ../tb/alu_verbose_tester.svh
-	@ vlog ../tb/alu_wrap.sv
-	@ vlog ../tb/mul_wrap.sv
-	@ vsim -c -voptargs=+acc -sv_seed random -do sim.do alu_tb +n100
+mbe: clean	## Compile and Simulate Multiplier
+	${COMP} ${SRC}
+	${COMP} ${TB}
+	${SIM} ${DO} ${TOP} +n${CYCLES}
 
-mbe_gui: clean	## Compile and Simulate with GUI MBE
-	@ vlog ../src/alu_pkg.sv
-	@ vlog ../src/alu.sv
-	@ vlog ../src/booth_pkg.sv
-	@ vlog ../src/booth.sv
-	@ vlog ../src/dadda.sv
-	@ vlog ../src/fa.sv
-	@ vlog ../src/ha.sv
-	@ vlog ../src/multiplier.sv
-	@ vlog ../tb/alu_cov.svh
-	@ vlog ../tb/alu_if.sv
-	@ vlog ../tb/alu_op_verbose_tester.svh
-	@ vlog ../tb/alu_tb.sv
-	@ vlog ../tb/alu_tester.svh
-	@ vlog ../tb/alu_verbose_tester.svh
-	@ vlog ../tb/alu_wrap.sv
-	@ vlog ../tb/mul_wrap.sv
-	@ vsim  -voptargs=+acc -sv_seed random -do sim.do alu_tb +n100
+mbe_gui: clean	## Compile and Simulate with GUI Multiplier
+	${COMP} ${SRC}
+	${COMP} ${TB}
+	${SIM_GUI} ${DO} ${TOP} +n${CYCLES}
 
 clean:		## Delete work folder
-	@if [ -d "/path/to/directory" ]; then \
+	@if [ -d "./work" ]; then \
 		echo "Work dir removed"; \
 	else \
 		echo "Work does not exist"; \
