@@ -36,6 +36,8 @@ class monitor extends uvm_monitor;
             
             tr.A = vif.A;
             tr.B = vif.B;
+            tr.C = vif.C;
+            tr.op = vif.op;
             item_collected_port.write(tr);
 
             @(posedge vif.clk);

@@ -18,7 +18,7 @@
  * Interface with the ALU wrapper in 'alu_wrap.sv'.
  */
 
-import alu_pkg::*;  // for alu_op_t
+import fpnew_pkg::*;  // for operation_e
 
 interface alu_if #(parameter DWIDTH = 16);
 
@@ -26,7 +26,7 @@ interface alu_if #(parameter DWIDTH = 16);
 	logic               clk;
 	logic               rst_n;
 	logic               valid;
-	alu_op_t            alu_op;
+	operation_e         alu_op;
 	logic [DWIDTH-1:0]  alu_a;
 	logic [DWIDTH-1:0]  alu_b;
 	logic [DWIDTH-1:0]  alu_c;

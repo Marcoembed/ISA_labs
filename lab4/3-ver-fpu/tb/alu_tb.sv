@@ -25,8 +25,8 @@
 `include "alu_verbose_tester.svh"
 `include "alu_op_verbose_tester.svh"
 
-/* Import ALU package namespace */
-import alu_pkg::*;
+/* Import FPNEW package namespace */
+import fpnew_pkg::*;
 
 /* Testbench code */
 module alu_tb;

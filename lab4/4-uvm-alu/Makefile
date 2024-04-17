@@ -67,4 +67,3 @@ shell_gui:	## SSH server connection
 	${SCRIPT} ${SSH_GUI} 
 
 .PHONY: help usage all comp sim sim_gui syn push shell shell_gui
-
