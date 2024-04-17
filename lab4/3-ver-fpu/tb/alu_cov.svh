@@ -49,17 +49,35 @@ class alu_cov #(
 
 		// Operands
 		a_cp: coverpoint aif.alu_a iff (aif.rst_n) {
-			bins corner[]   = {0, (1<<DWIDTH)-1, (1<<(DWIDTH-1))-1};
-			bins others     = default;
+			bins A_zero[2] = {16'b0000000000000000, 16'b1000000000000000}; // {0, -0}
+			bins A_nan[2] = {[16'b1111110000000001:16'b1111111111111111], [16'b0111110000000001:16'b0111111111111111]}; // {-nan range, +nan range}
+			bins A_inf[2] = {16'b1111110000000000, 16'b0111110000000000}; // {-inf, +inf}
+			bins A_others = default;
 		}
+
 		b_cp: coverpoint aif.alu_b iff (aif.rst_n) {
-			bins corner[]   = {0, (1<<DWIDTH)-1, (1<<(DWIDTH-1))-1};
-			bins others     = default;
+			bins B_zero[2] = {16'b0000000000000000, 16'b1000000000000000}; // {0, -0}
+			bins B_nan[2] = {[16'b1111110000000001:16'b1111111111111111], [16'b0111110000000001:16'b0111111111111111]}; // {-nan range, +nan range}
+			bins B_inf[2] = {16'b1111110000000000, 16'b0111110000000000}; // {-inf, +inf}
+			bins B_others = default;
 		}
+
 		c_cp: coverpoint aif.alu_c iff (aif.rst_n) {
-			bins corner[]   = {0, (1<<DWIDTH)-1, (1<<(DWIDTH-1))-1};
-			bins others     = default;
+			bins C_zero[2] = {16'b0000000000000000, 16'b1000000000000000}; // {0, -0}
+			bins C_nan[2] = {[16'b1111110000000001:16'b1111111111111111], [16'b0111110000000001:16'b0111111111111111]}; // {-nan range, +nan range}
+			bins C_inf[2] = {16'b1111110000000000, 16'b0111110000000000}; // {-inf, +inf}
+			bins C_others = default;
 		}
+
+		// Combiantion of the previous
+		cross_A_B: cross a_cp, b_cp, op_cp {
+			ignore_bins ig_add = binsof(op_cp.add);
+		}
+
+		cross_B_C: cross b_cp, c_cp, op_cp {
+			ignore_bins ig_add = binsof(op_cp.mul);
+		}
+
 	endgroup: alu_cg
 
 	// -------
