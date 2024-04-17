@@ -38,8 +38,8 @@ class fpm_cov extends uvm_subscriber # (packet_in);
 			ignore_bins ig_add = binsof(operations.add);
 		}
 
-		cross_B_C: cross operand_A, operand_B, operations {
-			ignore_bins ig_add = binsof(operations.mult);
+		cross_B_C: cross operand_B, operand_C, operations {
+			ignore_bins ig_mul = binsof(operations.mult);
 		}
 
 	endgroup: fpm_cg;
