@@ -1,7 +1,6 @@
 ../src/cf_math_pkg.sv
 ../src/booth_pkg.sv
 ../src/fpnew_pkg.sv
-../src/alu.sv
 ../src/fpnew_classifier.sv
 ../src/booth.sv
 ../src/lzc.sv
