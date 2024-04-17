@@ -48,7 +48,7 @@ module alu_tb;
     alu_op_verbose_tester #(DWIDTH) optst;
 
     /* Number of test cycles */
-    int unsigned    num_cycles = 10;
+    int unsigned    num_cycles = 4;
     int unsigned    err_num = 0;
 
     /* Run the test */

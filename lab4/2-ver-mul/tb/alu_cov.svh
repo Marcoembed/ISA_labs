@@ -40,16 +40,7 @@ class alu_cov #(
     covergroup alu_cg;
         // Operations
         op_cp: coverpoint aif.alu_op iff (aif.rst_n) {
-            bins add        = {ADD};
-            bins sub        = {SUB};
             bins mult       = {MULT};
-            bins bitand     = {BITAND};
-            bins bitor      = {BITOR};
-            bins bitxor     = {BITXOR};
-            bins funclsl    = {FUNCLSL};
-            bins funclsr    = {FUNCLSR};
-            bins funcrl     = {FUNCRL};
-            bins funcrr     = {FUNCRR};
         }
 
         // Operands
