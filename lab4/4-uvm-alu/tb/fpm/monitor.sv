@@ -2,6 +2,7 @@ class monitor extends uvm_monitor;
     input_vif  vif;
     event begin_record, end_record;
     packet_in tr;
+    fpm_cov cov;
     uvm_analysis_port #(packet_in) item_collected_port;
     `uvm_component_utils(monitor)
 
@@ -14,6 +15,7 @@ class monitor extends uvm_monitor;
         super.build_phase(phase);
         assert(uvm_config_db#(input_vif)::get(this, "", "vif", vif));
         tr = packet_in::type_id::create("tr", this);
+        cov = fpm_cov::type_id::create("cov", this);
     endfunction
 
     virtual task run_phase(uvm_phase phase);
@@ -36,7 +38,10 @@ class monitor extends uvm_monitor;
             
             tr.A = vif.A;
             tr.B = vif.B;
+            tr.C = vif.C;
+            tr.op = vif.op;
             item_collected_port.write(tr);
+            cov.write(tr);
 
             @(posedge vif.clk);
             -> end_record;

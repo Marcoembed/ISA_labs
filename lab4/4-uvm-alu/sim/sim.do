@@ -1,1 +1,1 @@
-run -all 
+run 1 ms

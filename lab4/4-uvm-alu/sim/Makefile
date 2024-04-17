@@ -2,6 +2,8 @@ COMP= vlog -svinputport=relaxed
 SIM= vsim -c -voptargs=+acc
 SIM_GUI= vsim -voptargs=+acc
 DO= -do sim.do -do wave.do
+COV_FPM= -do sim.do -do wave.do -do report-cov-fpm.do
+COV_MBE= -do sim.do -do report-cov-mbe.do
 SUPPRESS= -suppress 3999
 ADD= ADD
 MBE= MBE
@@ -28,13 +30,13 @@ add: clean	## Compile and Simulate ADDER
 mbe: clean	## Compile and Simulate BOOTH MULTIPLIER
 	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${MBE} ${TOP}
-	@${SIM} ${SUPPRESS}  ${DO} top
+	@${SIM} ${SUPPRESS} ${COV_MBE} top
 
 fpm: clean	## Compile and Simulate FPU MULTIPLIER
 	@${COMP} ${DPI}
 	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${FPM} ${TOP}
-	@${SIM} ${SUPPRESS} ${DO}  top
+	@${SIM} ${SUPPRESS} ${COV_FPM} top
 
 add_gui: clean	## Compile and Simulate with GUI ADDER
 	@${COMP} ${PKGS}
@@ -44,13 +46,13 @@ add_gui: clean	## Compile and Simulate with GUI ADDER
 mbe_gui: clean	## Compile and Simulate with GUI BOOTH MULTIPLIER
 	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${MBE} ${TOP}
-	@${SIM_GUI} ${SUPPRESS}  ${DO} top
+	@${SIM_GUI} ${SUPPRESS} ${COV_MBE} top
 
 fpm_gui: clean	## Compile and Simulate with GUI FPU MULTIPLIER
 	@${COMP} ${DPI}
 	@${COMP} ${PKGS}
 	@${COMP} ${DEFINE}${FPM} ${TOP}
-	@${SIM_GUI} ${SUPPRESS} ${DO}  top
+	@${SIM_GUI} ${SUPPRESS} ${COV_FPM} top
 
 clean:		## Delete work folder
 	@if [ -d "/path/to/directory" ]; then \
